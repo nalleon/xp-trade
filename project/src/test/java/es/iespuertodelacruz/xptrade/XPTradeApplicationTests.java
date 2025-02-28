@@ -1,6 +1,7 @@
 package es.iespuertodelacruz.xptrade;
 
 import es.iespuertodelacruz.xptrade.user.domain.port.primary.IUserService;
+import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,9 @@ import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Sql("/tictactoetest.sql")
-class TicTacToeApplicationTests {
+@Sql("/xptradetest.sql")
+class XPTradeApplicationTests extends TestUtilities {
 
-	public static final String MESSAGE_ERROR = "Expected result not found";
 	@Autowired
 	IUserService repository;
 
