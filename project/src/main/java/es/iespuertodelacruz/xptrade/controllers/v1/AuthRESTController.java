@@ -1,12 +1,12 @@
-package es.iespuertodelacruz.xptrade.user.infrastructure.adapters.primary;
+package es.iespuertodelacruz.xptrade.controllers.v1;
 
 import es.iespuertodelacruz.xptrade.shared.config.MailService;
 import es.iespuertodelacruz.xptrade.shared.security.AuthService;
 import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
 import es.iespuertodelacruz.xptrade.user.domain.User;
 import es.iespuertodelacruz.xptrade.user.domain.port.primary.IUserService;
-import es.iespuertodelacruz.xptrade.user.infrastructure.adapters.primary.dto.UserLoginDTO;
-import es.iespuertodelacruz.xptrade.user.infrastructure.adapters.primary.dto.UserRegisterDTO;
+import es.iespuertodelacruz.xptrade.dto.user.UserLoginDTO;
+import es.iespuertodelacruz.xptrade.dto.user.UserRegisterDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

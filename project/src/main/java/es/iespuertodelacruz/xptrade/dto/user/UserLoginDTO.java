@@ -1,12 +1,12 @@
-package es.iespuertodelacruz.xptrade.user.infrastructure.adapters.primary.dto;
+package es.iespuertodelacruz.xptrade.dto.user;
+
 import java.io.Serializable;
 
 /**
  * @author Nabil Leon Alvarez <@nalleon>
  */
-public record UserRegisterDTO(
+public record UserLoginDTO(
         String name,
-        String email,
         String password
 ) implements Serializable {
 

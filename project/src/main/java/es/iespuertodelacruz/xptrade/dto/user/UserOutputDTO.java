@@ -1,4 +1,4 @@
-package es.iespuertodelacruz.xptrade.user.infrastructure.adapters.primary.dto;
+package es.iespuertodelacruz.xptrade.dto.user;
 
 import java.io.Serializable;
 

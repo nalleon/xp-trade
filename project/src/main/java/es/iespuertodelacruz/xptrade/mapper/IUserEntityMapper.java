@@ -1,6 +1,7 @@
-package es.iespuertodelacruz.xptrade.user.infrastructure.adapters.secondary.entities;
+package es.iespuertodelacruz.xptrade.mapper;
 
 import es.iespuertodelacruz.xptrade.user.domain.User;
+import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

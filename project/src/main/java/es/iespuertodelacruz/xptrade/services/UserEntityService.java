@@ -1,7 +1,10 @@
-package es.iespuertodelacruz.xptrade.user.infrastructure.adapters.secondary.entities;
+package es.iespuertodelacruz.xptrade.services;
 
+import es.iespuertodelacruz.xptrade.mapper.IUserEntityMapper;
+import es.iespuertodelacruz.xptrade.repository.IUserEntityRepository;
 import es.iespuertodelacruz.xptrade.user.domain.User;
 import es.iespuertodelacruz.xptrade.user.domain.port.secondary.IUserRepository;
+import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +37,7 @@ public class UserEntityService implements IUserRepository {
         try {
             UserEntity entity = IUserEntityMapper.INSTANCE.toEntity(user);
             entity.setCreationDate(new Date());
-            entity.setRole("ROLE_USER");
+            entity.setRoleId(2);
             entity.setVerificationToken(UUID.randomUUID().toString());
             entity.setVerified(0);
             UserEntity savedEntity = repository.save(entity);
