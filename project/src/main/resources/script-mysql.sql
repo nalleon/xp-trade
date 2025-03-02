@@ -154,7 +154,7 @@ CREATE TABLE `posts` (
     creation_date BIGINT NOT NULL,
     CONSTRAINT `pk_posts` PRIMARY KEY (id),
     CONSTRAINT `fk_posts1` FOREIGN KEY (game_id) REFERENCES games(id),
-    CONSTRAINT `fk_posts2` FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT `fk_posts2` FOREIGN KEY (user_id) REFERENCES users(id)
 )
 
 CREATE TABLE `collection` (
@@ -163,7 +163,7 @@ CREATE TABLE `collection` (
     user_id INTEGER NOT NULL,
     CONSTRAINT `pk_collection` PRIMARY KEY (id),
     CONSTRAINT `fk_collection1` FOREIGN KEY (game_id) REFERENCES games(id),
-    CONSTRAINT `fk_collection2` FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT `fk_collection2` FOREIGN KEY (user_id) REFERENCES users(id)
 )
 
 CREATE TABLE `favourites` (
@@ -172,5 +172,5 @@ CREATE TABLE `favourites` (
     user_id INTEGER NOT NULL,
     CONSTRAINT `pk_favourites` PRIMARY KEY (id),
     CONSTRAINT `fk_favourites1` FOREIGN KEY (game_id) REFERENCES games(id),
-    CONSTRAINT `fk_favourites2` FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT `fk_favourites2` FOREIGN KEY (user_id) REFERENCES users(id)
 )
