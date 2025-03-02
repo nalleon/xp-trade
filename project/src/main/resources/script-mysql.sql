@@ -156,3 +156,5 @@ CREATE TABLE `posts` (
     CONSTRAINT `fk_posts1` FOREIGN KEY (game_id) REFERENCES games(id),
     CONSTRAINT `fk_posts2` FOREIGN KEY (user_id) REFERENCES users(id),
 )
+
+
