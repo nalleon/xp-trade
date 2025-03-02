@@ -155,7 +155,7 @@ CREATE TABLE `posts` (
     CONSTRAINT `pk_posts` PRIMARY KEY (id),
     CONSTRAINT `fk_posts1` FOREIGN KEY (game_id) REFERENCES games(id),
     CONSTRAINT `fk_posts2` FOREIGN KEY (user_id) REFERENCES users(id)
-)
+);
 
 CREATE TABLE `collections` (
     id INTEGER AUTO_INCREMENT NOT NULL,
@@ -164,7 +164,7 @@ CREATE TABLE `collections` (
     CONSTRAINT `pk_collections` PRIMARY KEY (id),
     CONSTRAINT `fk_collections1` FOREIGN KEY (game_id) REFERENCES games(id),
     CONSTRAINT `fk_collections2` FOREIGN KEY (user_id) REFERENCES users(id)
-)
+);
 
 CREATE TABLE `favourites` (
     id INTEGER AUTO_INCREMENT NOT NULL,
@@ -173,4 +173,15 @@ CREATE TABLE `favourites` (
     CONSTRAINT `pk_favourites` PRIMARY KEY (id),
     CONSTRAINT `fk_favourites1` FOREIGN KEY (game_id) REFERENCES games(id),
     CONSTRAINT `fk_favourites2` FOREIGN KEY (user_id) REFERENCES users(id)
-)
+);
+
+CREATE TABLE `comments` (
+    id INTEGER AUTO_INCREMENT NOT NULL,
+    post_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    content VARCHAR(255) NOT NULL,
+    creation_date BIGINT NOT NULL,
+    CONSTRAINT `pk_comments` PRIMARY KEY (id),
+    CONSTRAINT `fk_comments1` FOREIGN KEY (post_id) REFERENCES posts(id),
+    CONSTRAINT `fk_comments2` FOREIGN KEY (user_id) REFERENCES users(id)
+);
