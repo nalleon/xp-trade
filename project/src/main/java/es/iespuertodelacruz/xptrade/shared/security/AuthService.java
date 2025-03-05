@@ -2,8 +2,8 @@ package es.iespuertodelacruz.xptrade.shared.security;
 
 
 
-import es.iespuertodelacruz.xptrade.user.domain.User;
-import es.iespuertodelacruz.xptrade.user.domain.port.primary.IUserService;
+import es.iespuertodelacruz.xptrade.domain.User;
+import es.iespuertodelacruz.xptrade.domain.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -81,7 +81,7 @@ public class AuthService {
         if (user != null) {
             System.out.println(password);
             if (passwordEncoder.matches(password, user.getPassword())) {
-                generateToken = jwtService.generateToken(user.getName(), user.getRole(), user.getVerified());
+                generateToken = jwtService.generateToken(user.getName(), user.getRole().getName(), user.getVerified());
             }
         }
 

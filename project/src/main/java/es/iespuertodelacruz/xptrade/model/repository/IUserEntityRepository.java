@@ -1,4 +1,4 @@
-package es.iespuertodelacruz.xptrade.repository;
+package es.iespuertodelacruz.xptrade.model.repository;
 
 import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +11,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 /**
- * @author Nabil Leon Alvarez <@nalleon>
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
  */
 @Repository
 public interface IUserEntityRepository extends JpaRepository<UserEntity, Integer> {

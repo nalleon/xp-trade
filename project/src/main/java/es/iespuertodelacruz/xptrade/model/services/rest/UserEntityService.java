@@ -1,11 +1,15 @@
-package es.iespuertodelacruz.xptrade.services.rest;
+package es.iespuertodelacruz.xptrade.model.services.rest;
 
+import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.mapper.IUserEntityMapper;
-import es.iespuertodelacruz.xptrade.repository.IUserEntityRepository;
-import es.iespuertodelacruz.xptrade.user.domain.User;
-import es.iespuertodelacruz.xptrade.user.domain.port.secondary.IUserRepository;
+import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
+import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
+import es.iespuertodelacruz.xptrade.model.repository.IUserEntityRepository;
+import es.iespuertodelacruz.xptrade.domain.User;
+import es.iespuertodelacruz.xptrade.domain.interfaces.IUserRepository;
 import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -15,11 +19,13 @@ import java.util.UUID;
 /**
  * @author Nabil Leon Alvarez <@nalleon>
  */
-//@Service
+@Service
 public class UserEntityService implements IUserRepository {
 
     @Autowired
     private IUserEntityRepository repository;
+    @Autowired
+    private IRoleEntityRepository roleRepository;
 
     @Override
     @Transactional
@@ -37,13 +43,23 @@ public class UserEntityService implements IUserRepository {
         try {
             UserEntity entity = IUserEntityMapper.INSTANCE.toEntity(user);
             entity.setCreationDate(new Date());
-            entity.setRoleId(2);
+            entity.setRole(getRoleUser());
             entity.setVerificationToken(UUID.randomUUID().toString());
             entity.setVerified(0);
             UserEntity savedEntity = repository.save(entity);
             return IUserEntityMapper.INSTANCE.toDomain(savedEntity);
         } catch (RuntimeException e){
             throw new RuntimeException("Invalid data");
+        }
+    }
+
+    public RoleEntity getRoleUser(){
+        RoleEntity role =  roleRepository.findRoleByName("ROLE_USER").orElse(null);
+        if (role != null){
+            return role;
+        } else {
+            throw new RuntimeException("Role does not exists");
+
         }
     }
 

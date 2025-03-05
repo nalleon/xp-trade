@@ -1,18 +1,18 @@
-package es.iespuertodelacruz.xptrade.user.domain;
+package es.iespuertodelacruz.xptrade.domain;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
 public class User implements Serializable {
-    private int Id;
+    private int id;
     private String name;
 
     private String password;
 
     private String email;
 
-    private String role;
+    private Role role;
 
     private int verified;
 
@@ -59,11 +59,11 @@ public class User implements Serializable {
      * Getters and setters
      */
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {
@@ -90,11 +90,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -104,6 +104,18 @@ public class User implements Serializable {
 
     public void setVerified(int verified) {
         this.verified = verified;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
     public String getVerificationToken() {
@@ -121,7 +133,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "Id=" + Id +
+                "Id=" + id +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
@@ -137,11 +149,11 @@ public class User implements Serializable {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Id == user.Id;
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(Id);
+        return Objects.hashCode(id);
     }
 }

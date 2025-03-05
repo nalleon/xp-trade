@@ -25,7 +25,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(unique=true, nullable=false)
-    private int Id;
+    private int id;
 
     @Column(unique = true, nullable=false, length=45, name = "username")
     private String username;
@@ -38,7 +38,7 @@ public class UserEntity {
 
     @ManyToOne()
     @JoinColumn(nullable=false, name = "role_id")
-    private int roleId;
+    private RoleEntity role;
 
     @Column(name = "verified")
     private int verified;
@@ -62,11 +62,11 @@ public class UserEntity {
      * Getters and setters
      */
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getUsername() {
@@ -93,12 +93,12 @@ public class UserEntity {
         this.email = email;
     }
 
-    public int getRoleId() {
-        return roleId;
+    public RoleEntity getRole() {
+        return role;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setRole(RoleEntity role) {
+        this.role = role;
     }
 
     public int getVerified() {
@@ -136,11 +136,11 @@ public class UserEntity {
     @Override
     public String toString() {
         return "UserEntity{" +
-                "Id=" + Id +
+                "Id=" + id +
                 ", name='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", role='" + roleId + '\'' +
+                ", role='" + role + '\'' +
                 ", verified=" + verified +
                 ", verificationToken='" + verificationToken + '\'' +
                 ", creationDate=" + creationDate +
@@ -151,11 +151,11 @@ public class UserEntity {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity entity = (UserEntity) o;
-        return Id == entity.Id;
+        return id == entity.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(Id);
+        return Objects.hashCode(id);
     }
 }

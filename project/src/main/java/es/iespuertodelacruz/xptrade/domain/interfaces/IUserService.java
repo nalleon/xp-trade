@@ -1,6 +1,6 @@
-package es.iespuertodelacruz.xptrade.user.domain.port.primary;
+package es.iespuertodelacruz.xptrade.domain.interfaces;
 
-import es.iespuertodelacruz.xptrade.user.domain.User;
+import es.iespuertodelacruz.xptrade.domain.User;
 
 import java.util.List;
 

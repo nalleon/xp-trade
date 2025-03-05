@@ -1,9 +1,9 @@
-package es.iespuertodelacruz.xptrade.user.infrastructure.adapters.primary;
+package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.FileStorageService;
-import es.iespuertodelacruz.xptrade.user.domain.User;
-import es.iespuertodelacruz.xptrade.user.domain.port.primary.IUserService;
+import es.iespuertodelacruz.xptrade.domain.User;
+import es.iespuertodelacruz.xptrade.domain.interfaces.IUserService;
 import es.iespuertodelacruz.xptrade.dto.user.UserOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserRegisterDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserUpdateInputDTO;

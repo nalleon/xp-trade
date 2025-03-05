@@ -1,8 +1,8 @@
-package es.iespuertodelacruz.xptrade.user.domain.service;
+package es.iespuertodelacruz.xptrade.domain.service;
 
-import es.iespuertodelacruz.xptrade.user.domain.User;
-import es.iespuertodelacruz.xptrade.user.domain.port.primary.IUserService;
-import es.iespuertodelacruz.xptrade.user.domain.port.secondary.IUserRepository;
+import es.iespuertodelacruz.xptrade.domain.User;
+import es.iespuertodelacruz.xptrade.domain.interfaces.IUserService;
+import es.iespuertodelacruz.xptrade.domain.interfaces.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
