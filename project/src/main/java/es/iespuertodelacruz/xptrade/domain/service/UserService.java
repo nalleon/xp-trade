@@ -10,8 +10,20 @@ import java.util.List;
 
 @Service
 public class UserService implements IUserService {
-    @Autowired
+
+    /**
+     * Properties
+     */
     IUserRepository repository;
+
+    /**
+     * Setter for the autowired service
+     * @param repository of the service
+     */
+    @Autowired
+    public void setRepository(IUserRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public User add(String name, String email, String password) {

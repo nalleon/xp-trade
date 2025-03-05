@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.Objects;
 
 public class User implements Serializable {
+    /**
+     * Properties
+     */
     private int id;
     private String name;
 
