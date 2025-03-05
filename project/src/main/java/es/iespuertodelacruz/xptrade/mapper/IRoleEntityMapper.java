@@ -16,7 +16,7 @@ import java.util.List;
 public interface IRoleEntityMapper {
     IRoleEntityMapper INSTANCE = Mappers.getMapper(IRoleEntityMapper.class);
     Role toDomain(RoleEntity entity);
-    UserEntity toEntity(Role domain);
+    RoleEntity toEntity(Role domain);
     List<Role> toDomainList(List<RoleEntity> entities);
     List<RoleEntity> toEntityList(List<Role> domains);
 

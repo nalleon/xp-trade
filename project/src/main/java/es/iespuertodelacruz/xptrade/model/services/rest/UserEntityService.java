@@ -17,15 +17,33 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * @author Nabil Leon Alvarez <@nalleon>
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
  */
 @Service
 public class UserEntityService implements IUserRepository {
 
-    @Autowired
+    /**
+     * Properties
+     */
     private IUserEntityRepository repository;
-    @Autowired
     private IRoleEntityRepository roleRepository;
+    /**
+     * Setter for the autowired service
+     * @param repository of the service
+     */
+    @Autowired
+    public void setRepository(IUserEntityRepository repository) {
+        this.repository = repository;
+    }
+    /**
+     * Setter for the autowired service
+     * @param roleRepository of the service
+     */
+    @Autowired
+    public void setRoleRepository(IRoleEntityRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     @Override
     @Transactional
