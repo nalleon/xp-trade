@@ -60,11 +60,11 @@ public class AuthService {
      */
     public User register(String username, String password, String email) {
         User user = new User();
-        user.setName(username);
+        user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
 
-        return service.add(user.getName(), user.getEmail(), user.getPassword());
+        return service.add(user.getUsername(), user.getEmail(), user.getPassword());
 
     }
 
@@ -81,7 +81,7 @@ public class AuthService {
         if (user != null) {
             System.out.println(password);
             if (passwordEncoder.matches(password, user.getPassword())) {
-                generateToken = jwtService.generateToken(user.getName(), user.getRole().getName(), user.getVerified());
+                generateToken = jwtService.generateToken(user.getUsername(), user.getRole().getName(), user.getVerified());
             }
         }
 

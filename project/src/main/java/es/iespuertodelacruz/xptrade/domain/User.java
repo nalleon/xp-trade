@@ -9,7 +9,7 @@ public class User implements Serializable {
      * Properties
      */
     private int id;
-    private String name;
+    private String username;
 
     private String password;
 
@@ -33,26 +33,26 @@ public class User implements Serializable {
 
     /**
      * Constructor of the class
-     * @param name of the user
+     * @param username of the user
      * @param password of the user
      * @param email of the user
      */
-    public User(String name, String password, String email) {
-        this.name = name;
+    public User(String username, String password, String email) {
+        this.username = username;
         this.password = password;
         this.email = email;
     }
 
-    public User(String name, String password, String email, int verified) {
-        this.name = name;
+    public User(String username, String password, String email, int verified) {
+        this.username = username;
         this.password = password;
         this.email = email;
         this.verified = verified;
     }
 
 
-    public User(String name, String email, String password, String profilePicture) {
-        this.name = name;
+    public User(String username, String email, String password, String profilePicture) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.profilePicture = profilePicture;
@@ -69,12 +69,12 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -137,7 +137,7 @@ public class User implements Serializable {
     public String toString() {
         return "User{" +
                 "Id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +

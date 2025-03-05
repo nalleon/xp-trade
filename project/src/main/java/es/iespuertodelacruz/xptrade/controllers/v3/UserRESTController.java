@@ -68,7 +68,7 @@ public class UserRESTController {
     @GetMapping
     public ResponseEntity<?> getAll() {
         List<UserOutputDTO> filteredList = service.findAll().stream().map(usuario ->
-                new UserOutputDTO(usuario.getName(), usuario.getEmail())).collect(Collectors.toList());
+                new UserOutputDTO(usuario.getUsername(), usuario.getEmail())).collect(Collectors.toList());
 
         if (filteredList.isEmpty()) {
             String message = "There are no users";
@@ -85,7 +85,7 @@ public class UserRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         User aux = service.findById(id);
         if (aux != null){
-            UserOutputDTO dto =  new UserOutputDTO(aux.getName(), aux.getEmail());
+            UserOutputDTO dto =  new UserOutputDTO(aux.getUsername(), aux.getEmail());
 
             ApiResponse<UserOutputDTO> response = new ApiResponse<>(200, "User found", dto);
             return ResponseEntity.ok(response);
@@ -104,13 +104,13 @@ public class UserRESTController {
 
         try {
             User user = new User();
-            user.setName(registerDTO.name());
+            user.setUsername(registerDTO.name());
             user.setPassword(passwordEncoder.encode(registerDTO.password()));
             user.setEmail(registerDTO.email());
 
-            User dbItem = service.add(user.getName(), user.getEmail(), user.getPassword());
+            User dbItem = service.add(user.getUsername(), user.getEmail(), user.getPassword());
 
-            UserOutputDTO result = new UserOutputDTO(dbItem.getName(), dbItem.getEmail());
+            UserOutputDTO result = new UserOutputDTO(dbItem.getUsername(), dbItem.getEmail());
 
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>(201, "Usuario creado correctamente", result));
@@ -144,9 +144,9 @@ public class UserRESTController {
             dbItem.setEmail(updateInputDTO.email());
 
 
-            User updatedDbItem = service.update(dbItem.getName(), dbItem.getEmail(), dbItem.getPassword());
+            User updatedDbItem = service.update(dbItem.getUsername(), dbItem.getEmail(), dbItem.getPassword());
 
-            UserOutputDTO result = new UserOutputDTO(updatedDbItem.getName(), updatedDbItem.getEmail());
+            UserOutputDTO result = new UserOutputDTO(updatedDbItem.getUsername(), updatedDbItem.getEmail());
 
             return ResponseEntity.ok(new ApiResponse<>(200, "Update successful", result));
 
@@ -188,7 +188,7 @@ public class UserRESTController {
 
             aux.setProfilePicture(namefile);
 
-            User result = service.updatePicture(aux.getName(), aux.getEmail(), aux.getPassword(), aux.getProfilePicture());
+            User result = service.updatePicture(aux.getUsername(), aux.getEmail(), aux.getPassword(), aux.getProfilePicture());
 
             return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, message, result));
         } catch (Exception e) {

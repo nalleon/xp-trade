@@ -46,7 +46,7 @@ public class UserEntity {
     @Column(length=255, name = "verification_token")
     private String verificationToken;
 
-    @Column(nullable=false, length=45, name = "creation_token")
+    @Column(nullable=false, length=45, name = "creation_date")
     @Convert(converter = DateToLongConverter.class)
     private Date creationDate;
 

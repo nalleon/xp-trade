@@ -1,6 +1,5 @@
 package es.iespuertodelacruz.xptrade.model.services.rest;
 
-import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.mapper.IUserEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
@@ -52,7 +51,7 @@ public class UserEntityService implements IUserRepository {
             return null;
         }
 
-        UserEntity dbItem = repository.findUserByName(user.getName()).orElse(null);
+        UserEntity dbItem = repository.findUserByName(user.getUsername()).orElse(null);
 
         if(dbItem != null){
             return null;
@@ -67,18 +66,17 @@ public class UserEntityService implements IUserRepository {
             UserEntity savedEntity = repository.save(entity);
             return IUserEntityMapper.INSTANCE.toDomain(savedEntity);
         } catch (RuntimeException e){
+            e.printStackTrace();
             throw new RuntimeException("Invalid data");
         }
     }
 
     public RoleEntity getRoleUser(){
         RoleEntity role =  roleRepository.findRoleByName("ROLE_USER").orElse(null);
-        if (role != null){
-            return role;
-        } else {
-            throw new RuntimeException("Role does not exists");
-
+        if (role == null) {
+            role = roleRepository.save(new RoleEntity("ROLE_USER"));
         }
+        return role;
     }
 
     @Override
@@ -131,7 +129,7 @@ public class UserEntityService implements IUserRepository {
             return null;
         }
 
-        UserEntity dbItem = repository.findUserByName(user.getName()).orElse(null);
+        UserEntity dbItem = repository.findUserByName(user.getUsername()).orElse(null);
         if (dbItem == null){
             return null;
         }
@@ -157,7 +155,7 @@ public class UserEntityService implements IUserRepository {
             return null;
         }
 
-        UserEntity dbItem = repository.findUserByName(user.getName()).orElse(null);
+        UserEntity dbItem = repository.findUserByName(user.getUsername()).orElse(null);
 
         System.out.println(dbItem);
 

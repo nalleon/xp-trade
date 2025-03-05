@@ -10,7 +10,8 @@ import java.util.List;
 /**
  * @author Nabil Leon Alvarez <@nalleon>
  */
-@Mapper(uses = {IRoleEntityMapper.class})public interface IUserEntityMapper {
+@Mapper(uses = {IRoleEntityMapper.class})
+public interface IUserEntityMapper {
     IUserEntityMapper INSTANCE = Mappers.getMapper(IUserEntityMapper.class);
     User toDomain(UserEntity entity);
     UserEntity toEntity(User domain);

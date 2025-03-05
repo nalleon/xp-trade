@@ -54,7 +54,7 @@ public class AuthRESTController {
                 "http://localhost:8080/api/v1/auth/confirmation?email=" + registerDTO.email() + "&token=" + authToken;
 
         String[] senders = {registerDTO.email()};
-        mailService.send(senders, "Verify your email " + user.getName(), confirmationUrl);
+        mailService.send(senders, "Verify your email " + user.getUsername(), confirmationUrl);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponse<>(201, "En breves momentos, le llegara un correo de verificacion",
@@ -68,7 +68,7 @@ public class AuthRESTController {
 
             if(tokenDB != null && tokenDB.equals(token)) {
                 authUser.setVerified(1);
-                service.updateVerify(authUser.getName(), authUser.getEmail(), authUser.getPassword(),
+                service.updateVerify(authUser.getUsername(), authUser.getEmail(), authUser.getPassword(),
                         authUser.getVerified());
 
                 return ResponseEntity.ok("Your account is now verified.");
