@@ -24,8 +24,8 @@ public class GenreEntity {
     @Column(unique = true, nullable=false, length=45, name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "genres", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<GameEntity> games;
+//    @OneToMany(mappedBy = "genres", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    Set<GameEntity> games;
 
     /**
      * Default constructor of the class

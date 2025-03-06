@@ -23,8 +23,8 @@ public class RegionEntity {
     @Column(unique = true, nullable=false, length=45, name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<GameEntity> games;
+//    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    Set<GameEntity> games;
 
     /**
      * Default constructor of the class

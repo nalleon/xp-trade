@@ -1,8 +1,6 @@
 package es.iespuertodelacruz.xptrade.model.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 /**
  * @author Nabil Leon Alvarez @nalleon
@@ -12,4 +10,11 @@ import jakarta.persistence.Table;
 @Table(name="collections")
 @NamedQuery(name="CollectionEntity.findAll", query="SELECT r FROM CollectionEntity r")
 public class CollectionEntity {
+    /**
+     * Properties
+     */
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(unique=true, nullable=false)
+    private int id;
 }
