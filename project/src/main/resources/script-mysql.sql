@@ -151,6 +151,7 @@ CREATE TABLE `posts` (
     game_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     content CHAR(255) NOT NULL,
+    picture CHAR(255) NULL,
     creation_date BIGINT NOT NULL,
     CONSTRAINT `pk_posts` PRIMARY KEY (id),
     CONSTRAINT `fk_posts1` FOREIGN KEY (game_id) REFERENCES games(id),

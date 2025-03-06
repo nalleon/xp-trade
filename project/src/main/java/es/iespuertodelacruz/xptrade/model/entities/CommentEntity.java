@@ -12,4 +12,5 @@ import jakarta.persistence.Table;
 @Table(name="comments")
 @NamedQuery(name="CommentEntity.findAll", query="SELECT r FROM CommentEntity r")
 public class CommentEntity {
+
 }
