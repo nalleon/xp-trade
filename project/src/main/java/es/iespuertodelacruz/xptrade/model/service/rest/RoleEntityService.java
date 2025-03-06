@@ -1,19 +1,15 @@
-package es.iespuertodelacruz.xptrade.model.services.rest;
+package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.interfaces.IRoleRepository;
 import es.iespuertodelacruz.xptrade.mapper.IRoleEntityMapper;
-import es.iespuertodelacruz.xptrade.mapper.IUserEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
-import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Nabil Leon Alvarez @nalleon

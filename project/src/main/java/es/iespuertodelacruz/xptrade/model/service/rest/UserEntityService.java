@@ -1,4 +1,4 @@
-package es.iespuertodelacruz.xptrade.model.services.rest;
+package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.mapper.IUserEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
