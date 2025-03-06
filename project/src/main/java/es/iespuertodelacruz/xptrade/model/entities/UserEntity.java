@@ -63,6 +63,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<CommentEntity> commentEntitySet;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<CollectionEntity> collectionEntitySet;
+
     /**
      * Default constructor of the class
      */

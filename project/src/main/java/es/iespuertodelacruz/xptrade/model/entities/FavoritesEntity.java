@@ -21,13 +21,14 @@ public class FavoritesEntity {
     @Column(unique=true, nullable=false)
     private int id;
 
-//    @Column(unique = true, nullable=false, length=45, name = "name")
     @ManyToOne()
     @JoinColumn(nullable=false, name = "user_id")
     private UserEntity user;
 
-//    @OneToMany(mappedBy = "developer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private GameEntity gameId;
+    @ManyToOne()
+    @JoinColumn(nullable=false, name = "game_id")
+    private GameEntity game;
+
     /**
      * Default constructor of the class
      */

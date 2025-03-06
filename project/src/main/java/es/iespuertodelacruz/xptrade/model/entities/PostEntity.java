@@ -23,7 +23,10 @@ public class PostEntity {
     @Column(unique=true, nullable=false)
     private int id;
 
-    private int gameId;
+    @ManyToOne()
+    @JoinColumn(nullable=false, name = "game_id")
+    private GameEntity game;
+
     @ManyToOne()
     @JoinColumn(nullable=false, name = "user_id")
     private UserEntity user;
@@ -51,13 +54,13 @@ public class PostEntity {
 
     /**
      * Constructor of the class
-     * @param gameId of the game
+     * @param game of the game
      * @param user of the user
      * @param content of the post
      * @param picture of the post
      */
-    public PostEntity(int gameId, UserEntity user, String content, String picture) {
-        this.gameId = gameId;
+    public PostEntity(GameEntity game, UserEntity user, String content, String picture) {
+        this.game = game;
         this.user = user;
         this.content = content;
         this.picture = picture;
@@ -74,12 +77,12 @@ public class PostEntity {
         this.id = id;
     }
 
-    public int getGameId() {
-        return gameId;
+    public GameEntity getGame() {
+        return game;
     }
 
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
+    public void setGame(GameEntity game) {
+        this.game = game;
     }
 
     public UserEntity getUser() {
@@ -118,7 +121,7 @@ public class PostEntity {
     public String toString() {
         return "PostEntity{" +
                 "id=" + id +
-                ", gameId=" + gameId +
+                ", gameId=" + game +
                 ", userId=" + user +
                 ", content='" + content + '\'' +
                 ", picture='" + picture + '\'' +

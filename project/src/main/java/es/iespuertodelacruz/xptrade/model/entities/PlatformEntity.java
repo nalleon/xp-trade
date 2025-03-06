@@ -23,8 +23,8 @@ public class PlatformEntity {
     @Column(unique = true, nullable=false, length=45, name = "name")
     private String name;
 
-//    @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    Set<GameEntity> games;
+    @ManyToMany(mappedBy = "platformEntitySet", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    Set<GameEntity> games;
 
     /**
      * Default constructor of the class

@@ -24,8 +24,8 @@ public class DeveloperEntity {
         @Column(unique = true, nullable=false, length=45, name = "name")
         private String name;
 
-//        @OneToMany(mappedBy = "developer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//        Set<GameEntity> games;
+        @ManyToMany(mappedBy = "developerEntitySet", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+        Set<GameEntity> games;
 
         /**
          * Default constructor of the class
