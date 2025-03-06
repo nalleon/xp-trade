@@ -190,7 +190,8 @@ public class UserRESTController {
 
             User result = service.updatePicture(aux.getUsername(), aux.getEmail(), aux.getPassword(), aux.getProfilePicture());
 
-            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, message, result));
+            UserOutputDTO dto = new UserOutputDTO(result.getUsername(), result.getEmail());
+            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, message, dto));
         } catch (Exception e) {
             message = "Could not upload the file: " + file.getOriginalFilename()
                     + ". Error: " + e.getMessage();
