@@ -1,8 +1,11 @@
 package es.iespuertodelacruz.xptrade.model.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Table;
+import es.iespuertodelacruz.xptrade.shared.utils.DateToLongConverter;
+import jakarta.persistence.*;
+
+import java.util.Date;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Nabil Leon Alvarez @nalleon
@@ -12,4 +15,121 @@ import jakarta.persistence.Table;
 @Table(name="posts")
 @NamedQuery(name="PostEntity.findAll", query="SELECT r FROM PostEntity r")
 public class PostEntity {
+    /**
+     * Properties
+     */
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(unique=true, nullable=false)
+    private int id;
+
+    private int gameId;
+
+    private int userId;
+
+    @Column(nullable=false, length=255, name = "content")
+    private String content;
+
+    @Column(nullable=true, length=255, name = "picture")
+    private String picture;
+
+
+    @Column(nullable=false, length=45, name = "creation_date")
+    @Convert(converter = DateToLongConverter.class)
+    private Date creationDate;
+
+
+    /**
+     * Default constructor of the class
+     */
+    public PostEntity() {}
+
+    /**
+     * Constructor of the class
+     * @param gameId of the game
+     * @param userId of the user
+     * @param content of the post
+     * @param picture of the post
+     */
+    public PostEntity(int gameId, int userId, String content, String picture) {
+        this.gameId = gameId;
+        this.userId = userId;
+        this.content = content;
+        this.picture = picture;
+    }
+
+    /**
+     * Getters and setters
+     */
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Override
+    public String toString() {
+        return "PostEntity{" +
+                "id=" + id +
+                ", gameId=" + gameId +
+                ", userId=" + userId +
+                ", content='" + content + '\'' +
+                ", picture='" + picture + '\'' +
+                ", creationDate=" + creationDate +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        PostEntity that = (PostEntity) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
