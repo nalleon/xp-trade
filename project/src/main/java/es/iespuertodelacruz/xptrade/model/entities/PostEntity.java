@@ -24,8 +24,9 @@ public class PostEntity {
     private int id;
 
     private int gameId;
-
-    private int userId;
+    @ManyToOne()
+    @JoinColumn(nullable=false, name = "user_id")
+    private UserEntity user;
 
     @Column(nullable=false, length=255, name = "content")
     private String content;
@@ -39,6 +40,10 @@ public class PostEntity {
     private Date creationDate;
 
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<CommentEntity> commentEntitySet;
+
+
     /**
      * Default constructor of the class
      */
@@ -47,13 +52,13 @@ public class PostEntity {
     /**
      * Constructor of the class
      * @param gameId of the game
-     * @param userId of the user
+     * @param user of the user
      * @param content of the post
      * @param picture of the post
      */
-    public PostEntity(int gameId, int userId, String content, String picture) {
+    public PostEntity(int gameId, UserEntity user, String content, String picture) {
         this.gameId = gameId;
-        this.userId = userId;
+        this.user = user;
         this.content = content;
         this.picture = picture;
     }
@@ -77,12 +82,12 @@ public class PostEntity {
         this.gameId = gameId;
     }
 
-    public int getUserId() {
-        return userId;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     public String getContent() {
@@ -114,7 +119,7 @@ public class PostEntity {
         return "PostEntity{" +
                 "id=" + id +
                 ", gameId=" + gameId +
-                ", userId=" + userId +
+                ", userId=" + user +
                 ", content='" + content + '\'' +
                 ", picture='" + picture + '\'' +
                 ", creationDate=" + creationDate +

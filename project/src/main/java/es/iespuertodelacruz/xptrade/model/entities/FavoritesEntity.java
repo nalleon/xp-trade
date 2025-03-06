@@ -3,7 +3,6 @@ package es.iespuertodelacruz.xptrade.model.entities;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * @author Nabil Leon Alvarez @nalleon
@@ -23,10 +22,12 @@ public class FavoritesEntity {
     private int id;
 
 //    @Column(unique = true, nullable=false, length=45, name = "name")
-    private int userId;
+    @ManyToOne()
+    @JoinColumn(nullable=false, name = "user_id")
+    private UserEntity user;
 
 //    @OneToMany(mappedBy = "developer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private int gameId;
+//    private GameEntity gameId;
     /**
      * Default constructor of the class
      */
@@ -34,12 +35,11 @@ public class FavoritesEntity {
 
     /**
      * Constructor of the class
-     * @param userId of the user
-     * @param gameId of the game
+     * @param user of the user
+//     * @param game of the game
      */
-    public FavoritesEntity(int userId, int gameId) {
-        this.userId = userId;
-        this.gameId = gameId;
+    public FavoritesEntity(UserEntity user) {
+        this.user = user;
     }
 
     /**
@@ -53,28 +53,19 @@ public class FavoritesEntity {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
         return "FavoritesEntity{" +
                 "id=" + id +
-                ", userId=" + userId +
-                ", gameId=" + gameId +
+                ", userId=" + user +
                 '}';
     }
 

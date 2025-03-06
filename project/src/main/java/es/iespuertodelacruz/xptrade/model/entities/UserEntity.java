@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 
 
 /**
@@ -52,6 +53,15 @@ public class UserEntity {
 
     @Column(nullable=true, length=255, name = "profile_picture")
     private String profilePicture;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<FavoritesEntity> favoritesEntitySet;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<PostEntity> postEntitySet;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<CommentEntity> commentEntitySet;
 
     /**
      * Default constructor of the class
