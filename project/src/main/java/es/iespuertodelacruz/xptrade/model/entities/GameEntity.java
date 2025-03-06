@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -72,4 +73,73 @@ public class GameEntity {
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<CollectionEntity> collectionEntitySet;
+
+    /**
+     * Default constructor of the class
+     */
+    public GameEntity() {}
+
+    /**
+     * Constructor of the class
+     * @param title of the game
+     * @param coverArt of the game
+     */
+    public GameEntity(String title, String coverArt) {
+        this.title = title;
+        this.coverArt = coverArt;
+    }
+
+    /**
+     * Getters and setters
+     */
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getCoverArt() {
+        return coverArt;
+    }
+
+    public void setCoverArt(String coverArt) {
+        this.coverArt = coverArt;
+    }
+
+    @Override
+    public String toString() {
+        return "GameEntity{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", coverArt='" + coverArt + '\'' +
+                ", developerEntitySet=" + developerEntitySet +
+                ", genreEntitySet=" + genreEntitySet +
+                ", platformEntitySet=" + platformEntitySet +
+                ", publisherEntitySet=" + publisherEntitySet +
+                ", regionEntitySet=" + regionEntitySet +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        GameEntity that = (GameEntity) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
