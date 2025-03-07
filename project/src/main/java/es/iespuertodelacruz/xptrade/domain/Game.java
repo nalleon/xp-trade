@@ -39,11 +39,9 @@ public class Game {
 
     /**
      * Constructor of the class
-     * @param title of the game
      * @param coverArt of the game
      */
-    public Game(String title, String coverArt) {
-        this.title = title;
+    public Game(String coverArt) {
         this.coverArt = coverArt;
     }
 

@@ -3,7 +3,7 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.FileStorageService;
 import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.domain.interfaces.IUserService;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
 import es.iespuertodelacruz.xptrade.dto.user.UserOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserRegisterDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserUpdateInputDTO;

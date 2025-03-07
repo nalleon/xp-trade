@@ -1,6 +1,6 @@
 package es.iespuertodelacruz.xptrade;
 
-import es.iespuertodelacruz.xptrade.domain.interfaces.IUserService;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

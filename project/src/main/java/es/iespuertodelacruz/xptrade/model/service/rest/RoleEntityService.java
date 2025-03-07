@@ -1,7 +1,7 @@
 package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.Role;
-import es.iespuertodelacruz.xptrade.domain.interfaces.IRoleRepository;
+import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IRoleRepository;
 import es.iespuertodelacruz.xptrade.mapper.IRoleEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;

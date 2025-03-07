@@ -1,46 +1,64 @@
 package es.iespuertodelacruz.xptrade.domain.service;
 
-import es.iespuertodelacruz.xptrade.domain.Collection;
-import es.iespuertodelacruz.xptrade.domain.Game;
-import es.iespuertodelacruz.xptrade.domain.Post;
-import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.domain.interfaces.IGenericSocialRepository;
+import es.iespuertodelacruz.xptrade.domain.*;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.ICollectionService;
+import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class CollectionService implements IGenericSocialRepository<Collection, Integer, User, Game> {
-    @Override
-    public Collection save(Collection collection) {
-        return null;
+public class CollectionService implements ICollectionService {
+
+    /**
+     * Properties
+     */
+    IGenericSocialRepository<Collection, Integer, User, Game> repository;
+
+    /**
+     * Setter for the autowired service
+     * @param repository of the service
+     */
+    @Autowired
+    public void setRepository(IGenericSocialRepository<Collection, Integer, User, Game> repository) {
+        this.repository = repository;
     }
 
     @Override
-    public List<Collection> findAll() {
-        return List.of();
+    public Collection add(Game game, User user) {
+        Collection aux = new Collection(game, user);
+        return repository.save(aux);
     }
 
     @Override
     public Collection findById(Integer id) {
-        return null;
+        return repository.findById(id);
     }
 
     @Override
     public List<Collection> findByUser(User user) {
-        return List.of();
+        return repository.findAllByUser(user);
     }
 
     @Override
     public List<Collection> findByGame(Game game) {
-        return List.of();
+        return repository.findAllBySubject(game);
+    }
+
+    @Override
+    public List<Collection> findAll() {
+        return repository.findAll();
     }
 
     @Override
     public boolean delete(Integer id) {
-        return false;
+        return repository.delete(id);
     }
 
     @Override
-    public Collection update(Collection collection) {
-        return null;
+    public Collection update(int id, Game game, User user) {
+        Collection aux = new Collection(game, user);
+        aux.setId(id);
+        return repository.update(aux);
     }
 }

@@ -1,4 +1,4 @@
-package es.iespuertodelacruz.xptrade.domain.interfaces;
+package es.iespuertodelacruz.xptrade.domain.interfaces.service;
 
 import es.iespuertodelacruz.xptrade.domain.User;
 

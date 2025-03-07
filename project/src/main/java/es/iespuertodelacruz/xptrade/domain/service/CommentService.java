@@ -1,53 +1,51 @@
 package es.iespuertodelacruz.xptrade.domain.service;
 
-import es.iespuertodelacruz.xptrade.domain.Favorite;
-import es.iespuertodelacruz.xptrade.domain.Game;
-import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.domain.interfaces.service.IFavoriteService;
+import es.iespuertodelacruz.xptrade.domain.*;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.ICommentService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class FavoriteService implements IFavoriteService {
+public class CommentService  implements ICommentService {
     /**
      * Properties
      */
-    IGenericSocialRepository<Favorite, Integer, User, Game> repository;
+    IGenericSocialRepository<Comment, Integer, User, Post> repository;
 
     /**
      * Setter for the autowired service
      * @param repository of the service
      */
     @Autowired
-    public void setRepository(IGenericSocialRepository<Favorite, Integer, User, Game> repository) {
+    public void setRepository(IGenericSocialRepository<Comment, Integer, User, Post> repository) {
         this.repository = repository;
     }
 
     @Override
-    public Favorite add(Game game, User user) {
-        Favorite aux = new Favorite(user, game);
+    public Comment add(Post post, User user, String content) {
+        Comment aux = new Comment(post, user, content);
         return repository.save(aux);
     }
 
     @Override
-    public Favorite findById(Integer id) {
+    public Comment findById(Integer id) {
         return repository.findById(id);
     }
 
     @Override
-    public List<Favorite> findByUser(User user) {
+    public List<Comment> findByUser(User user) {
         return repository.findAllByUser(user);
     }
 
     @Override
-    public List<Favorite> findByGame(Game game) {
-        return repository.findAllBySubject(game);
+    public List<Comment> findByPost(Post post) {
+        return repository.findAllBySubject(post);
     }
 
     @Override
-    public List<Favorite> findAll() {
+    public List<Comment> findAll() {
         return repository.findAll();
     }
 
@@ -57,8 +55,8 @@ public class FavoriteService implements IFavoriteService {
     }
 
     @Override
-    public Favorite update(int id, Game game, User user) {
-        Favorite aux = new Favorite(user, game);
+    public Comment update(int id, Post post, User user, String content) {
+        Comment aux = new Comment(post, user, content);
         aux.setId(id);
         return repository.update(aux);
     }

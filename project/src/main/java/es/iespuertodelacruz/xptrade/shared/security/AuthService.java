@@ -3,7 +3,7 @@ package es.iespuertodelacruz.xptrade.shared.security;
 
 
 import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.domain.interfaces.IUserService;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

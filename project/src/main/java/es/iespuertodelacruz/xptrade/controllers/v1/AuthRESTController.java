@@ -4,7 +4,7 @@ import es.iespuertodelacruz.xptrade.shared.config.MailService;
 import es.iespuertodelacruz.xptrade.shared.security.AuthService;
 import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
 import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.domain.interfaces.IUserService;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
 import es.iespuertodelacruz.xptrade.dto.user.UserLoginDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserRegisterDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;

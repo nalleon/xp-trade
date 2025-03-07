@@ -5,7 +5,7 @@ import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
 import es.iespuertodelacruz.xptrade.model.repository.IUserEntityRepository;
 import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.domain.interfaces.IUserRepository;
+import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IUserRepository;
 import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

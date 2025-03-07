@@ -1,11 +1,8 @@
 package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Role;
-import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.domain.interfaces.IRoleService;
-import es.iespuertodelacruz.xptrade.domain.interfaces.IUserService;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.IRoleService;
 import es.iespuertodelacruz.xptrade.dto.role.RoleDTO;
-import es.iespuertodelacruz.xptrade.dto.user.UserOutputDTO;
 import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

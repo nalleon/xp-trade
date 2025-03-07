@@ -1,13 +1,13 @@
 package es.iespuertodelacruz.xptrade.domain.service;
 
 import es.iespuertodelacruz.xptrade.domain.Genre;
-import es.iespuertodelacruz.xptrade.domain.interfaces.IGenericService;
-import es.iespuertodelacruz.xptrade.domain.interfaces.IGenericRepository;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
+import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
+
 public class GenreService implements IGenericService<Genre, Integer, String> {
 
     /**

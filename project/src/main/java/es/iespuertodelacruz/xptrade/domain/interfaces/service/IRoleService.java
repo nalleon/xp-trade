@@ -1,6 +1,5 @@
-package es.iespuertodelacruz.xptrade.domain.interfaces;
+package es.iespuertodelacruz.xptrade.domain.interfaces.service;
 
-import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.Role;
 
 import java.util.List;

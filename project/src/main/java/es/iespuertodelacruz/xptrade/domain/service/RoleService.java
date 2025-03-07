@@ -1,8 +1,8 @@
 package es.iespuertodelacruz.xptrade.domain.service;
 
 import es.iespuertodelacruz.xptrade.domain.Role;
-import es.iespuertodelacruz.xptrade.domain.interfaces.IRoleService;
-import es.iespuertodelacruz.xptrade.domain.interfaces.IRoleRepository;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.IRoleService;
+import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
