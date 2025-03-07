@@ -26,7 +26,7 @@ public class GameEntity {
     @Column(unique = true, nullable=false, length=100, name = "title")
     private String title;
 
-    @Column(unique = true, nullable=false, length=255, name = "cover_art")
+    @Column(nullable=false, length=255, name = "cover_art")
     private String coverArt;
 
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)

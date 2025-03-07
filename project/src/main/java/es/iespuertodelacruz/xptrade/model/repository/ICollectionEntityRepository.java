@@ -1,5 +1,6 @@
 package es.iespuertodelacruz.xptrade.model.repository;
 
+import es.iespuertodelacruz.xptrade.model.entities.CollectionEntity;
 import es.iespuertodelacruz.xptrade.model.entities.DeveloperEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,20 +16,27 @@ import java.util.Optional;
  * @author Jose Maximiliano Boada Martin @mackstm
  */
 @Repository
-public interface IDeveloperEntityRepository extends JpaRepository<DeveloperEntity, Integer> {
+public interface ICollectionEntityRepository extends JpaRepository<CollectionEntity, Integer> {
 
     @Modifying
     @Query(
-            value="DELETE FROM developers AS r WHERE r.id=:id",
+            value="DELETE FROM collections AS r WHERE r.id=:id",
             nativeQuery=true
     )
     int deleteEntityById(@Param("id") Integer id);
 
 
     @Query(
-            value="SELECT * FROM developers WHERE name =:name",
+            value="SELECT * FROM collections WHERE user_id =:user_id",
             nativeQuery=true
     )
-    Optional<DeveloperEntity> findByName(@Param("name") String name);
+    List<CollectionEntity> findAllByUser(@Param("user_id") int user_id);
+
+
+    @Query(
+            value="SELECT * FROM collections WHERE game_id =:game_id",
+            nativeQuery=true
+    )
+    List<CollectionEntity> findAllByGame(@Param("game_id") int game_id);
 
 }

@@ -33,7 +33,6 @@ public class IRegionEntityMapperTest extends MapperHelper {
         Assertions.assertEquals(regionDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(regionDomain.getName(), domainMapper.getName(), MESSAGE_ERROR);
 
-
         regionEntity = null;
         domainMapper = IRegionEntityMapper.INSTANCE.toDomain(regionEntity);
         Assertions.assertNull(domainMapper, MESSAGE_ERROR);

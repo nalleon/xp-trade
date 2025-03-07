@@ -1,8 +1,6 @@
 package es.iespuertodelacruz.xptrade.mapper;
 
-import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
 import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;

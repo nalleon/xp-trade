@@ -9,7 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+@Service
 public class PostService implements IPostService {
     /**
      * Properties
