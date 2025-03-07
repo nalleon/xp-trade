@@ -118,7 +118,7 @@ public class UserEntityService implements IUserRepository {
     @Override
     @Transactional
     public boolean delete(Integer id) {
-        int quantity = repository.deleteUserById(id);
+        int quantity = repository.deleteEntityById(id);
         return quantity > 0;
     }
 

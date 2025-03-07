@@ -22,7 +22,7 @@ public interface IUserEntityRepository extends JpaRepository<UserEntity, Integer
             value="DELETE FROM users AS u WHERE u.id=:id",
             nativeQuery=true
     )
-    int deleteUserById(@Param("id") Integer id);
+    int deleteEntityById(@Param("id") Integer id);
 
 
     @Query(
