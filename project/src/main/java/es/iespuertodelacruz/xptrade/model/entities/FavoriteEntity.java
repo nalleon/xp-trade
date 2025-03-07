@@ -36,11 +36,12 @@ public class FavoriteEntity {
 
     /**
      * Constructor of the class
-     * @param user of the user
-//     * @param game of the game
+     * @param user of the favorite
+     * @param game of the favorite
      */
-    public FavoriteEntity(UserEntity user) {
+    public FavoriteEntity(UserEntity user, GameEntity game) {
         this.user = user;
+        this.game = game;
     }
 
     /**
@@ -68,6 +69,14 @@ public class FavoriteEntity {
                 "id=" + id +
                 ", userId=" + user +
                 '}';
+    }
+
+    public GameEntity getGame() {
+        return game;
+    }
+
+    public void setGame(GameEntity game) {
+        this.game = game;
     }
 
     @Override

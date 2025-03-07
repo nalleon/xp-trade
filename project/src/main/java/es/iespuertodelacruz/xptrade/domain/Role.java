@@ -1,7 +1,10 @@
 package es.iespuertodelacruz.xptrade.domain;
 
 import java.util.Objects;
-
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
 public class Role {
     /**
      * Properties
@@ -11,7 +14,7 @@ public class Role {
 
 
     /**
-     * Defualt constructor of the class
+     * Default constructor of the class
      */
     public Role() {
     }

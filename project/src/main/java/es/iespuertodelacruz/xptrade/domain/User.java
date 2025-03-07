@@ -3,7 +3,10 @@ package es.iespuertodelacruz.xptrade.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
 public class User implements Serializable {
     /**
      * Properties
