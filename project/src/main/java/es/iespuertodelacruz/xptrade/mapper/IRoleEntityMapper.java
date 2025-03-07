@@ -10,7 +10,8 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 /**
- * @author Nabil Leon Alvarez <@nalleon>
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
  */
 @Mapper
 public interface IRoleEntityMapper {

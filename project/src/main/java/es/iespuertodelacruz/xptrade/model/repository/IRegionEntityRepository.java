@@ -29,5 +29,5 @@ public interface IRegionEntityRepository extends JpaRepository<RegionEntity, Int
             value="SELECT * FROM regions WHERE name =:name",
             nativeQuery=true
     )
-    Optional<PublisherEntity> findByName(@Param("name") String name);
+    Optional<RegionEntity> findByName(@Param("name") String name);
 }

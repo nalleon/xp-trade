@@ -1,12 +1,16 @@
 package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.Developer;
+import es.iespuertodelacruz.xptrade.domain.Developer;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericRepository;
+import es.iespuertodelacruz.xptrade.mapper.IDeveloperEntityMapper;
+import es.iespuertodelacruz.xptrade.model.entities.DeveloperEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IDeveloperEntityRepository;
-import es.iespuertodelacruz.xptrade.model.repository.IPlatformEntityRepository;
+import es.iespuertodelacruz.xptrade.model.repository.IDeveloperEntityRepository;
 import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,33 +35,81 @@ public class DeveloperEntityService implements IGenericRepository<Developer, Int
         this.repository = repository;
     }
 
+
     @Override
-    public Developer save(Developer genre) {
-        return null;
+    @Transactional
+    public Developer save(Developer platform) {
+        if(platform == null){
+            return null;
+        }
+
+        DeveloperEntity dbItem = repository.findByName(platform.getName()).orElse(null);
+
+        if(dbItem != null){
+            return null;
+        }
+
+        try {
+            DeveloperEntity entity = IDeveloperEntityMapper.INSTANCE.toEntity(platform);
+            DeveloperEntity savedEntity = repository.save(entity);
+            return IDeveloperEntityMapper.INSTANCE.toDomain(savedEntity);
+        } catch (RuntimeException e){
+            throw new RuntimeException("Invalid data: " + e);
+        }
     }
 
     @Override
     public List<Developer> findAll() {
-        return List.of();
+        List<DeveloperEntity> listEntities = repository.findAll();
+        return IDeveloperEntityMapper.INSTANCE.toDomainList(listEntities);
     }
 
     @Override
     public Developer findById(Integer id) {
-        return null;
+        DeveloperEntity entityFound = repository.findById(id).orElse(null);
+
+        if (entityFound != null){
+            return IDeveloperEntityMapper.INSTANCE.toDomain(entityFound);
+        }
+        return  null;
     }
 
     @Override
     public Developer findByName(String name) {
-        return null;
+        DeveloperEntity entityFound = repository.findByName(name).orElse(null);
+
+        if (entityFound != null){
+            return IDeveloperEntityMapper.INSTANCE.toDomain(entityFound);
+        }
+        return  null;
     }
 
     @Override
+    @Transactional
     public boolean delete(Integer id) {
-        return false;
+        int quantity = repository.deleteEntityById(id);
+        return quantity > 0;
     }
 
     @Override
-    public Developer update(Developer genre) {
-        return null;
+    @Transactional
+    public Developer update(Developer platform) {
+        if(platform == null ){
+            return null;
+        }
+
+        DeveloperEntity dbItem = repository.findByName(platform.getName()).orElse(null);
+        if (dbItem == null){
+            return null;
+        }
+
+        try {
+            dbItem.setName(platform.getName());
+            return IDeveloperEntityMapper.INSTANCE.toDomain(dbItem);
+        }  catch (RuntimeException e){
+            throw new RuntimeException("Invalid data: " + e);
+        }
     }
 }
+
+

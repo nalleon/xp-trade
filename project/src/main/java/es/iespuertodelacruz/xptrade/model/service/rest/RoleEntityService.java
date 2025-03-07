@@ -50,7 +50,7 @@ public class RoleEntityService implements IRoleRepository {
             RoleEntity savedEntity = repository.save(entity);
             return IRoleEntityMapper.INSTANCE.toDomain(savedEntity);
         } catch (RuntimeException e){
-            throw new RuntimeException("Invalid data");
+            throw new RuntimeException("Invalid data: " + e);
         }
     }
 
@@ -103,7 +103,7 @@ public class RoleEntityService implements IRoleRepository {
             dbItem.setName(role.getName());
             return IRoleEntityMapper.INSTANCE.toDomain(dbItem);
         }  catch (RuntimeException e){
-            throw new RuntimeException("Invalid data");
+            throw new RuntimeException("Invalid data: " + e);
         }
     }
 }

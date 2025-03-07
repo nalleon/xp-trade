@@ -66,8 +66,7 @@ public class UserEntityService implements IUserRepository {
             UserEntity savedEntity = repository.save(entity);
             return IUserEntityMapper.INSTANCE.toDomain(savedEntity);
         } catch (RuntimeException e){
-            e.printStackTrace();
-            throw new RuntimeException("Invalid data");
+            throw new RuntimeException("Invalid data: " + e);
         }
     }
 
@@ -143,7 +142,7 @@ public class UserEntityService implements IUserRepository {
 
             return IUserEntityMapper.INSTANCE.toDomain(dbItem);
         }  catch (RuntimeException e){
-            throw new RuntimeException("Invalid data");
+            throw new RuntimeException("Invalid data: " + e);
         }
 
     }
@@ -168,7 +167,7 @@ public class UserEntityService implements IUserRepository {
             UserEntity result = repository.save(dbItem);
             return IUserEntityMapper.INSTANCE.toDomain(result);
         }  catch (RuntimeException e){
-            throw new RuntimeException("Invalid data");
+            throw new RuntimeException("Invalid data: " + e);
         }
 
     }
