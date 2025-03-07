@@ -90,6 +90,29 @@ public class GameEntity {
     }
 
     /**
+     * Constructor of the class
+     * @param title of the game
+     * @param coverArt of the game
+     * @param developerEntitySet of the game
+     * @param genreEntitySet of the game
+     * @param platformEntitySet of the game
+     * @param publisherEntitySet of the game
+     * @param regionEntitySet of the game
+     */
+
+    public GameEntity(String title, String coverArt, Set<DeveloperEntity> developerEntitySet,
+                      Set<GenreEntity> genreEntitySet, Set<PlatformEntity> platformEntitySet,
+                      Set<PublisherEntity> publisherEntitySet, Set<RegionEntity> regionEntitySet) {
+        this.title = title;
+        this.coverArt = coverArt;
+        this.developerEntitySet = developerEntitySet;
+        this.genreEntitySet = genreEntitySet;
+        this.platformEntitySet = platformEntitySet;
+        this.publisherEntitySet = publisherEntitySet;
+        this.regionEntitySet = regionEntitySet;
+    }
+
+    /**
      * Getters and setters
      */
 
@@ -115,6 +138,46 @@ public class GameEntity {
 
     public void setCoverArt(String coverArt) {
         this.coverArt = coverArt;
+    }
+
+    public Set<DeveloperEntity> getDeveloperEntitySet() {
+        return developerEntitySet;
+    }
+
+    public void setDeveloperEntitySet(Set<DeveloperEntity> developerEntitySet) {
+        this.developerEntitySet = developerEntitySet;
+    }
+
+    public Set<GenreEntity> getGenreEntitySet() {
+        return genreEntitySet;
+    }
+
+    public void setGenreEntitySet(Set<GenreEntity> genreEntitySet) {
+        this.genreEntitySet = genreEntitySet;
+    }
+
+    public Set<PlatformEntity> getPlatformEntitySet() {
+        return platformEntitySet;
+    }
+
+    public void setPlatformEntitySet(Set<PlatformEntity> platformEntitySet) {
+        this.platformEntitySet = platformEntitySet;
+    }
+
+    public Set<PublisherEntity> getPublisherEntitySet() {
+        return publisherEntitySet;
+    }
+
+    public void setPublisherEntitySet(Set<PublisherEntity> publisherEntitySet) {
+        this.publisherEntitySet = publisherEntitySet;
+    }
+
+    public Set<RegionEntity> getRegionEntitySet() {
+        return regionEntitySet;
+    }
+
+    public void setRegionEntitySet(Set<RegionEntity> regionEntitySet) {
+        this.regionEntitySet = regionEntitySet;
     }
 
     @Override
