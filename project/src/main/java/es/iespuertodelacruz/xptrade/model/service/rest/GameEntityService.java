@@ -112,6 +112,7 @@ public class GameEntityService implements IGameRepository {
             repository.deleteGamePublisherRelation(id);
             repository.deleteGameRegionRelation(id);
             repository.deleteGameGenreRelation(id);
+            repository.deleteFromPosts(id);
             int quantity = repository.deleteEntityById(id);
             return quantity > 0;
         } catch (RuntimeException e){
