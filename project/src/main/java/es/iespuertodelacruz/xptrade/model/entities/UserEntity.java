@@ -55,7 +55,7 @@ public class UserEntity {
     private String profilePicture;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<FavoritesEntity> favoritesEntitySet;
+    Set<FavoriteEntity> favoriteEntitySet;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<PostEntity> postEntitySet;

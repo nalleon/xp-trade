@@ -10,8 +10,8 @@ import java.util.Objects;
  */
 @Entity
 @Table(name="favorites")
-@NamedQuery(name="FavoritesEntity.findAll", query="SELECT r FROM FavoritesEntity r")
-public class FavoritesEntity {
+@NamedQuery(name="FavoriteEntity.findAll", query="SELECT r FROM FavoriteEntity r")
+public class FavoriteEntity {
 
     /**
      * Properties
@@ -32,14 +32,14 @@ public class FavoritesEntity {
     /**
      * Default constructor of the class
      */
-    public FavoritesEntity() {}
+    public FavoriteEntity() {}
 
     /**
      * Constructor of the class
      * @param user of the user
 //     * @param game of the game
      */
-    public FavoritesEntity(UserEntity user) {
+    public FavoriteEntity(UserEntity user) {
         this.user = user;
     }
 
@@ -64,7 +64,7 @@ public class FavoritesEntity {
 
     @Override
     public String toString() {
-        return "FavoritesEntity{" +
+        return "FavoriteEntity{" +
                 "id=" + id +
                 ", userId=" + user +
                 '}';
@@ -73,7 +73,7 @@ public class FavoritesEntity {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        FavoritesEntity that = (FavoritesEntity) o;
+        FavoriteEntity that = (FavoriteEntity) o;
         return id == that.id;
     }
 

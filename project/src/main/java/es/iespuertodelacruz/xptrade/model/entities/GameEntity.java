@@ -66,7 +66,7 @@ public class GameEntity {
     Set<RegionEntity> regionEntitySet;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<FavoritesEntity> favoritesEntitySet;
+    Set<FavoriteEntity> favoriteEntitySet;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<PostEntity> postEntitySet;

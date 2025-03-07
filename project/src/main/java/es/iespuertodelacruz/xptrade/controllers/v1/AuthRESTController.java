@@ -68,10 +68,10 @@ public class AuthRESTController {
 
             if(tokenDB != null && tokenDB.equals(token)) {
                 authUser.setVerified(1);
-                service.updateVerify(authUser.getUsername(), authUser.getEmail(), authUser.getPassword(),
+                User verified = service.updateVerify(authUser.getUsername(), authUser.getEmail(), authUser.getPassword(),
                         authUser.getVerified());
 
-                return ResponseEntity.ok("Your account is now verified.");
+                return ResponseEntity.ok("Your account"+ verified.getUsername() + " is now verified.");
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid token");
             }
