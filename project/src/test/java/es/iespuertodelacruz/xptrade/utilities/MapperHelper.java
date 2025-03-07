@@ -1,9 +1,7 @@
 package es.iespuertodelacruz.xptrade.utilities;
 
-import es.iespuertodelacruz.xptrade.domain.Role;
-import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
-import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
+import es.iespuertodelacruz.xptrade.domain.*;
+import es.iespuertodelacruz.xptrade.model.entities.*;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Date;
@@ -23,6 +21,7 @@ public class MapperHelper extends TestUtilities {
     public static final String VERIFICATION_TOKEN = UUID.randomUUID().toString();
     public static final String PROFILE_PICTURE = "pfpTest.png";
     public static final int VERIFIED = 0;
+    public static final String NAME = "genericNameTest";
 
 
     /**
@@ -33,6 +32,22 @@ public class MapperHelper extends TestUtilities {
 
     public UserEntity userEntity;
     public User userDomain;
+
+    public GenreEntity genreEntity;
+    public Genre genreDomain;
+
+    public PublisherEntity publisherEntity;
+    public Publisher publisherDomain;
+
+    public DeveloperEntity developerEntity;
+    public Developer developerDomain;
+
+    public PlatformEntity platformEntity;
+    public Platform platformDomain;
+
+    public RegionEntity regionEntity;
+    public Region regionDomain;
+
 
     @BeforeEach
     public void beforeEach() {
@@ -65,6 +80,50 @@ public class MapperHelper extends TestUtilities {
         userDomain.setProfilePicture(PROFILE_PICTURE);
         userDomain.setRole(roleDomain);
         userDomain.setVerified(VERIFIED);
+
+        genreEntity = new GenreEntity();
+        genreEntity.setId(ID);
+        genreEntity.setName(NAME);
+
+
+        genreDomain = new Genre();
+        genreDomain.setId(ID);
+        genreDomain.setName(NAME);
+
+        developerEntity = new DeveloperEntity();
+        developerEntity.setId(ID);
+        developerEntity.setName(NAME);
+
+
+        developerDomain = new Developer();
+        developerDomain.setId(ID);
+        developerDomain.setName(NAME);
+
+        regionEntity = new RegionEntity();
+        regionEntity.setId(ID);
+        regionEntity.setName(NAME);
+
+
+        regionDomain = new Region();
+        regionDomain.setId(ID);
+        regionDomain.setName(NAME);
+
+        publisherEntity = new PublisherEntity();
+        publisherEntity.setId(ID);
+        publisherEntity.setName(NAME);
+
+
+        publisherDomain = new Publisher();
+        publisherDomain.setId(ID);
+        publisherDomain.setName(NAME);
+
+        platformEntity = new PlatformEntity();
+        platformEntity.setId(ID);
+        platformEntity.setName(NAME);
+
+        platformDomain = new Platform();
+        platformDomain.setId(ID);
+        platformDomain.setName(NAME);
 
 
     }
