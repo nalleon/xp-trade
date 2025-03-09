@@ -22,20 +22,29 @@ public class Game {
 
     private String coverArt;
 
-    Set<Developer> developerSet;
+    private Set<Developer> developerSet;
 
-    Set<Genre> genreSet;
+    private Set<Genre> genreSet;
 
-    Set<Platform> platformSet;
+    private Set<Platform> platformSet;
 
-    Set<Publisher> publisherSet;
+    private Set<Publisher> publisherSet;
 
-    Set<Region> regionSet;
+    private Set<Region> regionSet;
 
     /**
      * Default constructor of the class
      */
     public Game() {}
+
+
+    /**
+     * Constructor of the class
+     * @param id of the game
+     */
+    public Game(int id) {
+        this.id = id;
+    }
 
     /**
      * Constructor of the class

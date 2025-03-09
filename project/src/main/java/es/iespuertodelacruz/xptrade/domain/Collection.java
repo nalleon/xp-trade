@@ -26,6 +26,14 @@ public class Collection {
 
     /**
      * Constructor of the class
+     * @param id of the collection
+     */
+    public Collection(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Constructor of the class
      * @param game of the collection
      * @param user of the collection
      */

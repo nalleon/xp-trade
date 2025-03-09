@@ -25,6 +25,14 @@ public class Region {
 
     /**
      * Constructor of the class
+     * @param id of the region
+     */
+    public Region(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Constructor of the class
      * @param name of the region
      */
     public Region(String name) {
@@ -61,8 +69,8 @@ public class Region {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Region that = (Region) o;
-        return id == that.id && Objects.equals(name, that.name);
+        Region region = (Region) o;
+        return id == region.id;
     }
 
     @Override

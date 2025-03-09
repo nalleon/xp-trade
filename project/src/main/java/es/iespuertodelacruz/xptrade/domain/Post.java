@@ -34,6 +34,15 @@ public class Post {
      */
     public Post() {}
 
+
+    /**
+     * Constructor of the class
+     * @param id of the post
+     */
+    public Post(int id) {
+        this.id = id;
+    }
+
     /**
      * Constructor of the class
      * @param game of the game

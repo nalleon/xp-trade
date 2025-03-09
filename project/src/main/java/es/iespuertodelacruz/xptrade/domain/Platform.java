@@ -21,6 +21,14 @@ public class Platform {
 
     /**
      * Constructor of the class
+     * @param id of the platform
+     */
+    public Platform(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Constructor of the class
      * @param name of the region
      */
     public Platform(String name) {
@@ -57,8 +65,8 @@ public class Platform {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Platform that = (Platform) o;
-        return id == that.id && Objects.equals(name, that.name);
+        Platform platform = (Platform) o;
+        return id == platform.id;
     }
 
     @Override

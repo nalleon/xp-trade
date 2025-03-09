@@ -18,6 +18,13 @@ public class Publisher {
      * Default constructor of the class
      */
     public Publisher() {}
+    /**
+     * Constructor of the class
+     * @param id of the publisher
+     */
+    public Publisher(int id) {
+        this.id = id;
+    }
 
     /**
      * Constructor of the class
@@ -57,8 +64,8 @@ public class Publisher {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Publisher that = (Publisher) o;
-        return id == that.id && Objects.equals(name, that.name);
+        Publisher publisher = (Publisher) o;
+        return id == publisher.id;
     }
 
     @Override

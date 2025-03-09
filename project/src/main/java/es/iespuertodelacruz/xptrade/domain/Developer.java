@@ -21,7 +21,15 @@ public class Developer {
 
     /**
      * Constructor of the class
-     * @param name of the region
+     * @param id of the developer
+     */
+    public Developer(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Constructor of the class
+     * @param name of the developer
      */
     public Developer(String name) {
         this.name = name;
@@ -57,8 +65,8 @@ public class Developer {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Developer that = (Developer) o;
-        return id == that.id && Objects.equals(name, that.name);
+        Developer developer = (Developer) o;
+        return id == developer.id;
     }
 
     @Override

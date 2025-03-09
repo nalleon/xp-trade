@@ -5,36 +5,36 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class RoleTest extends TestUtilities {
-    Role item;
+public class RegionTest extends TestUtilities {
+    Region item;
 
     @BeforeEach
     public void beforeEach(){
-        item = new Role();
-        item = new Role(NAME);
+        item = new Region();
+        item = new Region(NAME);
 
         item.setId(ID);
-        item.setName(ROLE_NAME);
+        item.setName(NAME);
     }
 
     @Test
     public void getSetTest(){
         Assertions.assertEquals(ID, item.getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(ROLE_NAME, item.getName(), MESSAGE_ERROR);
+        Assertions.assertEquals(NAME, item.getName(), MESSAGE_ERROR);
     }
 
     @Test
     public void toStringTest(){
         Assertions.assertTrue(item.toString().contains(String.valueOf(ID)), MESSAGE_ERROR);
-        Assertions.assertTrue(item.toString().contains(ROLE_NAME), MESSAGE_ERROR);
+        Assertions.assertTrue(item.toString().contains(NAME), MESSAGE_ERROR);
     }
 
     @Test
     public void equalsTest(){
-        Role equals = new Role(ID);
-        Role differentId = new Role(2);
+        Region equals = new Region(ID);
+        Region differentId = new Region(2);
         String str = "str";
-        Role nullObject = null;
+        Region nullObject = null;
 
         Assertions.assertEquals(item, equals, MESSAGE_ERROR);
         Assertions.assertEquals(item, item, MESSAGE_ERROR);

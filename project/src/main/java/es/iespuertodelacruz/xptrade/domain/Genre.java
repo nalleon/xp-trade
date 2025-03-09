@@ -18,7 +18,13 @@ public class Genre {
      * Default constructor of the class
      */
     public Genre() {}
-
+    /**
+     * Constructor of the class
+     * @param id of the genre
+     */
+    public Genre(int id) {
+        this.id = id;
+    }
     /**
      * Constructor of the class
      * @param name of the region
@@ -57,8 +63,8 @@ public class Genre {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Genre that = (Genre) o;
-        return id == that.id && Objects.equals(name, that.name);
+        Genre genre = (Genre) o;
+        return id == genre.id;
     }
 
     @Override

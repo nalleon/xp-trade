@@ -36,6 +36,14 @@ public class User implements Serializable {
 
     /**
      * Constructor of the class
+     * @param id of the user
+     */
+    public User(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Constructor of the class
      * @param username of the user
      * @param password of the user
      * @param email of the user
@@ -141,7 +149,6 @@ public class User implements Serializable {
         return "User{" +
                 "Id=" + id +
                 ", name='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
                 ", verified=" + verified +

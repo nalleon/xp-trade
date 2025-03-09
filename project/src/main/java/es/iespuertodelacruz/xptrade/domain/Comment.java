@@ -33,6 +33,14 @@ public class Comment {
 
     /**
      * Constructor of the class
+     * @param id of the comment
+     */
+    public Comment(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Constructor of the class
      * @param post of the comment
      * @param user of the comment
      * @param content of the comment

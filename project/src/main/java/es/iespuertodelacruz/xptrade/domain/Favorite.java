@@ -25,6 +25,15 @@ public class Favorite {
      */
     public Favorite() {}
 
+
+    /**
+     * Constructor of the class
+     * @param id of the favorite
+     */
+    public Favorite(int id) {
+        this.id = id;
+    }
+
     /**
      * Constructor of the class
      * @param user of the favorite
@@ -58,7 +67,8 @@ public class Favorite {
     public String toString() {
         return "Favorite{" +
                 "id=" + id +
-                ", userId=" + user +
+                ", user=" + user +
+                ", game=" + game +
                 '}';
     }
 
