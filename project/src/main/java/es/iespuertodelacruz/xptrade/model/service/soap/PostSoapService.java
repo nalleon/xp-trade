@@ -1,12 +1,10 @@
 package es.iespuertodelacruz.xptrade.model.service.soap;
 
-import es.iespuertodelacruz.xptrade.domain.Collection;
+import es.iespuertodelacruz.xptrade.domain.Post;
+import es.iespuertodelacruz.xptrade.domain.Post;
 import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericRepository;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
-import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IUserRepository;
-import es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSoapService;
 import es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSocialSoapService;
 import jakarta.jws.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,43 +18,43 @@ import java.util.List;
  */
 @WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSocialSoapService")
 @Component
-public class CollectionSoapService implements IGenericSocialSoapService<Collection, Integer, User, Game> {
+public class PostSoapService implements IGenericSocialSoapService<Post, Integer, User, Game> {
     /**
      * Properties
      */
-    private IGenericSocialRepository<Collection, Integer, User, Game> service;
+    private IGenericSocialRepository<Post, Integer, User, Game> service;
 
     /**
      * Setter of the service
      * @param service restfull
      */
     @Autowired
-    public void setService(IGenericSocialRepository<Collection, Integer, User, Game> service) {
+    public void setService(IGenericSocialRepository<Post, Integer, User, Game> service) {
         this.service = service;
     }
 
     @Override
-    public Collection save(Collection collection) {
-        return service.save(collection);
+    public Post save(Post post) {
+        return service.save(post);
     }
 
     @Override
-    public List<Collection> findAll() {
+    public List<Post> findAll() {
         return service.findAll();
     }
 
     @Override
-    public Collection findById(Integer id) {
+    public Post findById(Integer id) {
         return service.findById(id);
     }
 
     @Override
-    public List<Collection> findAllByUser(User user) {
+    public List<Post> findAllByUser(User user) {
         return service.findAllByUser(user);
     }
 
     @Override
-    public List<Collection> findAllBySubject(Game game) {
+    public List<Post> findAllBySubject(Game game) {
         return service.findAllBySubject(game);
     }
 
@@ -66,7 +64,7 @@ public class CollectionSoapService implements IGenericSocialSoapService<Collecti
     }
 
     @Override
-    public Collection update(Collection collection) {
-        return service.update(collection);
+    public Post update(Post post) {
+        return service.update(post);
     }
 }

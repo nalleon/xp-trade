@@ -1,12 +1,10 @@
 package es.iespuertodelacruz.xptrade.model.service.soap;
 
-import es.iespuertodelacruz.xptrade.domain.Collection;
+import es.iespuertodelacruz.xptrade.domain.Favorite;
+import es.iespuertodelacruz.xptrade.domain.Favorite;
 import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericRepository;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
-import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IUserRepository;
-import es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSoapService;
 import es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSocialSoapService;
 import jakarta.jws.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,43 +18,43 @@ import java.util.List;
  */
 @WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSocialSoapService")
 @Component
-public class CollectionSoapService implements IGenericSocialSoapService<Collection, Integer, User, Game> {
+public class FavoriteSoapService implements IGenericSocialSoapService<Favorite, Integer, User, Game> {
     /**
      * Properties
      */
-    private IGenericSocialRepository<Collection, Integer, User, Game> service;
+    private IGenericSocialRepository<Favorite, Integer, User, Game> service;
 
     /**
      * Setter of the service
      * @param service restfull
      */
     @Autowired
-    public void setService(IGenericSocialRepository<Collection, Integer, User, Game> service) {
+    public void setService(IGenericSocialRepository<Favorite, Integer, User, Game> service) {
         this.service = service;
     }
 
     @Override
-    public Collection save(Collection collection) {
-        return service.save(collection);
+    public Favorite save(Favorite favorite) {
+        return service.save(favorite);
     }
 
     @Override
-    public List<Collection> findAll() {
+    public List<Favorite> findAll() {
         return service.findAll();
     }
 
     @Override
-    public Collection findById(Integer id) {
+    public Favorite findById(Integer id) {
         return service.findById(id);
     }
 
     @Override
-    public List<Collection> findAllByUser(User user) {
+    public List<Favorite> findAllByUser(User user) {
         return service.findAllByUser(user);
     }
 
     @Override
-    public List<Collection> findAllBySubject(Game game) {
+    public List<Favorite> findAllBySubject(Game game) {
         return service.findAllBySubject(game);
     }
 
@@ -66,7 +64,7 @@ public class CollectionSoapService implements IGenericSocialSoapService<Collecti
     }
 
     @Override
-    public Collection update(Collection collection) {
-        return service.update(collection);
+    public Favorite update(Favorite favorite) {
+        return service.update(favorite);
     }
 }
