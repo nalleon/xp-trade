@@ -22,15 +22,15 @@ public class Game {
 
     private String coverArt;
 
-    Set<DeveloperEntity> developerEntitySet;
+    Set<Developer> developerSet;
 
-    Set<GenreEntity> genreEntitySet;
+    Set<Genre> genreSet;
 
-    Set<PlatformEntity> platformEntitySet;
+    Set<Platform> platformSet;
 
-    Set<PublisherEntity> publisherEntitySet;
+    Set<Publisher> publisherSet;
 
-    Set<RegionEntity> regionEntitySet;
+    Set<Region> regionSet;
 
     /**
      * Default constructor of the class
@@ -49,22 +49,22 @@ public class Game {
      * Constructor of the class
      * @param title of the game
      * @param coverArt of the game
-     * @param developerEntitySet of the game
-     * @param genreEntitySet of the game
-     * @param platformEntitySet of the game
-     * @param publisherEntitySet of the game
-     * @param regionEntitySet of the game
+     * @param developerSet of the game
+     * @param genreSet of the game
+     * @param platformSet of the game
+     * @param publisherSet of the game
+     * @param regionSet of the game
      */
-    public Game(String title, String coverArt, Set<DeveloperEntity> developerEntitySet, Set<GenreEntity> genreEntitySet,
-                Set<PlatformEntity> platformEntitySet, Set<PublisherEntity> publisherEntitySet,
-                Set<RegionEntity> regionEntitySet) {
+    public Game(String title, String coverArt, Set<Developer> developerSet, Set<Genre> genreSet,
+                Set<Platform> platformSet, Set<Publisher> publisherSet,
+                Set<Region> regionSet) {
         this.title = title;
         this.coverArt = coverArt;
-        this.developerEntitySet = developerEntitySet;
-        this.genreEntitySet = genreEntitySet;
-        this.platformEntitySet = platformEntitySet;
-        this.publisherEntitySet = publisherEntitySet;
-        this.regionEntitySet = regionEntitySet;
+        this.developerSet = developerSet;
+        this.genreSet = genreSet;
+        this.platformSet = platformSet;
+        this.publisherSet = publisherSet;
+        this.regionSet = regionSet;
     }
 
     /**
@@ -95,44 +95,44 @@ public class Game {
         this.coverArt = coverArt;
     }
 
-    public Set<DeveloperEntity> getDeveloperEntitySet() {
-        return developerEntitySet;
+    public Set<Developer> getDeveloperSet() {
+        return developerSet;
     }
 
-    public void setDeveloperEntitySet(Set<DeveloperEntity> developerEntitySet) {
-        this.developerEntitySet = developerEntitySet;
+    public void setDeveloperSet(Set<Developer> developerSet) {
+        this.developerSet = developerSet;
     }
 
-    public Set<GenreEntity> getGenreEntitySet() {
-        return genreEntitySet;
+    public Set<Genre> getGenreSet() {
+        return genreSet;
     }
 
-    public void setGenreEntitySet(Set<GenreEntity> genreEntitySet) {
-        this.genreEntitySet = genreEntitySet;
+    public void setGenreSet(Set<Genre> genreSet) {
+        this.genreSet = genreSet;
     }
 
-    public Set<PlatformEntity> getPlatformEntitySet() {
-        return platformEntitySet;
+    public Set<Platform> getPlatformSet() {
+        return platformSet;
     }
 
-    public void setPlatformEntitySet(Set<PlatformEntity> platformEntitySet) {
-        this.platformEntitySet = platformEntitySet;
+    public void setPlatformSet(Set<Platform> platformSet) {
+        this.platformSet = platformSet;
     }
 
-    public Set<PublisherEntity> getPublisherEntitySet() {
-        return publisherEntitySet;
+    public Set<Publisher> getPublisherSet() {
+        return publisherSet;
     }
 
-    public void setPublisherEntitySet(Set<PublisherEntity> publisherEntitySet) {
-        this.publisherEntitySet = publisherEntitySet;
+    public void setPublisherSet(Set<Publisher> publisherSet) {
+        this.publisherSet = publisherSet;
     }
 
-    public Set<RegionEntity> getRegionEntitySet() {
-        return regionEntitySet;
+    public Set<Region> getRegionSet() {
+        return regionSet;
     }
 
-    public void setRegionEntitySet(Set<RegionEntity> regionEntitySet) {
-        this.regionEntitySet = regionEntitySet;
+    public void setRegionSet(Set<Region> regionSet) {
+        this.regionSet = regionSet;
     }
 
     @Override
@@ -141,11 +141,11 @@ public class Game {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", coverArt='" + coverArt + '\'' +
-                ", developerEntitySet=" + developerEntitySet +
-                ", genreEntitySet=" + genreEntitySet +
-                ", platformEntitySet=" + platformEntitySet +
-                ", publisherEntitySet=" + publisherEntitySet +
-                ", regionEntitySet=" + regionEntitySet +
+                ", developerSet=" + developerSet +
+                ", genreSet=" + genreSet +
+                ", platformSet=" + platformSet +
+                ", publisherSet=" + publisherSet +
+                ", regionSet=" + regionSet +
                 '}';
     }
 

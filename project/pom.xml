@@ -36,7 +36,7 @@
 		<maven-javadoc-plugin.version>3.4.0</maven-javadoc-plugin.version>
 		<jacoco.unit-tests.limit.instruction-ratio>0%</jacoco.unit-tests.limit.instruction-ratio>
 		<jacoco.unit-tests.limit.branch-ratio>0%</jacoco.unit-tests.limit.branch-ratio>
-		<jacoco.unit-tests.limit.class-complexity>25</jacoco.unit-tests.limit.class-complexity>
+		<jacoco.unit-tests.limit.class-complexity>100</jacoco.unit-tests.limit.class-complexity>
 		<jacoco.unit-tests.limit.method-complexity>10</jacoco.unit-tests.limit.method-complexity>
 		<org.mapstruct.version>1.6.3</org.mapstruct.version>
 

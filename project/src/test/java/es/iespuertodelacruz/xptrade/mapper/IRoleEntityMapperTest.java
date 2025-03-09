@@ -1,16 +1,44 @@
 package es.iespuertodelacruz.xptrade.mapper;
 
 import es.iespuertodelacruz.xptrade.domain.Role;
+import es.iespuertodelacruz.xptrade.domain.Role;
+import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
 import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
 import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static es.iespuertodelacruz.xptrade.utilities.TestUtilities.MESSAGE_ERROR;
 
 public class IRoleEntityMapperTest extends MapperHelper {
     Role domainMapper;
     RoleEntity entityMapper;
+    List<RoleEntity> entityListMapper;
+    List<Role> domainListMapper;
+
+    @Test
+    public void toEntityListTest(){
+        entityListMapper = IRoleEntityMapper.INSTANCE.toEntityList(roleDomains);
+        Assertions.assertEquals(roleEntities, entityListMapper, MESSAGE_ERROR);
+
+        roleDomains = null;
+        entityListMapper = IRoleEntityMapper.INSTANCE.toEntityList(roleDomains);
+        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+    }
+
+    @Test
+    public void toDomainListTest(){
+        domainListMapper = IRoleEntityMapper.INSTANCE.toDomainList(roleEntities);
+
+
+        Assertions.assertEquals(roleDomains, domainListMapper, MESSAGE_ERROR);
+
+        roleEntities = null;
+        domainListMapper = IRoleEntityMapper.INSTANCE.toDomainList(roleEntities);
+        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+    }
 
     @Test
     public void toDTOTest(){
@@ -38,4 +66,6 @@ public class IRoleEntityMapperTest extends MapperHelper {
         domainMapper = IRoleEntityMapper.INSTANCE.toDomain(roleEntity);
         Assertions.assertNull(domainMapper, MESSAGE_ERROR);
     }
+
+
 }

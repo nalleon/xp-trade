@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 public interface IGameService {
-    Game add(String title, String coverArt, Set<DeveloperEntity> developerEntitySet, Set<GenreEntity> genreEntitySet,
-             Set<PlatformEntity> platformEntitySet, Set<PublisherEntity> publisherEntitySet,
-             Set<RegionEntity> regionEntitySet);
+    Game add(String title, String coverArt, Set<Developer> developerSet, Set<Genre> genreSet,
+             Set<Platform> platformSet, Set<Publisher> publisherSet,
+             Set<Region> regionSet);
 
     Game findById(Integer id);
     Game findByTitle(String title);
@@ -20,9 +20,9 @@ public interface IGameService {
     List<Game> findAllByRegion(Region region);
 
     boolean delete(Integer id);
-    Game update(int id, String title, String coverArt, Set<DeveloperEntity> developerEntitySet, Set<GenreEntity> genreEntitySet,
-                Set<PlatformEntity> platformEntitySet, Set<PublisherEntity> publisherEntitySet,
-                Set<RegionEntity> regionEntitySet);
+    Game update(int id, String title, String coverArt, Set<Developer> developerSet, Set<Genre> genreSet,
+                Set<Platform> platformSet, Set<Publisher> publisherSet,
+                Set<Region> regionSet);
 
     Game updateCoverArt(int id, String coverArt);
 }

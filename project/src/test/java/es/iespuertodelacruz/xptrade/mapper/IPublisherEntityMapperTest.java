@@ -1,17 +1,42 @@
 package es.iespuertodelacruz.xptrade.mapper;
 
 import es.iespuertodelacruz.xptrade.domain.Publisher;
-import es.iespuertodelacruz.xptrade.domain.Role;
+import es.iespuertodelacruz.xptrade.domain.Publisher;
 import es.iespuertodelacruz.xptrade.model.entities.PublisherEntity;
-import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
+import es.iespuertodelacruz.xptrade.model.entities.PublisherEntity;
 import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class IPublisherEntityMapperTest extends MapperHelper {
     Publisher domainMapper;
     PublisherEntity entityMapper;
+    List<PublisherEntity> entityListMapper;
+    List<Publisher> domainListMapper;
 
+    @Test
+    public void toEntityListTest(){
+        entityListMapper = IPublisherEntityMapper.INSTANCE.toEntityList(publisherDomains);
+        Assertions.assertEquals(publisherEntities, entityListMapper, MESSAGE_ERROR);
+
+        publisherDomains = null;
+        entityListMapper = IPublisherEntityMapper.INSTANCE.toEntityList(publisherDomains);
+        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+    }
+
+    @Test
+    public void toDomainListTest(){
+        domainListMapper = IPublisherEntityMapper.INSTANCE.toDomainList(publisherEntities);
+
+
+        Assertions.assertEquals(publisherDomains, domainListMapper, MESSAGE_ERROR);
+
+        publisherEntities = null;
+        domainListMapper = IPublisherEntityMapper.INSTANCE.toDomainList(publisherEntities);
+        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+    }
     @Test
     public void  toEntityTest (){
         entityMapper = IPublisherEntityMapper.INSTANCE.toEntity(publisherDomain);

@@ -1,11 +1,13 @@
 package es.iespuertodelacruz.xptrade.mapper;
 
-import es.iespuertodelacruz.xptrade.domain.Game;
-import es.iespuertodelacruz.xptrade.model.entities.GameEntity;
+import es.iespuertodelacruz.xptrade.domain.*;
+import es.iespuertodelacruz.xptrade.model.entities.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Nabil Leon Alvarez @nalleon
@@ -15,10 +17,19 @@ import java.util.List;
         IPublisherEntityMapper.class, IGenreEntityMapper.class})
 public interface IGameEntityMapper {
     IGameEntityMapper INSTANCE = Mappers.getMapper(IGameEntityMapper.class);
+    @Mapping(target = "developerSet", source = "developerEntitySet")
+    @Mapping(target = "genreSet", source = "genreEntitySet")
+    @Mapping(target = "platformSet", source = "platformEntitySet")
+    @Mapping(target = "publisherSet", source = "publisherEntitySet")
+    @Mapping(target = "regionSet", source = "regionEntitySet")
     Game toDomain(GameEntity entity);
+
+    @Mapping(target = "developerEntitySet", source = "developerSet")
+    @Mapping(target = "genreEntitySet", source = "genreSet")
+    @Mapping(target = "platformEntitySet", source = "platformSet")
+    @Mapping(target = "publisherEntitySet", source = "publisherSet")
+    @Mapping(target = "regionEntitySet", source = "regionSet")
     GameEntity toEntity(Game domain);
     List<Game> toDomainList(List<GameEntity> entities);
     List<GameEntity> toEntityList(List<Game> domains);
-
-
 }

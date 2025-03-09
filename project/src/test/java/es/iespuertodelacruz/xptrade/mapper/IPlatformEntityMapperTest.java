@@ -1,17 +1,42 @@
 package es.iespuertodelacruz.xptrade.mapper;
 
 import es.iespuertodelacruz.xptrade.domain.Platform;
-import es.iespuertodelacruz.xptrade.domain.Role;
+import es.iespuertodelacruz.xptrade.domain.Platform;
 import es.iespuertodelacruz.xptrade.model.entities.PlatformEntity;
-import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
+import es.iespuertodelacruz.xptrade.model.entities.PlatformEntity;
 import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class IPlatformEntityMapperTest extends MapperHelper {
     Platform domainMapper;
     PlatformEntity entityMapper;
+    List<PlatformEntity> entityListMapper;
+    List<Platform> domainListMapper;
 
+    @Test
+    public void toEntityListTest(){
+        entityListMapper = IPlatformEntityMapper.INSTANCE.toEntityList(platformDomains);
+        Assertions.assertEquals(platformEntities, entityListMapper, MESSAGE_ERROR);
+
+        platformDomains = null;
+        entityListMapper = IPlatformEntityMapper.INSTANCE.toEntityList(platformDomains);
+        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+    }
+
+    @Test
+    public void toDomainListTest(){
+        domainListMapper = IPlatformEntityMapper.INSTANCE.toDomainList(platformEntities);
+
+
+        Assertions.assertEquals(platformDomains, domainListMapper, MESSAGE_ERROR);
+
+        platformEntities = null;
+        domainListMapper = IPlatformEntityMapper.INSTANCE.toDomainList(platformEntities);
+        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+    }
     @Test
     public void  toEntityTest (){
         entityMapper = IPlatformEntityMapper.INSTANCE.toEntity(platformDomain);

@@ -76,7 +76,7 @@ public class Role {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return id == role.id && Objects.equals(name, role.name);
+        return id == role.id;
     }
 
     @Override

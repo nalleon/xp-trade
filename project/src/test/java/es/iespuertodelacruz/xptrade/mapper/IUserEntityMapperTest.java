@@ -6,12 +6,16 @@ import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class IUserEntityMapperTest extends MapperHelper {
     User domainMapper;
     UserEntity entityMapper;
+    List<UserEntity> entityListMapper;
+    List<User> domainListMapper;
 
     @Test
-    public void toDTOTest(){
+    public void toEntityTest(){
         entityMapper = IUserEntityMapper.INSTANCE.toEntity(userDomain);
 
         Assertions.assertEquals(userEntity.getId(), entityMapper.getId(), MESSAGE_ERROR);
@@ -33,7 +37,7 @@ public class IUserEntityMapperTest extends MapperHelper {
     }
 
     @Test
-    public void toEntityTest(){
+    public void toDomainTest(){
         domainMapper = IUserEntityMapper.INSTANCE.toDomain(userEntity);
 
         Assertions.assertEquals(userDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
@@ -52,5 +56,29 @@ public class IUserEntityMapperTest extends MapperHelper {
         userEntity = null;
         domainMapper = IUserEntityMapper.INSTANCE.toDomain(userEntity);
         Assertions.assertNull(domainMapper, MESSAGE_ERROR);
+    }
+
+    @Test
+    public void toEntityListTest(){
+        entityListMapper = IUserEntityMapper.INSTANCE.toEntityList(userDomains);
+
+        Assertions.assertEquals(userEntities, entityListMapper, MESSAGE_ERROR);
+
+        userDomains = null;
+        entityListMapper = IUserEntityMapper.INSTANCE.toEntityList(userDomains);
+        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+
+    }
+
+    @Test
+    public void toDomainListTest(){
+        domainListMapper = IUserEntityMapper.INSTANCE.toDomainList(userEntities);
+
+
+        Assertions.assertEquals(userDomains, domainListMapper, MESSAGE_ERROR);
+
+        userEntities = null;
+        domainListMapper = IUserEntityMapper.INSTANCE.toDomainList(userEntities);
+        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
     }
 }

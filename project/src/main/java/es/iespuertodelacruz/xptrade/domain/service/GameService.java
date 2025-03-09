@@ -31,12 +31,12 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public Game add(String title, String coverArt, Set<DeveloperEntity> developerEntitySet,
-                    Set<GenreEntity> genreEntitySet, Set<PlatformEntity> platformEntitySet,
-                    Set<PublisherEntity> publisherEntitySet, Set<RegionEntity> regionEntitySet) {
+    public Game add(String title, String coverArt, Set<Developer> developerSet,
+                    Set<Genre> genreSet, Set<Platform> platformSet,
+                    Set<Publisher> publisherSet, Set<Region> regionSet) {
 
-        Game aux = new Game(title, coverArt, developerEntitySet, genreEntitySet, platformEntitySet,
-                publisherEntitySet, regionEntitySet);
+        Game aux = new Game(title, coverArt, developerSet, genreSet, platformSet,
+                publisherSet, regionSet);
         return repository.save(aux);
     }
 
@@ -81,9 +81,9 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public Game update(int id, String title, String coverArt, Set<DeveloperEntity> developerEntitySet, Set<GenreEntity> genreEntitySet, Set<PlatformEntity> platformEntitySet, Set<PublisherEntity> publisherEntitySet, Set<RegionEntity> regionEntitySet) {
-        Game aux = new Game(title, coverArt, developerEntitySet, genreEntitySet, platformEntitySet,
-                publisherEntitySet, regionEntitySet);
+    public Game update(int id, String title, String coverArt, Set<Developer> developerSet, Set<Genre> genreSet, Set<Platform> platformSet, Set<Publisher> publisherSet, Set<Region> regionSet) {
+        Game aux = new Game(title, coverArt, developerSet, genreSet, platformSet,
+                publisherSet, regionSet);
         aux.setId(id);
         return repository.update(aux);
     }

@@ -1,15 +1,42 @@
 package es.iespuertodelacruz.xptrade.mapper;
 
 import es.iespuertodelacruz.xptrade.domain.Genre;
+import es.iespuertodelacruz.xptrade.domain.Genre;
+import es.iespuertodelacruz.xptrade.model.entities.GenreEntity;
 import es.iespuertodelacruz.xptrade.model.entities.GenreEntity;
 import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class IGenreEntityMapperTest extends MapperHelper {
     Genre domainMapper;
     GenreEntity entityMapper;
+    List<GenreEntity> entityListMapper;
+    List<Genre> domainListMapper;
 
+    @Test
+    public void toEntityListTest(){
+        entityListMapper = IGenreEntityMapper.INSTANCE.toEntityList(genreDomains);
+        Assertions.assertEquals(genreEntities, entityListMapper, MESSAGE_ERROR);
+
+        genreDomains = null;
+        entityListMapper = IGenreEntityMapper.INSTANCE.toEntityList(genreDomains);
+        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+    }
+
+    @Test
+    public void toDomainListTest(){
+        domainListMapper = IGenreEntityMapper.INSTANCE.toDomainList(genreEntities);
+
+
+        Assertions.assertEquals(genreDomains, domainListMapper, MESSAGE_ERROR);
+
+        genreEntities = null;
+        domainListMapper = IGenreEntityMapper.INSTANCE.toDomainList(genreEntities);
+        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+    }
     @Test
     public void  toEntityTest (){
         entityMapper = IGenreEntityMapper.INSTANCE.toEntity(genreDomain);
