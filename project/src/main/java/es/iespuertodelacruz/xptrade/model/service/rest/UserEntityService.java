@@ -117,6 +117,11 @@ public class UserEntityService implements IUserRepository {
     @Override
     @Transactional
     public boolean delete(Integer id) {
+        UserEntity aux = repository.findById(id).orElse(null);
+        if(aux != null && aux.getRole().getName().equals("ROLE_ADMIN")){
+            return false;
+        }
+
         int quantity = repository.deleteEntityById(id);
         return quantity > 0;
     }
@@ -156,16 +161,13 @@ public class UserEntityService implements IUserRepository {
 
         UserEntity dbItem = repository.findUserByName(user.getUsername()).orElse(null);
 
-        System.out.println(dbItem);
-
         if (dbItem == null){
             return null;
         }
 
         try {
             dbItem.setProfilePicture(user.getProfilePicture());
-            UserEntity result = repository.save(dbItem);
-            return IUserEntityMapper.INSTANCE.toDomain(result);
+            return IUserEntityMapper.INSTANCE.toDomain(dbItem);
         }  catch (RuntimeException e){
             throw new RuntimeException("Invalid data: " + e);
         }
