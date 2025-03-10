@@ -25,8 +25,8 @@ public interface IPlatformEntityRepository extends JpaRepository<PlatformEntity,
 
 
     @Query(
-            value="SELECT * FROM platforms WHERE name =:name",
+            value="SELECT * FROM platforms WHERE username =:username",
             nativeQuery=true
     )
-    Optional<PlatformEntity> findByName(@Param("name") String name);
+    Optional<PlatformEntity> findByName(@Param("username") String name);
 }

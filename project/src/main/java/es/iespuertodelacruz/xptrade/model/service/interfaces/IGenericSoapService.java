@@ -14,7 +14,7 @@ public interface IGenericSoapService<T, E, U> {
     @WebMethod
     T findById(@WebParam(name = "id")E id);
     @WebMethod
-    T findByName(@WebParam(name = "name")U name);
+    T findByName(@WebParam(name = "username")U name);
     @WebMethod
     boolean delete(@WebParam(name = "id")E id);
     @WebMethod

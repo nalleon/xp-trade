@@ -22,7 +22,7 @@ public class RoleEntity {
     @Column(unique=true, nullable=false)
     private int id;
 
-    @Column(unique = true, nullable=false, length=45, name = "name")
+    @Column(unique = true, nullable=false, length=45, name = "username")
     private String name;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -58,7 +58,7 @@ public class RoleEntity {
     public String toString() {
         return "RoleEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", username='" + name + '\'' +
                 '}';
     }
 

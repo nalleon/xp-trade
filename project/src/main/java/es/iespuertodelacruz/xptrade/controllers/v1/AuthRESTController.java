@@ -57,7 +57,7 @@ public class AuthRESTController {
         mailService.send(senders, "Verify your email " + user.getUsername(), confirmationUrl);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(201, "En breves momentos, le llegara un correo de verificacion",
+                .body(new ApiResponse<>(201, "En breves momentos, le llegara un email de verificacion",
                         null));}
 
     @GetMapping("/confirmation")

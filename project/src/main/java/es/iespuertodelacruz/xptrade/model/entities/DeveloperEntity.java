@@ -21,7 +21,7 @@ public class DeveloperEntity {
         @Column(unique=true, nullable=false)
         private int id;
 
-        @Column(unique = true, nullable=false, length=45, name = "name")
+        @Column(unique = true, nullable=false, length=45, name = "username")
         private String name;
 
         @ManyToMany(mappedBy = "developerEntitySet", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
@@ -63,7 +63,7 @@ public class DeveloperEntity {
         public String toString() {
             return "DeveloperEntity{" +
                     "id=" + id +
-                    ", name='" + name + '\'' +
+                    ", username='" + name + '\'' +
                     '}';
         }
 

@@ -1,21 +1,22 @@
-package es.iespuertodelacruz.xptrade.dto.user;
+package es.iespuertodelacruz.xptrade.dto;
 
+import es.iespuertodelacruz.xptrade.dto.user.UserRegisterDTO;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class UserSearchDTOTest extends TestUtilities {
+public class RoleDTOTest extends TestUtilities {
 
-    UserSearchDTO item;
+    RoleDTO item;
 
     @BeforeEach
     public void beforeEach() {
-        item = new UserSearchDTO(NAME);
+        item = new RoleDTO(ROLE_NAME);
     }
 
     @Test
     public void getSetTest(){
-        Assertions.assertEquals(NAME, item.name(), MESSAGE_ERROR);
+        Assertions.assertEquals(ROLE_NAME, item.name(), MESSAGE_ERROR);
     }
 }

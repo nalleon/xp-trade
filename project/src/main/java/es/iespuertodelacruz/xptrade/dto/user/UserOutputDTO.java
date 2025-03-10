@@ -6,8 +6,8 @@ import java.io.Serializable;
  * @author Nabil Leon Alvarez <@nalleon>
  */
 public record UserOutputDTO(
-        String nombre,
-        String correo
+        String username,
+        String email
 ) implements Serializable {
 
 }

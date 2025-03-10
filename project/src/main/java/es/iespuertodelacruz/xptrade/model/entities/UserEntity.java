@@ -150,7 +150,7 @@ public class UserEntity {
     public String toString() {
         return "UserEntity{" +
                 "Id=" + id +
-                ", name='" + username + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +

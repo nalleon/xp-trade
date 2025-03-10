@@ -20,7 +20,7 @@ public class PublisherEntity {
     @Column(unique=true, nullable=false)
     private int id;
 
-    @Column(unique = true, nullable=false, length=45, name = "name")
+    @Column(unique = true, nullable=false, length=45, name = "username")
     private String name;
 
     @ManyToMany(mappedBy = "publisherEntitySet", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
@@ -62,7 +62,7 @@ public class PublisherEntity {
     public String toString() {
         return "PublisherEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", username='" + name + '\'' +
                 '}';
     }
 

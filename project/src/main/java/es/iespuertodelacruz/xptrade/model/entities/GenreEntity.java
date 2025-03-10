@@ -21,7 +21,7 @@ public class GenreEntity {
     @Column(unique=true, nullable=false)
     private int id;
 
-    @Column(unique = true, nullable=false, length=45, name = "name")
+    @Column(unique = true, nullable=false, length=45, name = "username")
     private String name;
 
     @ManyToMany(mappedBy = "genreEntitySet", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
@@ -64,7 +64,7 @@ public class GenreEntity {
     public String toString() {
         return "GenreEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", username='" + name + '\'' +
                 '}';
     }
 

@@ -50,7 +50,7 @@ public class FileStorageService {
             return filenameFree.getFileName().toString();
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
-                throw new RuntimeException("A file of that name already exists.");
+                throw new RuntimeException("A file of that username already exists.");
             }
             throw new RuntimeException(e.getMessage());
         }

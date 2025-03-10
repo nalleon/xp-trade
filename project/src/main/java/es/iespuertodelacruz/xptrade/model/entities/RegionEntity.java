@@ -20,7 +20,7 @@ public class RegionEntity {
     @Column(unique=true, nullable=false)
     private int id;
 
-    @Column(unique = true, nullable=false, length=45, name = "name")
+    @Column(unique = true, nullable=false, length=45, name = "username")
     private String name;
 
     @ManyToMany(mappedBy = "regionEntitySet", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
@@ -62,7 +62,7 @@ public class RegionEntity {
     public String toString() {
         return "RegionEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", username='" + name + '\'' +
                 '}';
     }
 

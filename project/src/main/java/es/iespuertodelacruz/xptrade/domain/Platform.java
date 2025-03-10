@@ -58,7 +58,7 @@ public class Platform {
     public String toString() {
         return "Platform{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", username='" + name + '\'' +
                 '}';
     }
 

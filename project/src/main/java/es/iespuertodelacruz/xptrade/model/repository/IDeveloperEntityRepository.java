@@ -25,9 +25,9 @@ public interface IDeveloperEntityRepository extends JpaRepository<DeveloperEntit
 
 
     @Query(
-            value="SELECT * FROM developers WHERE name =:name",
+            value="SELECT * FROM developers WHERE username =:username",
             nativeQuery=true
     )
-    Optional<DeveloperEntity> findByName(@Param("name") String name);
+    Optional<DeveloperEntity> findByName(@Param("username") String name);
 
 }

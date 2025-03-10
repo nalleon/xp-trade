@@ -20,7 +20,7 @@ public class PlatformEntity {
     @Column(unique=true, nullable=false)
     private int id;
 
-    @Column(unique = true, nullable=false, length=45, name = "name")
+    @Column(unique = true, nullable=false, length=45, name = "username")
     private String name;
 
     @ManyToMany(mappedBy = "platformEntitySet", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
@@ -62,7 +62,7 @@ public class PlatformEntity {
     public String toString() {
         return "PlatformEntity{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", username='" + name + '\'' +
                 '}';
     }
 

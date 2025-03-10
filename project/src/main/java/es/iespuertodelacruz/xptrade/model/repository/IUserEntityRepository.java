@@ -26,10 +26,10 @@ public interface IUserEntityRepository extends JpaRepository<UserEntity, Integer
 
 
     @Query(
-            value="SELECT * FROM users WHERE username=:name",
+            value="SELECT * FROM users WHERE username=:username",
             nativeQuery=true
     )
-    Optional<UserEntity> findUserByName(@Param("name") String name);
+    Optional<UserEntity> findUserByName(@Param("username") String name);
 
 
     @Query(

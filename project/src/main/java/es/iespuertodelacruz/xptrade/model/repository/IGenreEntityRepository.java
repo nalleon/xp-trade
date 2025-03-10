@@ -25,8 +25,8 @@ public interface IGenreEntityRepository extends JpaRepository<GenreEntity, Integ
 
 
     @Query(
-            value="SELECT * FROM genres WHERE name =:name",
+            value="SELECT * FROM genres WHERE username =:username",
             nativeQuery=true
     )
-    Optional<GenreEntity> findByName(@Param("name") String name);
+    Optional<GenreEntity> findByName(@Param("username") String name);
 }

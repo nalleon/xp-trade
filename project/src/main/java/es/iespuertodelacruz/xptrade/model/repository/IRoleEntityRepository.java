@@ -24,9 +24,9 @@ public interface IRoleEntityRepository extends JpaRepository<RoleEntity, Integer
 
 
     @Query(
-            value="SELECT * FROM roles WHERE name =:name",
+            value="SELECT * FROM roles WHERE username =:username",
             nativeQuery=true
     )
-    Optional<RoleEntity> findRoleByName(@Param("name") String name);
+    Optional<RoleEntity> findRoleByName(@Param("username") String name);
 
 }

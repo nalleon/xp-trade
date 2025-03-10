@@ -15,7 +15,7 @@ public interface IRoleSoapService {
     @WebMethod
     Role findById(@WebParam(name = "id") Integer id);
     @WebMethod
-    Role findByName(@WebParam(name = "name") String name);
+    Role findByName(@WebParam(name = "username") String name);
     @WebMethod
     boolean delete(@WebParam(name = "id") Integer id);
     @WebMethod

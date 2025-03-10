@@ -58,7 +58,7 @@ public class Developer {
     public String toString() {
         return "Developer{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", username='" + name + '\'' +
                 '}';
     }
 

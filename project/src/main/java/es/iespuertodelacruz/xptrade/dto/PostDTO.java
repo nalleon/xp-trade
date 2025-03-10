@@ -4,5 +4,5 @@ import es.iespuertodelacruz.xptrade.dto.user.UserOutputDTO;
 
 import java.util.Date;
 
-public record PostDTO (int id, GameDTO game, UserOutputDTO dto, String content, String picture, Date creationDate) {
+public record PostDTO (int id, GameDTO game, UserOutputDTO user, String content, String picture, Date creationDate) {
 }
