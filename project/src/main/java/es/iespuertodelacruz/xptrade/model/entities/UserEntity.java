@@ -72,6 +72,14 @@ public class UserEntity {
     public UserEntity() {}
 
     /**
+     * Constructor of the class
+     * @param id of the user
+     */
+    public UserEntity(int id) {
+        this.id = id;
+    }
+
+    /**
      * Getters and setters
      */
     public int getId() {
@@ -149,14 +157,14 @@ public class UserEntity {
     @Override
     public String toString() {
         return "UserEntity{" +
-                "Id=" + id +
+                "id=" + id +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
+                ", role=" + role +
                 ", verified=" + verified +
                 ", verificationToken='" + verificationToken + '\'' +
                 ", creationDate=" + creationDate +
+                ", profilePicture='" + profilePicture + '\'' +
                 '}';
     }
 

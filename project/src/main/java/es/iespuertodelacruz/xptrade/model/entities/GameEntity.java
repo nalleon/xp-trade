@@ -81,6 +81,14 @@ public class GameEntity {
 
     /**
      * Constructor of the class
+     * @param id of the genre
+     */
+    public GameEntity(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Constructor of the class
      * @param title of the game
      * @param coverArt of the game
      */

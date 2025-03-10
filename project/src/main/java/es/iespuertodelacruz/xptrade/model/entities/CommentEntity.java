@@ -43,6 +43,16 @@ public class CommentEntity {
      */
     public CommentEntity() {}
 
+
+    /**
+     * Constructor of the class
+     * @param id of the comment
+     */
+    public CommentEntity(int id) {
+        this.id = id;
+    }
+
+
     /**
      * Constructor of the class
      * @param post of the comment

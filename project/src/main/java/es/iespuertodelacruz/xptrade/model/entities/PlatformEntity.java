@@ -30,6 +30,13 @@ public class PlatformEntity {
      * Default constructor of the class
      */
     public PlatformEntity() {}
+    /**
+     * Constructor of the class
+     * @param id of the platform
+     */
+    public PlatformEntity(int id) {
+        this.id = id;
+    }
 
     /**
      * Constructor of the class

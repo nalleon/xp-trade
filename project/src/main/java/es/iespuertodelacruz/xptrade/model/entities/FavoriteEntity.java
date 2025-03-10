@@ -36,6 +36,14 @@ public class FavoriteEntity {
 
     /**
      * Constructor of the class
+     * @param id of the favorite
+     */
+    public FavoriteEntity(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Constructor of the class
      * @param user of the favorite
      * @param game of the favorite
      */
@@ -67,7 +75,8 @@ public class FavoriteEntity {
     public String toString() {
         return "FavoriteEntity{" +
                 "id=" + id +
-                ", userId=" + user +
+                ", user=" + user +
+                ", game=" + game +
                 '}';
     }
 

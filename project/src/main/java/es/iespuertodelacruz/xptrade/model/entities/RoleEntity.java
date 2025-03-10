@@ -28,7 +28,18 @@ public class RoleEntity {
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<UserEntity> users;
 
+    /**
+     * Default constructor of the class
+     */
     public RoleEntity() {}
+
+    /**
+     * Constructor of the class
+     * @param id of the role
+     */
+    public RoleEntity(int id) {
+        this.id = id;
+    }
 
     public RoleEntity(String name) {
         this.name = name;
@@ -48,10 +59,6 @@ public class RoleEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<UserEntity> getUsers() {
-        return users;
     }
 
     @Override

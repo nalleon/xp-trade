@@ -33,6 +33,14 @@ public class PublisherEntity {
 
     /**
      * Constructor of the class
+     * @param id of the publisher
+     */
+    public PublisherEntity(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Constructor of the class
      * @param name of the publisher
      */
     public PublisherEntity(String name) {

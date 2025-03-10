@@ -54,6 +54,14 @@ public class PostEntity {
 
     /**
      * Constructor of the class
+     * @param id of the post
+     */
+    public PostEntity(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Constructor of the class
      * @param game of the game
      * @param user of the user
      * @param content of the post

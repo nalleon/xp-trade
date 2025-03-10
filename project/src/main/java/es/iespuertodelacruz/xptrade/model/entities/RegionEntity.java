@@ -33,6 +33,14 @@ public class RegionEntity {
 
     /**
      * Constructor of the class
+     * @param id of the region
+     */
+    public RegionEntity(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Constructor of the class
      * @param name of the region
      */
     public RegionEntity(String name) {
@@ -70,7 +78,7 @@ public class RegionEntity {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         RegionEntity that = (RegionEntity) o;
-        return id == that.id && Objects.equals(name, that.name);
+        return id == that.id;
     }
 
     @Override

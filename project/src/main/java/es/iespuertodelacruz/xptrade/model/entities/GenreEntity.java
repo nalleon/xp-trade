@@ -35,6 +35,13 @@ public class GenreEntity {
 
     /**
      * Constructor of the class
+     * @param id of the genre
+     */
+    public GenreEntity(int id) {
+        this.id = id;
+    }
+    /**
+     * Constructor of the class
      * @param name of the region
      */
     public GenreEntity(String name) {
@@ -72,7 +79,7 @@ public class GenreEntity {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         GenreEntity that = (GenreEntity) o;
-        return id == that.id && Objects.equals(name, that.name);
+        return id == that.id;
     }
 
     @Override

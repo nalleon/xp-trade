@@ -32,6 +32,15 @@ public class DeveloperEntity {
          */
         public DeveloperEntity() {}
 
+
+        /**
+         * Constructor of the class
+         * @param id of the developer
+         */
+        public DeveloperEntity(int id) {
+            this.id = id;
+        }
+
         /**
          * Constructor of the class
          * @param name of the region
