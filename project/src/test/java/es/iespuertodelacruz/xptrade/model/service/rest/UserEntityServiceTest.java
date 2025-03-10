@@ -135,6 +135,7 @@ public class UserEntityServiceTest extends TestUtilities {
         user.setPassword("1q2w3e4r");
         user.setUsername("nameTest");
         when(repositoryMock.findUserByName(user.getUsername())).thenReturn(Optional.of(new UserEntity()));
+
         Assertions.assertNotNull(service.update(user), MESSAGE_ERROR);
     }
 
@@ -190,10 +191,10 @@ public class UserEntityServiceTest extends TestUtilities {
         user.setRole(new Role(1, "ROLE_ADMIN"));
         user.setEmail("example@email.com");
         user.setPassword("1q2w3e4r");
-        user.setUsername("nameTest");
+        user.setUsername(NAME);
         user.setProfilePicture(PICTURE);
 
-        when(repositoryMock.findUserByName(user.getUsername())).thenReturn(null);
+        when(repositoryMock.findUserByName(any())).thenReturn(Optional.empty());
 
         Assertions.assertNull(service.updatePicture(user), MESSAGE_ERROR);
     }

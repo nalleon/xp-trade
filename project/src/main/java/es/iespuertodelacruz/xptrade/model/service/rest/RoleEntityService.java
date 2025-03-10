@@ -4,6 +4,7 @@ import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IRoleRepository;
 import es.iespuertodelacruz.xptrade.mapper.IRoleEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
+import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,6 +84,11 @@ public class RoleEntityService implements IRoleRepository {
     @Override
     @Transactional
     public boolean delete(Integer id) {
+        RoleEntity aux = repository.findById(id).orElse(null);
+        if(aux != null && aux.getName().equals("ROLE_ADMIN")){
+            return false;
+        }
+
         int quantity = repository.deleteEntityById(id);
         return quantity > 0;
     }
