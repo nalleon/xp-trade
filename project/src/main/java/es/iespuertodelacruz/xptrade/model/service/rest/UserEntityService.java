@@ -7,6 +7,7 @@ import es.iespuertodelacruz.xptrade.model.repository.IUserEntityRepository;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IUserRepository;
 import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
+import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -118,7 +119,7 @@ public class UserEntityService implements IUserRepository {
     @Transactional
     public boolean delete(Integer id) {
         UserEntity aux = repository.findById(id).orElse(null);
-        if(aux != null && aux.getRole().getName().equals("ROLE_ADMIN")){
+        if(aux != null && aux.getRole().getName().equals(Globals.ADMIN)){
             return false;
         }
 

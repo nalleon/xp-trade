@@ -1,10 +1,10 @@
 package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Region;
-import es.iespuertodelacruz.xptrade.domain.Region;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
 import es.iespuertodelacruz.xptrade.dto.RegionDTO;
 import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
+import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @Tag(name="v3 - Region ", description = "For administrators")
 public class RegionRESTController {
 
-    public static final String ADMIN = "ROLE_ADMIN";
     /**
      * Properties
      */
@@ -138,7 +137,7 @@ public class RegionRESTController {
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         Region dbItem = service.findById(id);
 
-        if(dbItem.getName().equals(ADMIN)){
+        if(dbItem.getName().equals(Globals.ADMIN)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
                     new ApiResponse<>(403, "Forbidden action", null));
         }
