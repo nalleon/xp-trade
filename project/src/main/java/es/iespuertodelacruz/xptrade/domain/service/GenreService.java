@@ -55,8 +55,9 @@ public class GenreService implements IGenericService<Genre, Integer, String> {
     }
 
     @Override
-    public Genre update(String name) {
+    public Genre update(Integer id, String name) {
         Genre aux = new Genre(name);
+        aux.setId(id);
         return repository.update(aux);
     }
 }

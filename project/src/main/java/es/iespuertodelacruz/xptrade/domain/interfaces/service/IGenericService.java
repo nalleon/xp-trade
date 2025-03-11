@@ -9,5 +9,5 @@ public interface IGenericService<T, E, U> {
     T findByName (U name);
     List<T> findAll();
     boolean delete(E id);
-    T update(U name);
+    T update(E id, U name);
 }

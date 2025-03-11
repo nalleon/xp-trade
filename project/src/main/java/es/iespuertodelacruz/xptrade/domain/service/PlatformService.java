@@ -55,8 +55,9 @@ public class PlatformService implements IGenericService<Platform, Integer, Strin
     }
 
     @Override
-    public Platform update(String name) {
+    public Platform update(Integer id, String name) {
         Platform aux = new Platform(name);
+        aux.setId(id);
         return repository.update(aux);
     }
 }

@@ -26,7 +26,7 @@ import org.springframework.core.io.Resource;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v3/users")
-@Tag(name="v3", description = "For administrators")
+@Tag(name="v3 - User", description = "For administrators")
 public class UserRESTController {
 
 

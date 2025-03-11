@@ -55,8 +55,9 @@ public class DeveloperService implements IGenericService<Developer, Integer, Str
     }
 
     @Override
-    public Developer update(String name) {
+    public Developer update(Integer id, String name) {
         Developer aux = new Developer(name);
+        aux.setId(id);
         return repository.update(aux);
     }
 }

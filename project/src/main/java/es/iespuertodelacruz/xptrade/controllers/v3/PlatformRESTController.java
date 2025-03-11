@@ -1,12 +1,8 @@
 package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Role;
-import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IRoleService;
 import es.iespuertodelacruz.xptrade.dto.RoleDTO;
-import es.iespuertodelacruz.xptrade.dto.user.UserOutputDTO;
-import es.iespuertodelacruz.xptrade.dto.user.UserRegisterDTO;
-import es.iespuertodelacruz.xptrade.dto.user.UserUpdateInputDTO;
 import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +15,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v3/roles")
-@Tag(name="v3 - Role ", description = "For administrators")
-public class RoleRESTController {
+@RequestMapping("/api/v3/platforms")
+@Tag(name="v3 - Platform ", description = "For administrators")
+public class PlatformRESTController {
 
     public static final String ADMIN = "ROLE_ADMIN";
     /**

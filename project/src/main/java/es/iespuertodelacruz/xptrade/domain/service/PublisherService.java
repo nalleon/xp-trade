@@ -55,8 +55,9 @@ public class PublisherService implements IGenericService<Publisher, Integer, Str
     }
 
     @Override
-    public Publisher update(String name) {
+    public Publisher update(Integer id, String name) {
         Publisher aux = new Publisher(name);
+        aux.setId(id);
         return repository.update(aux);
     }
 }

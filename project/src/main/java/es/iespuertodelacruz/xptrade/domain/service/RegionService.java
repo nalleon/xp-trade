@@ -55,8 +55,9 @@ public class RegionService implements IGenericService<Region, Integer, String> {
     }
 
     @Override
-    public Region update(String name) {
+    public Region update(Integer id, String name) {
         Region aux = new Region(name);
+        aux.setId(id);
         return repository.update(aux);
     }
 }
