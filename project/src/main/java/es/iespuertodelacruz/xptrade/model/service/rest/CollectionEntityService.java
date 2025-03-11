@@ -19,7 +19,7 @@ import java.util.List;
  * @author Jose Maximiliano Boada Martin @mackstm
  */
 @Service
-public class CollectionEntiyService implements IGenericSocialRepository<Collection, Integer, User, Game> {
+public class CollectionEntityService implements IGenericSocialRepository<Collection, Integer, User, Game> {
 
     /**
      * Properties
@@ -71,13 +71,19 @@ public class CollectionEntiyService implements IGenericSocialRepository<Collecti
 
     @Override
     public List<Collection> findAllByUser(User user) {
+        if (user == null){
+            return null;
+        }
         List<CollectionEntity> listEntities = repository.findAllByUser(user.getId());
         return ICollectionEntityMapper.INSTANCE.toDomainList(listEntities);
     }
 
     @Override
-    public List<Collection> findAllBySubject(Game favorite) {
-        List<CollectionEntity> listEntities = repository.findAllByGame(favorite.getId());
+    public List<Collection> findAllBySubject(Game game) {
+        if (game == null){
+            return null;
+        }
+        List<CollectionEntity> listEntities = repository.findAllByGame(game.getId());
         return ICollectionEntityMapper.INSTANCE.toDomainList(listEntities);
     }
 

@@ -72,12 +72,18 @@ public class FavoriteEntityService implements IGenericSocialRepository<Favorite,
 
     @Override
     public List<Favorite> findAllByUser(User user) {
+        if(user == null){
+            return null;
+        }
         List<FavoriteEntity> listEntities = repository.findAllByUser(user.getId());
         return IFavoriteEntityMapper.INSTANCE.toDomainList(listEntities);
     }
 
     @Override
     public List<Favorite> findAllBySubject(Game favorite) {
+        if(favorite == null){
+            return null;
+        }
         List<FavoriteEntity> listEntities = repository.findAllByGame(favorite.getId());
         return IFavoriteEntityMapper.INSTANCE.toDomainList(listEntities);
     }

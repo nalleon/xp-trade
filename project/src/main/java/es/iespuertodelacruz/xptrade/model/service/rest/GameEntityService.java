@@ -55,30 +55,45 @@ public class GameEntityService implements IGameRepository {
 
     @Override
     public List<Game> findAllByPlatform(Platform platform) {
+        if(platform == null){
+            return null;
+        }
         List<GameEntity> listEntities = repository.findAllByPlatform(platform.getId());
         return IGameEntityMapper.INSTANCE.toDomainList(listEntities);
     }
 
     @Override
     public List<Game> findAllByDeveloper(Developer developer) {
+        if(developer == null){
+            return null;
+        }
         List<GameEntity> listEntities = repository.findAllByDeveloper(developer.getId());
         return IGameEntityMapper.INSTANCE.toDomainList(listEntities);
     }
 
     @Override
     public List<Game> findAllByPublisher(Publisher publisher) {
+        if(publisher == null){
+            return null;
+        }
         List<GameEntity> listEntities = repository.findAllByPublisher(publisher.getId());
         return IGameEntityMapper.INSTANCE.toDomainList(listEntities);
     }
 
     @Override
     public List<Game> findAllByGenre(Genre genre) {
+        if(genre == null){
+            return null;
+        }
         List<GameEntity> listEntities = repository.findAllByGenre(genre.getId());
         return IGameEntityMapper.INSTANCE.toDomainList(listEntities);
     }
 
     @Override
     public List<Game> findAllByRegion(Region region) {
+        if(region == null){
+            return null;
+        }
         List<GameEntity> listEntities = repository.findAllByRegion(region.getId());
         return IGameEntityMapper.INSTANCE.toDomainList(listEntities);
     }

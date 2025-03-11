@@ -71,12 +71,18 @@ public class CommentEntityService implements IGenericSocialRepository<Comment, I
 
     @Override
     public List<Comment> findAllByUser(User user) {
+        if(user == null){
+            return null;
+        }
         List<CommentEntity> listEntities = repository.findAllByUser(user.getId());
         return ICommentEntityMapper.INSTANCE.toDomainList(listEntities);
     }
 
     @Override
     public List<Comment> findAllBySubject(Post post) {
+        if(post == null){
+            return null;
+        }
         List<CommentEntity> listEntities = repository.findAllByPost(post.getId());
         return ICommentEntityMapper.INSTANCE.toDomainList(listEntities);
     }
