@@ -62,12 +62,6 @@ public class RoleServiceTest extends TestUtilities {
         Assertions.assertNull(service.add(null), MESSAGE_ERROR);
     }
 
-    /*@Test
-    void addDupeTest() {
-        Mockito.when(repositoryMock.existsById(1)).thenReturn(true);
-        Assertions.assertFalse(service.add(new Role(1, "Admin")), MESSAGE_ERROR);
-    }*/
-
     @Test
     void updateExceptionTest() throws Exception {
         Mockito.when(repositoryMock.findById(1)).thenThrow(new RuntimeException("Database error"));
