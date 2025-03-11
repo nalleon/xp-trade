@@ -27,7 +27,7 @@ Por parte de los usuarios administradores, en ellos recaerá la parte de moderac
 
 ## Tecnologías utilizadas.
 
-Estas son las tecnologías que utilizaremos a lo largo del desarollor del proyecto:
+Estas son las tecnologías que utilizaremos a lo largo del desarrollar del proyecto:
 
 - **Gestión de Dependencias:**
     - [Maven](https://www.mysql.com/) para la gestión de dependencias y compilación del proyecto.
