@@ -11,9 +11,8 @@
   - [Objetivo.](#objetivo)
   - [Descripción del problema.](#descripción-del-problema)
   - [Arquitectura y tecnologías a utilizar.](#tecnologías-utilizadas)
-
-- [Diagrama Entidad/Relación](#)
-- [Diagrama de Clases](#)
+- [Diagrama Entidad/Relación](#diagrama-entidadrelación)
+- [Diagrama de Clases](#diagrama-de-clases)
 
 
 ***
