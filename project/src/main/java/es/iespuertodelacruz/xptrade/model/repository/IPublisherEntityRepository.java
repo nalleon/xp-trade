@@ -25,8 +25,8 @@ public interface IPublisherEntityRepository extends JpaRepository<PublisherEntit
 
 
     @Query(
-            value="SELECT * FROM publishers WHERE username =:username",
+            value="SELECT * FROM publishers WHERE name =:name",
             nativeQuery=true
     )
-    Optional<PublisherEntity> findByName(@Param("username") String name);
+    Optional<PublisherEntity> findByName(@Param("name") String name);
 }

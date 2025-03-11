@@ -21,7 +21,7 @@ public class GenreEntity {
     @Column(unique=true, nullable=false)
     private int id;
 
-    @Column(unique = true, nullable=false, length=45, name = "username")
+    @Column(unique = true, nullable=false, length=45, name = "name")
     private String name;
 
     @ManyToMany(mappedBy = "genreEntitySet", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)

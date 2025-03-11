@@ -115,7 +115,7 @@ public class RegionRESTController {
 
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(404, "User NOT found", null));
+                    .body(new ApiResponse<>(404, "Item NOT found", null));
         }
 
         try {

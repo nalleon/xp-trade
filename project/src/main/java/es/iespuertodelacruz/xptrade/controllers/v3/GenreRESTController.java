@@ -1,9 +1,13 @@
 package es.iespuertodelacruz.xptrade.controllers.v3;
 
+import es.iespuertodelacruz.xptrade.domain.Genre;
 import es.iespuertodelacruz.xptrade.domain.Role;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IRoleService;
+import es.iespuertodelacruz.xptrade.dto.GenreDTO;
 import es.iespuertodelacruz.xptrade.dto.RoleDTO;
 import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
+import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +23,10 @@ import java.util.stream.Collectors;
 @Tag(name="v3 - Genre ", description = "For administrators")
 public class GenreRESTController {
 
-    public static final String ADMIN = "ROLE_ADMIN";
     /**
      * Properties
      */
-    private IRoleService service;
+    private IGenericService<Genre, Integer, String> service;
 
 
     /**
@@ -31,15 +34,15 @@ public class GenreRESTController {
      * @param service of the role
      */
     @Autowired
-    public void setService(IRoleService service) {
+    public void setService(IGenericService<Genre, Integer, String> service) {
         this.service = service;
     }
 
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<RoleDTO> filteredList = service.findAll().stream().map(usuario ->
-                new RoleDTO(usuario.getName())).collect(Collectors.toList());
+        List<GenreDTO> filteredList = service.findAll().stream().map(item ->
+                new GenreDTO(item.getId(),item.getName())).collect(Collectors.toList());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
@@ -53,78 +56,78 @@ public class GenreRESTController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Integer id) {
-        Role aux = service.findById(id);
+        Genre aux = service.findById(id);
         if (aux != null){
-            RoleDTO dto =  new RoleDTO(aux.getName());
+            GenreDTO dto =  new GenreDTO(aux.getId(), aux.getName());
 
-            ApiResponse<RoleDTO> response =
-                    new ApiResponse<>(302, "Role found", dto);
+            ApiResponse<GenreDTO> response =
+                    new ApiResponse<>(302, "Genre found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        ApiResponse<RoleDTO> errorResponse = new ApiResponse<>(404, "Role NOT found", null);
+        ApiResponse<GenreDTO> errorResponse = new ApiResponse<>(404, "Genre NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @GetMapping("/name/{name}")
     public ResponseEntity<?> getByName(@PathVariable String name) {
-        Role aux = service.findByName(name);
+        Genre aux = service.findByName(name);
         if (aux != null){
-            RoleDTO dto =  new RoleDTO(aux.getName());
+            GenreDTO dto =  new GenreDTO(aux.getId(), aux.getName());
 
-            ApiResponse<RoleDTO> response =
-                    new ApiResponse<>(202, "Role found", dto);
+            ApiResponse<GenreDTO> response =
+                    new ApiResponse<>(202, "Genre found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        ApiResponse<RoleDTO> errorResponse = new ApiResponse<>(404, "Role NOT found", null);
+        ApiResponse<GenreDTO> errorResponse = new ApiResponse<>(404, "Genre NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse<?>> create(RoleDTO dto) {
+    public ResponseEntity<ApiResponse<?>> create(GenreDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
-                    .body(new ApiResponse<>(400, "El usuario no puede ser nulo", null));
+                    .body(new ApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
-            Role dbItem = service.add(dto.name());
-            RoleDTO result = new RoleDTO(dbItem.getName());
+            Genre dbItem = service.add(dto.name());
+            GenreDTO result = new GenreDTO(dbItem.getId(), dbItem.getName());
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error al intentar registrar el usuario", null));
+                    .body(new ApiResponse<>(500, "Error al intentar registrar el item", null));
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody RoleDTO dto) {
+            @RequestBody GenreDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        Role dbItem = service.findById(id);
+        Genre dbItem = service.findById(id);
 
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(404, "User NOT found", null));
+                    .body(new ApiResponse<>(404, "Item NOT found", null));
         }
 
         try {
 
             dbItem.setName(dto.name());
 
-            Role updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
+            Genre updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            RoleDTO result = new RoleDTO(updatedDbItem.getName());
+            GenreDTO result = new GenreDTO(updatedDbItem.getId(), updatedDbItem.getName());
 
             return ResponseEntity.ok(new ApiResponse<>(200, "Update successful", result));
 
@@ -135,9 +138,9 @@ public class GenreRESTController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        Role dbItem = service.findById(id);
+        Genre dbItem = service.findById(id);
 
-        if(dbItem.getName().equals(ADMIN)){
+        if(dbItem.getName().equals(Globals.ADMIN)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
                     new ApiResponse<>(403, "Forbidden action", null));
         }

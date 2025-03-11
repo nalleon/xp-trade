@@ -23,10 +23,10 @@ public interface IRoleEntityRepository extends JpaRepository<RoleEntity, Integer
     int deleteEntityById(@Param("id") Integer id);
 
 
+
     @Query(
-            value="SELECT * FROM roles WHERE username =:username",
+            value="SELECT * FROM roles WHERE name=:name",
             nativeQuery=true
     )
-    Optional<RoleEntity> findRoleByName(@Param("username") String name);
-
+    Optional<RoleEntity> findRoleByName(@Param("name") String name);
 }

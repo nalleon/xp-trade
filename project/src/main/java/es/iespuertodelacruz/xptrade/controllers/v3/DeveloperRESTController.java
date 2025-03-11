@@ -1,9 +1,13 @@
 package es.iespuertodelacruz.xptrade.controllers.v3;
 
+import es.iespuertodelacruz.xptrade.domain.Developer;
 import es.iespuertodelacruz.xptrade.domain.Role;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IRoleService;
+import es.iespuertodelacruz.xptrade.dto.DeveloperDTO;
 import es.iespuertodelacruz.xptrade.dto.RoleDTO;
 import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
+import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +23,11 @@ import java.util.stream.Collectors;
 @Tag(name="v3 - Developer ", description = "For administrators")
 public class DeveloperRESTController {
 
-    public static final String ADMIN = "ROLE_ADMIN";
+
     /**
      * Properties
      */
-    private IRoleService service;
+    private IGenericService<Developer, Integer, String> service;
 
 
     /**
@@ -31,15 +35,15 @@ public class DeveloperRESTController {
      * @param service of the role
      */
     @Autowired
-    public void setService(IRoleService service) {
+    public void setService(IGenericService<Developer, Integer, String> service) {
         this.service = service;
     }
 
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<RoleDTO> filteredList = service.findAll().stream().map(usuario ->
-                new RoleDTO(usuario.getName())).collect(Collectors.toList());
+        List<DeveloperDTO> filteredList = service.findAll().stream().map(item ->
+                new DeveloperDTO(item.getId(),item.getName())).collect(Collectors.toList());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
@@ -53,78 +57,78 @@ public class DeveloperRESTController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Integer id) {
-        Role aux = service.findById(id);
+        Developer aux = service.findById(id);
         if (aux != null){
-            RoleDTO dto =  new RoleDTO(aux.getName());
+            DeveloperDTO dto =  new DeveloperDTO(aux.getId(), aux.getName());
 
-            ApiResponse<RoleDTO> response =
-                    new ApiResponse<>(302, "Role found", dto);
+            ApiResponse<DeveloperDTO> response =
+                    new ApiResponse<>(302, "Developer found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        ApiResponse<RoleDTO> errorResponse = new ApiResponse<>(404, "Role NOT found", null);
+        ApiResponse<DeveloperDTO> errorResponse = new ApiResponse<>(404, "Developer NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @GetMapping("/name/{name}")
     public ResponseEntity<?> getByName(@PathVariable String name) {
-        Role aux = service.findByName(name);
+        Developer aux = service.findByName(name);
         if (aux != null){
-            RoleDTO dto =  new RoleDTO(aux.getName());
+            DeveloperDTO dto =  new DeveloperDTO(aux.getId(), aux.getName());
 
-            ApiResponse<RoleDTO> response =
-                    new ApiResponse<>(202, "Role found", dto);
+            ApiResponse<DeveloperDTO> response =
+                    new ApiResponse<>(202, "Developer found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        ApiResponse<RoleDTO> errorResponse = new ApiResponse<>(404, "Role NOT found", null);
+        ApiResponse<DeveloperDTO> errorResponse = new ApiResponse<>(404, "Developer NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse<?>> create(RoleDTO dto) {
+    public ResponseEntity<ApiResponse<?>> create(DeveloperDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
-                    .body(new ApiResponse<>(400, "El usuario no puede ser nulo", null));
+                    .body(new ApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
-            Role dbItem = service.add(dto.name());
-            RoleDTO result = new RoleDTO(dbItem.getName());
+            Developer dbItem = service.add(dto.name());
+            DeveloperDTO result = new DeveloperDTO(dbItem.getId(), dbItem.getName());
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error al intentar registrar el usuario", null));
+                    .body(new ApiResponse<>(500, "Error al intentar registrar el item", null));
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody RoleDTO dto) {
+            @RequestBody DeveloperDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        Role dbItem = service.findById(id);
+        Developer dbItem = service.findById(id);
 
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(404, "User NOT found", null));
+                    .body(new ApiResponse<>(404, "Item NOT found", null));
         }
 
         try {
 
             dbItem.setName(dto.name());
 
-            Role updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
+            Developer updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            RoleDTO result = new RoleDTO(updatedDbItem.getName());
+            DeveloperDTO result = new DeveloperDTO(updatedDbItem.getId(), updatedDbItem.getName());
 
             return ResponseEntity.ok(new ApiResponse<>(200, "Update successful", result));
 
@@ -135,9 +139,9 @@ public class DeveloperRESTController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        Role dbItem = service.findById(id);
+        Developer dbItem = service.findById(id);
 
-        if(dbItem.getName().equals(ADMIN)){
+        if(dbItem.getName().equals(Globals.ADMIN)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
                     new ApiResponse<>(403, "Forbidden action", null));
         }
