@@ -1,12 +1,10 @@
 package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.Genre;
-import es.iespuertodelacruz.xptrade.domain.Genre;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericRepository;
-import es.iespuertodelacruz.xptrade.mapper.IGenreEntityMapper;
+import es.iespuertodelacruz.xptrade.mapper.entity.IGenreEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.GenreEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IGenreEntityRepository;
-import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

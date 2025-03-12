@@ -2,12 +2,9 @@ package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.Platform;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericRepository;
-import es.iespuertodelacruz.xptrade.mapper.IPlatformEntityMapper;
-import es.iespuertodelacruz.xptrade.mapper.IRoleEntityMapper;
+import es.iespuertodelacruz.xptrade.mapper.entity.IPlatformEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.PlatformEntity;
-import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IPlatformEntityRepository;
-import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -47,11 +47,11 @@ public class GameDTOTest extends TestUtilities {
         Assertions.assertEquals(ID, item.id(), MESSAGE_ERROR);
         Assertions.assertEquals(TITLE, item.title(), MESSAGE_ERROR);
         Assertions.assertEquals(COVER_ART, item.coverArt(), MESSAGE_ERROR);
-        Assertions.assertEquals(developerSet, item.developerSet(), MESSAGE_ERROR);
-        Assertions.assertEquals(genreSet, item.genreSet(), MESSAGE_ERROR);
-        Assertions.assertEquals(platformSet, item.platformSet(), MESSAGE_ERROR);
-        Assertions.assertEquals(publisherSet, item.publisherSet(), MESSAGE_ERROR);
-        Assertions.assertEquals(regionSet, item.regionSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(developerSet, item.developerDTOSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(genreSet, item.genreDTOSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(platformSet, item.platformDTOSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(publisherSet, item.publisherDTOSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(regionSet, item.regionDTOSet(), MESSAGE_ERROR);
     }
 
 }

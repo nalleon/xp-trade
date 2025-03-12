@@ -4,16 +4,15 @@ import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.Favorite;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
-import es.iespuertodelacruz.xptrade.mapper.IFavoriteEntityMapper;
-import es.iespuertodelacruz.xptrade.mapper.IGameEntityMapper;
-import es.iespuertodelacruz.xptrade.mapper.IUserEntityMapper;
+import es.iespuertodelacruz.xptrade.mapper.entity.IFavoriteEntityMapper;
+import es.iespuertodelacruz.xptrade.mapper.entity.IGameEntityMapper;
+import es.iespuertodelacruz.xptrade.mapper.entity.IUserEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.FavoriteEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IFavoriteEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 /**
  * @author Nabil Leon Alvarez @nalleon

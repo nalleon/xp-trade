@@ -3,7 +3,7 @@ package es.iespuertodelacruz.xptrade.model.service.rest;
 import es.iespuertodelacruz.xptrade.domain.Region;
 
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericRepository;
-import es.iespuertodelacruz.xptrade.mapper.IRegionEntityMapper;
+import es.iespuertodelacruz.xptrade.mapper.entity.IRegionEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.RegionEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IRegionEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;

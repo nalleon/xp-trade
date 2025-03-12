@@ -2,7 +2,7 @@ package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGameRepository;
-import es.iespuertodelacruz.xptrade.mapper.IGameEntityMapper;
+import es.iespuertodelacruz.xptrade.mapper.entity.IGameEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.GameEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IGameEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;

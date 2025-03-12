@@ -43,12 +43,9 @@ public class AuthRESTController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserRegisterDTO registerDTO ) {
 
-        authService.register(registerDTO.name(), registerDTO.password(), registerDTO.email());
+        User user =  authService.register(registerDTO.name(), registerDTO.password(), registerDTO.email());
 
-        User user = service.findByEmail(registerDTO.email());
-//        System.out.println(user);
         String authToken = user.getVerificationToken();
-
 
         String confirmationUrl =
                 "http://localhost:8080/api/v1/auth/confirmation?email=" + registerDTO.email() + "&token=" + authToken;

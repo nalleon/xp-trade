@@ -1,6 +1,7 @@
 package es.iespuertodelacruz.xptrade.dto;
 
 import es.iespuertodelacruz.xptrade.dto.user.UserOutputDTO;
+import es.iespuertodelacruz.xptrade.dto.user.UserSearchDTO;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +14,7 @@ import java.util.Set;
 public class PostDTOTest extends TestUtilities {
     PostDTO item;
     GameDTO game;
-    UserOutputDTO user;
+    UserSearchDTO user;
     GenreDTO genre;
     RegionDTO region;
     PublisherDTO publisher;
@@ -40,7 +41,7 @@ public class PostDTOTest extends TestUtilities {
         regionSet = new HashSet<>(Collections.singletonList(region));
 
         game = new GameDTO(ID, TITLE, COVER_ART, developerSet, genreSet, platformSet, publisherSet, regionSet);
-        user = new UserOutputDTO(NAME, EMAIL);
+        user = new UserSearchDTO(NAME);
         item = new PostDTO(ID, game, user, CONTENT, PICTURE, CREATION_DATE);
     }
 

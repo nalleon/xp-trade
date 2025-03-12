@@ -63,7 +63,6 @@ public class AuthService {
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
-
         return service.add(user.getUsername(), user.getEmail(), user.getPassword());
 
     }

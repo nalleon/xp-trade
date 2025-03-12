@@ -4,7 +4,7 @@ import es.iespuertodelacruz.xptrade.domain.Post;
 import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
-import es.iespuertodelacruz.xptrade.mapper.IPostEntityMapper;
+import es.iespuertodelacruz.xptrade.mapper.entity.IPostEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.PostEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IPostEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
