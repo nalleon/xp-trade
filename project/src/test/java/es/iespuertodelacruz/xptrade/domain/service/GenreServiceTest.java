@@ -65,17 +65,17 @@ public class GenreServiceTest extends TestUtilities {
     @Test
     void updateExceptionTest() throws Exception {
         Mockito.when(repositoryMock.findById(1)).thenThrow(new RuntimeException("Database error"));
-        Assertions.assertNull(service.update("Admin"), MESSAGE_ERROR);
+        Assertions.assertNull(service.update(1, "Admin"), MESSAGE_ERROR);
     }
     @Test
     void updateTest() throws Exception {
         Mockito.when(repositoryMock.update(Mockito.any(Genre.class))).thenReturn(new Genre());
-        Assertions.assertNotNull(service.update("Admin"), MESSAGE_ERROR);
+        Assertions.assertNotNull(service.update(1, "Admin"), MESSAGE_ERROR);
     }
 
     @Test
     void updateNullTest() throws Exception {
-        Assertions.assertNull(service.update(null), MESSAGE_ERROR);
+        Assertions.assertNull(service.update(1, null), MESSAGE_ERROR);
     }
 
     @Test
