@@ -1,7 +1,9 @@
 package es.iespuertodelacruz.xptrade.domain.service;
 
+import es.iespuertodelacruz.xptrade.domain.Comment;
+import es.iespuertodelacruz.xptrade.domain.Post;
 import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IUserRepository;
+import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,26 +16,26 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserServiceTest extends TestUtilities {
+public class CommentServiceTest extends TestUtilities {
     @Mock
-    IUserRepository repositoryMock;
+    IGenericSocialRepository<Comment, Integer, User, Post> repositoryMock;
 
     @InjectMocks
-    UserService service;
+    CommentService service;
 
 
     @BeforeEach
     public void beforeEach (){
         MockitoAnnotations.openMocks(this);
-        service = new UserService();
+        service = new CommentService();
         service.setRepository(repositoryMock);
     }
     @Test
     void getAllTest() {
-        List<User> list = new ArrayList<>();
-        list.add(new User(NAME, PASSWORD, EMAIL));
-        list.add(new User("test2", PASSWORD, "test2@gmail.com"));
-        list.add(new User("test3", PASSWORD, "test3@gmail.com"));
+        List<Comment> list = new ArrayList<>();
+        list.add(new Comment(1));
+        list.add(new Comment(2));
+        list.add(new Comment(3));
         Mockito.when(repositoryMock.findAll()).thenReturn(list);
         Assertions.assertNotNull(service.findAll(), MESSAGE_ERROR);
     }
@@ -46,15 +48,15 @@ public class UserServiceTest extends TestUtilities {
 
     @Test
     void getOneTest() {
-        Mockito.when(repositoryMock.findById(1)).thenReturn(new User());
+        Mockito.when(repositoryMock.findById(1)).thenReturn(new Comment());
         Assertions.assertNotNull(service.findById(1), MESSAGE_ERROR);
     }
 
 
     @Test
     void addTest() {
-        Mockito.when(repositoryMock.save(Mockito.any(User.class))).thenReturn(new User());
-        Assertions.assertNotNull(service.add(NAME, PASSWORD, EMAIL), MESSAGE_ERROR);
+        Mockito.when(repositoryMock.save(Mockito.any(Comment.class))).thenReturn(new Comment());
+        Assertions.assertNotNull(service.add(new Post(), new User(), "TEST"), MESSAGE_ERROR);
     }
 
     @Test
@@ -65,17 +67,17 @@ public class UserServiceTest extends TestUtilities {
     @Test
     void updateExceptionTest() throws Exception {
         Mockito.when(repositoryMock.findById(1)).thenThrow(new RuntimeException("Database error"));
-        Assertions.assertNull(service.update(NAME, EMAIL, PASSWORD), MESSAGE_ERROR);
+        Assertions.assertNull(service.update(1, new Post(), new User(), "TEST"), MESSAGE_ERROR);
     }
     @Test
     void updateTest() throws Exception {
-        Mockito.when(repositoryMock.update(Mockito.any(User.class))).thenReturn(new User());
-        Assertions.assertNotNull(service.update(NAME, EMAIL, PASSWORD), MESSAGE_ERROR);
+        Mockito.when(repositoryMock.update(Mockito.any(Comment.class))).thenReturn(new Comment());
+        Assertions.assertNotNull(service.update(1,new Post(), new User(), "TEST"), MESSAGE_ERROR);
     }
 
     @Test
     void updateNullTest() throws Exception {
-        Assertions.assertNull(service.update(null, null, null), MESSAGE_ERROR);
+        Assertions.assertNull(service.update(0, null, null, null), MESSAGE_ERROR);
     }
 
     @Test
