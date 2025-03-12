@@ -43,13 +43,33 @@ public class UserServiceTest extends TestUtilities {
         Assertions.assertNull(service.findById(1), MESSAGE_ERROR);
     }
 
-
     @Test
     void getOneTest() {
         Mockito.when(repositoryMock.findById(1)).thenReturn(new User());
         Assertions.assertNotNull(service.findById(1), MESSAGE_ERROR);
     }
 
+    @Test
+    void getByNameTest() {
+        Mockito.when(repositoryMock.findByUserame(NAME)).thenReturn(new User());
+        Assertions.assertNotNull(service.findByUsername(NAME), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getByNameNullTest() {
+        Assertions.assertNull(service.findByUsername(NAME), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getByEmailTest() {
+        Mockito.when(repositoryMock.findByEmail(EMAIL)).thenReturn(new User());
+        Assertions.assertNotNull(service.findByEmail(EMAIL), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getByEmailNullTest() {
+        Assertions.assertNull(service.findByEmail(EMAIL), MESSAGE_ERROR);
+    }
 
     @Test
     void addTest() {
