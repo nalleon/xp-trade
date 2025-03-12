@@ -1,6 +1,6 @@
 package es.iespuertodelacruz.xptrade.controllers.v3;
 
-import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
+import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.FileStorageService;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
@@ -73,11 +73,11 @@ public class UserRESTController {
         if (filteredList.isEmpty()) {
             String message = "There are no users";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new ApiResponse<>(204, message, filteredList));
+                    .body(new CustomApiResponse<>(204, message, filteredList));
         }
 
         String message = "List successfully obtained";
-        return ResponseEntity.ok(new ApiResponse<>(200, message, filteredList));
+        return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
     }
 
 
@@ -87,19 +87,19 @@ public class UserRESTController {
         if (aux != null){
             UserOutputDTO dto =  new UserOutputDTO(aux.getUsername(), aux.getEmail());
 
-            ApiResponse<UserOutputDTO> response = new ApiResponse<>(200, "User found", dto);
+            CustomApiResponse<UserOutputDTO> response = new CustomApiResponse<>(200, "User found", dto);
             return ResponseEntity.ok(response);
         }
 
-        ApiResponse<UserOutputDTO> errorResponse = new ApiResponse<>(404, "User NOT found", null);
+        CustomApiResponse<UserOutputDTO> errorResponse = new CustomApiResponse<>(404, "User NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<?>> createUser(UserRegisterDTO registerDTO) {
+    public ResponseEntity<CustomApiResponse<?>> createUser(UserRegisterDTO registerDTO) {
         if (registerDTO == null) {
             return ResponseEntity.badRequest()
-                    .body(new ApiResponse<>(400, "El usuario no puede ser nulo", null));
+                    .body(new CustomApiResponse<>(400, "El usuario no puede ser nulo", null));
         }
 
         try {
@@ -113,29 +113,29 @@ public class UserRESTController {
             UserOutputDTO result = new UserOutputDTO(dbItem.getUsername(), dbItem.getEmail());
 
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(201, "Usuario creado correctamente", result));
+                    .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error al intentar registrar el usuario", null));
+                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el usuario", null));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<?>> update(
+    public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
             @RequestBody UserUpdateInputDTO updateInputDTO) {
 
         if (updateInputDTO == null) {
             return ResponseEntity.badRequest()
-                    .body(new ApiResponse<>(400, "User cannot be null", null));
+                    .body(new CustomApiResponse<>(400, "User cannot be null", null));
         }
 
         User dbItem = service.findById(id);
 
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(404, "User NOT found", null));
+                    .body(new CustomApiResponse<>(404, "User NOT found", null));
         }
 
         try {
@@ -148,18 +148,18 @@ public class UserRESTController {
 
             UserOutputDTO result = new UserOutputDTO(updatedDbItem.getUsername(), updatedDbItem.getEmail());
 
-            return ResponseEntity.ok(new ApiResponse<>(200, "Update successful", result));
+            return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error while trying to update", null));
+                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
         }
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         if(id == 1){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                    new ApiResponse<>(403, "", null));
+                    new CustomApiResponse<>(403, "", null));
         }
 
         boolean deleted = service.delete(id);
@@ -167,11 +167,11 @@ public class UserRESTController {
         if (deleted) {
             String message = "User deleted correctly";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new ApiResponse<>(204, message, null));
+                    .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "User not deleted";
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, message, null));
+                    .body(new CustomApiResponse<>(500, message, null));
         }
 
     }
@@ -191,11 +191,11 @@ public class UserRESTController {
             User result = service.updatePicture(aux.getUsername(), aux.getEmail(), aux.getPassword(), aux.getProfilePicture());
 
             UserOutputDTO dto = new UserOutputDTO(result.getUsername(), result.getEmail());
-            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, message, dto));
+            return ResponseEntity.status(HttpStatus.OK).body(new CustomApiResponse<>(200, message, dto));
         } catch (Exception e) {
             message = "Could not upload the file: " + file.getOriginalFilename()
                     + ". Error: " + e.getMessage();
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ApiResponse<>(417, message, null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new CustomApiResponse<>(417, message, null));
         }
     }
 

@@ -3,7 +3,7 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 import es.iespuertodelacruz.xptrade.domain.Region;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
 import es.iespuertodelacruz.xptrade.dto.RegionDTO;
-import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
+import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +44,11 @@ public class RegionRESTController {
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new ApiResponse<>(204, message, filteredList));
+                    .body(new CustomApiResponse<>(204, message, filteredList));
         }
 
         String message = "List successfully obtained";
-        return ResponseEntity.ok(new ApiResponse<>(200, message, filteredList));
+        return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
     }
 
     @GetMapping("/{id}")
@@ -57,12 +57,12 @@ public class RegionRESTController {
         if (aux != null){
             RegionDTO dto =  new RegionDTO(aux.getId(), aux.getName());
 
-            ApiResponse<RegionDTO> response =
-                    new ApiResponse<>(302, "Region found", dto);
+            CustomApiResponse<RegionDTO> response =
+                    new CustomApiResponse<>(302, "Region found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        ApiResponse<RegionDTO> errorResponse = new ApiResponse<>(404, "Region NOT found", null);
+        CustomApiResponse<RegionDTO> errorResponse = new CustomApiResponse<>(404, "Region NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
@@ -73,37 +73,37 @@ public class RegionRESTController {
         if (aux != null){
             RegionDTO dto =  new RegionDTO(aux.getId(), aux.getName());
 
-            ApiResponse<RegionDTO> response =
-                    new ApiResponse<>(202, "Region found", dto);
+            CustomApiResponse<RegionDTO> response =
+                    new CustomApiResponse<>(202, "Region found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        ApiResponse<RegionDTO> errorResponse = new ApiResponse<>(404, "Region NOT found", null);
+        CustomApiResponse<RegionDTO> errorResponse = new CustomApiResponse<>(404, "Region NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse<?>> create(RegionDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> create(RegionDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
-                    .body(new ApiResponse<>(400, "El item no puede ser nulo", null));
+                    .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
             Region dbItem = service.add(dto.name());
             RegionDTO result = new RegionDTO(dbItem.getId(), dbItem.getName());
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(201, "Usuario creado correctamente", result));
+                    .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error al intentar registrar el item", null));
+                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el item", null));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<?>> update(
+    public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
             @RequestBody RegionDTO dto) {
 
@@ -115,7 +115,7 @@ public class RegionRESTController {
 
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(404, "Item NOT found", null));
+                    .body(new CustomApiResponse<>(404, "Item NOT found", null));
         }
 
         try {
@@ -126,11 +126,11 @@ public class RegionRESTController {
 
             RegionDTO result = new RegionDTO(updatedDbItem.getId(), updatedDbItem.getName());
 
-            return ResponseEntity.ok(new ApiResponse<>(200, "Update successful", result));
+            return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error while trying to update", null));
+                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
         }
     }
     @DeleteMapping("/{id}")
@@ -139,7 +139,7 @@ public class RegionRESTController {
 
         if(dbItem.getName().equals(Globals.ADMIN)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                    new ApiResponse<>(403, "Forbidden action", null));
+                    new CustomApiResponse<>(403, "Forbidden action", null));
         }
 
         boolean deleted = service.delete(id);
@@ -147,11 +147,11 @@ public class RegionRESTController {
         if (deleted) {
             String message = "Item deleted correctly";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new ApiResponse<>(204, message, null));
+                    .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "Unable to delete item with id: " + id;
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, message, null));
+                    .body(new CustomApiResponse<>(500, message, null));
         }
     }
 

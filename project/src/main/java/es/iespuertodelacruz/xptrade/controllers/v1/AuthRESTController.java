@@ -2,7 +2,7 @@ package es.iespuertodelacruz.xptrade.controllers.v1;
 
 import es.iespuertodelacruz.xptrade.shared.config.MailService;
 import es.iespuertodelacruz.xptrade.shared.security.AuthService;
-import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
+import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
 import es.iespuertodelacruz.xptrade.dto.user.UserLoginDTO;
@@ -54,7 +54,7 @@ public class AuthRESTController {
         mailService.send(senders, "Verify your email " + user.getUsername(), confirmationUrl);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(201, "En breves momentos, le llegara un email de verificacion",
+                .body(new CustomApiResponse<>(201, "En breves momentos, le llegara un email de verificacion",
                         null));}
 
     @GetMapping("/confirmation")

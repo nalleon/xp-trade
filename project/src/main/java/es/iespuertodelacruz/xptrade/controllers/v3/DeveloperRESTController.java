@@ -1,12 +1,9 @@
 package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Developer;
-import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
-import es.iespuertodelacruz.xptrade.domain.interfaces.service.IRoleService;
 import es.iespuertodelacruz.xptrade.dto.DeveloperDTO;
-import es.iespuertodelacruz.xptrade.dto.RoleDTO;
-import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
+import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +45,11 @@ public class DeveloperRESTController {
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new ApiResponse<>(204, message, filteredList));
+                    .body(new CustomApiResponse<>(204, message, filteredList));
         }
 
         String message = "List successfully obtained";
-        return ResponseEntity.ok(new ApiResponse<>(200, message, filteredList));
+        return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
     }
 
     @GetMapping("/{id}")
@@ -61,12 +58,12 @@ public class DeveloperRESTController {
         if (aux != null){
             DeveloperDTO dto =  new DeveloperDTO(aux.getId(), aux.getName());
 
-            ApiResponse<DeveloperDTO> response =
-                    new ApiResponse<>(302, "Developer found", dto);
+            CustomApiResponse<DeveloperDTO> response =
+                    new CustomApiResponse<>(302, "Developer found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        ApiResponse<DeveloperDTO> errorResponse = new ApiResponse<>(404, "Developer NOT found", null);
+        CustomApiResponse<DeveloperDTO> errorResponse = new CustomApiResponse<>(404, "Developer NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
@@ -77,37 +74,37 @@ public class DeveloperRESTController {
         if (aux != null){
             DeveloperDTO dto =  new DeveloperDTO(aux.getId(), aux.getName());
 
-            ApiResponse<DeveloperDTO> response =
-                    new ApiResponse<>(202, "Developer found", dto);
+            CustomApiResponse<DeveloperDTO> response =
+                    new CustomApiResponse<>(202, "Developer found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        ApiResponse<DeveloperDTO> errorResponse = new ApiResponse<>(404, "Developer NOT found", null);
+        CustomApiResponse<DeveloperDTO> errorResponse = new CustomApiResponse<>(404, "Developer NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse<?>> create(DeveloperDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> create(DeveloperDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
-                    .body(new ApiResponse<>(400, "El item no puede ser nulo", null));
+                    .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
             Developer dbItem = service.add(dto.name());
             DeveloperDTO result = new DeveloperDTO(dbItem.getId(), dbItem.getName());
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(201, "Usuario creado correctamente", result));
+                    .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error al intentar registrar el item", null));
+                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el item", null));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<?>> update(
+    public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
             @RequestBody DeveloperDTO dto) {
 
@@ -119,7 +116,7 @@ public class DeveloperRESTController {
 
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(404, "Item NOT found", null));
+                    .body(new CustomApiResponse<>(404, "Item NOT found", null));
         }
 
         try {
@@ -130,11 +127,11 @@ public class DeveloperRESTController {
 
             DeveloperDTO result = new DeveloperDTO(updatedDbItem.getId(), updatedDbItem.getName());
 
-            return ResponseEntity.ok(new ApiResponse<>(200, "Update successful", result));
+            return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error while trying to update", null));
+                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
         }
     }
     @DeleteMapping("/{id}")
@@ -143,7 +140,7 @@ public class DeveloperRESTController {
 
         if(dbItem.getName().equals(Globals.ADMIN)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                    new ApiResponse<>(403, "Forbidden action", null));
+                    new CustomApiResponse<>(403, "Forbidden action", null));
         }
 
         boolean deleted = service.delete(id);
@@ -151,11 +148,11 @@ public class DeveloperRESTController {
         if (deleted) {
             String message = "Item deleted correctly";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new ApiResponse<>(204, message, null));
+                    .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "Unable to delete item with id: " + id;
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, message, null));
+                    .body(new CustomApiResponse<>(500, message, null));
         }
     }
 

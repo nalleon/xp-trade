@@ -254,7 +254,7 @@ public class MapperHelper extends TestUtilities {
         postEntity.setId(ID);
         postEntity.setUser(userEntity);
         postEntity.setGame(gameEntity);
-        postEntity.setCreationDate(new Date());
+        postEntity.setCreationDate(CREATION_DATE);
         postEntity.setContent(CONTENT);
         postEntity.setPicture(PICTURE);
 
@@ -263,7 +263,7 @@ public class MapperHelper extends TestUtilities {
         postDomain.setId(ID);
         postDomain.setUser(userDomain);
         postDomain.setGame(gameDomain);
-        postDomain.setCreationDate(new Date());
+        postDomain.setCreationDate(CREATION_DATE);
         postDomain.setContent(CONTENT);
         postDomain.setPicture(PICTURE);
 
@@ -279,14 +279,14 @@ public class MapperHelper extends TestUtilities {
         commentEntity.setUser(userEntity);
         commentEntity.setPost(postEntity);
         commentEntity.setContent(CONTENT);
-        commentEntity.setCreationDate(new Date());
+        commentEntity.setCreationDate(CREATION_DATE);
 
         commentDomain = new Comment();
         commentDomain.setId(ID);
         commentDomain.setUser(userDomain);
         commentDomain.setPost(postDomain);
         commentDomain.setContent(CONTENT);
-        commentDomain.setCreationDate(new Date());
+        commentDomain.setCreationDate(CREATION_DATE);
 
         commentDomains = new ArrayList<>();
         commentDomains.add(commentDomain);

@@ -13,6 +13,7 @@ public class UserTest extends TestUtilities {
     @BeforeEach
     public void beforeEach(){
         item = new User();
+        item = new User(NAME);
         item = new User(NAME, PASSWORD, EMAIL);
         item = new User(NAME, PASSWORD, EMAIL, VERIFIED);
         item = new User(NAME, PASSWORD, EMAIL, PROFILE_PICTURE);
