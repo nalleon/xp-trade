@@ -1,64 +1,64 @@
 package es.iespuertodelacruz.xptrade.mapper.dto;
 
 import es.iespuertodelacruz.xptrade.domain.Region;
-import es.iespuertodelacruz.xptrade.mapper.entity.IRegionEntityMapper;
-import es.iespuertodelacruz.xptrade.model.entities.RegionEntity;
+import es.iespuertodelacruz.xptrade.dto.RegionDTO;
+import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class IRegionDTOMapperTest extends MapperHelper {
+public class IRegionDTOMapperTest extends MapperDTOHelper {
     Region domainMapper;
-    RegionEntity entityMapper;
-    List<RegionEntity> entityListMapper;
+    RegionDTO dtoMapper;
+    List<RegionDTO> dtoListMapper;
     List<Region> domainListMapper;
 
     @Test
-    public void toEntityListTest(){
-        entityListMapper = IRegionEntityMapper.INSTANCE.toEntityList(regionDomains);
-        Assertions.assertEquals(regionEntities, entityListMapper, MESSAGE_ERROR);
+    public void toDTOListTest(){
+        dtoListMapper = IRegionDTOMapper.INSTANCE.toDTOList(regionDomains);
+        Assertions.assertEquals(regionDTOList, dtoListMapper, MESSAGE_ERROR);
 
         regionDomains = null;
-        entityListMapper = IRegionEntityMapper.INSTANCE.toEntityList(regionDomains);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        dtoListMapper = IRegionDTOMapper.INSTANCE.toDTOList(regionDomains);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainListTest(){
-        domainListMapper = IRegionEntityMapper.INSTANCE.toDomainList(regionEntities);
+        domainListMapper = IRegionDTOMapper.INSTANCE.toDomainList(regionDTOList);
 
 
         Assertions.assertEquals(regionDomains, domainListMapper, MESSAGE_ERROR);
 
-        regionEntities = null;
-        domainListMapper = IRegionEntityMapper.INSTANCE.toDomainList(regionEntities);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        regionDTOList = null;
+        domainListMapper = IRegionDTOMapper.INSTANCE.toDomainList(regionDTOList);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
     @Test
-    public void  toEntityTest (){
-        entityMapper = IRegionEntityMapper.INSTANCE.toEntity(regionDomain);
+    public void  toDTOTest (){
+        dtoMapper = IRegionDTOMapper.INSTANCE.toDTO(regionDomain);
 
-        Assertions.assertEquals(regionEntity.getId(), entityMapper.getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(regionEntity.getName(), entityMapper.getName(), MESSAGE_ERROR);
+        Assertions.assertEquals(regionDTO.id(), dtoMapper.id(), MESSAGE_ERROR);
+        Assertions.assertEquals(regionDTO.name(), dtoMapper.name(), MESSAGE_ERROR);
 
-        entityMapper = IRegionEntityMapper.INSTANCE.toEntity(regionDomain);
+        dtoMapper = IRegionDTOMapper.INSTANCE.toDTO(regionDomain);
 
         regionDomain = null;
-        entityMapper = IRegionEntityMapper.INSTANCE.toEntity(regionDomain);
-        Assertions.assertNull(entityMapper, MESSAGE_ERROR);
+        dtoMapper = IRegionDTOMapper.INSTANCE.toDTO(regionDomain);
+        Assertions.assertNull(dtoMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainTest (){
-        domainMapper = IRegionEntityMapper.INSTANCE.toDomain(regionEntity);
+        domainMapper = IRegionDTOMapper.INSTANCE.toDomain(regionDTO);
 
         Assertions.assertEquals(regionDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(regionDomain.getName(), domainMapper.getName(), MESSAGE_ERROR);
 
-        regionEntity = null;
-        domainMapper = IRegionEntityMapper.INSTANCE.toDomain(regionEntity);
+        regionDTO = null;
+        domainMapper = IRegionDTOMapper.INSTANCE.toDomain(regionDTO);
         Assertions.assertNull(domainMapper, MESSAGE_ERROR);
     }
 }

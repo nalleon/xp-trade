@@ -1,60 +1,58 @@
 package es.iespuertodelacruz.xptrade.mapper.dto;
 
 import es.iespuertodelacruz.xptrade.domain.Post;
-import es.iespuertodelacruz.xptrade.mapper.entity.IPostEntityMapper;
-import es.iespuertodelacruz.xptrade.model.entities.PostEntity;
+import es.iespuertodelacruz.xptrade.dto.PostDTO;
+import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class IPostDTOMapperTest extends MapperHelper {
+public class IPostDTOMapperTest extends MapperDTOHelper {
     Post domainMapper;
-    PostEntity entityMapper;
-    List<PostEntity> entityListMapper;
+    PostDTO dtoMapper;
+    List<PostDTO> dtoListMapper;
     List<Post> domainListMapper;
 
     @Test
-    public void toEntityListTest(){
-        entityListMapper = IPostEntityMapper.INSTANCE.toEntityList(postDomains);
-        Assertions.assertEquals(postEntities, entityListMapper, MESSAGE_ERROR);
+    public void toDTOListTest(){
+        dtoListMapper = IPostDTOMapper.INSTANCE.toDTOList(postDomains);
+        Assertions.assertEquals(postDTOList, dtoListMapper, MESSAGE_ERROR);
 
         postDomains = null;
-        entityListMapper = IPostEntityMapper.INSTANCE.toEntityList(postDomains);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        dtoListMapper = IPostDTOMapper.INSTANCE.toDTOList(postDomains);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainListTest(){
-        domainListMapper = IPostEntityMapper.INSTANCE.toDomainList(postEntities);
+        domainListMapper = IPostDTOMapper.INSTANCE.toDomainList(postDTOList);
         Assertions.assertEquals(postDomains, domainListMapper, MESSAGE_ERROR);
 
-        postEntities = null;
-        domainListMapper = IPostEntityMapper.INSTANCE.toDomainList(postEntities);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        postDTOList = null;
+        domainListMapper = IPostDTOMapper.INSTANCE.toDomainList(postDTOList);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
     @Test
-    public void toEntityTest(){
-        entityMapper = IPostEntityMapper.INSTANCE.toEntity(postDomain);
+    public void toDTOTest(){
+        dtoMapper = IPostDTOMapper.INSTANCE.toDTO(postDomain);
 
-        Assertions.assertEquals(postEntity.getId(), entityMapper.getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(postEntity.getUser(), entityMapper.getUser(), MESSAGE_ERROR);
-        Assertions.assertEquals(postEntity.getGame(), entityMapper.getGame(), MESSAGE_ERROR);
-        Assertions.assertEquals(postEntity.getContent(), entityMapper.getContent(), MESSAGE_ERROR);
-        Assertions.assertEquals(postEntity.getCreationDate(), entityMapper.getCreationDate(), MESSAGE_ERROR);
-        Assertions.assertEquals(postEntity.getPicture(), entityMapper.getPicture(), MESSAGE_ERROR);
-
-        entityMapper = IPostEntityMapper.INSTANCE.toEntity(postDomain);
+        Assertions.assertEquals(postDTO.id(), dtoMapper.id(), MESSAGE_ERROR);
+        Assertions.assertEquals(postDTO.user(), dtoMapper.user(), MESSAGE_ERROR);
+        Assertions.assertEquals(postDTO.game(), dtoMapper.game(), MESSAGE_ERROR);
+        Assertions.assertEquals(postDTO.content(), dtoMapper.content(), MESSAGE_ERROR);
+        Assertions.assertEquals(postDTO.creationDate(), dtoMapper.creationDate(), MESSAGE_ERROR);
+        Assertions.assertEquals(postDTO.picture(), dtoMapper.picture(), MESSAGE_ERROR);
 
         postDomain = null;
-        entityMapper = IPostEntityMapper.INSTANCE.toEntity(postDomain);
-        Assertions.assertNull(entityMapper, MESSAGE_ERROR);
+        dtoMapper = IPostDTOMapper.INSTANCE.toDTO(postDomain);
+        Assertions.assertNull(dtoMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainTest(){
-        domainMapper = IPostEntityMapper.INSTANCE.toDomain(postEntity);
+        domainMapper = IPostDTOMapper.INSTANCE.toDomain(postDTO);
 
         Assertions.assertEquals(postDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(postDomain.getUser(), domainMapper.getUser(), MESSAGE_ERROR);
@@ -62,8 +60,8 @@ public class IPostDTOMapperTest extends MapperHelper {
         Assertions.assertEquals(postDomain.getContent(), domainMapper.getContent(), MESSAGE_ERROR);
         Assertions.assertEquals(postDomain.getCreationDate(), domainMapper.getCreationDate(), MESSAGE_ERROR);
         Assertions.assertEquals(postDomain.getPicture(), domainMapper.getPicture(), MESSAGE_ERROR);
-        postEntity = null;
-        domainMapper = IPostEntityMapper.INSTANCE.toDomain(postEntity);
+        postDTO = null;
+        domainMapper = IPostDTOMapper.INSTANCE.toDomain(postDTO);
         Assertions.assertNull(domainMapper, MESSAGE_ERROR);
     }
 }

@@ -45,6 +45,14 @@ public class User implements Serializable {
     /**
      * Constructor of the class
      * @param username of the user
+     */
+    public User(String username) {
+        this.username = username;
+    }
+
+    /**
+     * Constructor of the class
+     * @param username of the user
      * @param password of the user
      * @param email of the user
      */

@@ -1,5 +1,6 @@
 package es.iespuertodelacruz.xptrade.dto;
 
+import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserSearchDTO;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
@@ -15,7 +16,7 @@ public class CommentDTOTest extends TestUtilities {
     CommentDTO item;
     PostDTO post;
     GameDTO game;
-    UserSearchDTO user;
+    UserDTO user;
     GenreDTO genre;
     RegionDTO region;
     PublisherDTO publisher;
@@ -42,7 +43,7 @@ public class CommentDTOTest extends TestUtilities {
         regionSet = new HashSet<>(Collections.singletonList(region));
 
         game = new GameDTO(ID, TITLE, COVER_ART, developerSet, genreSet, platformSet, publisherSet, regionSet);
-        user = new UserSearchDTO(NAME);
+        user =new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleDTO(ID, ROLE_NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE);
         post = new PostDTO(ID, game, user, CONTENT, PICTURE, CREATION_DATE);
         item = new CommentDTO(ID, post, user, CONTENT, CREATION_DATE);
     }

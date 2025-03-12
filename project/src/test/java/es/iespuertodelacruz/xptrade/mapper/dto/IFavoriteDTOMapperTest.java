@@ -1,64 +1,64 @@
 package es.iespuertodelacruz.xptrade.mapper.dto;
 
 import es.iespuertodelacruz.xptrade.domain.Favorite;
-import es.iespuertodelacruz.xptrade.mapper.entity.IFavoriteEntityMapper;
-import es.iespuertodelacruz.xptrade.model.entities.FavoriteEntity;
+import es.iespuertodelacruz.xptrade.dto.FavoriteDTO;
+import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class IFavoriteDTOMapperTest extends MapperHelper {
+public class IFavoriteDTOMapperTest extends MapperDTOHelper {
     Favorite domainMapper;
-    FavoriteEntity entityMapper;
-    List<FavoriteEntity> entityListMapper;
+    FavoriteDTO dtoMapper;
+    List<FavoriteDTO> dtoListMapper;
     List<Favorite> domainListMapper;
 
     @Test
-    public void toEntityListTest(){
-        entityListMapper = IFavoriteEntityMapper.INSTANCE.toEntityList(favoriteDomains);
-        Assertions.assertEquals(favoriteEntities, entityListMapper, MESSAGE_ERROR);
+    public void toDTOListTest(){
+        dtoListMapper = IFavoriteDTOMapper.INSTANCE.toDTOList(favoriteDomains);
+        Assertions.assertEquals(favoriteDTOList, dtoListMapper, MESSAGE_ERROR);
 
         favoriteDomains = null;
-        entityListMapper = IFavoriteEntityMapper.INSTANCE.toEntityList(favoriteDomains);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        dtoListMapper = IFavoriteDTOMapper.INSTANCE.toDTOList(favoriteDomains);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainListTest(){
-        domainListMapper = IFavoriteEntityMapper.INSTANCE.toDomainList(favoriteEntities);
+        domainListMapper = IFavoriteDTOMapper.INSTANCE.toDomainList(favoriteDTOList);
         Assertions.assertEquals(favoriteDomains, domainListMapper, MESSAGE_ERROR);
 
-        favoriteEntities = null;
-        domainListMapper = IFavoriteEntityMapper.INSTANCE.toDomainList(favoriteEntities);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        favoriteDTOList = null;
+        domainListMapper = IFavoriteDTOMapper.INSTANCE.toDomainList(favoriteDTOList);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
     @Test
-    public void toEntityTest(){
-        entityMapper = IFavoriteEntityMapper.INSTANCE.toEntity(favoriteDomain);
+    public void toDTOTest(){
+        dtoMapper = IFavoriteDTOMapper.INSTANCE.toDTO(favoriteDomain);
 
-        Assertions.assertEquals(favoriteEntity.getId(), entityMapper.getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(favoriteEntity.getUser(), entityMapper.getUser(), MESSAGE_ERROR);
-        Assertions.assertEquals(favoriteEntity.getGame(), entityMapper.getGame(), MESSAGE_ERROR);
+        Assertions.assertEquals(favoriteDTO.id(), dtoMapper.id(), MESSAGE_ERROR);
+        Assertions.assertEquals(favoriteDTO.user(), dtoMapper.user(), MESSAGE_ERROR);
+        Assertions.assertEquals(favoriteDTO.game(), dtoMapper.game(), MESSAGE_ERROR);
 
-        entityMapper = IFavoriteEntityMapper.INSTANCE.toEntity(favoriteDomain);
+        dtoMapper = IFavoriteDTOMapper.INSTANCE.toDTO(favoriteDomain);
 
         favoriteDomain = null;
-        entityMapper = IFavoriteEntityMapper.INSTANCE.toEntity(favoriteDomain);
-        Assertions.assertNull(entityMapper, MESSAGE_ERROR);
+        dtoMapper = IFavoriteDTOMapper.INSTANCE.toDTO(favoriteDomain);
+        Assertions.assertNull(dtoMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainTest(){
-        domainMapper = IFavoriteEntityMapper.INSTANCE.toDomain(favoriteEntity);
+        domainMapper = IFavoriteDTOMapper.INSTANCE.toDomain(favoriteDTO);
 
         Assertions.assertEquals(favoriteDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(favoriteDomain.getUser(), domainMapper.getUser(), MESSAGE_ERROR);
         Assertions.assertEquals(favoriteDomain.getGame(), domainMapper.getGame(), MESSAGE_ERROR);
 
-        favoriteEntity = null;
-        domainMapper = IFavoriteEntityMapper.INSTANCE.toDomain(favoriteEntity);
+        favoriteDTO = null;
+        domainMapper = IFavoriteDTOMapper.INSTANCE.toDomain(favoriteDTO);
         Assertions.assertNull(domainMapper, MESSAGE_ERROR);
     }
 }

@@ -1,65 +1,65 @@
 package es.iespuertodelacruz.xptrade.mapper.dto;
 
 import es.iespuertodelacruz.xptrade.domain.Publisher;
-import es.iespuertodelacruz.xptrade.mapper.entity.IPublisherEntityMapper;
-import es.iespuertodelacruz.xptrade.model.entities.PublisherEntity;
+import es.iespuertodelacruz.xptrade.dto.PublisherDTO;
+import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class IPublisherDTOMapperTest extends MapperHelper {
+public class IPublisherDTOMapperTest extends MapperDTOHelper {
     Publisher domainMapper;
-    PublisherEntity entityMapper;
-    List<PublisherEntity> entityListMapper;
+    PublisherDTO dtoMapper;
+    List<PublisherDTO> dtoListMapper;
     List<Publisher> domainListMapper;
 
     @Test
-    public void toEntityListTest(){
-        entityListMapper = IPublisherEntityMapper.INSTANCE.toEntityList(publisherDomains);
-        Assertions.assertEquals(publisherEntities, entityListMapper, MESSAGE_ERROR);
+    public void toDTOListTest(){
+        dtoListMapper = IPublisherDTOMapper.INSTANCE.toDTOList(publisherDomains);
+        Assertions.assertEquals(publisherDTOList, dtoListMapper, MESSAGE_ERROR);
 
         publisherDomains = null;
-        entityListMapper = IPublisherEntityMapper.INSTANCE.toEntityList(publisherDomains);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        dtoListMapper = IPublisherDTOMapper.INSTANCE.toDTOList(publisherDomains);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainListTest(){
-        domainListMapper = IPublisherEntityMapper.INSTANCE.toDomainList(publisherEntities);
+        domainListMapper = IPublisherDTOMapper.INSTANCE.toDomainList(publisherDTOList);
 
 
         Assertions.assertEquals(publisherDomains, domainListMapper, MESSAGE_ERROR);
 
-        publisherEntities = null;
-        domainListMapper = IPublisherEntityMapper.INSTANCE.toDomainList(publisherEntities);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        publisherDTOList = null;
+        domainListMapper = IPublisherDTOMapper.INSTANCE.toDomainList(publisherDTOList);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
     @Test
-    public void  toEntityTest (){
-        entityMapper = IPublisherEntityMapper.INSTANCE.toEntity(publisherDomain);
+    public void  toDTOTest (){
+        dtoMapper = IPublisherDTOMapper.INSTANCE.toDTO(publisherDomain);
 
-        Assertions.assertEquals(publisherEntity.getId(), entityMapper.getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(publisherEntity.getName(), entityMapper.getName(), MESSAGE_ERROR);
+        Assertions.assertEquals(publisherDTO.id(), dtoMapper.id(), MESSAGE_ERROR);
+        Assertions.assertEquals(publisherDTO.name(), dtoMapper.name(), MESSAGE_ERROR);
 
-        entityMapper = IPublisherEntityMapper.INSTANCE.toEntity(publisherDomain);
+        dtoMapper = IPublisherDTOMapper.INSTANCE.toDTO(publisherDomain);
 
         publisherDomain = null;
-        entityMapper = IPublisherEntityMapper.INSTANCE.toEntity(publisherDomain);
-        Assertions.assertNull(entityMapper, MESSAGE_ERROR);
+        dtoMapper = IPublisherDTOMapper.INSTANCE.toDTO(publisherDomain);
+        Assertions.assertNull(dtoMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainTest (){
-        domainMapper = IPublisherEntityMapper.INSTANCE.toDomain(publisherEntity);
+        domainMapper = IPublisherDTOMapper.INSTANCE.toDomain(publisherDTO);
 
         Assertions.assertEquals(publisherDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(publisherDomain.getName(), domainMapper.getName(), MESSAGE_ERROR);
 
 
-        publisherEntity = null;
-        domainMapper = IPublisherEntityMapper.INSTANCE.toDomain(publisherEntity);
+        publisherDTO = null;
+        domainMapper = IPublisherDTOMapper.INSTANCE.toDomain(publisherDTO);
         Assertions.assertNull(domainMapper, MESSAGE_ERROR);
     }
 }

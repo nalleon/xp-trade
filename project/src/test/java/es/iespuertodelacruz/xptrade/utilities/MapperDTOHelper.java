@@ -3,6 +3,7 @@ package es.iespuertodelacruz.xptrade.utilities;
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.Collection;
 import es.iespuertodelacruz.xptrade.dto.*;
+import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserSearchDTO;
 import es.iespuertodelacruz.xptrade.model.entities.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,9 +19,9 @@ public class MapperDTOHelper extends TestUtilities {
     public List<RoleDTO> roleDTOList;
     public List<Role> roleDomains;
 
-    public UserSearchDTO userDTO;
+    public UserDTO userDTO;
     public User userDomain;
-    public List<UserSearchDTO> userDTOList;
+    public List<UserDTO> userDTOList;
     public List<User> userDomains;
 
     public GenreDTO genreDTO;
@@ -77,7 +78,7 @@ public class MapperDTOHelper extends TestUtilities {
 
     @BeforeEach
     public void beforeEach() {
-        roleDTO = new RoleDTO(ROLE_NAME);
+        roleDTO = new RoleDTO(ID,ROLE_NAME);
 
         roleDTOList = new ArrayList<>();
         roleDTOList.add(roleDTO);
@@ -90,7 +91,7 @@ public class MapperDTOHelper extends TestUtilities {
         roleDomains.add(roleDomain);
 
 
-        userDTO = new UserSearchDTO(NAME);
+        userDTO = new UserDTO(ID, USERNAME,PASSWORD, EMAIL, roleDTO, VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE);
 
         userDomain = new User();
         userDomain.setId(ID);
@@ -226,7 +227,7 @@ public class MapperDTOHelper extends TestUtilities {
         postDomain.setId(ID);
         postDomain.setUser(userDomain);
         postDomain.setGame(gameDomain);
-        postDomain.setCreationDate(new Date());
+        postDomain.setCreationDate(CREATION_DATE);
         postDomain.setContent(CONTENT);
         postDomain.setPicture(PICTURE);
 
@@ -244,7 +245,7 @@ public class MapperDTOHelper extends TestUtilities {
         commentDomain.setUser(userDomain);
         commentDomain.setPost(postDomain);
         commentDomain.setContent(CONTENT);
-        commentDomain.setCreationDate(new Date());
+        commentDomain.setCreationDate(CREATION_DATE);
 
         commentDomains = new ArrayList<>();
         commentDomains.add(commentDomain);

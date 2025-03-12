@@ -42,8 +42,8 @@ public class RoleRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<RoleDTO> filteredList = service.findAll().stream().map(usuario ->
-                new RoleDTO(usuario.getName())).collect(Collectors.toList());
+        List<RoleDTO> filteredList = service.findAll().stream().map(item ->
+                new RoleDTO(item.getId(), item.getName())).collect(Collectors.toList());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
@@ -59,7 +59,7 @@ public class RoleRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Role aux = service.findById(id);
         if (aux != null){
-            RoleDTO dto =  new RoleDTO(aux.getName());
+            RoleDTO dto =  new RoleDTO(aux.getId(),aux.getName());
 
             ApiResponse<RoleDTO> response =
                     new ApiResponse<>(302, "Role found", dto);
@@ -75,7 +75,7 @@ public class RoleRESTController {
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Role aux = service.findByName(name);
         if (aux != null){
-            RoleDTO dto =  new RoleDTO(aux.getName());
+            RoleDTO dto =  new RoleDTO(aux.getId(),aux.getName());
 
             ApiResponse<RoleDTO> response =
                     new ApiResponse<>(202, "Role found", dto);
@@ -91,18 +91,18 @@ public class RoleRESTController {
     public ResponseEntity<ApiResponse<?>> create(RoleDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
-                    .body(new ApiResponse<>(400, "El usuario no puede ser nulo", null));
+                    .body(new ApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
             Role dbItem = service.add(dto.name());
-            RoleDTO result = new RoleDTO(dbItem.getName());
+            RoleDTO result = new RoleDTO(dbItem.getId(),dbItem.getName());
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error al intentar registrar el usuario", null));
+                    .body(new ApiResponse<>(500, "Error al intentar registrar el item", null));
         }
     }
 
@@ -128,7 +128,7 @@ public class RoleRESTController {
 
             Role updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            RoleDTO result = new RoleDTO(updatedDbItem.getName());
+            RoleDTO result = new RoleDTO(updatedDbItem.getId(),updatedDbItem.getName());
 
             return ResponseEntity.ok(new ApiResponse<>(200, "Update successful", result));
 

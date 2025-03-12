@@ -1,65 +1,66 @@
 package es.iespuertodelacruz.xptrade.mapper.dto;
 
 import es.iespuertodelacruz.xptrade.domain.Genre;
-import es.iespuertodelacruz.xptrade.mapper.entity.IGenreEntityMapper;
-import es.iespuertodelacruz.xptrade.model.entities.GenreEntity;
+
+import es.iespuertodelacruz.xptrade.dto.GenreDTO;
+import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class IGenreDTOMapperTest extends MapperHelper {
+public class IGenreDTOMapperTest extends MapperDTOHelper {
     Genre domainMapper;
-    GenreEntity entityMapper;
-    List<GenreEntity> entityListMapper;
+    GenreDTO dtoMapper;
+    List<GenreDTO> dtoListMapper;
     List<Genre> domainListMapper;
 
     @Test
-    public void toEntityListTest(){
-        entityListMapper = IGenreEntityMapper.INSTANCE.toEntityList(genreDomains);
-        Assertions.assertEquals(genreEntities, entityListMapper, MESSAGE_ERROR);
+    public void toDTOListTest(){
+        dtoListMapper = IGenreDTOMapper.INSTANCE.toDTOList(genreDomains);
+        Assertions.assertEquals(genreDTOList, dtoListMapper, MESSAGE_ERROR);
 
         genreDomains = null;
-        entityListMapper = IGenreEntityMapper.INSTANCE.toEntityList(genreDomains);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        dtoListMapper = IGenreDTOMapper.INSTANCE.toDTOList(genreDomains);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainListTest(){
-        domainListMapper = IGenreEntityMapper.INSTANCE.toDomainList(genreEntities);
+        domainListMapper = IGenreDTOMapper.INSTANCE.toDomainList(genreDTOList);
 
 
         Assertions.assertEquals(genreDomains, domainListMapper, MESSAGE_ERROR);
 
-        genreEntities = null;
-        domainListMapper = IGenreEntityMapper.INSTANCE.toDomainList(genreEntities);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        genreDTOList = null;
+        domainListMapper = IGenreDTOMapper.INSTANCE.toDomainList(genreDTOList);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
     @Test
-    public void  toEntityTest (){
-        entityMapper = IGenreEntityMapper.INSTANCE.toEntity(genreDomain);
+    public void  toDTOTest (){
+        dtoMapper = IGenreDTOMapper.INSTANCE.toDTO(genreDomain);
 
-        Assertions.assertEquals(genreEntity.getId(), entityMapper.getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(genreEntity.getName(), entityMapper.getName(), MESSAGE_ERROR);
+        Assertions.assertEquals(genreDTO.id(), dtoMapper.id(), MESSAGE_ERROR);
+        Assertions.assertEquals(genreDTO.name(), dtoMapper.name(), MESSAGE_ERROR);
 
-        entityMapper = IGenreEntityMapper.INSTANCE.toEntity(genreDomain);
+        dtoMapper = IGenreDTOMapper.INSTANCE.toDTO(genreDomain);
 
         genreDomain = null;
-        entityMapper = IGenreEntityMapper.INSTANCE.toEntity(genreDomain);
-        Assertions.assertNull(entityMapper, MESSAGE_ERROR);
+        dtoMapper = IGenreDTOMapper.INSTANCE.toDTO(genreDomain);
+        Assertions.assertNull(dtoMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainTest (){
-        domainMapper = IGenreEntityMapper.INSTANCE.toDomain(genreEntity);
+        domainMapper = IGenreDTOMapper.INSTANCE.toDomain(genreDTO);
 
         Assertions.assertEquals(genreDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(genreDomain.getName(), domainMapper.getName(), MESSAGE_ERROR);
 
 
-        genreEntity = null;
-        domainMapper = IGenreEntityMapper.INSTANCE.toDomain(genreEntity);
+        genreDTO = null;
+        domainMapper = IGenreDTOMapper.INSTANCE.toDomain(genreDTO);
         Assertions.assertNull(domainMapper, MESSAGE_ERROR);
     }
 }

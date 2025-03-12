@@ -18,6 +18,4 @@ public interface IRoleDTOMapper {
     RoleDTO toDTO(Role domain);
     List<Role> toDomainList(List<RoleDTO> dtos);
     List<RoleDTO> toDTOList(List<Role> domains);
-
-
 }
