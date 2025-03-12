@@ -3,6 +3,7 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 import es.iespuertodelacruz.xptrade.domain.Platform;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
 import es.iespuertodelacruz.xptrade.dto.PlatformDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.IPlatformDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,8 +39,7 @@ public class PlatformRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<PlatformDTO> filteredList = service.findAll().stream().map(item ->
-                new PlatformDTO(item.getId(),item.getName())).collect(Collectors.toList());
+        List<PlatformDTO> filteredList = IPlatformDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
@@ -55,7 +55,7 @@ public class PlatformRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Platform aux = service.findById(id);
         if (aux != null){
-            PlatformDTO dto =  new PlatformDTO(aux.getId(), aux.getName());
+            PlatformDTO dto =  IPlatformDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<PlatformDTO> response =
                     new CustomApiResponse<>(302, "Platform found", dto);
@@ -71,7 +71,7 @@ public class PlatformRESTController {
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Platform aux = service.findByName(name);
         if (aux != null){
-            PlatformDTO dto =  new PlatformDTO(aux.getId(), aux.getName());
+            PlatformDTO dto = IPlatformDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<PlatformDTO> response =
                     new CustomApiResponse<>(202, "Platform found", dto);
@@ -92,7 +92,7 @@ public class PlatformRESTController {
 
         try {
             Platform dbItem = service.add(dto.name());
-            PlatformDTO result = new PlatformDTO(dbItem.getId(), dbItem.getName());
+            PlatformDTO result = IPlatformDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -124,7 +124,7 @@ public class PlatformRESTController {
 
             Platform updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            PlatformDTO result = new PlatformDTO(updatedDbItem.getId(), updatedDbItem.getName());
+            PlatformDTO result = IPlatformDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 

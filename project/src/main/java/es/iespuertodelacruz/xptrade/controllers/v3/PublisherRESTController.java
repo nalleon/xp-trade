@@ -3,6 +3,7 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 import es.iespuertodelacruz.xptrade.domain.Publisher;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
 import es.iespuertodelacruz.xptrade.dto.PublisherDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.IPublisherDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,8 +40,7 @@ public class PublisherRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<PublisherDTO> filteredList = service.findAll().stream().map(item ->
-                new PublisherDTO(item.getId(),item.getName())).collect(Collectors.toList());
+        List<PublisherDTO> filteredList = IPublisherDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
@@ -56,7 +56,7 @@ public class PublisherRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Publisher aux = service.findById(id);
         if (aux != null){
-            PublisherDTO dto =  new PublisherDTO(aux.getId(), aux.getName());
+            PublisherDTO dto = IPublisherDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<PublisherDTO> response =
                     new CustomApiResponse<>(302, "Publisher found", dto);
@@ -72,7 +72,7 @@ public class PublisherRESTController {
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Publisher aux = service.findByName(name);
         if (aux != null){
-            PublisherDTO dto =  new PublisherDTO(aux.getId(), aux.getName());
+            PublisherDTO dto = IPublisherDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<PublisherDTO> response =
                     new CustomApiResponse<>(202, "Publisher found", dto);
@@ -93,7 +93,7 @@ public class PublisherRESTController {
 
         try {
             Publisher dbItem = service.add(dto.name());
-            PublisherDTO result = new PublisherDTO(dbItem.getId(), dbItem.getName());
+            PublisherDTO result = IPublisherDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -125,7 +125,7 @@ public class PublisherRESTController {
 
             Publisher updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            PublisherDTO result = new PublisherDTO(updatedDbItem.getId(), updatedDbItem.getName());
+            PublisherDTO result = IPublisherDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 

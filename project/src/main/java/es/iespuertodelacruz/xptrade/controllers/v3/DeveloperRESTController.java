@@ -3,6 +3,7 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 import es.iespuertodelacruz.xptrade.domain.Developer;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
 import es.iespuertodelacruz.xptrade.dto.DeveloperDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.IDeveloperDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,8 +40,7 @@ public class DeveloperRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<DeveloperDTO> filteredList = service.findAll().stream().map(item ->
-                new DeveloperDTO(item.getId(),item.getName())).collect(Collectors.toList());
+        List<DeveloperDTO> filteredList = IDeveloperDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
@@ -56,7 +56,7 @@ public class DeveloperRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Developer aux = service.findById(id);
         if (aux != null){
-            DeveloperDTO dto =  new DeveloperDTO(aux.getId(), aux.getName());
+            DeveloperDTO dto = IDeveloperDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<DeveloperDTO> response =
                     new CustomApiResponse<>(302, "Developer found", dto);
@@ -72,7 +72,7 @@ public class DeveloperRESTController {
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Developer aux = service.findByName(name);
         if (aux != null){
-            DeveloperDTO dto =  new DeveloperDTO(aux.getId(), aux.getName());
+            DeveloperDTO dto = IDeveloperDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<DeveloperDTO> response =
                     new CustomApiResponse<>(202, "Developer found", dto);
@@ -93,7 +93,7 @@ public class DeveloperRESTController {
 
         try {
             Developer dbItem = service.add(dto.name());
-            DeveloperDTO result = new DeveloperDTO(dbItem.getId(), dbItem.getName());
+            DeveloperDTO result = IDeveloperDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -125,7 +125,7 @@ public class DeveloperRESTController {
 
             Developer updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            DeveloperDTO result = new DeveloperDTO(updatedDbItem.getId(), updatedDbItem.getName());
+            DeveloperDTO result = IDeveloperDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 

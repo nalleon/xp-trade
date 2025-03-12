@@ -3,6 +3,7 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 import es.iespuertodelacruz.xptrade.domain.Region;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
 import es.iespuertodelacruz.xptrade.dto.RegionDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.IRegionDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,8 +39,7 @@ public class RegionRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<RegionDTO> filteredList = service.findAll().stream().map(item ->
-                new RegionDTO(item.getId(),item.getName())).collect(Collectors.toList());
+        List<RegionDTO> filteredList = IRegionDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
@@ -71,7 +71,7 @@ public class RegionRESTController {
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Region aux = service.findByName(name);
         if (aux != null){
-            RegionDTO dto =  new RegionDTO(aux.getId(), aux.getName());
+            RegionDTO dto = IRegionDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<RegionDTO> response =
                     new CustomApiResponse<>(202, "Region found", dto);
@@ -92,7 +92,7 @@ public class RegionRESTController {
 
         try {
             Region dbItem = service.add(dto.name());
-            RegionDTO result = new RegionDTO(dbItem.getId(), dbItem.getName());
+            RegionDTO result = IRegionDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -124,7 +124,7 @@ public class RegionRESTController {
 
             Region updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            RegionDTO result = new RegionDTO(updatedDbItem.getId(), updatedDbItem.getName());
+            RegionDTO result = IRegionDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
