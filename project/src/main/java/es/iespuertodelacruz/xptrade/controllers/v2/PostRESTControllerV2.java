@@ -19,8 +19,8 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v3/posts")
-@Tag(name="v3 - Post ", description = "For administrators")
+@RequestMapping("/api/v2/posts")
+@Tag(name="v2 - Post ", description = "For authenticated users")
 public class PostRESTControllerV2 {
 
     public static final String ADMIN = "ROLE_ADMIN";

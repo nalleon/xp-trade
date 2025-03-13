@@ -22,8 +22,8 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v3/games")
-@Tag(name="v3 - Game", description = "For administrators")
+@RequestMapping("/api/v2/games")
+@Tag(name="v2 - Game", description = "For authenticated users")
 public class GameRESTControllerV2 {
 
 
