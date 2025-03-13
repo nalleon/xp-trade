@@ -2,7 +2,7 @@ package es.iespuertodelacruz.xptrade.mapper.dto;
 
 import es.iespuertodelacruz.xptrade.domain.Favorite;
 import es.iespuertodelacruz.xptrade.dto.FavoriteDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.user.IUserSearchDTOMapper;
+import es.iespuertodelacruz.xptrade.mapper.dto.user.IUserDTOMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
-@Mapper(uses = {IUserSearchDTOMapper.class, IGameDTOMapper.class})
+@Mapper(uses = {IUserDTOMapper.class, IGameDTOMapper.class})
 public interface IFavoriteDTOMapper {
     IFavoriteDTOMapper INSTANCE = Mappers.getMapper(IFavoriteDTOMapper.class);
     Favorite toDomain(FavoriteDTO dto);

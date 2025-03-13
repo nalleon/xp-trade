@@ -51,6 +51,11 @@ public class GameService implements IGameService {
     }
 
     @Override
+    public List<Game> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
     public List<Game> findAllByPlatform(Platform platform) {
         return repository.findAllByPlatform(platform);
     }

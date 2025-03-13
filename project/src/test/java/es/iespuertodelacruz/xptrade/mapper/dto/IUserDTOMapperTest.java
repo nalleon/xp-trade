@@ -1,45 +1,46 @@
 package es.iespuertodelacruz.xptrade.mapper.dto;
 
 import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.mapper.entity.IUserEntityMapper;
-import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
-import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
+
+import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
+import es.iespuertodelacruz.xptrade.dto.user.UserSearchDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.user.IUserDTOMapper;
+import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class IUserDTOMapperTest extends MapperHelper {
+public class IUserDTOMapperTest extends MapperDTOHelper {
     User domainMapper;
-    UserEntity entityMapper;
-    List<UserEntity> entityListMapper;
+    UserDTO dtoMapper;
+    List<UserDTO> dtoListMapper;
     List<User> domainListMapper;
 
     @Test
-    public void toEntityTest(){
-        entityMapper = IUserEntityMapper.INSTANCE.toEntity(userDomain);
+    public void toDTOTest(){
+        dtoMapper = IUserDTOMapper.INSTANCE.toDTO(userDomain);
 
-        Assertions.assertEquals(userEntity.getId(), entityMapper.getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(userEntity.getUsername(), entityMapper.getUsername(), MESSAGE_ERROR);
-        Assertions.assertEquals(userEntity.getEmail(), entityMapper.getEmail(), MESSAGE_ERROR);
-        Assertions.assertEquals(userEntity.getPassword(), entityMapper.getPassword(), MESSAGE_ERROR);
-        Assertions.assertEquals(userEntity.getCreationDate(), entityMapper.getCreationDate(), MESSAGE_ERROR);
-        Assertions.assertEquals(userEntity.getVerified(), entityMapper.getVerified(), MESSAGE_ERROR);
-        Assertions.assertEquals(userEntity.getVerificationToken(), entityMapper.getVerificationToken(), MESSAGE_ERROR);
-        Assertions.assertEquals(userEntity.getRole().getId(), entityMapper.getRole().getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(userEntity.getRole().getName(), entityMapper.getRole().getName(), MESSAGE_ERROR);
-        Assertions.assertEquals(userEntity.getProfilePicture(), entityMapper.getProfilePicture(), MESSAGE_ERROR);
+        Assertions.assertEquals(userDTO.username(), dtoMapper.username(), MESSAGE_ERROR);
 
-        entityMapper = IUserEntityMapper.INSTANCE.toEntity(userDomain);
+        Assertions.assertEquals(userDTO.id(), dtoMapper.id(), MESSAGE_ERROR);
+        Assertions.assertEquals(userDTO.username(), dtoMapper.username(), MESSAGE_ERROR);
+        Assertions.assertEquals(userDTO.email(), dtoMapper.email(), MESSAGE_ERROR);
+        Assertions.assertEquals(userDTO.password(), dtoMapper.password(), MESSAGE_ERROR);
+        Assertions.assertEquals(userDTO.creationDate(), dtoMapper.creationDate(), MESSAGE_ERROR);
+        Assertions.assertEquals(userDTO.verified(), dtoMapper.verified(), MESSAGE_ERROR);
+        Assertions.assertEquals(userDTO.verificationToken(), dtoMapper.verificationToken(), MESSAGE_ERROR);
+        Assertions.assertEquals(userDTO.role(), dtoMapper.role(), MESSAGE_ERROR);
+        Assertions.assertEquals(userDTO.profilePicture(), dtoMapper.profilePicture(), MESSAGE_ERROR);
 
         userDomain = null;
-        entityMapper = IUserEntityMapper.INSTANCE.toEntity(userDomain);
-        Assertions.assertNull(entityMapper, MESSAGE_ERROR);
+        dtoMapper = IUserDTOMapper.INSTANCE.toDTO(userDomain);
+        Assertions.assertNull(dtoMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainTest(){
-        domainMapper = IUserEntityMapper.INSTANCE.toDomain(userEntity);
+        domainMapper = IUserDTOMapper.INSTANCE.toDomain(userDTO);
 
         Assertions.assertEquals(userDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(userDomain.getUsername(), domainMapper.getUsername(), MESSAGE_ERROR);
@@ -54,32 +55,30 @@ public class IUserDTOMapperTest extends MapperHelper {
         Assertions.assertEquals(userDomain.getProfilePicture(), domainMapper.getProfilePicture(), MESSAGE_ERROR);
 
 
-        userEntity = null;
-        domainMapper = IUserEntityMapper.INSTANCE.toDomain(userEntity);
+        userDTO = null;
+        domainMapper = IUserDTOMapper.INSTANCE.toDomain(userDTO);
         Assertions.assertNull(domainMapper, MESSAGE_ERROR);
     }
 
     @Test
-    public void toEntityListTest(){
-        entityListMapper = IUserEntityMapper.INSTANCE.toEntityList(userDomains);
+    public void toDTOListTest(){
+        dtoListMapper = IUserDTOMapper.INSTANCE.toDTOList(userDomains);
 
-        Assertions.assertEquals(userEntities, entityListMapper, MESSAGE_ERROR);
+        Assertions.assertEquals(userDTOList, dtoListMapper, MESSAGE_ERROR);
 
         userDomains = null;
-        entityListMapper = IUserEntityMapper.INSTANCE.toEntityList(userDomains);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
-
+        dtoListMapper = IUserDTOMapper.INSTANCE.toDTOList(userDomains);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainListTest(){
-        domainListMapper = IUserEntityMapper.INSTANCE.toDomainList(userEntities);
+        domainListMapper = IUserDTOMapper.INSTANCE.toDomainList(userDTOList);
 
+        Assertions.assertEquals(userDomains.get(0).getUsername(), domainListMapper.get(0).getUsername(), MESSAGE_ERROR);
 
-        Assertions.assertEquals(userDomains, domainListMapper, MESSAGE_ERROR);
-
-        userEntities = null;
-        domainListMapper = IUserEntityMapper.INSTANCE.toDomainList(userEntities);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        userDTOList = null;
+        domainListMapper = IUserDTOMapper.INSTANCE.toDomainList(userDTOList);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
 }

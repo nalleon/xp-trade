@@ -20,7 +20,6 @@ public class Post {
 
     private Game game;
 
-
     private User user;
 
     private String content;

@@ -13,6 +13,7 @@ public interface IGameService {
 
     Game findById(Integer id);
     Game findByTitle(String title);
+    List<Game> findAll();
     List<Game> findAllByPlatform(Platform platform);
     List<Game> findAllByDeveloper(Developer developer);
     List<Game> findAllByPublisher(Publisher publisher);

@@ -12,11 +12,12 @@ public class RoleDTOTest extends TestUtilities {
 
     @BeforeEach
     public void beforeEach() {
-        item = new RoleDTO(ROLE_NAME);
+        item = new RoleDTO(ID, ROLE_NAME);
     }
 
     @Test
     public void getSetTest(){
+        Assertions.assertEquals(ID, item.id(), MESSAGE_ERROR);
         Assertions.assertEquals(ROLE_NAME, item.name(), MESSAGE_ERROR);
     }
 }

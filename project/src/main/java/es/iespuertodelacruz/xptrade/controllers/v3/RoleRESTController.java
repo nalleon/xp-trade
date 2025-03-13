@@ -1,13 +1,10 @@
 package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Role;
-import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IRoleService;
 import es.iespuertodelacruz.xptrade.dto.RoleDTO;
-import es.iespuertodelacruz.xptrade.dto.user.UserOutputDTO;
-import es.iespuertodelacruz.xptrade.dto.user.UserRegisterDTO;
-import es.iespuertodelacruz.xptrade.dto.user.UserUpdateInputDTO;
-import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
+import es.iespuertodelacruz.xptrade.mapper.dto.IRoleDTOMapper;
+import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,31 +39,30 @@ public class RoleRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<RoleDTO> filteredList = service.findAll().stream().map(usuario ->
-                new RoleDTO(usuario.getName())).collect(Collectors.toList());
+        List<RoleDTO> filteredList = IRoleDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new ApiResponse<>(204, message, filteredList));
+                    .body(new CustomApiResponse<>(204, message, filteredList));
         }
 
         String message = "List successfully obtained";
-        return ResponseEntity.ok(new ApiResponse<>(200, message, filteredList));
+        return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Role aux = service.findById(id);
         if (aux != null){
-            RoleDTO dto =  new RoleDTO(aux.getName());
+            RoleDTO dto =  new RoleDTO(aux.getId(),aux.getName());
 
-            ApiResponse<RoleDTO> response =
-                    new ApiResponse<>(302, "Role found", dto);
+            CustomApiResponse<RoleDTO> response =
+                    new CustomApiResponse<>(302, "Role found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        ApiResponse<RoleDTO> errorResponse = new ApiResponse<>(404, "Role NOT found", null);
+        CustomApiResponse<RoleDTO> errorResponse = new CustomApiResponse<>(404, "Role NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
@@ -75,39 +71,39 @@ public class RoleRESTController {
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Role aux = service.findByName(name);
         if (aux != null){
-            RoleDTO dto =  new RoleDTO(aux.getName());
+            RoleDTO dto = IRoleDTOMapper.INSTANCE.toDTO(aux);
 
-            ApiResponse<RoleDTO> response =
-                    new ApiResponse<>(202, "Role found", dto);
+            CustomApiResponse<RoleDTO> response =
+                    new CustomApiResponse<>(202, "Role found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        ApiResponse<RoleDTO> errorResponse = new ApiResponse<>(404, "Role NOT found", null);
+        CustomApiResponse<RoleDTO> errorResponse = new CustomApiResponse<>(404, "Role NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse<?>> create(RoleDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> create(RoleDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
-                    .body(new ApiResponse<>(400, "El usuario no puede ser nulo", null));
+                    .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
             Role dbItem = service.add(dto.name());
-            RoleDTO result = new RoleDTO(dbItem.getName());
+            RoleDTO result = IRoleDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(201, "Usuario creado correctamente", result));
+                    .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error al intentar registrar el usuario", null));
+                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el item", null));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<?>> update(
+    public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
             @RequestBody RoleDTO dto) {
 
@@ -119,7 +115,7 @@ public class RoleRESTController {
 
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(404, "User NOT found", null));
+                    .body(new CustomApiResponse<>(404, "User NOT found", null));
         }
 
         try {
@@ -128,13 +124,13 @@ public class RoleRESTController {
 
             Role updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            RoleDTO result = new RoleDTO(updatedDbItem.getName());
+            RoleDTO result = IRoleDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
-            return ResponseEntity.ok(new ApiResponse<>(200, "Update successful", result));
+            return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error while trying to update", null));
+                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
         }
     }
     @DeleteMapping("/{id}")
@@ -143,7 +139,7 @@ public class RoleRESTController {
 
         if(dbItem.getName().equals(ADMIN)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                    new ApiResponse<>(403, "Forbidden action", null));
+                    new CustomApiResponse<>(403, "Forbidden action", null));
         }
 
         boolean deleted = service.delete(id);
@@ -151,11 +147,11 @@ public class RoleRESTController {
         if (deleted) {
             String message = "Item deleted correctly";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new ApiResponse<>(204, message, null));
+                    .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "Unable to delete item with id: " + id;
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, message, null));
+                    .body(new CustomApiResponse<>(500, message, null));
         }
     }
 

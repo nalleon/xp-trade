@@ -1,51 +1,52 @@
 package es.iespuertodelacruz.xptrade.mapper.dto;
 
 import es.iespuertodelacruz.xptrade.domain.Game;
-import es.iespuertodelacruz.xptrade.mapper.entity.IGameEntityMapper;
-import es.iespuertodelacruz.xptrade.model.entities.GameEntity;
+
+import es.iespuertodelacruz.xptrade.dto.GameDTO;
+import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class IGameDTOMapperTest extends MapperHelper {
+public class IGameDTOMapperTest extends MapperDTOHelper {
     Game domainMapper;
-    GameEntity entityMapper;
-    List<GameEntity> entityListMapper;
+    GameDTO dtoMapper;
+    List<GameDTO> dtoListMapper;
     List<Game> domainListMapper;
 
     @Test
-    public void toEntityListTest(){
-        entityListMapper = IGameEntityMapper.INSTANCE.toEntityList(gameDomains);
-        Assertions.assertEquals(gameEntities, entityListMapper, MESSAGE_ERROR);
+    public void toDTOListTest(){
+        dtoListMapper = IGameDTOMapper.INSTANCE.toDTOList(gameDomains);
+        Assertions.assertEquals(gameDTOList, dtoListMapper, MESSAGE_ERROR);
 
         gameDomains = null;
-        entityListMapper = IGameEntityMapper.INSTANCE.toEntityList(gameDomains);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        dtoListMapper = IGameDTOMapper.INSTANCE.toDTOList(gameDomains);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainListTest(){
-        domainListMapper = IGameEntityMapper.INSTANCE.toDomainList(gameEntities);
+        domainListMapper = IGameDTOMapper.INSTANCE.toDomainList(gameDTOList);
         Assertions.assertEquals(gameDomains, domainListMapper, MESSAGE_ERROR);
 
-        gameEntities = null;
-        domainListMapper = IGameEntityMapper.INSTANCE.toDomainList(gameEntities);
-        Assertions.assertNull(entityListMapper, MESSAGE_ERROR);
+        gameDTOList = null;
+        domainListMapper = IGameDTOMapper.INSTANCE.toDomainList(gameDTOList);
+        Assertions.assertNull(dtoListMapper, MESSAGE_ERROR);
     }
     @Test
-    public void toEntityTest(){
-        entityMapper = IGameEntityMapper.INSTANCE.toEntity(gameDomain);
+    public void toDTOTest(){
+        dtoMapper = IGameDTOMapper.INSTANCE.toDTO(gameDomain);
 
-        Assertions.assertEquals(gameEntity.getId(), entityMapper.getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(gameEntity.getTitle(), entityMapper.getTitle(), MESSAGE_ERROR);
-        Assertions.assertEquals(gameEntity.getCoverArt(), entityMapper.getCoverArt(), MESSAGE_ERROR);
-        Assertions.assertEquals(gameEntity.getDeveloperEntitySet(), entityMapper.getDeveloperEntitySet(), MESSAGE_ERROR);
-        Assertions.assertEquals(gameEntity.getGenreEntitySet(), entityMapper.getGenreEntitySet(), MESSAGE_ERROR);
-        Assertions.assertEquals(gameEntity.getPlatformEntitySet(), entityMapper.getPlatformEntitySet(), MESSAGE_ERROR);
-        Assertions.assertEquals(gameEntity.getPublisherEntitySet(), entityMapper.getPublisherEntitySet(), MESSAGE_ERROR);
-        Assertions.assertEquals(gameEntity.getRegionEntitySet(), entityMapper.getRegionEntitySet(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameDTO.id(), dtoMapper.id(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameDTO.title(), dtoMapper.title(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameDTO.coverArt(), dtoMapper.coverArt(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameDTO.developerDTOSet(), dtoMapper.developerDTOSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameDTO.genreDTOSet(), dtoMapper.genreDTOSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameDTO.platformDTOSet(), dtoMapper.platformDTOSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameDTO.publisherDTOSet(), dtoMapper.publisherDTOSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameDTO.regionDTOSet(), dtoMapper.regionDTOSet(), MESSAGE_ERROR);
 
 
         gameDomain.setGenreSet(null);
@@ -54,21 +55,21 @@ public class IGameDTOMapperTest extends MapperHelper {
         gameDomain.setDeveloperSet(null);
         gameDomain.setPublisherSet(null);
 
-        entityMapper = IGameEntityMapper.INSTANCE.toEntity(gameDomain);
-        Assertions.assertNull(entityMapper.getRegionEntitySet(), MESSAGE_ERROR);
-        Assertions.assertNull(entityMapper.getPublisherEntitySet(), MESSAGE_ERROR);
-        Assertions.assertNull(entityMapper.getPlatformEntitySet(), MESSAGE_ERROR);
-        Assertions.assertNull(entityMapper.getDeveloperEntitySet(), MESSAGE_ERROR);
-        Assertions.assertNull(entityMapper.getGenreEntitySet(), MESSAGE_ERROR);
+        dtoMapper = IGameDTOMapper.INSTANCE.toDTO(gameDomain);
+        Assertions.assertNull(dtoMapper.regionDTOSet(), MESSAGE_ERROR);
+        Assertions.assertNull(dtoMapper.publisherDTOSet(), MESSAGE_ERROR);
+        Assertions.assertNull(dtoMapper.platformDTOSet(), MESSAGE_ERROR);
+        Assertions.assertNull(dtoMapper.developerDTOSet(), MESSAGE_ERROR);
+        Assertions.assertNull(dtoMapper.genreDTOSet(), MESSAGE_ERROR);
 
         gameDomain = null;
-        entityMapper = IGameEntityMapper.INSTANCE.toEntity(gameDomain);
-        Assertions.assertNull(entityMapper, MESSAGE_ERROR);
+        dtoMapper = IGameDTOMapper.INSTANCE.toDTO(gameDomain);
+        Assertions.assertNull(dtoMapper, MESSAGE_ERROR);
     }
 
     @Test
     public void toDomainTest(){
-        domainMapper = IGameEntityMapper.INSTANCE.toDomain(gameEntity);
+        domainMapper = IGameDTOMapper.INSTANCE.toDomain(gameDTO);
 
         Assertions.assertEquals(gameDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getTitle(), domainMapper.getTitle(), MESSAGE_ERROR);
@@ -79,21 +80,17 @@ public class IGameDTOMapperTest extends MapperHelper {
         Assertions.assertEquals(gameDomain.getPublisherSet(), domainMapper.getPublisherSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getRegionSet(), domainMapper.getRegionSet(), MESSAGE_ERROR);
 
-        gameEntity.setGenreEntitySet(null);
-        gameEntity.setRegionEntitySet(null);
-        gameEntity.setPlatformEntitySet(null);
-        gameEntity.setDeveloperEntitySet(null);
-        gameEntity.setPublisherEntitySet(null);
+        gameDTO = new GameDTO(ID, TITLE, COVER_ART, null, null, null,null,null);
 
-        domainMapper = IGameEntityMapper.INSTANCE.toDomain(gameEntity);
+        domainMapper = IGameDTOMapper.INSTANCE.toDomain(gameDTO);
         Assertions.assertNull(domainMapper.getRegionSet(), MESSAGE_ERROR);
         Assertions.assertNull(domainMapper.getPlatformSet(), MESSAGE_ERROR);
         Assertions.assertNull(domainMapper.getDeveloperSet(), MESSAGE_ERROR);
         Assertions.assertNull(domainMapper.getPublisherSet(), MESSAGE_ERROR);
         Assertions.assertNull(domainMapper.getGenreSet(), MESSAGE_ERROR);
 
-        gameEntity = null;
-        domainMapper = IGameEntityMapper.INSTANCE.toDomain(gameEntity);
+        gameDTO = null;
+        domainMapper = IGameDTOMapper.INSTANCE.toDomain(gameDTO);
         Assertions.assertNull(domainMapper, MESSAGE_ERROR);
     }
 }

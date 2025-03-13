@@ -1,12 +1,10 @@
 package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Publisher;
-import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
-import es.iespuertodelacruz.xptrade.domain.interfaces.service.IRoleService;
 import es.iespuertodelacruz.xptrade.dto.PublisherDTO;
-import es.iespuertodelacruz.xptrade.dto.RoleDTO;
-import es.iespuertodelacruz.xptrade.shared.utils.ApiResponse;
+import es.iespuertodelacruz.xptrade.mapper.dto.IPublisherDTOMapper;
+import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,31 +40,30 @@ public class PublisherRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<PublisherDTO> filteredList = service.findAll().stream().map(item ->
-                new PublisherDTO(item.getId(),item.getName())).collect(Collectors.toList());
+        List<PublisherDTO> filteredList = IPublisherDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new ApiResponse<>(204, message, filteredList));
+                    .body(new CustomApiResponse<>(204, message, filteredList));
         }
 
         String message = "List successfully obtained";
-        return ResponseEntity.ok(new ApiResponse<>(200, message, filteredList));
+        return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Publisher aux = service.findById(id);
         if (aux != null){
-            PublisherDTO dto =  new PublisherDTO(aux.getId(), aux.getName());
+            PublisherDTO dto = IPublisherDTOMapper.INSTANCE.toDTO(aux);
 
-            ApiResponse<PublisherDTO> response =
-                    new ApiResponse<>(302, "Publisher found", dto);
+            CustomApiResponse<PublisherDTO> response =
+                    new CustomApiResponse<>(302, "Publisher found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        ApiResponse<PublisherDTO> errorResponse = new ApiResponse<>(404, "Publisher NOT found", null);
+        CustomApiResponse<PublisherDTO> errorResponse = new CustomApiResponse<>(404, "Publisher NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
@@ -75,39 +72,39 @@ public class PublisherRESTController {
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Publisher aux = service.findByName(name);
         if (aux != null){
-            PublisherDTO dto =  new PublisherDTO(aux.getId(), aux.getName());
+            PublisherDTO dto = IPublisherDTOMapper.INSTANCE.toDTO(aux);
 
-            ApiResponse<PublisherDTO> response =
-                    new ApiResponse<>(202, "Publisher found", dto);
+            CustomApiResponse<PublisherDTO> response =
+                    new CustomApiResponse<>(202, "Publisher found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        ApiResponse<PublisherDTO> errorResponse = new ApiResponse<>(404, "Publisher NOT found", null);
+        CustomApiResponse<PublisherDTO> errorResponse = new CustomApiResponse<>(404, "Publisher NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<ApiResponse<?>> create(PublisherDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> create(PublisherDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
-                    .body(new ApiResponse<>(400, "El item no puede ser nulo", null));
+                    .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
             Publisher dbItem = service.add(dto.name());
-            PublisherDTO result = new PublisherDTO(dbItem.getId(), dbItem.getName());
+            PublisherDTO result = IPublisherDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiResponse<>(201, "Usuario creado correctamente", result));
+                    .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error al intentar registrar el item", null));
+                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el item", null));
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<?>> update(
+    public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
             @RequestBody PublisherDTO dto) {
 
@@ -119,7 +116,7 @@ public class PublisherRESTController {
 
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ApiResponse<>(404, "Item NOT found", null));
+                    .body(new CustomApiResponse<>(404, "Item NOT found", null));
         }
 
         try {
@@ -128,13 +125,13 @@ public class PublisherRESTController {
 
             Publisher updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            PublisherDTO result = new PublisherDTO(updatedDbItem.getId(), updatedDbItem.getName());
+            PublisherDTO result = IPublisherDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
-            return ResponseEntity.ok(new ApiResponse<>(200, "Update successful", result));
+            return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, "Error while trying to update", null));
+                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
         }
     }
     @DeleteMapping("/{id}")
@@ -143,7 +140,7 @@ public class PublisherRESTController {
 
         if(dbItem.getName().equals(Globals.ADMIN)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                    new ApiResponse<>(403, "Forbidden action", null));
+                    new CustomApiResponse<>(403, "Forbidden action", null));
         }
 
         boolean deleted = service.delete(id);
@@ -151,11 +148,11 @@ public class PublisherRESTController {
         if (deleted) {
             String message = "Item deleted correctly";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new ApiResponse<>(204, message, null));
+                    .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "Unable to delete item with id: " + id;
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse<>(500, message, null));
+                    .body(new CustomApiResponse<>(500, message, null));
         }
     }
 
