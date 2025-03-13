@@ -1,6 +1,7 @@
 package es.iespuertodelacruz.xptrade.domain.service;
 
 import es.iespuertodelacruz.xptrade.domain.Developer;
+import es.iespuertodelacruz.xptrade.domain.Region;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericRepository;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
@@ -50,6 +51,16 @@ public class DeveloperServiceTest extends TestUtilities {
         Assertions.assertNotNull(service.findById(1), MESSAGE_ERROR);
     }
 
+    @Test
+    void getByNameTest() {
+        Mockito.when(repositoryMock.findByName(NAME)).thenReturn(new Developer());
+        Assertions.assertNotNull(service.findByName(NAME), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getByNameNullTest() {
+        Assertions.assertNull(service.findByName(NAME), MESSAGE_ERROR);
+    }
 
     @Test
     void addTest() {

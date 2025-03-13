@@ -50,6 +50,17 @@ public class PlatformServiceTest extends TestUtilities {
         Assertions.assertNotNull(service.findById(1), MESSAGE_ERROR);
     }
 
+    @Test
+    void getByNameNullTest() {
+        Assertions.assertNull(service.findByName(NAME), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void getByNameTest() {
+        Mockito.when(repositoryMock.findByName(NAME)).thenReturn(new Platform());
+        Assertions.assertNotNull(service.findByName(NAME), MESSAGE_ERROR);
+    }
 
     @Test
     void addTest() {

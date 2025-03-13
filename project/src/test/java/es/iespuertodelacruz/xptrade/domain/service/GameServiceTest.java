@@ -32,11 +32,6 @@ public class GameServiceTest extends TestUtilities {
     }
 
     @Test
-    void getByIdNullTest() {
-        Assertions.assertNull(service.findById(1), MESSAGE_ERROR);
-    }
-
-    @Test
     void findAllByGenreTest() {
         List<Game> list = new ArrayList<>();
         list.add(new Game());
@@ -87,11 +82,26 @@ public class GameServiceTest extends TestUtilities {
     }
 
     @Test
+    void getByIdNullTest() {
+        Assertions.assertNull(service.findById(1), MESSAGE_ERROR);
+    }
+
+    @Test
     void getOneTest() {
         Mockito.when(repositoryMock.findById(1)).thenReturn(new Game());
         Assertions.assertNotNull(service.findById(1), MESSAGE_ERROR);
     }
 
+    @Test
+    void getByTitleNullTest() {
+        Assertions.assertNull(service.findByTitle(NAME), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getByTitleTest() {
+        Mockito.when(repositoryMock.findByTitle(NAME)).thenReturn(new Game());
+        Assertions.assertNotNull(service.findByTitle(NAME), MESSAGE_ERROR);
+    }
 
     @Test
     void addTest() {

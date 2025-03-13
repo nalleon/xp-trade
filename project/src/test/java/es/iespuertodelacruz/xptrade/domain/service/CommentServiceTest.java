@@ -1,6 +1,7 @@
 package es.iespuertodelacruz.xptrade.domain.service;
 
 import es.iespuertodelacruz.xptrade.domain.Comment;
+import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.Post;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
@@ -52,6 +53,31 @@ public class CommentServiceTest extends TestUtilities {
         Assertions.assertNotNull(service.findById(1), MESSAGE_ERROR);
     }
 
+    @Test
+    void getAllByGameNullTest() {
+        Mockito.when(repositoryMock.findAllBySubject(new Post())).thenReturn(null);
+        Assertions.assertNull(service.findByPost(new Post()), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void getAllByGameTest() {
+        Mockito.when(repositoryMock.findAllBySubject(new Post())).thenReturn(new ArrayList<>());
+        Assertions.assertNotNull(service.findByPost(new Post()), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllByUserNullTest() {
+        Mockito.when(repositoryMock.findAllByUser(new User())).thenReturn(null);
+        Assertions.assertNull(service.findByUser(new User()), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void getAllByUserTest() {
+        Mockito.when(repositoryMock.findAllByUser(new User())).thenReturn(new ArrayList<>());
+        Assertions.assertNotNull(service.findByUser(new User()), MESSAGE_ERROR);
+    }
 
     @Test
     void addTest() {
