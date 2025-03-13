@@ -19,8 +19,8 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v3/comments")
-@Tag(name="v3 - Comment ", description = "For administrators")
+@RequestMapping("/api/v2/comments")
+@Tag(name="v2 - Comment ", description = "For authenticated users")
 public class CommentRESTControllerV2 {
 
     public static final String ADMIN = "ROLE_ADMIN";

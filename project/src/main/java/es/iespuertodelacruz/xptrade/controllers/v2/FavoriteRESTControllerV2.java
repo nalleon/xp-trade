@@ -19,8 +19,8 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v3/favorites")
-@Tag(name="v3 - Favorite ", description = "For administrators")
+@RequestMapping("/api/v2/favorites")
+@Tag(name="v2 - Favorite ", description = "For authenticated users")
 public class FavoriteRESTControllerV2 {
 
     public static final String ADMIN = "ROLE_ADMIN";
