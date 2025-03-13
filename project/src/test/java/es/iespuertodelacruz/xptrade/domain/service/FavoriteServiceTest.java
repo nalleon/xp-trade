@@ -52,6 +52,32 @@ public class FavoriteServiceTest extends TestUtilities {
         Assertions.assertNotNull(service.findById(1), MESSAGE_ERROR);
     }
 
+    @Test
+    void getAllByGameNullTest() {
+        Mockito.when(repositoryMock.findAllBySubject(new Game())).thenReturn(null);
+        Assertions.assertNull(service.findByGame(new Game()), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void getAllByGameTest() {
+        Mockito.when(repositoryMock.findAllBySubject(new Game())).thenReturn(new ArrayList<>());
+        Assertions.assertNotNull(service.findByGame(new Game()), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllByUserNullTest() {
+        Mockito.when(repositoryMock.findAllByUser(new User())).thenReturn(null);
+        Assertions.assertNull(service.findByUser(new User()), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void getAllByUserTest() {
+        Mockito.when(repositoryMock.findAllByUser(new User())).thenReturn(new ArrayList<>());
+        Assertions.assertNotNull(service.findByUser(new User()), MESSAGE_ERROR);
+    }
+
 
     @Test
     void addTest() {

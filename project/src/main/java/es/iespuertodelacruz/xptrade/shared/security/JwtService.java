@@ -20,7 +20,7 @@ import com.auth0.jwt.interfaces.Claim;
 public class JwtService {
 
     //@Value("${jwt.secret}")
-    private String secret="readumineko";
+    private String secret="readuminekoplayxenogears";
 
     //@Value("${jwt.expiration}")
     private long expiration=9876543210L;
