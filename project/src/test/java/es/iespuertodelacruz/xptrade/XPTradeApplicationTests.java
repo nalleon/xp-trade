@@ -15,8 +15,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-//@ActiveProfiles("test")
-//@Sql("/xptradetest.sql")
+@ActiveProfiles("test")
+@Sql("/xptradetest.sql")
 class XPTradeApplicationTests extends TestUtilities {
 
 	@Mock
