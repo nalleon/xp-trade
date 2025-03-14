@@ -32,6 +32,16 @@ public class GameServiceTest extends TestUtilities {
     }
 
     @Test
+    void findAllTest() {
+        List<Game> list = new ArrayList<>();
+        list.add(new Game());
+        list.add(new Game());
+        list.add(new Game());
+        Mockito.when(repositoryMock.findAll()).thenReturn(list);
+        Assertions.assertNotNull(service.findAll(), MESSAGE_ERROR);
+    }
+
+    @Test
     void findAllByGenreTest() {
         List<Game> list = new ArrayList<>();
         list.add(new Game());
@@ -145,9 +155,21 @@ public class GameServiceTest extends TestUtilities {
     }
 
     @Test
+    void updateCoverArtTest() throws Exception {
+        Mockito.when(repositoryMock.updateCoverArt(Mockito.any(Game.class))).thenReturn(new Game());
+        Assertions.assertNotNull(service.updateCoverArt(1, COVER_ART), MESSAGE_ERROR);
+    }
+
+    @Test
     void updateNullTest() throws Exception {
         Assertions.assertNull(service.update(0, null, null, null, null, null,
                 null, null), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void updateNullCoverArtTest() throws Exception {
+        Assertions.assertNull(service.updateCoverArt(0, null), MESSAGE_ERROR);
     }
 
     @Test

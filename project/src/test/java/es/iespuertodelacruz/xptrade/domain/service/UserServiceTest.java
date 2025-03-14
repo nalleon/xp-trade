@@ -99,6 +99,28 @@ public class UserServiceTest extends TestUtilities {
     }
 
     @Test
+    void updateVerifyTest() throws Exception {
+        Mockito.when(repositoryMock.updatePicture(Mockito.any(User.class))).thenReturn(new User());
+        Assertions.assertNotNull(service.updatePicture(NAME, EMAIL, PASSWORD, PICTURE), MESSAGE_ERROR);
+    }
+
+    @Test
+    void updateVerifyNullTest() throws Exception {
+        Assertions.assertNull(service.updatePicture(null, null, null, null), MESSAGE_ERROR);
+    }
+
+    @Test
+    void updateProfilePictureTest() throws Exception {
+        Mockito.when(repositoryMock.update(Mockito.any(User.class))).thenReturn(new User());
+        Assertions.assertNotNull(service.updateVerify(NAME, EMAIL, PASSWORD, 1), MESSAGE_ERROR);
+    }
+
+    @Test
+    void updateProfilePictureNullTest() throws Exception {
+        Assertions.assertNull(service.updateVerify(null, null, null, 0), MESSAGE_ERROR);
+    }
+
+    @Test
     void deleteTest() {
         Mockito.when(repositoryMock.delete(2)).thenReturn(true);
         Assertions.assertTrue(service.delete(2), MESSAGE_ERROR);
