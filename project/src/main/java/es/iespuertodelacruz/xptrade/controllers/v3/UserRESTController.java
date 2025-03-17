@@ -96,7 +96,7 @@ public class UserRESTController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> createUser(UserRegisterDTO registerDTO) {
+    public ResponseEntity<CustomApiResponse<?>> add(UserRegisterDTO registerDTO) {
         if (registerDTO == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El usuario no puede ser nulo", null));
