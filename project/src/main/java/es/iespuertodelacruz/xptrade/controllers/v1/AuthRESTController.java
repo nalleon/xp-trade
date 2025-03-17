@@ -2,6 +2,7 @@ package es.iespuertodelacruz.xptrade.controllers.v1;
 
 import es.iespuertodelacruz.xptrade.shared.config.MailService;
 import es.iespuertodelacruz.xptrade.shared.security.AuthService;
+import es.iespuertodelacruz.xptrade.shared.security.JwtService;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
@@ -21,14 +22,49 @@ public class AuthRESTController {
     /**
      * Properties
      */
-    @Autowired
     private IUserService service;
-    @Autowired
+
+    private AuthService authService;
+    private JwtService jwtService;
+
     private MailService mailService;
 
+    /**
+     * Setter of the user service
+     * @param service of the user
+     */
     @Autowired
-    private AuthService authService;
+    public void setService(IUserService service) {
+        this.service = service;
+    }
 
+    /**
+     * Setter of the mail service
+     * @param mailService for the user
+     */
+    @Autowired
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
+
+    /**
+     * Setter of the jwt service
+     * @param jwtService for the user
+     */
+    @Autowired
+    public void setJwtService(JwtService jwtService) {
+        this.jwtService = jwtService;
+    }
+
+
+    /**
+     * Setter of the jwt service
+     * @param authService for the user
+     */
+    @Autowired
+    public void setAuthService(AuthService authService) {
+        this.authService = authService;
+    }
     @PostMapping("/login")
     public String login(@RequestBody UserLoginDTO loginDTO ) {
         String token = authService.authenticate(loginDTO.name(), loginDTO.password());
@@ -45,6 +81,11 @@ public class AuthRESTController {
 
         User user =  authService.register(registerDTO.name(), registerDTO.password(), registerDTO.email());
 
+        if(user == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new CustomApiResponse<>(400, "Something went wrong",
+                            null));
+        }
         String authToken = user.getVerificationToken();
 
         String confirmationUrl =
@@ -55,7 +96,8 @@ public class AuthRESTController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new CustomApiResponse<>(201, "En breves momentos, le llegara un email de verificacion",
-                        null));}
+                        null));
+    }
 
     @GetMapping("/confirmation")
     public ResponseEntity<?> confirmation (@RequestParam String email, @RequestParam String token){
@@ -68,7 +110,7 @@ public class AuthRESTController {
                 User verified = service.updateVerify(authUser.getUsername(), authUser.getEmail(), authUser.getPassword(),
                         authUser.getVerified());
 
-                return ResponseEntity.ok("Your account"+ verified.getUsername() + " is now verified.");
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Your account"+ authUser.getUsername() + " is now verified.");
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid token");
             }

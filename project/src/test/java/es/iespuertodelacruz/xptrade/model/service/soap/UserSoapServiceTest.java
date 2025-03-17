@@ -31,7 +31,6 @@ public class UserSoapServiceTest extends TestUtilities {
     @Mock
     UserEntityService serviceRestMock;
 
-
     @InjectMocks
     UserSoapService service;
 

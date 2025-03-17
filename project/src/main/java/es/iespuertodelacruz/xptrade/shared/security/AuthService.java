@@ -59,32 +59,25 @@ public class AuthService {
      * @return the user if everything OK, null otherwise
      */
     public User register(String username, String password, String email) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setEmail(email);
-        return service.add(user.getUsername(), user.getEmail(), user.getPassword());
+        return service.add(username, passwordEncoder.encode(password), email);
 
     }
 
     /**
-     * Funcion para autenticar un User de cara al login
-     * @param username del User
-     * @param password del User
-     * @return token si la autenticacion fue exitosa, null si algo fue mal
+     * Function to authenticate a user
+     * @param username of the user
+     * @param password of the user
+     * @return token if everything goes well, null otherwise
      */
     public String authenticate(String username, String password)  {
         String generateToken = null;
         User user = service.findByUsername(username);
 
         if (user != null) {
-            System.out.println(password);
             if (passwordEncoder.matches(password, user.getPassword())) {
                 generateToken = jwtService.generateToken(user.getUsername(), user.getRole().getName(), user.getVerified());
             }
         }
-
-        System.out.println(generateToken);
 
         return generateToken;
     }

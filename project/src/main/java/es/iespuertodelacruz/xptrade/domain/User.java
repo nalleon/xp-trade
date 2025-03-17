@@ -7,7 +7,7 @@ import java.util.Objects;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
-public class User implements Serializable {
+public class User {
     /**
      * Properties
      */
@@ -155,7 +155,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "Id=" + id +
+                "id=" + id +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
