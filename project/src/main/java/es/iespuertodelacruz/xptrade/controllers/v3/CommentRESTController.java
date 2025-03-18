@@ -133,7 +133,7 @@ public class CommentRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> create(CommentDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(CommentDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));

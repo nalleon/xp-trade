@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -84,7 +83,7 @@ public class RegionRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> create(RegionDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(RegionDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -135,12 +134,6 @@ public class RegionRESTController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        Region dbItem = service.findById(id);
-
-        if(dbItem.getName().equals(Globals.ADMIN)){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                    new CustomApiResponse<>(403, "Forbidden action", null));
-        }
 
         boolean deleted = service.delete(id);
 

@@ -5,7 +5,6 @@ import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
 import es.iespuertodelacruz.xptrade.dto.PublisherDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.IPublisherDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
-import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -85,7 +83,7 @@ public class PublisherRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> create(PublisherDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(PublisherDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -136,13 +134,6 @@ public class PublisherRESTController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        Publisher dbItem = service.findById(id);
-
-        if(dbItem.getName().equals(Globals.ADMIN)){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                    new CustomApiResponse<>(403, "Forbidden action", null));
-        }
-
         boolean deleted = service.delete(id);
 
         if (deleted) {

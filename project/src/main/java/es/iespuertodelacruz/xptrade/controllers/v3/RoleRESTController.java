@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -84,7 +83,7 @@ public class RoleRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> create(RoleDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(RoleDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -108,14 +107,19 @@ public class RoleRESTController {
             @RequestBody RoleDTO dto) {
 
         if (dto == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(
+                            new CustomApiResponse<>(
+                                    400, "Invalid item ", null));
         }
 
         Role dbItem = service.findById(id);
 
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "User NOT found", null));
+                    .body(
+                            new CustomApiResponse<>(
+                                    404, "Item NOT found", null));
         }
 
         try {
@@ -126,7 +130,8 @@ public class RoleRESTController {
 
             RoleDTO result = IRoleDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
-            return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -136,6 +141,11 @@ public class RoleRESTController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         Role dbItem = service.findById(id);
+
+        if(dbItem == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new CustomApiResponse<>(404, "NOT FOUND", null));
+        }
 
         if(dbItem.getName().equals(ADMIN)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(

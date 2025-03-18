@@ -135,7 +135,7 @@ public class FavoriteRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> create(FavoriteDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(FavoriteDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
