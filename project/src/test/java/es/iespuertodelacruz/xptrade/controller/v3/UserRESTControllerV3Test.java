@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -82,7 +83,8 @@ public class UserRESTControllerV3Test extends TestUtilities {
 
     @Test
     void getOneTest() {
-        when(serviceMock.findById(1)).thenReturn(new User());
+        when(repositoryMock.findById(1)).thenReturn(Optional.of(new UserEntity()));
+        //when(serviceMock.findById(1)).thenReturn(new User());
         Assertions.assertNotNull(controller.getById(1), MESSAGE_ERROR);
     }
 
@@ -109,7 +111,6 @@ public class UserRESTControllerV3Test extends TestUtilities {
 
         when(repositoryRoleMock.findRoleByName("ROLE_USER")).thenReturn(Optional.of(roleEntity));
         when(repositoryMock.save(any(UserEntity.class))).thenReturn(result);
-        when(serviceMock.add(NAME, PASSWORD, EMAIL)).thenReturn(new User());
 
 
         ResponseEntity<?> responseEntity = controller.add(new UserRegisterDTO(NAME, EMAIL, PASSWORD));
