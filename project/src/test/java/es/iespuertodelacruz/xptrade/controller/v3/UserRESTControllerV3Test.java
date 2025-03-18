@@ -23,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class UserRESTControllerV3Test extends TestUtilities {
         controller.setPasswordEncoder(passwordEncoderMock);
         controller.setStorageService(storageServiceMock);
     }
-    //@Test
+    @Test
     void getAllTest() {
         List<User> list = new ArrayList<>();
         when(serviceMock.findAll()).thenReturn(list);
@@ -80,14 +81,14 @@ public class UserRESTControllerV3Test extends TestUtilities {
     }
 
 
-    //@Test
+    @Test
     void getOneTest() {
         when(repositoryMock.findById(1)).thenReturn(Optional.of(new UserEntity()));
         //when(serviceMock.findById(1)).thenReturn(new User());
         Assertions.assertNotNull(controller.getById(1), MESSAGE_ERROR);
     }
 
-    //@Test
+    @Test
     void addTest() {
         when(passwordEncoderMock.encode(PASSWORD)).thenReturn("encoded");
         RoleEntity roleEntity = new RoleEntity();
@@ -116,14 +117,14 @@ public class UserRESTControllerV3Test extends TestUtilities {
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
-    //@Test
+    @Test
     void addTestNullRequest() {
         ResponseEntity<?> responseEntity = controller.add(null);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode(), "Request should be rejected with BAD_REQUEST.");
         Assertions.assertTrue(responseEntity.getBody() instanceof CustomApiResponse, "Response should be CustomApiResponse.");
     }
 
-    //@Test
+   //@Test
     void addTestNameConflict() {
         User existingUser = new User();
         //"name", "pass", "mail", new Role(1, "ROLE_USER"
@@ -133,6 +134,7 @@ public class UserRESTControllerV3Test extends TestUtilities {
         ResponseEntity<?> responseEntity = controller.add(new UserRegisterDTO(NAME, EMAIL, PASSWORD));
 
         Assertions.assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode(), "User creation should be rejected due to name conflict.");
+        Assertions.assertTrue(responseEntity.getBody() instanceof CustomApiResponse, "Response should be CustomApiResponse.");
     }
 
     //@Test
@@ -143,6 +145,7 @@ public class UserRESTControllerV3Test extends TestUtilities {
         ResponseEntity<?> responseEntity = controller.add(new UserRegisterDTO(NAME, EMAIL, PASSWORD));
 
         Assertions.assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode(), "User creation should be rejected due to email conflict.");
+        Assertions.assertTrue(responseEntity.getBody() instanceof CustomApiResponse, "Response should be CustomApiResponse.");
     }
     //@Test
     void deleteTest() {
@@ -153,9 +156,7 @@ public class UserRESTControllerV3Test extends TestUtilities {
 
     //@Test
     void updateTest() {
-        when(serviceMock.findByUsername(NAME)).thenReturn(new User());
-        when(serviceMock.update(NAME, EMAIL, PASSWORD)).thenReturn(new User());
-
+        when(serviceMock.add(NAME, EMAIL, PASSWORD)).thenReturn(new User());
         ResponseEntity responseEntity = controller.update(1, new UserUpdateInputDTO(EMAIL, PASSWORD));
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
