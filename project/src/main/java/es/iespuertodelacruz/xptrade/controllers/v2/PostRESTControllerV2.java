@@ -135,7 +135,7 @@ public class PostRESTControllerV2 {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> create(PostDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(PostDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
