@@ -6,6 +6,7 @@ import es.iespuertodelacruz.xptrade.domain.service.RoleService;
 import es.iespuertodelacruz.xptrade.domain.service.UserService;
 import es.iespuertodelacruz.xptrade.dto.user.UserRegisterDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserUpdateInputDTO;
+import es.iespuertodelacruz.xptrade.mapper.entity.IUserEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
 import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
@@ -121,20 +122,23 @@ public class UserRESTControllerV3Test extends TestUtilities {
     void addTestNullRequest() {
         ResponseEntity<?> responseEntity = controller.add(null);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode(), "Request should be rejected with BAD_REQUEST.");
-        Assertions.assertTrue(responseEntity.getBody() instanceof CustomApiResponse, "Response should be CustomApiResponse.");
+        Assertions.assertInstanceOf(CustomApiResponse.class, responseEntity.getBody(), "Response should be CustomApiResponse.");
     }
 
-   //@Test
+   @Test
     void addTestNameConflict() {
         User existingUser = new User();
+        existingUser.setUsername(NAME);
         //"name", "pass", "mail", new Role(1, "ROLE_USER"
 
-        when(serviceMock.findByUsername("name")).thenReturn(existingUser);
+        when(repositoryMock.findUserByName(NAME)).thenReturn(Optional.of(IUserEntityMapper.INSTANCE.toEntity(existingUser)));
+
+        User user = serviceMock.findByUsername(NAME);
 
         ResponseEntity<?> responseEntity = controller.add(new UserRegisterDTO(NAME, EMAIL, PASSWORD));
 
         Assertions.assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode(), "User creation should be rejected due to name conflict.");
-        Assertions.assertTrue(responseEntity.getBody() instanceof CustomApiResponse, "Response should be CustomApiResponse.");
+        Assertions.assertInstanceOf(CustomApiResponse.class, responseEntity.getBody(), "Response should be CustomApiResponse.");
     }
 
     //@Test
@@ -145,7 +149,7 @@ public class UserRESTControllerV3Test extends TestUtilities {
         ResponseEntity<?> responseEntity = controller.add(new UserRegisterDTO(NAME, EMAIL, PASSWORD));
 
         Assertions.assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode(), "User creation should be rejected due to email conflict.");
-        Assertions.assertTrue(responseEntity.getBody() instanceof CustomApiResponse, "Response should be CustomApiResponse.");
+        Assertions.assertInstanceOf(CustomApiResponse.class, responseEntity.getBody(), "Response should be CustomApiResponse.");
     }
     //@Test
     void deleteTest() {
