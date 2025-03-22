@@ -264,5 +264,9 @@ public class GameEntityServiceTest extends TestUtilities {
         Assertions.assertNull(service.updateCoverArt(item), MESSAGE_ERROR);
     }
 
+    @Test
+    void updatePictureNullTest() throws Exception {
+        Assertions.assertNull(service.updateCoverArt(null), MESSAGE_ERROR);
+    }
 }
 

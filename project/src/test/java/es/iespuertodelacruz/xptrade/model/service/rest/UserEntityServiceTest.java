@@ -140,6 +140,20 @@ public class UserEntityServiceTest extends TestUtilities {
     }
 
     @Test
+    void updateVerifyTest() throws Exception {
+        User user = new User();
+        user.setId(1);
+        user.setRole(new Role(1, "ROLE_ADMIN"));
+        user.setEmail("example@email.com");
+        user.setPassword("1q2w3e4r");
+        user.setUsername("nameTest");
+        user.setVerified(1);
+        when(repositoryMock.findUserByName(user.getUsername())).thenReturn(Optional.of(new UserEntity()));
+
+        Assertions.assertNotNull(service.update(user), MESSAGE_ERROR);
+    }
+
+    @Test
     void updateFalseTest() throws Exception {
         Assertions.assertNull(service.update(null), MESSAGE_ERROR);
     }
