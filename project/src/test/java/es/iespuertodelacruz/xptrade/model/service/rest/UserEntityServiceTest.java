@@ -1,7 +1,11 @@
 package es.iespuertodelacruz.xptrade.model.service.rest;
 
+import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.User;
+import es.iespuertodelacruz.xptrade.mapper.entity.IRoleEntityMapper;
+import es.iespuertodelacruz.xptrade.mapper.entity.IUserEntityMapper;
+import es.iespuertodelacruz.xptrade.model.entities.GameEntity;
 import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
 import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
@@ -19,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class UserEntityServiceTest extends TestUtilities {
     @Mock
@@ -157,6 +161,26 @@ public class UserEntityServiceTest extends TestUtilities {
     void updateFalseTest() throws Exception {
         Assertions.assertNull(service.update(null), MESSAGE_ERROR);
     }
+
+    @Test
+    void updateForceExceptionTest() {
+        User item = new User();
+        item.setId(1);
+        item.setPassword(NAME);
+        item.setUsername(USERNAME);
+        item.setEmail(EMAIL);
+        UserEntity dbItemMock = mock(UserEntity.class);
+        when(repositoryMock.findUserByName(item.getUsername())).thenReturn(Optional.of(dbItemMock));
+
+        doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setPassword(NAME);
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+            service.update(item);
+        });
+
+        Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
+    }
+
     @Test
     void deleteAdminTest() {
         UserEntity user = new UserEntity();
@@ -181,6 +205,19 @@ public class UserEntityServiceTest extends TestUtilities {
     @Test
     void deleteNonExistentTest() {
         when(repositoryMock.deleteEntityById(1)).thenReturn(0);
+        Assertions.assertFalse(service.delete(1), MESSAGE_ERROR);
+    }
+
+    @Test
+    void deleteNotEqualsTest() {
+        RoleEntity roleAux = new RoleEntity();
+        roleAux.setId(ID);
+        roleAux.setName(NAME);
+
+        UserEntity aux = new UserEntity(ID);
+        aux.setRole(roleAux);
+        when(repositoryMock.deleteEntityById(1)).thenReturn(0);
+        when(repositoryMock.findById(1)).thenReturn(Optional.of(aux));
         Assertions.assertFalse(service.delete(1), MESSAGE_ERROR);
     }
 
@@ -216,5 +253,25 @@ public class UserEntityServiceTest extends TestUtilities {
     @Test
     void updatePictureFalseTest() throws Exception {
         Assertions.assertNull(service.updatePicture(null), MESSAGE_ERROR);
+    }
+
+    @Test
+    void updatePictureForceExceptionTest() {
+        User item = new User();
+        item.setId(1);
+        item.setPassword(NAME);
+        item.setUsername(USERNAME);
+        item.setEmail(EMAIL);
+        item.setProfilePicture(PROFILE_PICTURE);
+        UserEntity dbItemMock = mock(UserEntity.class);
+        when(repositoryMock.findUserByName(item.getUsername())).thenReturn(Optional.of(dbItemMock));
+
+        doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setProfilePicture(PROFILE_PICTURE);
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+            service.updatePicture(item);
+        });
+
+        Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
     }
 }

@@ -3,6 +3,7 @@ package es.iespuertodelacruz.xptrade.model.service.rest;
 import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.model.entities.GameEntity;
+import es.iespuertodelacruz.xptrade.model.entities.PostEntity;
 import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IGameEntityRepository;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
@@ -16,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class GameEntityServiceTest extends TestUtilities {
     @Mock
@@ -210,14 +211,23 @@ public class GameEntityServiceTest extends TestUtilities {
         Assertions.assertNull(service.update(item), MESSAGE_ERROR);
     }
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        Game item = new Game();
-//        item.setId(1);
-//        item.setName(NAME);
-//        when(repositoryMock.findByName(item.getName())).thenReturn(Optional.empty());
-//        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
-//    }
+    @Test
+    void updateForceExceptionTest() {
+        Game item = new Game();
+        item.setId(1);
+        item.setTitle(NAME);
+
+        GameEntity dbItemMock = mock(GameEntity.class);
+        when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(dbItemMock));
+
+        doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setTitle(NAME);
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+            service.update(item);
+        });
+
+        Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
+    }
 
     @Test
     void deleteAdminTest() {
@@ -245,6 +255,18 @@ public class GameEntityServiceTest extends TestUtilities {
     }
 
     @Test
+    void deleteForceExceptionTest() {
+        doThrow(new RuntimeException("Simulated delete error"))
+                .when(repositoryMock).deleteGameDeveloperRelation(ID);
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+            service.delete(ID);
+        });
+
+        Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
+    }
+
+    @Test
     void updateCoverPictureTest() throws Exception {
         when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
 
@@ -267,6 +289,24 @@ public class GameEntityServiceTest extends TestUtilities {
     @Test
     void updatePictureNullTest() throws Exception {
         Assertions.assertNull(service.updateCoverArt(null), MESSAGE_ERROR);
+    }
+
+    @Test
+    void updatePictureForceExceptionTest() {
+        Game item = new Game();
+        item.setId(1);
+        item.setCoverArt(NAME);
+
+        GameEntity dbItemMock = mock(GameEntity.class);
+        when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(dbItemMock));
+
+        doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setCoverArt(NAME);
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+            service.updateCoverArt(item);
+        });
+
+        Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
     }
 }
 

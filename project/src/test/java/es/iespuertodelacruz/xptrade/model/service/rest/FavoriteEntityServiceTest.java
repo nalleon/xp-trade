@@ -1,7 +1,10 @@
 package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.Favorite;
+import es.iespuertodelacruz.xptrade.domain.Favorite;
 import es.iespuertodelacruz.xptrade.domain.*;
+import es.iespuertodelacruz.xptrade.mapper.entity.IGameEntityMapper;
+import es.iespuertodelacruz.xptrade.model.entities.CollectionEntity;
 import es.iespuertodelacruz.xptrade.model.entities.FavoriteEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IFavoriteEntityRepository;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
@@ -15,7 +18,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class FavoriteEntityServiceTest extends TestUtilities {
     @Mock
@@ -118,8 +121,8 @@ public class FavoriteEntityServiceTest extends TestUtilities {
     void getByGameTest() {
         List<FavoriteEntity> list = new ArrayList<>();
         list.add(new FavoriteEntity());
-        when(repositoryMock.findAllByUser(user.getId())).thenReturn(list);
-        Assertions.assertNotNull(service.findAllByUser(user), MESSAGE_ERROR);
+        when(repositoryMock.findAllByGame(game.getId())).thenReturn(list);
+        Assertions.assertNotNull(service.findAllBySubject(game), MESSAGE_ERROR);
     }
 
 
@@ -138,13 +141,7 @@ public class FavoriteEntityServiceTest extends TestUtilities {
     void addNullTest() {
         Assertions.assertNull(service.save(null), MESSAGE_ERROR);
     }
-
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        when(repositoryMock.findUserByName(NAME)).thenThrow(new RuntimeException());
-//        Assertions.assertThrows(RuntimeException.class, () -> service.update(new User(1)), MESSAGE_ERROR);
-//    }
-
+    
 
     @Test
     void addExceptionTest() throws Exception {
@@ -169,14 +166,24 @@ public class FavoriteEntityServiceTest extends TestUtilities {
         Assertions.assertNull(service.update(item), MESSAGE_ERROR);
     }
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        Favorite item = new Favorite();
-//        item.setId(1);
-//        item.setName(NAME);
-//        when(repositoryMock.findByName(item.getName())).thenReturn(Optional.empty());
-//        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
-//    }
+    @Test
+    void updateForceExceptionTest() {
+        Favorite item = new Favorite();
+        item.setId(1);
+        item.setGame(game);
+
+        FavoriteEntity dbItemMock = mock(FavoriteEntity.class);
+        when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(dbItemMock));
+
+        doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setGame(IGameEntityMapper.INSTANCE.toEntity(game));
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+            service.update(item);
+        });
+
+        Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
+    }
+
 
     @Test
     void deleteAdminTest() {

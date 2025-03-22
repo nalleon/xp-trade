@@ -79,11 +79,11 @@ public class PostEntityService  implements IGenericSocialRepository<Post, Intege
     }
 
     @Override
-    public List<Post> findAllBySubject(Game post) {
-        if(post == null){
+    public List<Post> findAllBySubject(Game game) {
+        if(game == null){
             return null;
         }
-        List<PostEntity> listEntities = repository.findAllByGame(post.getId());
+        List<PostEntity> listEntities = repository.findAllByGame(game.getId());
         return IPostEntityMapper.INSTANCE.toDomainList(listEntities);
     }
 

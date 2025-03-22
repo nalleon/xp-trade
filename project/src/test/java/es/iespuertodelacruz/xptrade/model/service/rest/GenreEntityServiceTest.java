@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class GenreEntityServiceTest extends TestUtilities {
     @Mock
@@ -127,14 +127,24 @@ public class GenreEntityServiceTest extends TestUtilities {
         Assertions.assertNull(service.update(role), MESSAGE_ERROR);
     }
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        Genre role = new Genre();
-//        role.setId(1);
-//        role.setName(NAME);
-//        when(repositoryMock.findByName(role.getName())).thenReturn(Optional.empty());
-//        Assertions.assertNull(service.update(role), MESSAGE_ERROR);
-//    }
+    @Test
+    void updateForceExceptionTest() {
+        Genre item = new Genre();
+        item.setId(1);
+        item.setName(NAME);
+
+        GenreEntity dbItemMock = mock(GenreEntity.class);
+        when(repositoryMock.findByName(item.getName())).thenReturn(Optional.of(dbItemMock));
+
+        doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setName(NAME);
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+            service.update(item);
+        });
+
+        Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
+    }
+
 
     @Test
     void deleteAdminTest() {

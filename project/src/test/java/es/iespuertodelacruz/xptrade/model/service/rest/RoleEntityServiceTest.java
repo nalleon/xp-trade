@@ -1,7 +1,10 @@
 package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.Role;
+import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.User;
+import es.iespuertodelacruz.xptrade.mapper.entity.IRoleEntityMapper;
+import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
 import es.iespuertodelacruz.xptrade.model.entities.RoleEntity;
 import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
@@ -19,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class RoleEntityServiceTest extends TestUtilities {
     @Mock
@@ -93,12 +96,7 @@ public class RoleEntityServiceTest extends TestUtilities {
     void addNullTest() {
         Assertions.assertNull(service.save(null), MESSAGE_ERROR);
     }
-
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        when(repositoryMock.findUserByName(NAME)).thenThrow(new RuntimeException());
-//        Assertions.assertThrows(RuntimeException.class, () -> service.update(new User(1)), MESSAGE_ERROR);
-//    }
+    
 
 
     @Test
@@ -129,16 +127,23 @@ public class RoleEntityServiceTest extends TestUtilities {
         when(repositoryMock.findRoleByName(role.getName())).thenReturn(Optional.empty());
         Assertions.assertNull(service.update(role), MESSAGE_ERROR);
     }
+    @Test
+    void updateForceExceptionTest() {
+        Role item = new Role();
+        item.setId(1);
+        item.setName(NAME);
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        Role role = new Role();
-//        role.setId(1);
-//        role.setName(NAME);
-//        when(repositoryMock.findRoleByName(role.getName())).thenReturn(Optional.empty());
-//        Assertions.assertNull(service.update(role), MESSAGE_ERROR);
-//    }
+        RoleEntity dbItemMock = mock(RoleEntity.class);
+        when(repositoryMock.findRoleByName(item.getName())).thenReturn(Optional.of(dbItemMock));
 
+        doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setName(NAME);
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+            service.update(item);
+        });
+
+        Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
+    }
     @Test
     void deleteAdminTest() {
         when(repositoryMock.findById(1)).thenReturn(Optional.of(new RoleEntity("ROLE_ADMIN")));
@@ -164,5 +169,12 @@ public class RoleEntityServiceTest extends TestUtilities {
         Assertions.assertFalse(service.delete(1), MESSAGE_ERROR);
     }
 
+    @Test
+    void deleteNotEqualsTest() {
+        Role aux = new Role(ID, NAME);
+        when(repositoryMock.deleteEntityById(1)).thenReturn(0);
+        when(repositoryMock.findById(1)).thenReturn(Optional.of(IRoleEntityMapper.INSTANCE.toEntity(aux)));
+        Assertions.assertFalse(service.delete(1), MESSAGE_ERROR);
+    }
 }
 

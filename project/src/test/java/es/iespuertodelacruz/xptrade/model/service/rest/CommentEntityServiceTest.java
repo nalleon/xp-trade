@@ -2,6 +2,7 @@ package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.model.entities.CommentEntity;
+import es.iespuertodelacruz.xptrade.model.entities.CommentEntity;
 import es.iespuertodelacruz.xptrade.model.repository.ICommentEntityRepository;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +15,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class CommentEntityServiceTest extends TestUtilities {
     @Mock
@@ -124,8 +125,8 @@ public class CommentEntityServiceTest extends TestUtilities {
     void getByGameTest() {
         List<CommentEntity> list = new ArrayList<>();
         list.add(new CommentEntity());
-        when(repositoryMock.findAllByUser(user.getId())).thenReturn(list);
-        Assertions.assertNotNull(service.findAllByUser(user), MESSAGE_ERROR);
+        when(repositoryMock.findAllByPost(post.getId())).thenReturn(list);
+        Assertions.assertNotNull(service.findAllBySubject(post), MESSAGE_ERROR);
     }
 
 
@@ -145,11 +146,7 @@ public class CommentEntityServiceTest extends TestUtilities {
         Assertions.assertNull(service.save(null), MESSAGE_ERROR);
     }
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        when(repositoryMock.findUserByName(NAME)).thenThrow(new RuntimeException());
-//        Assertions.assertThrows(RuntimeException.class, () -> service.update(new User(1)), MESSAGE_ERROR);
-//    }
+
 
 
     @Test
@@ -175,14 +172,24 @@ public class CommentEntityServiceTest extends TestUtilities {
         Assertions.assertNull(service.update(item), MESSAGE_ERROR);
     }
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        Comment item = new Comment();
-//        item.setId(1);
-//        item.setName(NAME);
-//        when(repositoryMock.findByName(item.getName())).thenReturn(Optional.empty());
-//        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
-//    }
+    @Test
+    void updateForceExceptionTest() {
+        Comment item = new Comment();
+        item.setId(1);
+        item.setContent(NAME);
+
+        CommentEntity dbItemMock = mock(CommentEntity.class);
+        when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(dbItemMock));
+
+        doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setContent(NAME);
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+            service.update(item);
+        });
+
+        Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
+    }
+
 
     @Test
     void deleteAdminTest() {

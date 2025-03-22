@@ -2,6 +2,7 @@ package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.Collection;
+import es.iespuertodelacruz.xptrade.mapper.entity.IGameEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.*;
 import es.iespuertodelacruz.xptrade.model.repository.ICollectionEntityRepository;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
@@ -15,7 +16,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class CollectionEntityServiceTest extends TestUtilities {
     @Mock
@@ -118,8 +119,8 @@ public class CollectionEntityServiceTest extends TestUtilities {
     void getByGameTest() {
         List<CollectionEntity> list = new ArrayList<>();
         list.add(new CollectionEntity());
-        when(repositoryMock.findAllByUser(user.getId())).thenReturn(list);
-        Assertions.assertNotNull(service.findAllByUser(user), MESSAGE_ERROR);
+        when(repositoryMock.findAllByGame(game.getId())).thenReturn(list);
+        Assertions.assertNotNull(service.findAllBySubject(game), MESSAGE_ERROR);
     }
 
 
@@ -138,12 +139,7 @@ public class CollectionEntityServiceTest extends TestUtilities {
     void addNullTest() {
         Assertions.assertNull(service.save(null), MESSAGE_ERROR);
     }
-
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        when(repositoryMock.findUserByName(NAME)).thenThrow(new RuntimeException());
-//        Assertions.assertThrows(RuntimeException.class, () -> service.update(new User(1)), MESSAGE_ERROR);
-//    }
+    
 
 
     @Test
@@ -169,14 +165,23 @@ public class CollectionEntityServiceTest extends TestUtilities {
         Assertions.assertNull(service.update(item), MESSAGE_ERROR);
     }
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        Collection item = new Collection();
-//        item.setId(1);
-//        item.setName(NAME);
-//        when(repositoryMock.findByName(item.getName())).thenReturn(Optional.empty());
-//        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
-//    }
+    @Test
+    void updateForceExceptionTest() {
+        Collection item = new Collection();
+        item.setId(1);
+        item.setGame(game);
+
+        CollectionEntity dbItemMock = mock(CollectionEntity.class);
+        when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(dbItemMock));
+
+        doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setGame(IGameEntityMapper.INSTANCE.toEntity(game));
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+            service.update(item);
+        });
+
+        Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
+    }
 
     @Test
     void deleteAdminTest() {

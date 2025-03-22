@@ -1,6 +1,8 @@
 package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.Publisher;
+import es.iespuertodelacruz.xptrade.domain.Publisher;
+import es.iespuertodelacruz.xptrade.model.entities.PublisherEntity;
 import es.iespuertodelacruz.xptrade.model.entities.PublisherEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IPublisherEntityRepository;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class PublisherEntityServiceTest extends TestUtilities {
     @Mock
@@ -90,12 +92,7 @@ public class PublisherEntityServiceTest extends TestUtilities {
     void addNullTest() {
         Assertions.assertNull(service.save(null), MESSAGE_ERROR);
     }
-
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        when(repositoryMock.findUserByName(NAME)).thenThrow(new RuntimeException());
-//        Assertions.assertThrows(RuntimeException.class, () -> service.update(new User(1)), MESSAGE_ERROR);
-//    }
+    
 
 
     @Test
@@ -127,14 +124,24 @@ public class PublisherEntityServiceTest extends TestUtilities {
         Assertions.assertNull(service.update(role), MESSAGE_ERROR);
     }
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        Publisher role = new Publisher();
-//        role.setId(1);
-//        role.setName(NAME);
-//        when(repositoryMock.findByName(role.getName())).thenReturn(Optional.empty());
-//        Assertions.assertNull(service.update(role), MESSAGE_ERROR);
-//    }
+    @Test
+    void updateForceExceptionTest() {
+        Publisher item = new Publisher();
+        item.setId(1);
+        item.setName(NAME);
+
+        PublisherEntity dbItemMock = mock(PublisherEntity.class);
+        when(repositoryMock.findByName(item.getName())).thenReturn(Optional.of(dbItemMock));
+
+        doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setName(NAME);
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+            service.update(item);
+        });
+
+        Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
+    }
+
 
     @Test
     void deleteAdminTest() {
