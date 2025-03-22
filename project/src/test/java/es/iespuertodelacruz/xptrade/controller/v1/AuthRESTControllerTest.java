@@ -7,6 +7,7 @@ import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
 import es.iespuertodelacruz.xptrade.domain.service.UserService;
 import es.iespuertodelacruz.xptrade.dto.user.UserLoginDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserRegisterDTO;
+import es.iespuertodelacruz.xptrade.mapper.entity.IUserEntityMapper;
 import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
 import es.iespuertodelacruz.xptrade.model.repository.IUserEntityRepository;
 import es.iespuertodelacruz.xptrade.model.service.rest.UserEntityService;
@@ -150,9 +151,12 @@ public class AuthRESTControllerTest extends TestUtilities {
         result.setProfilePicture(PROFILE_PICTURE);
         result.setRole(new Role(ID, ROLE_NAME));
         result.setVerified(VERIFIED);
+//
+        when(repositoryMock.findUserByName(NAME)).thenReturn(null);
+        when(repositoryMock.save(IUserEntityMapper.INSTANCE.toEntity(result))).thenReturn(IUserEntityMapper.INSTANCE.toEntity(result));
 
-        when(authServiceMock.register(USERNAME, PASSWORD, EMAIL)).thenReturn(result);
         when(serviceMock.add(USERNAME, PASSWORD, EMAIL)).thenReturn(result);
+//        when(authServiceMock.register(USERNAME, PASSWORD, EMAIL)).thenReturn(result);
 
         ResponseEntity<?> response = controller.register(registerDTO);
 
