@@ -12,9 +12,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MailService {
-    @Autowired private JavaMailSender sender;
+    private JavaMailSender sender;
 
     @Value("${mail.from}") private String mailfrom;
+
+    /**
+     * Setter of the mail service sender
+     * @param sender of the mail
+     */
+    @Autowired
+    public void setSender(JavaMailSender sender) {
+        this.sender = sender;
+    }
 
     public void send(String destinatarios[], String asunto, String  contenido){
         SimpleMailMessage message = new SimpleMailMessage();
