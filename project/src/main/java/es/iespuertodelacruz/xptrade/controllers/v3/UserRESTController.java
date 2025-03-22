@@ -102,6 +102,20 @@ public class UserRESTController {
                     .body(new CustomApiResponse<>(400, "El usuario no puede ser nulo", null));
         }
 
+        User usernameFound = service.findByUsername(registerDTO.name());
+
+        if(usernameFound != null){
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(new CustomApiResponse<>(409, "Name already in use", null));
+        }
+
+        User emailFound = service.findByEmail(registerDTO.name());
+
+        if(emailFound != null){
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(new CustomApiResponse<>(409, "Email already in use", null));
+        }
+
         try {
             User user = new User();
             user.setUsername(registerDTO.name());
@@ -116,8 +130,8 @@ public class UserRESTController {
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el usuario", null));
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(new CustomApiResponse<>(409, "Error", null));
         }
     }
 
@@ -127,7 +141,7 @@ public class UserRESTController {
             @RequestBody UserUpdateInputDTO updateInputDTO) {
 
         if (updateInputDTO == null) {
-            return ResponseEntity.badRequest()
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new CustomApiResponse<>(400, "User cannot be null", null));
         }
 
@@ -170,8 +184,8 @@ public class UserRESTController {
                     .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "User not deleted";
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, message, null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, message, null));
         }
 
     }

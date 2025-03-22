@@ -133,34 +133,60 @@ public class UserRESTControllerV3Test extends TestUtilities {
 
         when(repositoryMock.findUserByName(NAME)).thenReturn(Optional.of(IUserEntityMapper.INSTANCE.toEntity(existingUser)));
 
-        User user = serviceMock.findByUsername(NAME);
-
         ResponseEntity<?> responseEntity = controller.add(new UserRegisterDTO(NAME, EMAIL, PASSWORD));
 
         Assertions.assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode(), "User creation should be rejected due to name conflict.");
         Assertions.assertInstanceOf(CustomApiResponse.class, responseEntity.getBody(), "Response should be CustomApiResponse.");
     }
 
-    //@Test
+    @Test
     void addTestEmailConflict() {
         User existingUser = new User();
-        when(serviceMock.findByUsername(EMAIL)).thenReturn(existingUser); // El email ya está en uso
+        existingUser.setEmail(EMAIL);
+        when(repositoryMock.findUserByEmail(EMAIL)).thenReturn(Optional.of(IUserEntityMapper.INSTANCE.toEntity(existingUser)));
 
         ResponseEntity<?> responseEntity = controller.add(new UserRegisterDTO(NAME, EMAIL, PASSWORD));
 
         Assertions.assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode(), "User creation should be rejected due to email conflict.");
         Assertions.assertInstanceOf(CustomApiResponse.class, responseEntity.getBody(), "Response should be CustomApiResponse.");
     }
-    //@Test
-    void deleteTest() {
-        ResponseEntity responseEntity = controller.delete(1);
+
+    @Test
+    void deleteOKTest() {
+        when(repositoryMock.deleteEntityById(2)).thenReturn(1);
+
+//        when(serviceMock.delete(2)).thenReturn(true);
+        ResponseEntity responseEntity = controller.delete(2);
         Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode(), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void deleteAdminTest() {
+        ResponseEntity responseEntity = controller.delete(1);
+        Assertions.assertEquals(HttpStatus.FORBIDDEN, responseEntity.getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void deleteFailTest() {
+        ResponseEntity responseEntity = controller.delete(3);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, responseEntity.getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void updateNullTest() {
+        ResponseEntity responseEntity = controller.update(1, null);
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
 
     //@Test
     void updateTest() {
-        when(serviceMock.add(NAME, EMAIL, PASSWORD)).thenReturn(new User());
+        User existingUser = new User(ID);
+        existingUser.setEmail(EMAIL);
+        existingUser.setUsername(USERNAME);
+        when(repositoryMock.findUserByName(NAME)).thenReturn(Optional.of(IUserEntityMapper.INSTANCE.toEntity(existingUser)));
+        when(serviceMock.update(NAME, EMAIL, PASSWORD)).thenReturn(new User());
         ResponseEntity responseEntity = controller.update(1, new UserUpdateInputDTO(EMAIL, PASSWORD));
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
