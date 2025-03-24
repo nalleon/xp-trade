@@ -14,7 +14,7 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
-@WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGameSoapService")
+@WebService(endpointInterface = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGameSoapService")
 @Component
 public class GameSoapService implements IGameSoapService {
     /**

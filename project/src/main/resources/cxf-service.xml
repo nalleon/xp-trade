@@ -107,15 +107,15 @@
     <bean id="collectionSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.CollectionSoapService"/>
     <bean id="commentSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.CommentSoapService"/>
     <bean id="developerSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.DeveloperSoapService"/>
-    <bean id="favoriteSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.FavoriteSoapService"/>
-    <bean id="gameSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.GameSoapService"/>
-    <bean id="genreSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.GenreSoapService"/>
-    <bean id="platformSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.PlatformSoapService"/>
-    <bean id="postSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.PostSoapService"/>
-    <bean id="publisherSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.PublisherSoapService"/>
-    <bean id="regionSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.RegionSoapService"/>
-    <bean id="roleSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.RoleSoapService"/>
-    <bean id="userSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.UserSoapService"/>
+    <bean id="favoriteSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.FavoriteSoapService"/>
+    <bean id="gameSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.GameSoapService"/>
+    <bean id="genreSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.GenreSoapService"/>
+    <bean id="platformSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.PlatformSoapService"/>
+    <bean id="postSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.PostSoapService"/>
+    <bean id="publisherSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.PublisherSoapService"/>
+    <bean id="regionSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.RegionSoapService"/>
+    <bean id="roleSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.RoleSoapService"/>
+    <bean id="userSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.UserSoapService"/>
     <bean id="cxfAuthInterceptor" class="es.iespuertodelacruz.xptrade.shared.security.interceptor.CxfAuthInterceptor"/>
 
 </beans>

@@ -13,7 +13,7 @@ import java.util.List;
  * @author Jose Maximiliano Boada Martin @mackstm
  */
 @Component
-@WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces.IRoleSoapService")
+@WebService(endpointInterface = "es.iespuertodelacruz.xptrade.model.service.interfaces.IRoleSoapService")
 public class RoleSoapService implements IRoleSoapService {
     /**
      * Properties
