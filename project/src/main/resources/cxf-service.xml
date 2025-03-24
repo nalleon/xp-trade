@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+           http://cxf.apache.org/jaxws https://cxf.apache.org/schemas/jaxws.xsd">
+
+    <!-- Definición del servicio -->
+    <jaxws:endpoint id="collectionServiceEndpoint"
+                    implementor="#collectionSoapServiceImpl"
+                    address="/collections">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="commentServiceEndpoint"
+                    implementor="#commentSoapServiceImpl"
+                    address="/comments">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="developerServiceEndpoint"
+                    implementor="#developerSoapServiceImpl"
+                    address="/developers">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="favoriteServiceEndpoint"
+                    implementor="#favoriteSoapServiceImpl"
+                    address="/favorites">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="gameServiceEndpoint"
+                    implementor="#gameSoapServiceImpl"
+                    address="/games">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="genreServiceEndpoint"
+                    implementor="#genreSoapServiceImpl"
+                    address="/genres">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="platformServiceEndpoint"
+                    implementor="#platformSoapServiceImpl"
+                    address="/platforms">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="postServiceEndpoint"
+                    implementor="#postSoapServiceImpl"
+                    address="/posts">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="publisherServiceEndpoint"
+                    implementor="#publisherSoapServiceImpl"
+                    address="/publishers">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="regionServiceEndpoint"
+                    implementor="#regionSoapServiceImpl"
+                    address="/regions">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="roleServiceEndpoint"
+                    implementor="#roleSoapServiceImpl"
+                    address="/roles">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <jaxws:endpoint id="userServiceEndpoint"
+                    implementor="#userSoapServiceImpl"
+                    address="/users">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+    </jaxws:endpoint>
+
+    <!-- Definición de los beans -->
+    <bean id="collectionSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.CollectionSoapService"/>
+    <bean id="commentSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.CommentSoapService"/>
+    <bean id="developerSoapServiceImpl" class="es.iespuertodelacruz.xptrade.model.service.soap.DeveloperSoapService"/>
+    <bean id="favoriteSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.FavoriteSoapService"/>
+    <bean id="gameSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.GameSoapService"/>
+    <bean id="genreSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.GenreSoapService"/>
+    <bean id="platformSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.PlatformSoapService"/>
+    <bean id="postSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.PostSoapService"/>
+    <bean id="publisherSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.PublisherSoapService"/>
+    <bean id="regionSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.RegionSoapService"/>
+    <bean id="roleSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.RoleSoapService"/>
+    <bean id="userSoapService" class="es.iespuertodelacruz.xptrade.model.service.soap.UserSoapService"/>
+    <bean id="cxfAuthInterceptor" class="es.iespuertodelacruz.xptrade.shared.security.interceptor.CxfAuthInterceptor"/>
+
+</beans>
