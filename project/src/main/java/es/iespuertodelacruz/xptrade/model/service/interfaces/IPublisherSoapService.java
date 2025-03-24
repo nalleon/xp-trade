@@ -1,25 +1,26 @@
 package es.iespuertodelacruz.xptrade.model.service.interfaces;
 
-import es.iespuertodelacruz.xptrade.domain.Role;
+import es.iespuertodelacruz.xptrade.domain.Publisher;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
 
 import java.util.List;
+
 @WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces")
-public interface IRoleSoapService {
+public interface IPublisherSoapService {
     @WebMethod
-    Role save(@WebParam(name = "role") Role role);
+    Publisher save(@WebParam(name = "publisher") Publisher publisher);
     @WebMethod
-    @WebResult(name="role")
-    List<Role> findAll();
+    @WebResult(name="publisher")
+    List<Publisher> findAll();
     @WebMethod
-    Role findById(@WebParam(name = "id") Integer id);
+    Publisher findById(@WebParam(name = "id") Integer id);
     @WebMethod
-    Role findByName(@WebParam(name = "username") String name);
+    Publisher findByName(@WebParam(name = "username") String name);
     @WebMethod
     boolean delete(@WebParam(name = "id") Integer id);
     @WebMethod
-    Role update(@WebParam(name = "role") Role role);
+    Publisher update(@WebParam(name = "publisher") Publisher publisher);
 }

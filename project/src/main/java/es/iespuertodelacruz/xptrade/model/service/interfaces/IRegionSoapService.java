@@ -1,25 +1,26 @@
 package es.iespuertodelacruz.xptrade.model.service.interfaces;
 
-import es.iespuertodelacruz.xptrade.domain.Role;
+import es.iespuertodelacruz.xptrade.domain.Region;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
 
 import java.util.List;
+
 @WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces")
-public interface IRoleSoapService {
+public interface IRegionSoapService {
     @WebMethod
-    Role save(@WebParam(name = "role") Role role);
+    Region save(@WebParam(name = "region") Region region);
     @WebMethod
-    @WebResult(name="role")
-    List<Role> findAll();
+    @WebResult(name="region")
+    List<Region> findAll();
     @WebMethod
-    Role findById(@WebParam(name = "id") Integer id);
+    Region findById(@WebParam(name = "id") Integer id);
     @WebMethod
-    Role findByName(@WebParam(name = "username") String name);
+    Region findByName(@WebParam(name = "username") String name);
     @WebMethod
     boolean delete(@WebParam(name = "id") Integer id);
     @WebMethod
-    Role update(@WebParam(name = "role") Role role);
+    Region update(@WebParam(name = "region") Region region);
 }

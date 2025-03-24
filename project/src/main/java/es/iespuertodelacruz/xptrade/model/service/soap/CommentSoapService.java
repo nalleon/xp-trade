@@ -2,7 +2,7 @@ package es.iespuertodelacruz.xptrade.model.service.soap;
 
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
-import es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSocialSoapService;
+import es.iespuertodelacruz.xptrade.model.service.interfaces.ICommentSoapService;
 import jakarta.jws.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,9 +13,9 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
-@WebService(endpointInterface = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSocialSoapService")
+@WebService(endpointInterface = "es.iespuertodelacruz.xptrade.model.service.interfaces.ICommentSoapService")
 @Component
-public class CommentSoapService implements IGenericSocialSoapService<Comment, Integer, User, Post> {
+public class CommentSoapService implements ICommentSoapService {
     /**
      * Properties
      */

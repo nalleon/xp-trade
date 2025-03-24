@@ -1,11 +1,10 @@
 package es.iespuertodelacruz.xptrade.model.service.soap;
 
 import es.iespuertodelacruz.xptrade.domain.Post;
-import es.iespuertodelacruz.xptrade.domain.Post;
 import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
-import es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSocialSoapService;
+import es.iespuertodelacruz.xptrade.model.service.interfaces.IPostSoapService;
 import jakarta.jws.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,9 +15,9 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
-@WebService(endpointInterface = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSocialSoapService")
+@WebService(endpointInterface = "es.iespuertodelacruz.xptrade.model.service.interfaces.IPostSoapService")
 @Component
-public class PostSoapService implements IGenericSocialSoapService<Post, Integer, User, Game> {
+public class PostSoapService implements IPostSoapService {
     /**
      * Properties
      */

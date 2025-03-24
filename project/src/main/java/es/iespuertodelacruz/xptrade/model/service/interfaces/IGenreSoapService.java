@@ -1,25 +1,26 @@
 package es.iespuertodelacruz.xptrade.model.service.interfaces;
 
-import es.iespuertodelacruz.xptrade.domain.Role;
+import es.iespuertodelacruz.xptrade.domain.Genre;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
 
 import java.util.List;
+
 @WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces")
-public interface IRoleSoapService {
+public interface IGenreSoapService {
     @WebMethod
-    Role save(@WebParam(name = "role") Role role);
+    Genre save(@WebParam(name = "genre") Genre genre);
     @WebMethod
-    @WebResult(name="role")
-    List<Role> findAll();
+    @WebResult(name="genre")
+    List<Genre> findAll();
     @WebMethod
-    Role findById(@WebParam(name = "id") Integer id);
+    Genre findById(@WebParam(name = "id") Integer id);
     @WebMethod
-    Role findByName(@WebParam(name = "username") String name);
+    Genre findByName(@WebParam(name = "username") String name);
     @WebMethod
     boolean delete(@WebParam(name = "id") Integer id);
     @WebMethod
-    Role update(@WebParam(name = "role") Role role);
+    Genre update(@WebParam(name = "genre") Genre genre);
 }

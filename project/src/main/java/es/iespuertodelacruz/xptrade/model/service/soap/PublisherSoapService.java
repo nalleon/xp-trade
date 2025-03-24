@@ -1,10 +1,8 @@
 package es.iespuertodelacruz.xptrade.model.service.soap;
 
-import es.iespuertodelacruz.xptrade.domain.Developer;
-import es.iespuertodelacruz.xptrade.domain.Platform;
 import es.iespuertodelacruz.xptrade.domain.Publisher;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericRepository;
-import es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSoapService;
+import es.iespuertodelacruz.xptrade.model.service.interfaces.IPublisherSoapService;
 import jakarta.jws.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,9 +13,9 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
-@WebService(endpointInterface = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSoapService")
+@WebService(endpointInterface = "es.iespuertodelacruz.xptrade.model.service.interfaces.IPublisherSoapService")
 @Component
-public class PublisherSoapService implements IGenericSoapService<Publisher, Integer, String> {
+public class PublisherSoapService implements IPublisherSoapService {
     /**
      * Properties
      */

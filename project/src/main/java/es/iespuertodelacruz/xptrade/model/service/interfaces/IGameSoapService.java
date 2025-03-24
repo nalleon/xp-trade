@@ -4,6 +4,7 @@ import es.iespuertodelacruz.xptrade.domain.*;
 
 import java.util.List;
 
+import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
@@ -14,16 +15,22 @@ public interface IGameSoapService {
     @WebMethod
     Game save(@WebParam(name = "game") Game game);
     @WebMethod
+    @WebResult(name="game")
     List<Game> findAll();
     @WebMethod
+    @WebResult(name="game")
     List<Game> findAllByPlatform(@WebParam(name = "platform") Platform platform);
     @WebMethod
+    @WebResult(name="game")
     List<Game> findAllByDeveloper(@WebParam(name = "developer") Developer developer);
     @WebMethod
+    @WebResult(name="game")
     List<Game> findAllByPublisher(@WebParam(name = "publisher") Publisher publisher);
     @WebMethod
+    @WebResult(name="game")
     List<Game> findAllByGenre(@WebParam(name = "genre") Genre genre);
     @WebMethod
+    @WebResult(name="game")
     List<Game> findAllByRegion(@WebParam(name = "region") Region region);
     @WebMethod
     Game findById(@WebParam(name = "id") Integer id);
