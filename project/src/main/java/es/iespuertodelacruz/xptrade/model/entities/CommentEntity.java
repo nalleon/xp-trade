@@ -4,6 +4,7 @@ import es.iespuertodelacruz.xptrade.shared.utils.DateToLongConverter;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -36,6 +37,13 @@ public class CommentEntity {
     @Column(nullable=false, length=45, name = "creation_date")
     @Convert(converter = DateToLongConverter.class)
     private Date creationDate;
+
+    @ManyToOne()
+    @JoinColumn(name = "replied_comment_id")
+    private CommentEntity repliedComment;
+
+    @OneToMany(mappedBy = "repliedComment")
+    private List<CommentEntity> replies;
 
 
     /**
@@ -107,6 +115,22 @@ public class CommentEntity {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public CommentEntity getRepliedComment() {
+        return repliedComment;
+    }
+
+    public void setRepliedComment(CommentEntity repliedComment) {
+        this.repliedComment = repliedComment;
+    }
+
+    public List<CommentEntity> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<CommentEntity> replies) {
+        this.replies = replies;
     }
 
     @Override
