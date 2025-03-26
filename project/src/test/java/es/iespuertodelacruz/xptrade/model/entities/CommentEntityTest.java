@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class CommentEntityTest extends MapperHelper {
     CommentEntity item;
@@ -25,6 +23,8 @@ public class CommentEntityTest extends MapperHelper {
     Set<PlatformEntity> platformSet;
     Set<PublisherEntity> publisherSet;
     Set<RegionEntity> regionSet;
+    CommentEntity repliedComment;
+    List<CommentEntity> replies;
 
     @BeforeEach
     public void beforeEach() {
@@ -57,11 +57,24 @@ public class CommentEntityTest extends MapperHelper {
         post.setCreationDate(CREATION_DATE);
         post.setUser(user);
 
+        repliedComment = new CommentEntity(2);
+        repliedComment.setUser(user);
+        repliedComment.setPost(post);
+        repliedComment.setContent(CONTENT);
+        repliedComment.setCreationDate(CREATION_DATE);
+
+
+
         item = new CommentEntity(ID);
         item.setUser(user);
         item.setPost(post);
         item.setContent(CONTENT);
         item.setCreationDate(CREATION_DATE);
+        item.setRepliedComment(repliedComment);
+
+        replies = new ArrayList<>();
+        replies.add(item);
+        repliedComment.setReplies(replies);
     }
 
     @Test
@@ -71,6 +84,8 @@ public class CommentEntityTest extends MapperHelper {
         Assertions.assertEquals(user, item.getUser(), MESSAGE_ERROR);
         Assertions.assertEquals(CONTENT, item.getContent(), MESSAGE_ERROR);
         Assertions.assertEquals(CREATION_DATE, item.getCreationDate(), MESSAGE_ERROR);
+        Assertions.assertEquals(repliedComment, item.getRepliedComment(), MESSAGE_ERROR);
+        Assertions.assertEquals(replies, repliedComment.getReplies(), MESSAGE_ERROR);
     }
 
     @Test
