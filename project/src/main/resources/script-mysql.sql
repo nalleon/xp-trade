@@ -180,9 +180,11 @@ CREATE TABLE `comments` (
     id INTEGER AUTO_INCREMENT NOT NULL,
     post_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
+    replied_comment_id INTEGER NULL,
     content VARCHAR(255) NOT NULL,
     creation_date BIGINT NOT NULL,
     CONSTRAINT `pk_comments` PRIMARY KEY (id),
     CONSTRAINT `fk_comments1` FOREIGN KEY (post_id) REFERENCES posts(id),
-    CONSTRAINT `fk_comments2` FOREIGN KEY (user_id) REFERENCES users(id)
+    CONSTRAINT `fk_comments2` FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT `fk_comments3` FOREIGN KEY (replied_comment_id) REFERENCES comments(id)
 );
