@@ -8,13 +8,13 @@ import InitScreen from '../../screens/InitScreen';
 type Props = {}
 
 
-export type GameStackParamList = {
+export type ProfileStackParamList = {
     InitScreen: undefined,
     LoginScreen: undefined,
     RegisterScreen: undefined
 };
 
-const Stack = createNativeStackNavigator<GameStackParamList>();
+const Stack = createNativeStackNavigator<ProfileStackParamList>();
 
 const ProfileStackNav = (props: Props) => {
     return (
