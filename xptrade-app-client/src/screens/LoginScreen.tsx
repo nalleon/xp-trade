@@ -61,11 +61,6 @@ return (
             <TouchableOpacity  onPress={() => props.navigation.navigate('RegisterScreen')}>
                 <Text>Not registered yet? Press here</Text>
             </TouchableOpacity>
-        <View style={{flex:2,justifyContent:'flex-end'}}>
-            <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitScreen')}>
-            <Text style={styles.buttonText}>Go Back</Text>
-            </TouchableOpacity>
-        </View>
 
     </View>
     )

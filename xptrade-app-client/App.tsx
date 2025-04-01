@@ -38,15 +38,15 @@ function App(): React.JSX.Element {
   const [dbInitilized, setDbInitilized] = useState(false);
   
 useEffect(() => {
-    async function iniciarDDBB(){
+    async function initDDBB(){
       try{
         await dataSource.initialize();
-        console.log("Base de datos inicializada correctamente");
+        console.log("DB correctly initialized");
         setDbInitilized(true);
 
-      }catch(e){console.error("no arranca la ddbb" + e)}
+      }catch(e){console.error("Error while initing db: " + e)}
     }
-    iniciarDDBB();
+    initDDBB();
 
   }, [])
 
