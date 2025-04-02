@@ -1,4 +1,4 @@
-package com.tictactoe
+package com.xptrade
 
 import android.app.Application
 import com.facebook.react.PackageList
