@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../navigations/stack/AuthStackNav';
@@ -6,7 +6,7 @@ import { styles } from './InitScreen';
 import { TextInput } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { URL_API as URL_API } from '../utils/Utils';
+import { SUCCESS, URL_API as URL_API } from '../utils/Utils';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AppContext } from '../context/AppContext';
 import UseApi from '../hooks/UseApi';
@@ -25,9 +25,11 @@ const LoginScreen = (props: AuthProps) => {
     const { handleLogin } = UseApi();
 
     const login = async (username : string, password : string) => {
-        const result = handleLogin(username, password);
-        if (result){
-            props.navigation.navigate('RemoteHomeScreen');
+        const result = await handleLogin(username, password);
+        if (result === SUCCESS){
+            props.navigation.replace('InitScreen');
+        } else {
+            Alert.alert("Error", "Usuario o contraseña incorrectos");
         }
     }
 
@@ -41,7 +43,7 @@ return (
             <Text style={styles.title}>Login</Text>
             <TextInput
                 style={styles.input}
-                placeholder="Username"
+                placeholder="Nombre de usuario"
                 value={username}
                 onChangeText={setUsername}
                 />
@@ -55,11 +57,11 @@ return (
             />
             
             <TouchableOpacity style={styles.button} onPress={() => login(username, password)}>
-                <Text style={styles.buttonText}>Login</Text>
+                <Text style={styles.buttonText}>Iniciar sesión</Text>
             </TouchableOpacity>
 
             <TouchableOpacity  onPress={() => props.navigation.navigate('RegisterScreen')}>
-                <Text>Not registered yet? Press here</Text>
+                <Text>¿No tienes cuenta? Registrate</Text>
             </TouchableOpacity>
 
     </View>
