@@ -5,6 +5,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { GameRepository } from '../data/Database';
 import { AuthStackParamList } from '../navigations/stack/AuthStackNav';
 
+import { NativeWindStyleSheet } from 'nativewind';
+
 
 
 
@@ -19,10 +21,14 @@ function InitScreen(props:AuthProps) {
         </TouchableOpacity>
 
 
-        <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('LocalHomeScreen')}>
+        <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Play Local</Text>
         </TouchableOpacity>
     
+        <View className="flex-1 justify-center items-center bg-blue-500">
+          <Text className="text-white text-lg">Hello, NativeWind!</Text>
+        </View>
+
       </View>
     );
 }
