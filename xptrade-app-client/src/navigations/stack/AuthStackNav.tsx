@@ -3,13 +3,14 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../../screens/LoginScreen';
 import RegisterScreen from '../../screens/RegisterScreen';
-import InitScreen from '../../screens/InitScreen';
+import TabNav from '../tab/TabNav';
+import DrawerNav from '../drawer/DrawerNav';
 
 type Props = {}
 
 
 export type AuthStackParamList = {
-    InitScreen: undefined,
+    TabNav: undefined,
     LoginScreen: undefined,
     RegisterScreen: undefined
 };
@@ -25,7 +26,7 @@ const AuthStackNav = (props: Props) => {
         >
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-            <Stack.Screen name="InitScreen" component={InitScreen   } />
+            <Stack.Screen name="TabNav" component={DrawerNav} />
 
         </Stack.Navigator>
     )

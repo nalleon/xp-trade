@@ -10,9 +10,9 @@ import { NativeWindStyleSheet } from 'nativewind';
 
 
 
-type AuthProps = NativeStackScreenProps<AuthStackParamList, 'InitScreen'>;
+type AuthProps = NativeStackScreenProps<AuthStackParamList, 'HomeScreen'>;
 
-function InitScreen(props:AuthProps) {
+function HomeScreen(props:AuthProps) {
 
     return (
       <View style={styles.container}>
@@ -93,4 +93,4 @@ export const styles = StyleSheet.create({
   },
 });
 
-export default InitScreen;
+export default HomeScreen;

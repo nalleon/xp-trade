@@ -2,7 +2,7 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../navigations/stack/AuthStackNav';
-import { styles } from './InitScreen';
+import { styles } from './HomeScreen';
 import { TextInput } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { URL_API } from '../utils/Utils';
@@ -24,7 +24,7 @@ const RegisterScreen = (props: AuthProps) => {
   const { handleRegister } = UseApi();
 
   const register = async (username : string, password : string, email : string) => {
-    const result = handleRegister(username, email, password);
+    const result = await handleRegister(username, email, password);
     if (result){
         Alert.alert("Registro exitoso")
         //TODO: parar la navegacion hasta que se de OK a la alerta

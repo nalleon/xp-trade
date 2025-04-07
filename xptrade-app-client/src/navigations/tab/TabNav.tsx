@@ -2,7 +2,11 @@ import { StyleSheet, Text, useWindowDimensions, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
-import LoginScreen from '../../screens/LoginScreen';
+import HomeScreen from '../../screens/HomeScreen';
+import ProfileScreen from '../../screens/ProfileScreen';
+import NotificationsScreen from '../../screens/NotificationsScreen';
+import CollectionScreen from '../../screens/CollectionScreen';
+import SearchScreen from '../../screens/SearchScreen';
 
 type Props = {}
 const Tab = createBottomTabNavigator();
@@ -21,25 +25,36 @@ const TabNav = (props: Props) => {
           }}
           >   
 
-
-          <Tab.Screen name='Perfil' component={LoginScreen}
+        <Tab.Screen name='Home' component={HomeScreen}
               options={ {tabBarIcon: ({focused}) => 
-                  <Icon name={(focused) ? 'person-add' : 'person-add-outline'} size={30}/>
+                  <Icon name={(focused) ? 'home' : 'home-outline'} size={30}/>
               }
           }/>
 
-          <Tab.Screen name='Colección' component={LoginScreen}
+        <Tab.Screen name='Búsqueda' component={SearchScreen}
               options={ {tabBarIcon: ({focused}) => 
-                  <Icon name={(focused) ? 'bookmarks' : 'bookmarks-outline'} size={30}/>
+                  <Icon name={(focused) ? 'search' : 'search-outline'} size={30}/>
               }
           }/>
 
-          <Tab.Screen name='Notificaciones' component={LoginScreen}
+
+          <Tab.Screen name='Colección' component={CollectionScreen}
               options={ {tabBarIcon: ({focused}) => 
-                  <Icon name={(focused) ? 'notifications' : 'notifications-outline'} size={30}/>
+                <Icon name={(focused) ? 'bookmarks' : 'bookmarks-outline'} size={30}/>
+            }
+        }/>
+
+          <Tab.Screen name='Notificaciones' component={NotificationsScreen}
+              options={ {tabBarIcon: ({focused}) => 
+                <Icon name={(focused) ? 'notifications' : 'notifications-outline'} size={30}/>
               }
-          }/>
+            }/>
               
+        <Tab.Screen name='Perfil' component={ProfileScreen}
+            options={ {tabBarIcon: ({focused}) => 
+                <Icon name={(focused) ? 'person' : 'person-outline'} size={30}/>
+            }
+        }/>
       </Tab.Navigator>
   )
 }
