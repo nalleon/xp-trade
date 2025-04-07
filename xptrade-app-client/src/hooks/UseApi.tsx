@@ -69,34 +69,28 @@ const UseApi = () => {
   };
 
     const handleRegister = async (username : string, email : string, password : string) => {
-        if(!username || username.trim() === "" || !password || password.trim() === "" || !email || email.trim() === ""){
-            return false;
-        }
-        
-        console.log(`${URL_API}/v1/auth/register`);
-        try {
-            const response = await axios.post(`${URL_API}/v1/auth/register`, {
-                    name: username,
-                    email: email,
-                    password: password 
-                },
-                {
-                headers:{
-                    'Content-Type': 'application/json'
-                }   
-                }
-            );
+      if (!username?.trim() || !password?.trim() || !email?.trim()) return null;
+  
+      try {
+          const response = await axios.post(`${URL_API}/v1/auth/register`, {
+              name: username,
+              email: email,
+              password: password 
+          }, {
+              headers: { 'Content-Type': 'application/json' }
+          });
+  
+          if (response?.data) {
+              return "success";
+          } else {
+            return null;
+          }
 
-            
-            if (response.data) {
-                return true;
-            }
-
-        } catch (error) {
-            console.error("Error while register", error);
-        }
-
-        return false;
+      } catch (error) {
+        console.error("Error while registering", error);
+      }
+  
+      
     };
 
     const handleGame = async () => {
