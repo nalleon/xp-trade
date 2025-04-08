@@ -65,7 +65,7 @@ public class PlatformRESTController {
     }
 
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/names/{name}")
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Platform aux = service.findByName(name);
         if (aux != null){

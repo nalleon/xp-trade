@@ -66,7 +66,7 @@ public class RoleRESTController {
     }
 
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/names/{name}")
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Role aux = service.findByName(name);
         if (aux != null){

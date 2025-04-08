@@ -64,7 +64,7 @@ public class GenreRESTController {
     }
 
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/names/{name}")
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Genre aux = service.findByName(name);
 

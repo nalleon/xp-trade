@@ -112,7 +112,7 @@ public class GameRESTController {
         return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
     }
 
-    @GetMapping("/platform/{name}")
+    @GetMapping("/platforms/{name}")
     public ResponseEntity<?> getAllByPlatform(@PathVariable String name) {
 
         Platform filter = platformService.findByName(name);
@@ -136,7 +136,7 @@ public class GameRESTController {
         return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
     }
 
-    @GetMapping("/region/{name}")
+    @GetMapping("/regions/{name}")
     public ResponseEntity<?> getAllByRegion(@PathVariable String name) {
 
         Region filter = regionService.findByName(name);
@@ -160,7 +160,7 @@ public class GameRESTController {
         return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
     }
 
-    @GetMapping("/developer/{name}")
+    @GetMapping("/developers/{name}")
     public ResponseEntity<?> getAllByDeveloper(@PathVariable String name) {
 
         Developer filter = developerService.findByName(name);
@@ -185,7 +185,7 @@ public class GameRESTController {
     }
 
 
-    @GetMapping("/publisher/{name}")
+    @GetMapping("/publishers/{name}")
     public ResponseEntity<?> getAllByPublisher(@PathVariable String name) {
 
         Publisher filter = publisherService.findByName(name);
@@ -210,7 +210,7 @@ public class GameRESTController {
     }
 
 
-    @GetMapping("/genre/{name}")
+    @GetMapping("/genres/{name}")
     public ResponseEntity<?> getAllByGenre(@PathVariable String name) {
 
         Genre filter = genreService.findByName(name);
@@ -248,7 +248,7 @@ public class GameRESTController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
-    @GetMapping("/title/{title}")
+    @GetMapping("/titles/{title}")
     public ResponseEntity<?> getByTitle(@PathVariable String title) {
         Game aux = service.findByTitle(title);
         if (aux != null){

@@ -66,7 +66,7 @@ public class PublisherRESTController {
     }
 
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/names/{name}")
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Publisher aux = service.findByName(name);
         if (aux != null){
