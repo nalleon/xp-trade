@@ -1,5 +1,6 @@
 package es.iespuertodelacruz.xptrade.dto;
 
+import es.iespuertodelacruz.xptrade.dto.output.DeveloperDTO;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

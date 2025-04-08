@@ -39,7 +39,7 @@ const UseApi = () => {
     const context = useContext(AppContext);
     
     const createPost = async (content: string, game: string, picture: string): Promise<string | null> => {
-      if (!content?.trim() || !game?.trim() ) return null;
+      if (!content?.trim() || !game?.trim()) return null;
   
       try {
           const response = await axios.post(`${URL_API}/v2/posts`, {

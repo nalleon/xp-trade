@@ -1,8 +1,7 @@
 package es.iespuertodelacruz.xptrade.dto;
 
+import es.iespuertodelacruz.xptrade.dto.output.*;
 import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
-import es.iespuertodelacruz.xptrade.dto.user.UserOutputDTO;
-import es.iespuertodelacruz.xptrade.dto.user.UserSearchDTO;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

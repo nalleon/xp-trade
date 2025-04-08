@@ -1,10 +1,9 @@
 package es.iespuertodelacruz.xptrade.mapper.dto;
 
 import es.iespuertodelacruz.xptrade.domain.Developer;
-import es.iespuertodelacruz.xptrade.dto.DeveloperDTO;
+import es.iespuertodelacruz.xptrade.dto.output.DeveloperDTO;
 
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
-import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
