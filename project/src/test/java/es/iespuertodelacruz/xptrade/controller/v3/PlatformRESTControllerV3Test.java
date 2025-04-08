@@ -3,7 +3,7 @@ package es.iespuertodelacruz.xptrade.controller.v3;
 import es.iespuertodelacruz.xptrade.controllers.v3.PlatformRESTController;
 import es.iespuertodelacruz.xptrade.domain.Platform;
 import es.iespuertodelacruz.xptrade.domain.service.PlatformService;
-import es.iespuertodelacruz.xptrade.dto.PlatformDTO;
+import es.iespuertodelacruz.xptrade.dto.output.PlatformOutputDTO;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +55,7 @@ public class PlatformRESTControllerV3Test extends TestUtilities {
     @Test
     void addTest() {
         when(serviceMock.add(any(String.class))).thenReturn(new Platform());
-        PlatformDTO aux = new PlatformDTO(1, "ADMIN");
+        PlatformOutputDTO aux = new PlatformOutputDTO(1, "ADMIN");
         ResponseEntity responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
@@ -89,7 +89,7 @@ public class PlatformRESTControllerV3Test extends TestUtilities {
         when(serviceMock.add(any(String.class))).thenReturn(new Platform());
         when(serviceMock.update(any(Integer.class), any(String.class))).thenReturn(aux);
 
-        ResponseEntity responseEntity = controller.update(1, new PlatformDTO(aux.getId(), aux.getName()));
+        ResponseEntity responseEntity = controller.update(1, new PlatformOutputDTO(aux.getId(), aux.getName()));
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -97,7 +97,7 @@ public class PlatformRESTControllerV3Test extends TestUtilities {
     void updateNotFoundTest() {
         Platform aux = new Platform(1);
         when(serviceMock.add(any(String.class))).thenReturn(new Platform());
-        ResponseEntity responseEntity = controller.update(1, new PlatformDTO(aux.getId(), aux.getName()));
+        ResponseEntity responseEntity = controller.update(1, new PlatformOutputDTO(aux.getId(), aux.getName()));
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -115,7 +115,7 @@ public class PlatformRESTControllerV3Test extends TestUtilities {
         when(serviceMock.update(any(Integer.class), any(String.class))).thenReturn(null);
 
         when(serviceMock.update(1, aux.getName())).thenThrow(new RuntimeException("Database error"));
-        ResponseEntity responseEntity = controller.update(1, new PlatformDTO(aux.getId(), aux.getName()));
+        ResponseEntity responseEntity = controller.update(1, new PlatformOutputDTO(aux.getId(), aux.getName()));
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 

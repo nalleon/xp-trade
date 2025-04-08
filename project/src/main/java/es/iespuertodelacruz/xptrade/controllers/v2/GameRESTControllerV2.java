@@ -3,21 +3,15 @@ package es.iespuertodelacruz.xptrade.controllers.v2;
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
-import es.iespuertodelacruz.xptrade.dto.GameDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.IGameDTOMapper;
+import es.iespuertodelacruz.xptrade.dto.output.GameOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.output.IGameOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
-import es.iespuertodelacruz.xptrade.shared.utils.FileStorageService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.net.URLConnection;
 import java.util.List;
 
 @RestController
@@ -90,7 +84,7 @@ public class GameRESTControllerV2 {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<GameDTO> filteredList = IGameDTOMapper.INSTANCE.toDTOList(service.findAll());
+        List<GameOutputDTO> filteredList = IGameOutputDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no items";
@@ -114,7 +108,7 @@ public class GameRESTControllerV2 {
         }
 
 
-        List<GameDTO> filteredList = IGameDTOMapper.INSTANCE.toDTOList(service.findAllByPlatform(filter));
+        List<GameOutputDTO> filteredList = IGameOutputDTOMapper.INSTANCE.toDTOList(service.findAllByPlatform(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no items";
@@ -137,7 +131,7 @@ public class GameRESTControllerV2 {
         }
 
 
-        List<GameDTO> filteredList = IGameDTOMapper.INSTANCE.toDTOList(service.findAllByRegion(filter));
+        List<GameOutputDTO> filteredList = IGameOutputDTOMapper.INSTANCE.toDTOList(service.findAllByRegion(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no items";
@@ -161,7 +155,7 @@ public class GameRESTControllerV2 {
         }
 
 
-        List<GameDTO> filteredList = IGameDTOMapper.INSTANCE.toDTOList(service.findAllByDeveloper(filter));
+        List<GameOutputDTO> filteredList = IGameOutputDTOMapper.INSTANCE.toDTOList(service.findAllByDeveloper(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no items";
@@ -186,7 +180,7 @@ public class GameRESTControllerV2 {
         }
 
 
-        List<GameDTO> filteredList = IGameDTOMapper.INSTANCE.toDTOList(service.findAllByPublisher(filter));
+        List<GameOutputDTO> filteredList = IGameOutputDTOMapper.INSTANCE.toDTOList(service.findAllByPublisher(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no items";
@@ -211,7 +205,7 @@ public class GameRESTControllerV2 {
         }
 
 
-        List<GameDTO> filteredList = IGameDTOMapper.INSTANCE.toDTOList(service.findAllByGenre(filter));
+        List<GameOutputDTO> filteredList = IGameOutputDTOMapper.INSTANCE.toDTOList(service.findAllByGenre(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no items";
@@ -227,13 +221,13 @@ public class GameRESTControllerV2 {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Game aux = service.findById(id);
         if (aux != null){
-            GameDTO dto = IGameDTOMapper.INSTANCE.toDTO(aux);
+            GameOutputDTO dto = IGameOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<GameDTO> response = new CustomApiResponse<>(200, "Game found", dto);
+            CustomApiResponse<GameOutputDTO> response = new CustomApiResponse<>(200, "Game found", dto);
             return ResponseEntity.ok(response);
         }
 
-        CustomApiResponse<GameDTO> errorResponse = new CustomApiResponse<>(404, "Game NOT found", null);
+        CustomApiResponse<GameOutputDTO> errorResponse = new CustomApiResponse<>(404, "Game NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
@@ -241,13 +235,13 @@ public class GameRESTControllerV2 {
     public ResponseEntity<?> getByTitle(@PathVariable String title) {
         Game aux = service.findByTitle(title);
         if (aux != null){
-            GameDTO dto = IGameDTOMapper.INSTANCE.toDTO(aux);
+            GameOutputDTO dto = IGameOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<GameDTO> response = new CustomApiResponse<>(200, "Game found", dto);
+            CustomApiResponse<GameOutputDTO> response = new CustomApiResponse<>(200, "Game found", dto);
             return ResponseEntity.ok(response);
         }
 
-        CustomApiResponse<GameDTO> errorResponse = new CustomApiResponse<>(404, "Game NOT found", null);
+        CustomApiResponse<GameOutputDTO> errorResponse = new CustomApiResponse<>(404, "Game NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 }

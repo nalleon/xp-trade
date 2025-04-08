@@ -3,13 +3,10 @@ package es.iespuertodelacruz.xptrade.controller.v3;
 import es.iespuertodelacruz.xptrade.controllers.v3.GameRESTController;
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.service.*;
-import es.iespuertodelacruz.xptrade.dto.*;
-import es.iespuertodelacruz.xptrade.model.repository.IGameEntityRepository;
-import es.iespuertodelacruz.xptrade.model.service.rest.GameEntityService;
+import es.iespuertodelacruz.xptrade.dto.output.*;
 import es.iespuertodelacruz.xptrade.shared.utils.FileStorageService;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -70,13 +67,13 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
         genreDomain.setId(ID);
         genreDomain.setName(NAME);
 
-        genreDTOList = new ArrayList<>();
-        genreDTOList.add(genreDTO);
+        genreOutputDTOList = new ArrayList<>();
+        genreOutputDTOList.add(genreOutputDTO);
 
         genreDomains = new ArrayList<>();
         genreDomains.add(genreDomain);
 
-        developerDTO = new DeveloperDTO(ID, NAME);
+        developerOutputDTO = new DeveloperOutputDTO(ID, NAME);
 
         developerDomain = new Developer();
         developerDomain.setId(ID);
@@ -85,22 +82,22 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
         developerDomains = new ArrayList<>();
         developerDomains.add(developerDomain);
 
-        developerDTOList = new ArrayList<>();
-        developerDTOList.add(developerDTO);
+        developerOutputDTOList = new ArrayList<>();
+        developerOutputDTOList.add(developerOutputDTO);
 
-        regionDTO = new RegionDTO(ID, NAME);
+        regionOutputDTO = new RegionOutputDTO(ID, NAME);
 
         regionDomain = new Region();
         regionDomain.setId(ID);
         regionDomain.setName(NAME);
 
-        regionDTOList = new ArrayList<>();
-        regionDTOList.add(regionDTO);
+        regionOutputDTOList = new ArrayList<>();
+        regionOutputDTOList.add(regionOutputDTO);
 
         regionDomains = new ArrayList<>();
         regionDomains.add(regionDomain);
 
-        publisherDTO = new PublisherDTO(ID, NAME);
+        publisherOutputDTO = new PublisherOutputDTO(ID, NAME);
 
 
         publisherDomain = new Publisher();
@@ -110,10 +107,10 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
         publisherDomains = new ArrayList<>();
         publisherDomains.add(publisherDomain);
 
-        publisherDTOList = new ArrayList<>();
-        publisherDTOList.add(publisherDTO);
+        publisherOutputDTOList = new ArrayList<>();
+        publisherOutputDTOList.add(publisherOutputDTO);
 
-        platformDTO = new PlatformDTO(ID, NAME);
+        platformOutputDTO = new PlatformOutputDTO(ID, NAME);
 
         platformDomain = new Platform();
         platformDomain.setId(ID);
@@ -122,14 +119,14 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
         platformDomains = new ArrayList<>();
         platformDomains.add(platformDomain);
 
-        platformDTOList = new ArrayList<>();
-        platformDTOList.add(platformDTO);
+        platformOutputDTOList = new ArrayList<>();
+        platformOutputDTOList.add(platformOutputDTO);
 
-        gameDTO = new GameDTO(ID, TITLE, COVER_ART,new HashSet<>(Collections.singletonList(developerDTO)),
-                new HashSet<>(Collections.singletonList(genreDTO)),
-                new HashSet<>(Collections.singletonList(platformDTO)),
-                new HashSet<>(Collections.singletonList(publisherDTO)),
-                new HashSet<>(Collections.singletonList(regionDTO))
+        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART,new HashSet<>(Collections.singletonList(developerOutputDTO)),
+                new HashSet<>(Collections.singletonList(genreOutputDTO)),
+                new HashSet<>(Collections.singletonList(platformOutputDTO)),
+                new HashSet<>(Collections.singletonList(publisherOutputDTO)),
+                new HashSet<>(Collections.singletonList(regionOutputDTO))
         );
 
         gameDomain = new Game();
@@ -216,7 +213,7 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
                 gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
                 gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(new Game());
 
-        ResponseEntity responseEntity = controller.add(gameDTO);
+        ResponseEntity responseEntity = controller.add(gameOutputDTO);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -250,7 +247,7 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
                 gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
                 gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(gameDomain);
 
-        ResponseEntity responseEntity = controller.update(1, gameDTO);
+        ResponseEntity responseEntity = controller.update(1, gameOutputDTO);
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -265,7 +262,7 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
                 gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
                 gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(gameDomain);
 
-        ResponseEntity responseEntity = controller.update(1, gameDTO);
+        ResponseEntity responseEntity = controller.update(1, gameOutputDTO);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -292,7 +289,7 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
                 gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
                 gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenThrow(new RuntimeException("Database error"));
 
-        ResponseEntity responseEntity = controller.update(1, gameDTO);
+        ResponseEntity responseEntity = controller.update(1, gameOutputDTO);
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 

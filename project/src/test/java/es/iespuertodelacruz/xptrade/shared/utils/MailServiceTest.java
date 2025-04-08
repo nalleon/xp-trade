@@ -1,6 +1,5 @@
 package es.iespuertodelacruz.xptrade.shared.utils;
 
-import es.iespuertodelacruz.xptrade.dto.RoleDTO;
 import es.iespuertodelacruz.xptrade.shared.config.MailService;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.*;
@@ -13,9 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;

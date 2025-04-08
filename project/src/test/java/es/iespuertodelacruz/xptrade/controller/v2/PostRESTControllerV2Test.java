@@ -5,7 +5,7 @@ import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.Post;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.service.PostService;
-import es.iespuertodelacruz.xptrade.dto.PostDTO;
+import es.iespuertodelacruz.xptrade.dto.output.PostOutputDTO;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,7 +56,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
     @Test
     void addTest() {
         when(serviceMock.add(any(Game.class), any(User.class), any(String.class), any(String.class))).thenReturn(new Post());
-        PostDTO aux = new PostDTO(1, gameDTO, userDTO, CONTENT, PICTURE, CREATION_DATE);
+        PostOutputDTO aux = new PostOutputDTO(1, gameOutputDTO, userDTO, CONTENT, PICTURE, CREATION_DATE);
 
         ResponseEntity responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
@@ -89,7 +89,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.add(any(Game.class), any(User.class), any(String.class), any(String.class))).thenReturn(new Post());
         when(serviceMock.update(any(Integer.class), any(Game.class), any(User.class),any(String.class), any(String.class))).thenReturn(aux);
-        PostDTO result = new PostDTO(1, gameDTO, userDTO, CONTENT, PICTURE, CREATION_DATE);
+        PostOutputDTO result = new PostOutputDTO(1, gameOutputDTO, userDTO, CONTENT, PICTURE, CREATION_DATE);
 
         ResponseEntity responseEntity = controller.update(1, result);
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
@@ -98,7 +98,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
     @Test
     void updateNotFoundTest() {
         Post aux = new Post(1);
-        PostDTO result = new PostDTO(1, gameDTO, userDTO, CONTENT, PICTURE, CREATION_DATE);
+        PostOutputDTO result = new PostOutputDTO(1, gameOutputDTO, userDTO, CONTENT, PICTURE, CREATION_DATE);
 
         when(serviceMock.add(any(Game.class), any(User.class), any(String.class), any(String.class))).thenReturn(new Post());
         ResponseEntity responseEntity = controller.update(1, result);
@@ -115,7 +115,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
     @Test
     void updateExceptionTest() throws Exception {
         Post aux = new Post(1);
-        PostDTO result = new PostDTO(1, gameDTO, userDTO, CONTENT, PICTURE, CREATION_DATE);
+        PostOutputDTO result = new PostOutputDTO(1, gameOutputDTO, userDTO, CONTENT, PICTURE, CREATION_DATE);
 
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.add(any(Game.class), any(User.class), any(String.class), any(String.class))).thenReturn(null);

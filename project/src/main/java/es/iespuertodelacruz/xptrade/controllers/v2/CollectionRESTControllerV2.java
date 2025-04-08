@@ -6,8 +6,8 @@ import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.ICollectionService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
-import es.iespuertodelacruz.xptrade.dto.CollectionDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.ICollectionDTOMapper;
+import es.iespuertodelacruz.xptrade.dto.output.CollectionOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.output.ICollectionOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class CollectionRESTControllerV2 {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<CollectionDTO> filteredList = ICollectionDTOMapper.INSTANCE.toDTOList(service.findAll());
+        List<CollectionOutputDTO> filteredList = ICollectionOutputDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no collections";
@@ -80,7 +80,7 @@ public class CollectionRESTControllerV2 {
                     .body(new CustomApiResponse<>(204, message, null));
         }
 
-        List<CollectionDTO> filteredList = ICollectionDTOMapper.INSTANCE.toDTOList(service.findByGame(filter));
+        List<CollectionOutputDTO> filteredList = ICollectionOutputDTOMapper.INSTANCE.toDTOList(service.findByGame(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no collections";
@@ -102,7 +102,7 @@ public class CollectionRESTControllerV2 {
                     .body(new CustomApiResponse<>(204, message, null));
         }
 
-        List<CollectionDTO> filteredList = ICollectionDTOMapper.INSTANCE.toDTOList(service.findByUser(filter));
+        List<CollectionOutputDTO> filteredList = ICollectionOutputDTOMapper.INSTANCE.toDTOList(service.findByUser(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no collections";
@@ -120,14 +120,14 @@ public class CollectionRESTControllerV2 {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Collection aux = service.findById(id);
         if (aux != null){
-            CollectionDTO dto = ICollectionDTOMapper.INSTANCE.toDTO(aux);
+            CollectionOutputDTO dto = ICollectionOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<CollectionDTO> response =
+            CustomApiResponse<CollectionOutputDTO> response =
                     new CustomApiResponse<>(302, "Collection found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<CollectionDTO> errorResponse = new CustomApiResponse<>(404, "Collection NOT found", null);
+        CustomApiResponse<CollectionOutputDTO> errorResponse = new CustomApiResponse<>(404, "Collection NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
@@ -135,16 +135,16 @@ public class CollectionRESTControllerV2 {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(CollectionDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(CollectionOutputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
-            Collection aux = ICollectionDTOMapper.INSTANCE.toDomain(dto);
+            Collection aux = ICollectionOutputDTOMapper.INSTANCE.toDomain(dto);
             Collection dbItem = service.add(aux.getGame(), aux.getUser());
-            CollectionDTO result = ICollectionDTOMapper.INSTANCE.toDTO(dbItem);
+            CollectionOutputDTO result = ICollectionOutputDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -157,7 +157,7 @@ public class CollectionRESTControllerV2 {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody CollectionDTO dto) {
+            @RequestBody CollectionOutputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -172,11 +172,11 @@ public class CollectionRESTControllerV2 {
 
         try {
 
-            Collection aux = ICollectionDTOMapper.INSTANCE.toDomain(dto);
+            Collection aux = ICollectionOutputDTOMapper.INSTANCE.toDomain(dto);
 
             Collection updatedDbItem = service.update(aux.getId(), aux.getGame(), aux.getUser());
 
-            CollectionDTO result = ICollectionDTOMapper.INSTANCE.toDTO(updatedDbItem);
+            CollectionOutputDTO result = ICollectionOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 

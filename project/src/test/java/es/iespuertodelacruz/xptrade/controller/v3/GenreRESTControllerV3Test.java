@@ -3,7 +3,7 @@ package es.iespuertodelacruz.xptrade.controller.v3;
 import es.iespuertodelacruz.xptrade.controllers.v3.GenreRESTController;
 import es.iespuertodelacruz.xptrade.domain.Genre;
 import es.iespuertodelacruz.xptrade.domain.service.GenreService;
-import es.iespuertodelacruz.xptrade.dto.GenreDTO;
+import es.iespuertodelacruz.xptrade.dto.output.GenreOutputDTO;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +55,7 @@ public class GenreRESTControllerV3Test extends TestUtilities {
     @Test
     void addTest() {
         when(serviceMock.add(any(String.class))).thenReturn(new Genre());
-        GenreDTO aux = new GenreDTO(1, "ADMIN");
+        GenreOutputDTO aux = new GenreOutputDTO(1, "ADMIN");
         ResponseEntity responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
@@ -89,7 +89,7 @@ public class GenreRESTControllerV3Test extends TestUtilities {
         when(serviceMock.add(any(String.class))).thenReturn(new Genre());
         when(serviceMock.update(any(Integer.class), any(String.class))).thenReturn(aux);
 
-        ResponseEntity responseEntity = controller.update(1, new GenreDTO(aux.getId(), aux.getName()));
+        ResponseEntity responseEntity = controller.update(1, new GenreOutputDTO(aux.getId(), aux.getName()));
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -97,7 +97,7 @@ public class GenreRESTControllerV3Test extends TestUtilities {
     void updateNotFoundTest() {
         Genre aux = new Genre(1);
         when(serviceMock.add(any(String.class))).thenReturn(new Genre());
-        ResponseEntity responseEntity = controller.update(1, new GenreDTO(aux.getId(), aux.getName()));
+        ResponseEntity responseEntity = controller.update(1, new GenreOutputDTO(aux.getId(), aux.getName()));
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -115,7 +115,7 @@ public class GenreRESTControllerV3Test extends TestUtilities {
         when(serviceMock.update(any(Integer.class), any(String.class))).thenReturn(null);
 
         when(serviceMock.update(1, aux.getName())).thenThrow(new RuntimeException("Database error"));
-        ResponseEntity responseEntity = controller.update(1, new GenreDTO(aux.getId(), aux.getName()));
+        ResponseEntity responseEntity = controller.update(1, new GenreOutputDTO(aux.getId(), aux.getName()));
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 

@@ -1,10 +1,9 @@
 package es.iespuertodelacruz.xptrade.controller.v2;
 
 import es.iespuertodelacruz.xptrade.controllers.v2.GameRESTControllerV2;
-import es.iespuertodelacruz.xptrade.controllers.v3.GameRESTController;
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.service.*;
-import es.iespuertodelacruz.xptrade.dto.*;
+import es.iespuertodelacruz.xptrade.dto.output.*;
 import es.iespuertodelacruz.xptrade.shared.utils.FileStorageService;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import org.junit.jupiter.api.Assertions;
@@ -13,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,13 +64,13 @@ public class GameRESTControllerV2Test extends MapperDTOHelper {
         genreDomain.setId(ID);
         genreDomain.setName(NAME);
 
-        genreDTOList = new ArrayList<>();
-        genreDTOList.add(genreDTO);
+        genreOutputDTOList = new ArrayList<>();
+        genreOutputDTOList.add(genreOutputDTO);
 
         genreDomains = new ArrayList<>();
         genreDomains.add(genreDomain);
 
-        developerDTO = new DeveloperDTO(ID, NAME);
+        developerOutputDTO = new DeveloperOutputDTO(ID, NAME);
 
         developerDomain = new Developer();
         developerDomain.setId(ID);
@@ -82,22 +79,22 @@ public class GameRESTControllerV2Test extends MapperDTOHelper {
         developerDomains = new ArrayList<>();
         developerDomains.add(developerDomain);
 
-        developerDTOList = new ArrayList<>();
-        developerDTOList.add(developerDTO);
+        developerOutputDTOList = new ArrayList<>();
+        developerOutputDTOList.add(developerOutputDTO);
 
-        regionDTO = new RegionDTO(ID, NAME);
+        regionOutputDTO = new RegionOutputDTO(ID, NAME);
 
         regionDomain = new Region();
         regionDomain.setId(ID);
         regionDomain.setName(NAME);
 
-        regionDTOList = new ArrayList<>();
-        regionDTOList.add(regionDTO);
+        regionOutputDTOList = new ArrayList<>();
+        regionOutputDTOList.add(regionOutputDTO);
 
         regionDomains = new ArrayList<>();
         regionDomains.add(regionDomain);
 
-        publisherDTO = new PublisherDTO(ID, NAME);
+        publisherOutputDTO = new PublisherOutputDTO(ID, NAME);
 
 
         publisherDomain = new Publisher();
@@ -107,10 +104,10 @@ public class GameRESTControllerV2Test extends MapperDTOHelper {
         publisherDomains = new ArrayList<>();
         publisherDomains.add(publisherDomain);
 
-        publisherDTOList = new ArrayList<>();
-        publisherDTOList.add(publisherDTO);
+        publisherOutputDTOList = new ArrayList<>();
+        publisherOutputDTOList.add(publisherOutputDTO);
 
-        platformDTO = new PlatformDTO(ID, NAME);
+        platformOutputDTO = new PlatformOutputDTO(ID, NAME);
 
         platformDomain = new Platform();
         platformDomain.setId(ID);
@@ -119,14 +116,14 @@ public class GameRESTControllerV2Test extends MapperDTOHelper {
         platformDomains = new ArrayList<>();
         platformDomains.add(platformDomain);
 
-        platformDTOList = new ArrayList<>();
-        platformDTOList.add(platformDTO);
+        platformOutputDTOList = new ArrayList<>();
+        platformOutputDTOList.add(platformOutputDTO);
 
-        gameDTO = new GameDTO(ID, TITLE, COVER_ART,new HashSet<>(Collections.singletonList(developerDTO)),
-                new HashSet<>(Collections.singletonList(genreDTO)),
-                new HashSet<>(Collections.singletonList(platformDTO)),
-                new HashSet<>(Collections.singletonList(publisherDTO)),
-                new HashSet<>(Collections.singletonList(regionDTO))
+        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART,new HashSet<>(Collections.singletonList(developerOutputDTO)),
+                new HashSet<>(Collections.singletonList(genreOutputDTO)),
+                new HashSet<>(Collections.singletonList(platformOutputDTO)),
+                new HashSet<>(Collections.singletonList(publisherOutputDTO)),
+                new HashSet<>(Collections.singletonList(regionOutputDTO))
         );
 
         gameDomain = new Game();

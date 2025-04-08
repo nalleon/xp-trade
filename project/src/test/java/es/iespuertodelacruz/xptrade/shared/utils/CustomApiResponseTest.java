@@ -1,6 +1,6 @@
 package es.iespuertodelacruz.xptrade.shared.utils;
 
-import es.iespuertodelacruz.xptrade.dto.RoleDTO;
+import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test;
 public class CustomApiResponseTest extends TestUtilities {
     public static final int STATUS = 1;
     public static final String MESSAGE = "nameTest";
-    public static final RoleDTO DATA = new RoleDTO(ID, ROLE_NAME);
-    CustomApiResponse<RoleDTO> response;
+    public static final RoleOutputDTO DATA = new RoleOutputDTO(ID, ROLE_NAME);
+    CustomApiResponse<RoleOutputDTO> response;
 
     @BeforeEach
     public void beforeEach(){
-        response = new CustomApiResponse<RoleDTO>(2, "", new RoleDTO(2, ROLE_NAME));
+        response = new CustomApiResponse<RoleOutputDTO>(2, "", new RoleOutputDTO(2, ROLE_NAME));
     }
 
     @Test

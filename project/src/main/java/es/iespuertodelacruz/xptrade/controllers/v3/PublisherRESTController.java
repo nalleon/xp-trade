@@ -2,8 +2,8 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Publisher;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
-import es.iespuertodelacruz.xptrade.dto.PublisherDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.IPublisherDTOMapper;
+import es.iespuertodelacruz.xptrade.dto.output.PublisherOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.output.IPublisherOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class PublisherRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<PublisherDTO> filteredList = IPublisherDTOMapper.INSTANCE.toDTOList(service.findAll());
+        List<PublisherOutputDTO> filteredList = IPublisherOutputDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
@@ -54,14 +54,14 @@ public class PublisherRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Publisher aux = service.findById(id);
         if (aux != null){
-            PublisherDTO dto = IPublisherDTOMapper.INSTANCE.toDTO(aux);
+            PublisherOutputDTO dto = IPublisherOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<PublisherDTO> response =
+            CustomApiResponse<PublisherOutputDTO> response =
                     new CustomApiResponse<>(302, "Publisher found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<PublisherDTO> errorResponse = new CustomApiResponse<>(404, "Publisher NOT found", null);
+        CustomApiResponse<PublisherOutputDTO> errorResponse = new CustomApiResponse<>(404, "Publisher NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
@@ -70,20 +70,20 @@ public class PublisherRESTController {
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Publisher aux = service.findByName(name);
         if (aux != null){
-            PublisherDTO dto = IPublisherDTOMapper.INSTANCE.toDTO(aux);
+            PublisherOutputDTO dto = IPublisherOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<PublisherDTO> response =
+            CustomApiResponse<PublisherOutputDTO> response =
                     new CustomApiResponse<>(202, "Publisher found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<PublisherDTO> errorResponse = new CustomApiResponse<>(404, "Publisher NOT found", null);
+        CustomApiResponse<PublisherOutputDTO> errorResponse = new CustomApiResponse<>(404, "Publisher NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(PublisherDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(PublisherOutputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -91,7 +91,7 @@ public class PublisherRESTController {
 
         try {
             Publisher dbItem = service.add(dto.name());
-            PublisherDTO result = IPublisherDTOMapper.INSTANCE.toDTO(dbItem);
+            PublisherOutputDTO result = IPublisherOutputDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -104,7 +104,7 @@ public class PublisherRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody PublisherDTO dto) {
+            @RequestBody PublisherOutputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -123,7 +123,7 @@ public class PublisherRESTController {
 
             Publisher updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            PublisherDTO result = IPublisherDTOMapper.INSTANCE.toDTO(updatedDbItem);
+            PublisherOutputDTO result = IPublisherOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 

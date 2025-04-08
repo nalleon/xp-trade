@@ -74,7 +74,7 @@ public class AuthService {
         User user = service.findByUsername(username);
 
         if (user != null) {
-            if (passwordEncoder.matches(password, user.getPassword())) {
+            if (passwordEncoder.matches(password, user.getPassword()) && user.getVerified() == 1) {
                 generateToken = jwtService.generateToken(user.getUsername(), user.getRole().getName(), user.getVerified());
             }
         }

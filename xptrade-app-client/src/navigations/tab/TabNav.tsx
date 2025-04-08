@@ -40,7 +40,7 @@ const TabNav = (props: Props) => {
 
           <Tab.Screen name='Colección' component={CollectionScreen}
               options={ {tabBarIcon: ({focused}) => 
-                <Icon name={(focused) ? 'bookmarks' : 'bookmarks-outline'} size={30}/>
+                <Icon name={(focused) ? 'game-controller' : 'game-controller-outline'} size={30}/>
             }
         }/>
 
