@@ -137,7 +137,7 @@ public class AuthRESTController {
                 User verified = service.updateVerify(authUser.getUsername(), authUser.getEmail(), authUser.getPassword(),
                         authUser.getVerified());
 
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Your account"+ authUser.getUsername() + " is now verified.");
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Your account "+ authUser.getUsername() + " is now verified.");
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid token");
             }
