@@ -79,6 +79,11 @@ public class AuthRESTController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserRegisterDTO registerDTO ) {
 
+        if (!isValidPassword(registerDTO.password())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new CustomApiResponse<>(400, "Password not valid", null));
+        }
+
         User user =  authService.register(registerDTO.name(), registerDTO.password(), registerDTO.email());
 
         if(user == null){
@@ -99,6 +104,28 @@ public class AuthRESTController {
                         null));
     }
 
+    public boolean isValidPassword(String password) {
+        if (password == null || password.length() < 8) {
+            return false;
+        }
+
+        boolean hasUppercase = false;
+        boolean hasLowercase = false;
+        boolean hasDigit = false;
+
+        for (char passwordCharacter : password.toCharArray()) {
+            if (Character.isUpperCase(passwordCharacter)) {
+                hasUppercase = true;
+            } else if (Character.isLowerCase(passwordCharacter)) {
+                hasLowercase = true;
+            } else if (Character.isDigit(passwordCharacter)) {
+                hasDigit = true;
+            }
+        }
+
+        return hasUppercase && hasLowercase && hasDigit;
+    }
+
     @GetMapping("/confirmation")
     public ResponseEntity<?> confirmation (@RequestParam String email, @RequestParam String token){
         User authUser = service.findByEmail(email);
@@ -110,7 +137,7 @@ public class AuthRESTController {
                 User verified = service.updateVerify(authUser.getUsername(), authUser.getEmail(), authUser.getPassword(),
                         authUser.getVerified());
 
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Your account"+ authUser.getUsername() + " is now verified.");
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Your account "+ authUser.getUsername() + " is now verified.");
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid token");
             }
