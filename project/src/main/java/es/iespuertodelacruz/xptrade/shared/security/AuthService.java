@@ -59,7 +59,7 @@ public class AuthService {
      * @return the user if everything OK, null otherwise
      */
     public User register(String username, String password, String email) {
-        return service.add(username, passwordEncoder.encode(password), email);
+        return service.add(username, email, passwordEncoder.encode(password));
 
     }
 
