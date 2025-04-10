@@ -65,6 +65,7 @@ public class AuthRESTController {
     public void setAuthService(AuthService authService) {
         this.authService = authService;
     }
+
     @PostMapping("/login")
     public String login(@RequestBody UserLoginDTO loginDTO ) {
         String token = authService.authenticate(loginDTO.name(), loginDTO.password());
