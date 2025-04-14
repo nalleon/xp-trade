@@ -267,7 +267,7 @@ public class GameRESTController {
     public ResponseEntity<CustomApiResponse<?>> add(GameOutputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
-                    .body(new CustomApiResponse<>(400, "El usuario no puede ser nulo", null));
+                    .body(new CustomApiResponse<>(400, "El juego no puede ser nulo", null));
         }
 
         try {
@@ -281,11 +281,11 @@ public class GameRESTController {
             GameOutputDTO result = IGameOutputDTOMapper.INSTANCE.toDTO(dbItem);
 
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
+                    .body(new CustomApiResponse<>(201, "Juego creado correctamente", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el usuario", null));
+                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el juego", null));
         }
     }
 

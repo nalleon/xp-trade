@@ -144,7 +144,7 @@ public class CommentRESTControllerV2 {
             Comment dbItem = service.add(aux.getPost(), aux.getUser(), aux.getContent());
             CommentOutputDTO result = ICommentOutputDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
+                    .body(new CustomApiResponse<>(201, "Comentario creado correctamente", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -165,7 +165,7 @@ public class CommentRESTControllerV2 {
 
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "User NOT found", null));
+                    .body(new CustomApiResponse<>(404, "Comment NOT found", null));
         }
 
         try {
