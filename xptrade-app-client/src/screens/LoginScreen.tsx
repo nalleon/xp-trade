@@ -2,7 +2,7 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../navigations/stack/AuthStackNav';
-import { styles } from './InitScreen';
+import { styles } from './HomeScreen';
 import { TextInput } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -27,7 +27,7 @@ const LoginScreen = (props: AuthProps) => {
     const login = async (username : string, password : string) => {
         const result = await handleLogin(username, password);
         if (result === SUCCESS){
-            props.navigation.replace('InitScreen');
+            props.navigation.replace('TabNav');
         } else {
             Alert.alert("Error", "Usuario o contraseña incorrectos");
         }

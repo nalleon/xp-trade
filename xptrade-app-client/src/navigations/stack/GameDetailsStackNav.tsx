@@ -3,13 +3,13 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../../screens/LoginScreen';
 import RegisterScreen from '../../screens/RegisterScreen';
-import InitScreen from '../../screens/InitScreen';
+import HomeScreen from '../../screens/HomeScreen';
 
 type Props = {}
 
 
 export type GameStackParamList = {
-    InitScreen: undefined,
+    HomeScreen: undefined,
     LoginScreen: undefined,
     RegisterScreen: undefined
 };
@@ -23,7 +23,7 @@ const ProfileStackNav = (props: Props) => {
                 headerShown: false,
             }}
         >
-            <Stack.Screen name="InitScreen" component={InitScreen} />
+            <Stack.Screen name="HomeScreen" component={HomeScreen} />
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         </Stack.Navigator>

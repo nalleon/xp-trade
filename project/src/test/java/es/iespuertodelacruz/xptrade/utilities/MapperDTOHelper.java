@@ -2,10 +2,8 @@ package es.iespuertodelacruz.xptrade.utilities;
 
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.Collection;
-import es.iespuertodelacruz.xptrade.dto.*;
+import es.iespuertodelacruz.xptrade.dto.output.*;
 import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
-import es.iespuertodelacruz.xptrade.dto.user.UserSearchDTO;
-import es.iespuertodelacruz.xptrade.model.entities.*;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.*;
@@ -14,9 +12,9 @@ public class MapperDTOHelper extends TestUtilities {
     /**
      * Properties
      */
-    public RoleDTO roleDTO;
+    public RoleOutputDTO roleOutputDTO;
     public Role roleDomain;
-    public List<RoleDTO> roleDTOList;
+    public List<RoleOutputDTO> roleOutputDTOList;
     public List<Role> roleDomains;
 
     public UserDTO userDTO;
@@ -24,64 +22,64 @@ public class MapperDTOHelper extends TestUtilities {
     public List<UserDTO> userDTOList;
     public List<User> userDomains;
 
-    public GenreDTO genreDTO;
+    public GenreOutputDTO genreOutputDTO;
     public Genre genreDomain;
-    public List<GenreDTO> genreDTOList;
+    public List<GenreOutputDTO> genreOutputDTOList;
     public List<Genre> genreDomains;
 
-    public PublisherDTO publisherDTO;
+    public PublisherOutputDTO publisherOutputDTO;
     public Publisher publisherDomain;
-    public List<PublisherDTO> publisherDTOList;
+    public List<PublisherOutputDTO> publisherOutputDTOList;
     public List<Publisher> publisherDomains;
 
-    public DeveloperDTO developerDTO;
+    public DeveloperOutputDTO developerOutputDTO;
     public Developer developerDomain;
-    public List<DeveloperDTO> developerDTOList;
+    public List<DeveloperOutputDTO> developerOutputDTOList;
     public List<Developer> developerDomains;
 
-    public PlatformDTO platformDTO;
+    public PlatformOutputDTO platformOutputDTO;
     public Platform platformDomain;
-    public List<PlatformDTO> platformDTOList;
+    public List<PlatformOutputDTO> platformOutputDTOList;
     public List<Platform> platformDomains;
 
-    public RegionDTO regionDTO;
+    public RegionOutputDTO regionOutputDTO;
     public Region regionDomain;
-    public List<RegionDTO> regionDTOList;
+    public List<RegionOutputDTO> regionOutputDTOList;
     public List<Region> regionDomains;
 
-    public GameDTO gameDTO;
+    public GameOutputDTO gameOutputDTO;
     public Game gameDomain;
-    public List<GameDTO> gameDTOList;
+    public List<GameOutputDTO> gameOutputDTOList;
     public List<Game> gameDomains;
 
-    public CollectionDTO collectionDTO;
+    public CollectionOutputDTO collectionOutputDTO;
     public Collection collectionDomain;
-    public List<CollectionDTO> collectionDTOList;
+    public List<CollectionOutputDTO> collectionOutputDTOList;
     public List<Collection> collectionDomains;
 
-    public FavoriteDTO favoriteDTO;
+    public FavoriteOutputDTO favoriteOutputDTO;
     public Favorite favoriteDomain;
-    public List<FavoriteDTO> favoriteDTOList;
+    public List<FavoriteOutputDTO> favoriteOutputDTOList;
     public List<Favorite> favoriteDomains;
 
-    public PostDTO postDTO;
+    public PostOutputDTO postOutputDTO;
     public Post postDomain;
-    public List<PostDTO> postDTOList;
+    public List<PostOutputDTO> postOutputDTOList;
     public List<Post> postDomains;
 
-    public CommentDTO commentDTO;
+    public CommentOutputDTO commentOutputDTO;
     public Comment commentDomain;
-    public List<CommentDTO> commentDTOList;
+    public List<CommentOutputDTO> commentOutputDTOList;
     public List<Comment> commentDomains;
 
 
 
     @BeforeEach
     public void beforeEach() {
-        roleDTO = new RoleDTO(ID,ROLE_NAME);
+        roleOutputDTO = new RoleOutputDTO(ID,ROLE_NAME);
 
-        roleDTOList = new ArrayList<>();
-        roleDTOList.add(roleDTO);
+        roleOutputDTOList = new ArrayList<>();
+        roleOutputDTOList.add(roleOutputDTO);
 
         roleDomain = new Role();
         roleDomain.setId(ID);
@@ -91,7 +89,7 @@ public class MapperDTOHelper extends TestUtilities {
         roleDomains.add(roleDomain);
 
 
-        userDTO = new UserDTO(ID, USERNAME,PASSWORD, EMAIL, roleDTO, VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE);
+        userDTO = new UserDTO(ID, USERNAME,PASSWORD, EMAIL, roleOutputDTO, VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE);
 
         userDomain = new User();
         userDomain.setId(ID);
@@ -110,20 +108,20 @@ public class MapperDTOHelper extends TestUtilities {
         userDTOList = new ArrayList<>();
         userDTOList.add(userDTO);
 
-        genreDTO = new GenreDTO(ID, NAME);
+        genreOutputDTO = new GenreOutputDTO(ID, NAME);
 
 
         genreDomain = new Genre();
         genreDomain.setId(ID);
         genreDomain.setName(NAME);
 
-        genreDTOList = new ArrayList<>();
-        genreDTOList.add(genreDTO);
+        genreOutputDTOList = new ArrayList<>();
+        genreOutputDTOList.add(genreOutputDTO);
 
         genreDomains = new ArrayList<>();
         genreDomains.add(genreDomain);
 
-        developerDTO = new DeveloperDTO(ID, NAME);
+        developerOutputDTO = new DeveloperOutputDTO(ID, NAME);
 
         developerDomain = new Developer();
         developerDomain.setId(ID);
@@ -132,22 +130,22 @@ public class MapperDTOHelper extends TestUtilities {
         developerDomains = new ArrayList<>();
         developerDomains.add(developerDomain);
 
-        developerDTOList = new ArrayList<>();
-        developerDTOList.add(developerDTO);
+        developerOutputDTOList = new ArrayList<>();
+        developerOutputDTOList.add(developerOutputDTO);
 
-        regionDTO = new RegionDTO(ID, NAME);
+        regionOutputDTO = new RegionOutputDTO(ID, NAME);
 
         regionDomain = new Region();
         regionDomain.setId(ID);
         regionDomain.setName(NAME);
 
-        regionDTOList = new ArrayList<>();
-        regionDTOList.add(regionDTO);
+        regionOutputDTOList = new ArrayList<>();
+        regionOutputDTOList.add(regionOutputDTO);
 
         regionDomains = new ArrayList<>();
         regionDomains.add(regionDomain);
 
-        publisherDTO = new PublisherDTO(ID, NAME);
+        publisherOutputDTO = new PublisherOutputDTO(ID, NAME);
 
 
         publisherDomain = new Publisher();
@@ -157,10 +155,10 @@ public class MapperDTOHelper extends TestUtilities {
         publisherDomains = new ArrayList<>();
         publisherDomains.add(publisherDomain);
 
-        publisherDTOList = new ArrayList<>();
-        publisherDTOList.add(publisherDTO);
+        publisherOutputDTOList = new ArrayList<>();
+        publisherOutputDTOList.add(publisherOutputDTO);
 
-        platformDTO = new PlatformDTO(ID, NAME);
+        platformOutputDTO = new PlatformOutputDTO(ID, NAME);
 
         platformDomain = new Platform();
         platformDomain.setId(ID);
@@ -169,14 +167,14 @@ public class MapperDTOHelper extends TestUtilities {
         platformDomains = new ArrayList<>();
         platformDomains.add(platformDomain);
 
-        platformDTOList = new ArrayList<>();
-        platformDTOList.add(platformDTO);
+        platformOutputDTOList = new ArrayList<>();
+        platformOutputDTOList.add(platformOutputDTO);
 
-        gameDTO = new GameDTO(ID, TITLE, COVER_ART,new HashSet<>(Collections.singletonList(developerDTO)),
-                    new HashSet<>(Collections.singletonList(genreDTO)),
-                    new HashSet<>(Collections.singletonList(platformDTO)),
-                    new HashSet<>(Collections.singletonList(publisherDTO)),
-                    new HashSet<>(Collections.singletonList(regionDTO))
+        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART,new HashSet<>(Collections.singletonList(developerOutputDTO)),
+                    new HashSet<>(Collections.singletonList(genreOutputDTO)),
+                    new HashSet<>(Collections.singletonList(platformOutputDTO)),
+                    new HashSet<>(Collections.singletonList(publisherOutputDTO)),
+                    new HashSet<>(Collections.singletonList(regionOutputDTO))
                 );
 
         gameDomain = new Game();
@@ -192,10 +190,10 @@ public class MapperDTOHelper extends TestUtilities {
         gameDomains = new ArrayList<>();
         gameDomains.add(gameDomain);
 
-        gameDTOList = new ArrayList<>();
-        gameDTOList.add(gameDTO);
+        gameOutputDTOList = new ArrayList<>();
+        gameOutputDTOList.add(gameOutputDTO);
 
-        collectionDTO = new CollectionDTO(ID, gameDTO, userDTO);
+        collectionOutputDTO = new CollectionOutputDTO(ID, gameOutputDTO, userDTO);
 
         collectionDomain = new Collection();
         collectionDomain.setId(ID);
@@ -205,10 +203,10 @@ public class MapperDTOHelper extends TestUtilities {
         collectionDomains = new ArrayList<>();
         collectionDomains.add(collectionDomain);
 
-        collectionDTOList = new ArrayList<>();
-        collectionDTOList.add(collectionDTO);
+        collectionOutputDTOList = new ArrayList<>();
+        collectionOutputDTOList.add(collectionOutputDTO);
 
-        favoriteDTO = new FavoriteDTO(ID, gameDTO, userDTO);
+        favoriteOutputDTO = new FavoriteOutputDTO(ID, gameOutputDTO, userDTO);
 
         favoriteDomain = new Favorite();
         favoriteDomain.setId(ID);
@@ -218,10 +216,10 @@ public class MapperDTOHelper extends TestUtilities {
         favoriteDomains = new ArrayList<>();
         favoriteDomains.add(favoriteDomain);
 
-        favoriteDTOList = new ArrayList<>();
-        favoriteDTOList.add(favoriteDTO);
+        favoriteOutputDTOList = new ArrayList<>();
+        favoriteOutputDTOList.add(favoriteOutputDTO);
 
-        postDTO = new PostDTO(ID, gameDTO, userDTO, CONTENT, PICTURE, CREATION_DATE);
+        postOutputDTO = new PostOutputDTO(ID, gameOutputDTO, userDTO, CONTENT, PICTURE, CREATION_DATE);
 
         postDomain = new Post();
         postDomain.setId(ID);
@@ -234,11 +232,11 @@ public class MapperDTOHelper extends TestUtilities {
         postDomains = new ArrayList<>();
         postDomains.add(postDomain);
 
-        postDTOList = new ArrayList<>();
-        postDTOList.add(postDTO);
+        postOutputDTOList = new ArrayList<>();
+        postOutputDTOList.add(postOutputDTO);
 
 
-        commentDTO = new CommentDTO(ID, postDTO, userDTO, CONTENT, CREATION_DATE);
+        commentOutputDTO = new CommentOutputDTO(ID, postOutputDTO, userDTO, CONTENT, CREATION_DATE);
 
         commentDomain = new Comment();
         commentDomain.setId(ID);
@@ -250,7 +248,7 @@ public class MapperDTOHelper extends TestUtilities {
         commentDomains = new ArrayList<>();
         commentDomains.add(commentDomain);
 
-        commentDTOList = new ArrayList<>();
-        commentDTOList.add(commentDTO);
+        commentOutputDTOList = new ArrayList<>();
+        commentOutputDTOList.add(commentOutputDTO);
     }
 }

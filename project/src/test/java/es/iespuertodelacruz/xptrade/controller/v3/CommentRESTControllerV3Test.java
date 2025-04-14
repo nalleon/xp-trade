@@ -5,7 +5,7 @@ import es.iespuertodelacruz.xptrade.domain.Post;
 import es.iespuertodelacruz.xptrade.domain.Comment;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.service.CommentService;
-import es.iespuertodelacruz.xptrade.dto.CommentDTO;
+import es.iespuertodelacruz.xptrade.dto.output.CommentOutputDTO;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,7 +56,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void addTest() {
         when(serviceMock.add(any(Post.class), any(User.class), any(String.class))).thenReturn(new Comment());
-        CommentDTO aux = new CommentDTO(1, postDTO, userDTO, CONTENT, CREATION_DATE);
+        CommentOutputDTO aux = new CommentOutputDTO(1, postOutputDTO, userDTO, CONTENT, CREATION_DATE);
 
         ResponseEntity responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
@@ -89,7 +89,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.add(any(Post.class), any(User.class), any(String.class))).thenReturn(new Comment());
         when(serviceMock.update(any(Integer.class), any(Post.class), any(User.class),any(String.class))).thenReturn(aux);
-        CommentDTO result = new CommentDTO(1, postDTO, userDTO, CONTENT, CREATION_DATE);
+        CommentOutputDTO result = new CommentOutputDTO(1, postOutputDTO, userDTO, CONTENT, CREATION_DATE);
 
         ResponseEntity responseEntity = controller.update(1, result);
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
@@ -98,7 +98,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateNotFoundTest() {
         Comment aux = new Comment(1);
-        CommentDTO result = new CommentDTO(1, postDTO, userDTO, CONTENT, CREATION_DATE);
+        CommentOutputDTO result = new CommentOutputDTO(1, postOutputDTO, userDTO, CONTENT, CREATION_DATE);
 
         when(serviceMock.add(any(Post.class), any(User.class), any(String.class))).thenReturn(new Comment());
         ResponseEntity responseEntity = controller.update(1, result);
@@ -115,7 +115,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateExceptionTest() throws Exception {
         Comment aux = new Comment(1);
-        CommentDTO result = new CommentDTO(1, postDTO, userDTO, CONTENT, CREATION_DATE);
+        CommentOutputDTO result = new CommentOutputDTO(1, postOutputDTO, userDTO, CONTENT, CREATION_DATE);
 
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.add(any(Post.class), any(User.class), any(String.class))).thenReturn(null);

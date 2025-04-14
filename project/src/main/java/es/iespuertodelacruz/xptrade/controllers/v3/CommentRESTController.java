@@ -6,8 +6,8 @@ import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IPostService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.ICommentService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
-import es.iespuertodelacruz.xptrade.dto.CommentDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.ICommentDTOMapper;
+import es.iespuertodelacruz.xptrade.dto.output.CommentOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.output.ICommentOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class CommentRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<CommentDTO> filteredList = ICommentDTOMapper.INSTANCE.toDTOList(service.findAll());
+        List<CommentOutputDTO> filteredList = ICommentOutputDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no comments";
@@ -80,7 +80,7 @@ public class CommentRESTController {
                     .body(new CustomApiResponse<>(204, message, null));
         }
 
-        List<CommentDTO> filteredList = ICommentDTOMapper.INSTANCE.toDTOList(service.findByPost(filter));
+        List<CommentOutputDTO> filteredList = ICommentOutputDTOMapper.INSTANCE.toDTOList(service.findByPost(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no comments";
@@ -102,7 +102,7 @@ public class CommentRESTController {
                     .body(new CustomApiResponse<>(204, message, null));
         }
 
-        List<CommentDTO> filteredList = ICommentDTOMapper.INSTANCE.toDTOList(service.findByUser(filter));
+        List<CommentOutputDTO> filteredList = ICommentOutputDTOMapper.INSTANCE.toDTOList(service.findByUser(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no comments";
@@ -120,29 +120,29 @@ public class CommentRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Comment aux = service.findById(id);
         if (aux != null){
-            CommentDTO dto = ICommentDTOMapper.INSTANCE.toDTO(aux);
+            CommentOutputDTO dto = ICommentOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<CommentDTO> response =
+            CustomApiResponse<CommentOutputDTO> response =
                     new CustomApiResponse<>(302, "Comment found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<CommentDTO> errorResponse = new CustomApiResponse<>(404, "Comment NOT found", null);
+        CustomApiResponse<CommentOutputDTO> errorResponse = new CustomApiResponse<>(404, "Comment NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(CommentDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(CommentOutputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
-            Comment aux = ICommentDTOMapper.INSTANCE.toDomain(dto);
+            Comment aux = ICommentOutputDTOMapper.INSTANCE.toDomain(dto);
             Comment dbItem = service.add(aux.getPost(), aux.getUser(), aux.getContent());
-            CommentDTO result = ICommentDTOMapper.INSTANCE.toDTO(dbItem);
+            CommentOutputDTO result = ICommentOutputDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -155,7 +155,7 @@ public class CommentRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody CommentDTO dto) {
+            @RequestBody CommentOutputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -170,11 +170,11 @@ public class CommentRESTController {
 
         try {
 
-            Comment aux = ICommentDTOMapper.INSTANCE.toDomain(dto);
+            Comment aux = ICommentOutputDTOMapper.INSTANCE.toDomain(dto);
 
             Comment updatedDbItem = service.update(aux.getId(), aux.getPost(), aux.getUser(), aux.getContent());
 
-            CommentDTO result = ICommentDTOMapper.INSTANCE.toDTO(updatedDbItem);
+            CommentOutputDTO result = ICommentOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 

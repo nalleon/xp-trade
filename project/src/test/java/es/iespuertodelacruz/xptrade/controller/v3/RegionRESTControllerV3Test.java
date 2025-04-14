@@ -3,7 +3,7 @@ package es.iespuertodelacruz.xptrade.controller.v3;
 import es.iespuertodelacruz.xptrade.controllers.v3.RegionRESTController;
 import es.iespuertodelacruz.xptrade.domain.Region;
 import es.iespuertodelacruz.xptrade.domain.service.RegionService;
-import es.iespuertodelacruz.xptrade.dto.RegionDTO;
+import es.iespuertodelacruz.xptrade.dto.output.RegionOutputDTO;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +54,7 @@ public class RegionRESTControllerV3Test  extends TestUtilities {
     @Test
     void addTest() {
         when(serviceMock.add(any(String.class))).thenReturn(new Region());
-        RegionDTO aux = new RegionDTO(1, "ADMIN");
+        RegionOutputDTO aux = new RegionOutputDTO(1, "ADMIN");
         ResponseEntity responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
@@ -88,7 +88,7 @@ public class RegionRESTControllerV3Test  extends TestUtilities {
         when(serviceMock.add(any(String.class))).thenReturn(new Region());
         when(serviceMock.update(any(Integer.class), any(String.class))).thenReturn(aux);
 
-        ResponseEntity responseEntity = controller.update(1, new RegionDTO(aux.getId(), aux.getName()));
+        ResponseEntity responseEntity = controller.update(1, new RegionOutputDTO(aux.getId(), aux.getName()));
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -96,7 +96,7 @@ public class RegionRESTControllerV3Test  extends TestUtilities {
     void updateNotFoundTest() {
         Region aux = new Region(1);
         when(serviceMock.add(any(String.class))).thenReturn(new Region());
-        ResponseEntity responseEntity = controller.update(1, new RegionDTO(aux.getId(), aux.getName()));
+        ResponseEntity responseEntity = controller.update(1, new RegionOutputDTO(aux.getId(), aux.getName()));
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -114,7 +114,7 @@ public class RegionRESTControllerV3Test  extends TestUtilities {
         when(serviceMock.update(any(Integer.class), any(String.class))).thenReturn(null);
 
         when(serviceMock.update(1, aux.getName())).thenThrow(new RuntimeException("Database error"));
-        ResponseEntity responseEntity = controller.update(1, new RegionDTO(aux.getId(), aux.getName()));
+        ResponseEntity responseEntity = controller.update(1, new RegionOutputDTO(aux.getId(), aux.getName()));
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 

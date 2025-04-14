@@ -3,13 +3,17 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../../screens/LoginScreen';
 import RegisterScreen from '../../screens/RegisterScreen';
-import InitScreen from '../../screens/InitScreen';
+import HomeScreen from '../../screens/HomeScreen';
+import ProfileScreen from '../../screens/ProfileScreen';
+import { Collection } from 'typeorm';
+import CollectionScreen from '../../screens/CollectionScreen';
+import FavoriteScreen from '../../screens/FavoriteScreen';
 
 type Props = {}
 
 
 export type ProfileStackParamList = {
-    InitScreen: undefined,
+    HomeScreen: undefined,
     LoginScreen: undefined,
     RegisterScreen: undefined
 };
@@ -23,9 +27,9 @@ const ProfileStackNav = (props: Props) => {
                 headerShown: false,
             }}
         >
-            <Stack.Screen name="InitScreen" component={InitScreen} />
-            <Stack.Screen name="LoginScreen" component={LoginScreen} />
-            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+            <Stack.Screen name="HomeScreen" component={ProfileScreen} />
+            <Stack.Screen name="RegisterScreen" component={FavoriteScreen} />
+            <Stack.Screen name="LoginScreen" component={CollectionScreen} />
         </Stack.Navigator>
     )
 }

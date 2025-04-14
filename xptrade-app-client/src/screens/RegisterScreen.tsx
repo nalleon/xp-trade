@@ -1,8 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../navigations/stack/AuthStackNav';
-import { styles } from './InitScreen';
+import { styles } from './HomeScreen';
 import { TextInput } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { URL_API } from '../utils/Utils';
@@ -23,12 +23,12 @@ const RegisterScreen = (props: AuthProps) => {
   
   const { handleRegister } = UseApi();
 
-
-
   const register = async (username : string, password : string, email : string) => {
-    const result = handleRegister(username, email, password);
+    const result = await handleRegister(username, email, password);
     if (result){
-        props.navigation.navigate('LoginScreen');
+        Alert.alert("Registro exitoso")
+        //TODO: parar la navegacion hasta que se de OK a la alerta
+        props.navigation.replace('LoginScreen');
     }
   };
 
@@ -42,14 +42,14 @@ return (
       
       <TextInput
           style={styles.input}
-          placeholder="Username"
+          placeholder="Nombre de usuario"
           value={username}
           onChangeText={setUsername}
           />
 
       <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder="Correo electrónico"
           value={email}
           onChangeText={setEmail}
       />
@@ -63,18 +63,12 @@ return (
       />
       
       <TouchableOpacity style={styles.button} onPress={() => register(username, password, email)}>
-          <Text style={styles.buttonText}>Register</Text>
+          <Text style={styles.buttonText}>Registrarse</Text>
       </TouchableOpacity>
 
       <TouchableOpacity  onPress={() => props.navigation.navigate('LoginScreen')}>
-          <Text>Already have an account? Press here</Text>
+          <Text>¿Ya tienes una cuenta? Inicia sesión</Text>
       </TouchableOpacity>
-      
-      <View style={{flex:2,justifyContent:'flex-end'}}>
-            <TouchableOpacity style={styles.button} onPress={() => props.navigation.navigate('InitScreen')}>
-            <Text style={styles.buttonText}>Go Back</Text>
-            </TouchableOpacity>
-        </View>
     </View>
   )
 }

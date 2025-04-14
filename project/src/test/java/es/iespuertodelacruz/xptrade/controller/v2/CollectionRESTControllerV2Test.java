@@ -5,7 +5,7 @@ import es.iespuertodelacruz.xptrade.domain.Collection;
 import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.service.CollectionService;
-import es.iespuertodelacruz.xptrade.dto.CollectionDTO;
+import es.iespuertodelacruz.xptrade.dto.output.CollectionOutputDTO;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,7 +56,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
     @Test
     void addTest() {
         when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(new Collection());
-        CollectionDTO aux = new CollectionDTO(1, gameDTO, userDTO);
+        CollectionOutputDTO aux = new CollectionOutputDTO(1, gameOutputDTO, userDTO);
 
         ResponseEntity responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
@@ -89,7 +89,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(new Collection());
         when(serviceMock.update(any(Integer.class), any(Game.class), any(User.class))).thenReturn(aux);
 
-        ResponseEntity responseEntity = controller.update(1, new CollectionDTO(aux.getId(), gameDTO, userDTO));
+        ResponseEntity responseEntity = controller.update(1, new CollectionOutputDTO(aux.getId(), gameOutputDTO, userDTO));
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -97,7 +97,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
     void updateNotFoundTest() {
         Collection aux = new Collection(1);
         when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(new Collection());
-        ResponseEntity responseEntity = controller.update(1, new CollectionDTO(aux.getId(), gameDTO, userDTO));
+        ResponseEntity responseEntity = controller.update(1, new CollectionOutputDTO(aux.getId(), gameOutputDTO, userDTO));
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -115,7 +115,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(null);
 
         when(serviceMock.update(1, gameDomain, userDomain)).thenThrow(new RuntimeException("Database error"));
-        ResponseEntity responseEntity = controller.update(1, new CollectionDTO(aux.getId(), gameDTO, userDTO));
+        ResponseEntity responseEntity = controller.update(1, new CollectionOutputDTO(aux.getId(), gameOutputDTO, userDTO));
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 

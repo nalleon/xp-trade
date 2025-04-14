@@ -2,8 +2,8 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Genre;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
-import es.iespuertodelacruz.xptrade.dto.GenreDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.IGenreDTOMapper;
+import es.iespuertodelacruz.xptrade.dto.output.GenreOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.output.IGenreOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class GenreRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<GenreDTO> filteredList = IGenreDTOMapper.INSTANCE.toDTOList(service.findAll());
+        List<GenreOutputDTO> filteredList = IGenreOutputDTOMapper.INSTANCE.toDTOList(service.findAll());
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
@@ -52,37 +52,37 @@ public class GenreRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Genre aux = service.findById(id);
         if (aux != null){
-            GenreDTO dto = IGenreDTOMapper.INSTANCE.toDTO(aux);
+            GenreOutputDTO dto = IGenreOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<GenreDTO> response =
+            CustomApiResponse<GenreOutputDTO> response =
                     new CustomApiResponse<>(302, "Genre found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<GenreDTO> errorResponse = new CustomApiResponse<>(404, "Genre NOT found", null);
+        CustomApiResponse<GenreOutputDTO> errorResponse = new CustomApiResponse<>(404, "Genre NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/names/{name}")
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Genre aux = service.findByName(name);
 
         if (aux != null){
-            GenreDTO dto = IGenreDTOMapper.INSTANCE.toDTO(aux);
+            GenreOutputDTO dto = IGenreOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<GenreDTO> response =
+            CustomApiResponse<GenreOutputDTO> response =
                     new CustomApiResponse<>(202, "Genre found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<GenreDTO> errorResponse = new CustomApiResponse<>(404, "Genre NOT found", null);
+        CustomApiResponse<GenreOutputDTO> errorResponse = new CustomApiResponse<>(404, "Genre NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(GenreDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(GenreOutputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -90,7 +90,7 @@ public class GenreRESTController {
 
         try {
             Genre dbItem = service.add(dto.name());
-            GenreDTO result = IGenreDTOMapper.INSTANCE.toDTO(dbItem);
+            GenreOutputDTO result = IGenreOutputDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -103,7 +103,7 @@ public class GenreRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody GenreDTO dto) {
+            @RequestBody GenreOutputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -122,7 +122,7 @@ public class GenreRESTController {
 
             Genre updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            GenreDTO result = IGenreDTOMapper.INSTANCE.toDTO(updatedDbItem);
+            GenreOutputDTO result = IGenreOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 

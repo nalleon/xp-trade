@@ -3,7 +3,8 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../../screens/LoginScreen';
 import RegisterScreen from '../../screens/RegisterScreen';
-import InitScreen from '../../screens/InitScreen';
+import HomeScreen from '../../screens/HomeScreen';
+import SettingsScreen from '../../screens/SettingsScreen';
 
 type Props = {}
 
@@ -23,7 +24,7 @@ const SettingsStackNav = (props: Props) => {
                 headerShown: false,
             }}
         >
-            <Stack.Screen name="InitScreen" component={InitScreen} />
+            <Stack.Screen name="InitScreen" component={SettingsScreen} />
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         </Stack.Navigator>

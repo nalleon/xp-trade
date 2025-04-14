@@ -6,8 +6,8 @@ import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IFavoriteService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
-import es.iespuertodelacruz.xptrade.dto.FavoriteDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.IFavoriteDTOMapper;
+import es.iespuertodelacruz.xptrade.dto.output.FavoriteOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.output.IFavoriteOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class FavoriteRESTControllerV2 {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<FavoriteDTO> filteredList = IFavoriteDTOMapper.INSTANCE.toDTOList(service.findAll());
+        List<FavoriteOutputDTO> filteredList = IFavoriteOutputDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no favorites";
@@ -80,7 +80,7 @@ public class FavoriteRESTControllerV2 {
                     .body(new CustomApiResponse<>(204, message, null));
         }
 
-        List<FavoriteDTO> filteredList = IFavoriteDTOMapper.INSTANCE.toDTOList(service.findByGame(filter));
+        List<FavoriteOutputDTO> filteredList = IFavoriteOutputDTOMapper.INSTANCE.toDTOList(service.findByGame(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no favorites";
@@ -102,7 +102,7 @@ public class FavoriteRESTControllerV2 {
                     .body(new CustomApiResponse<>(204, message, null));
         }
 
-        List<FavoriteDTO> filteredList = IFavoriteDTOMapper.INSTANCE.toDTOList(service.findByUser(filter));
+        List<FavoriteOutputDTO> filteredList = IFavoriteOutputDTOMapper.INSTANCE.toDTOList(service.findByUser(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no favorites";
@@ -120,14 +120,14 @@ public class FavoriteRESTControllerV2 {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Favorite aux = service.findById(id);
         if (aux != null){
-            FavoriteDTO dto = IFavoriteDTOMapper.INSTANCE.toDTO(aux);
+            FavoriteOutputDTO dto = IFavoriteOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<FavoriteDTO> response =
+            CustomApiResponse<FavoriteOutputDTO> response =
                     new CustomApiResponse<>(302, "Favorite found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<FavoriteDTO> errorResponse = new CustomApiResponse<>(404, "Favorite NOT found", null);
+        CustomApiResponse<FavoriteOutputDTO> errorResponse = new CustomApiResponse<>(404, "Favorite NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
@@ -135,16 +135,16 @@ public class FavoriteRESTControllerV2 {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(FavoriteDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(FavoriteOutputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
-            Favorite aux = IFavoriteDTOMapper.INSTANCE.toDomain(dto);
+            Favorite aux = IFavoriteOutputDTOMapper.INSTANCE.toDomain(dto);
             Favorite dbItem = service.add(aux.getGame(), aux.getUser());
-            FavoriteDTO result = IFavoriteDTOMapper.INSTANCE.toDTO(dbItem);
+            FavoriteOutputDTO result = IFavoriteOutputDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -157,7 +157,7 @@ public class FavoriteRESTControllerV2 {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody FavoriteDTO dto) {
+            @RequestBody FavoriteOutputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -172,11 +172,11 @@ public class FavoriteRESTControllerV2 {
 
         try {
 
-            Favorite aux = IFavoriteDTOMapper.INSTANCE.toDomain(dto);
+            Favorite aux = IFavoriteOutputDTOMapper.INSTANCE.toDomain(dto);
 
             Favorite updatedDbItem = service.update(aux.getId(), aux.getGame(), aux.getUser());
 
-            FavoriteDTO result = IFavoriteDTOMapper.INSTANCE.toDTO(updatedDbItem);
+            FavoriteOutputDTO result = IFavoriteOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 

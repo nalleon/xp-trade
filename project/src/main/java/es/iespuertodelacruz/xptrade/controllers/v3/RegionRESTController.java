@@ -2,10 +2,9 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Region;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
-import es.iespuertodelacruz.xptrade.dto.RegionDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.IRegionDTOMapper;
+import es.iespuertodelacruz.xptrade.dto.output.RegionOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.output.IRegionOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
-import es.iespuertodelacruz.xptrade.shared.utils.Globals;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +37,7 @@ public class RegionRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<RegionDTO> filteredList = IRegionDTOMapper.INSTANCE.toDTOList(service.findAll());
+        List<RegionOutputDTO> filteredList = IRegionOutputDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
@@ -54,36 +53,36 @@ public class RegionRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Region aux = service.findById(id);
         if (aux != null){
-            RegionDTO dto =  new RegionDTO(aux.getId(), aux.getName());
+            RegionOutputDTO dto =  new RegionOutputDTO(aux.getId(), aux.getName());
 
-            CustomApiResponse<RegionDTO> response =
+            CustomApiResponse<RegionOutputDTO> response =
                     new CustomApiResponse<>(302, "Region found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<RegionDTO> errorResponse = new CustomApiResponse<>(404, "Region NOT found", null);
+        CustomApiResponse<RegionOutputDTO> errorResponse = new CustomApiResponse<>(404, "Region NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/names/{name}")
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Region aux = service.findByName(name);
         if (aux != null){
-            RegionDTO dto = IRegionDTOMapper.INSTANCE.toDTO(aux);
+            RegionOutputDTO dto = IRegionOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<RegionDTO> response =
+            CustomApiResponse<RegionOutputDTO> response =
                     new CustomApiResponse<>(202, "Region found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<RegionDTO> errorResponse = new CustomApiResponse<>(404, "Region NOT found", null);
+        CustomApiResponse<RegionOutputDTO> errorResponse = new CustomApiResponse<>(404, "Region NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(RegionDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(RegionOutputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -91,7 +90,7 @@ public class RegionRESTController {
 
         try {
             Region dbItem = service.add(dto.name());
-            RegionDTO result = IRegionDTOMapper.INSTANCE.toDTO(dbItem);
+            RegionOutputDTO result = IRegionOutputDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -104,7 +103,7 @@ public class RegionRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody RegionDTO dto) {
+            @RequestBody RegionOutputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -123,7 +122,7 @@ public class RegionRESTController {
 
             Region updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            RegionDTO result = IRegionDTOMapper.INSTANCE.toDTO(updatedDbItem);
+            RegionOutputDTO result = IRegionOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 

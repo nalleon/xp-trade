@@ -6,8 +6,8 @@ import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IPostService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
-import es.iespuertodelacruz.xptrade.dto.PostDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.IPostDTOMapper;
+import es.iespuertodelacruz.xptrade.dto.output.PostOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.output.IPostOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class PostRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<PostDTO> filteredList = IPostDTOMapper.INSTANCE.toDTOList(service.findAll());
+        List<PostOutputDTO> filteredList = IPostOutputDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no posts";
@@ -80,7 +80,7 @@ public class PostRESTController {
                     .body(new CustomApiResponse<>(204, message, null));
         }
 
-        List<PostDTO> filteredList = IPostDTOMapper.INSTANCE.toDTOList(service.findByGame(filter));
+        List<PostOutputDTO> filteredList = IPostOutputDTOMapper.INSTANCE.toDTOList(service.findByGame(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no posts";
@@ -102,7 +102,7 @@ public class PostRESTController {
                     .body(new CustomApiResponse<>(204, message, null));
         }
 
-        List<PostDTO> filteredList = IPostDTOMapper.INSTANCE.toDTOList(service.findByUser(filter));
+        List<PostOutputDTO> filteredList = IPostOutputDTOMapper.INSTANCE.toDTOList(service.findByUser(filter));
 
         if (filteredList.isEmpty()) {
             String message = "There are no posts";
@@ -120,14 +120,14 @@ public class PostRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Post aux = service.findById(id);
         if (aux != null){
-            PostDTO dto = IPostDTOMapper.INSTANCE.toDTO(aux);
+            PostOutputDTO dto = IPostOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<PostDTO> response =
+            CustomApiResponse<PostOutputDTO> response =
                     new CustomApiResponse<>(302, "Post found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<PostDTO> errorResponse = new CustomApiResponse<>(404, "Post NOT found", null);
+        CustomApiResponse<PostOutputDTO> errorResponse = new CustomApiResponse<>(404, "Post NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
@@ -135,16 +135,16 @@ public class PostRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(PostDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(PostOutputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
-            Post aux = IPostDTOMapper.INSTANCE.toDomain(dto);
+            Post aux = IPostOutputDTOMapper.INSTANCE.toDomain(dto);
             Post dbItem = service.add(aux.getGame(), aux.getUser(), aux.getContent(), aux.getPicture());
-            PostDTO result = IPostDTOMapper.INSTANCE.toDTO(dbItem);
+            PostOutputDTO result = IPostOutputDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -157,7 +157,7 @@ public class PostRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody PostDTO dto) {
+            @RequestBody PostOutputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -172,11 +172,11 @@ public class PostRESTController {
 
         try {
 
-            Post aux = IPostDTOMapper.INSTANCE.toDomain(dto);
+            Post aux = IPostOutputDTOMapper.INSTANCE.toDomain(dto);
 
             Post updatedDbItem = service.update(aux.getId(), aux.getGame(), aux.getUser(), aux.getContent(), aux.getPicture());
 
-            PostDTO result = IPostDTOMapper.INSTANCE.toDTO(updatedDbItem);
+            PostOutputDTO result = IPostOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 

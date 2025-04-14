@@ -2,8 +2,8 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Developer;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
-import es.iespuertodelacruz.xptrade.dto.DeveloperDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.IDeveloperDTOMapper;
+import es.iespuertodelacruz.xptrade.dto.output.DeveloperOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.output.IDeveloperOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class DeveloperRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<DeveloperDTO> filteredList = IDeveloperDTOMapper.INSTANCE.toDTOList(service.findAll());
+        List<DeveloperOutputDTO> filteredList = IDeveloperOutputDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
@@ -54,14 +54,14 @@ public class DeveloperRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Developer aux = service.findById(id);
         if (aux != null){
-            DeveloperDTO dto = IDeveloperDTOMapper.INSTANCE.toDTO(aux);
+            DeveloperOutputDTO dto = IDeveloperOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<DeveloperDTO> response =
+            CustomApiResponse<DeveloperOutputDTO> response =
                     new CustomApiResponse<>(302, "Developer found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<DeveloperDTO> errorResponse = new CustomApiResponse<>(404, "Developer NOT found", null);
+        CustomApiResponse<DeveloperOutputDTO> errorResponse = new CustomApiResponse<>(404, "Developer NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
@@ -70,20 +70,20 @@ public class DeveloperRESTController {
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Developer aux = service.findByName(name);
         if (aux != null){
-            DeveloperDTO dto = IDeveloperDTOMapper.INSTANCE.toDTO(aux);
+            DeveloperOutputDTO dto = IDeveloperOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<DeveloperDTO> response =
+            CustomApiResponse<DeveloperOutputDTO> response =
                     new CustomApiResponse<>(202, "Developer found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<DeveloperDTO> errorResponse = new CustomApiResponse<>(404, "Developer NOT found", null);
+        CustomApiResponse<DeveloperOutputDTO> errorResponse = new CustomApiResponse<>(404, "Developer NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(DeveloperDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(DeveloperOutputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -91,7 +91,7 @@ public class DeveloperRESTController {
 
         try {
             Developer dbItem = service.add(dto.name());
-            DeveloperDTO result = IDeveloperDTOMapper.INSTANCE.toDTO(dbItem);
+            DeveloperOutputDTO result = IDeveloperOutputDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -104,7 +104,7 @@ public class DeveloperRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody DeveloperDTO dto) {
+            @RequestBody DeveloperOutputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -123,7 +123,7 @@ public class DeveloperRESTController {
 
             Developer updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            DeveloperDTO result = IDeveloperDTOMapper.INSTANCE.toDTO(updatedDbItem);
+            DeveloperOutputDTO result = IDeveloperOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 

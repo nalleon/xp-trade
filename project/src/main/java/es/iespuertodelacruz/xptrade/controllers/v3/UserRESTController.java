@@ -191,7 +191,7 @@ public class UserRESTController {
     }
 
 
-    @PostMapping(value = "/upload/{username}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/uploads/{username}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadFile(@RequestParam("username") String username, @RequestParam("file") MultipartFile file) {
         String message = "";
         try {
@@ -213,7 +213,7 @@ public class UserRESTController {
         }
     }
 
-    @GetMapping("/img/{filename}")
+    @GetMapping("/images/{filename}")
     public ResponseEntity<?> getFiles(@PathVariable String filename) {
         Resource resource = storageService.get(filename);
 

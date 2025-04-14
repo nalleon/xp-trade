@@ -2,8 +2,8 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Platform;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
-import es.iespuertodelacruz.xptrade.dto.PlatformDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.IPlatformDTOMapper;
+import es.iespuertodelacruz.xptrade.dto.output.PlatformOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.output.IPlatformOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class PlatformRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<PlatformDTO> filteredList = IPlatformDTOMapper.INSTANCE.toDTOList(service.findAll());
+        List<PlatformOutputDTO> filteredList = IPlatformOutputDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
@@ -53,36 +53,36 @@ public class PlatformRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Platform aux = service.findById(id);
         if (aux != null){
-            PlatformDTO dto =  IPlatformDTOMapper.INSTANCE.toDTO(aux);
+            PlatformOutputDTO dto =  IPlatformOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<PlatformDTO> response =
+            CustomApiResponse<PlatformOutputDTO> response =
                     new CustomApiResponse<>(302, "Platform found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<PlatformDTO> errorResponse = new CustomApiResponse<>(404, "Platform NOT found", null);
+        CustomApiResponse<PlatformOutputDTO> errorResponse = new CustomApiResponse<>(404, "Platform NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/names/{name}")
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Platform aux = service.findByName(name);
         if (aux != null){
-            PlatformDTO dto = IPlatformDTOMapper.INSTANCE.toDTO(aux);
+            PlatformOutputDTO dto = IPlatformOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<PlatformDTO> response =
+            CustomApiResponse<PlatformOutputDTO> response =
                     new CustomApiResponse<>(202, "Platform found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<PlatformDTO> errorResponse = new CustomApiResponse<>(404, "Platform NOT found", null);
+        CustomApiResponse<PlatformOutputDTO> errorResponse = new CustomApiResponse<>(404, "Platform NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(PlatformDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(PlatformOutputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -90,7 +90,7 @@ public class PlatformRESTController {
 
         try {
             Platform dbItem = service.add(dto.name());
-            PlatformDTO result = IPlatformDTOMapper.INSTANCE.toDTO(dbItem);
+            PlatformOutputDTO result = IPlatformOutputDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -103,7 +103,7 @@ public class PlatformRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody PlatformDTO dto) {
+            @RequestBody PlatformOutputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -122,7 +122,7 @@ public class PlatformRESTController {
 
             Platform updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            PlatformDTO result = IPlatformDTOMapper.INSTANCE.toDTO(updatedDbItem);
+            PlatformOutputDTO result = IPlatformOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 

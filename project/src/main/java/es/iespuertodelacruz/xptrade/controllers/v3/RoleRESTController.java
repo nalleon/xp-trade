@@ -2,8 +2,8 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IRoleService;
-import es.iespuertodelacruz.xptrade.dto.RoleDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.IRoleDTOMapper;
+import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.output.IRoleOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class RoleRESTController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<RoleDTO> filteredList = IRoleDTOMapper.INSTANCE.toDTOList(service.findAll());
+        List<RoleOutputDTO> filteredList = IRoleOutputDTOMapper.INSTANCE.toDTOList(service.findAll());
 
         if (filteredList.isEmpty()) {
             String message = "There are no roles";
@@ -54,36 +54,36 @@ public class RoleRESTController {
     public ResponseEntity<?> getById(@PathVariable Integer id) {
         Role aux = service.findById(id);
         if (aux != null){
-            RoleDTO dto =  new RoleDTO(aux.getId(),aux.getName());
+            RoleOutputDTO dto =  new RoleOutputDTO(aux.getId(),aux.getName());
 
-            CustomApiResponse<RoleDTO> response =
+            CustomApiResponse<RoleOutputDTO> response =
                     new CustomApiResponse<>(302, "Role found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<RoleDTO> errorResponse = new CustomApiResponse<>(404, "Role NOT found", null);
+        CustomApiResponse<RoleOutputDTO> errorResponse = new CustomApiResponse<>(404, "Role NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/names/{name}")
     public ResponseEntity<?> getByName(@PathVariable String name) {
         Role aux = service.findByName(name);
         if (aux != null){
-            RoleDTO dto = IRoleDTOMapper.INSTANCE.toDTO(aux);
+            RoleOutputDTO dto = IRoleOutputDTOMapper.INSTANCE.toDTO(aux);
 
-            CustomApiResponse<RoleDTO> response =
+            CustomApiResponse<RoleOutputDTO> response =
                     new CustomApiResponse<>(202, "Role found", dto);
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<RoleDTO> errorResponse = new CustomApiResponse<>(404, "Role NOT found", null);
+        CustomApiResponse<RoleOutputDTO> errorResponse = new CustomApiResponse<>(404, "Role NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(RoleDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(RoleOutputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -91,7 +91,7 @@ public class RoleRESTController {
 
         try {
             Role dbItem = service.add(dto.name());
-            RoleDTO result = IRoleDTOMapper.INSTANCE.toDTO(dbItem);
+            RoleOutputDTO result = IRoleOutputDTOMapper.INSTANCE.toDTO(dbItem);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
@@ -104,7 +104,7 @@ public class RoleRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody RoleDTO dto) {
+            @RequestBody RoleOutputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -128,7 +128,7 @@ public class RoleRESTController {
 
             Role updatedDbItem = service.update(dbItem.getId(), dbItem.getName());
 
-            RoleDTO result = IRoleDTOMapper.INSTANCE.toDTO(updatedDbItem);
+            RoleOutputDTO result = IRoleOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             return ResponseEntity.status(HttpStatus.OK).body(
                     new CustomApiResponse<>(200, "Update successful", result));

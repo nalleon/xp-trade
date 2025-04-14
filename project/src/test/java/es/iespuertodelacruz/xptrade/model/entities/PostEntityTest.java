@@ -1,6 +1,5 @@
 package es.iespuertodelacruz.xptrade.model.entities;
 
-import es.iespuertodelacruz.xptrade.dto.*;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
