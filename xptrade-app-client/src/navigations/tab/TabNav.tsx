@@ -7,6 +7,7 @@ import ProfileScreen from '../../screens/ProfileScreen';
 import NotificationsScreen from '../../screens/NotificationsScreen';
 import CollectionScreen from '../../screens/CollectionScreen';
 import SearchScreen from '../../screens/SearchScreen';
+import GameStackNav from '../stack/GameStackNav';
 
 type Props = {}
 const Tab = createBottomTabNavigator();
@@ -31,7 +32,7 @@ const TabNav = (props: Props) => {
               }
           }/>
 
-        <Tab.Screen name='Búsqueda' component={SearchScreen}
+        <Tab.Screen name='Búsqueda' component={GameStackNav}
               options={ {tabBarIcon: ({focused}) => 
                   <Icon name={(focused) ? 'search' : 'search-outline'} size={30}/>
               }

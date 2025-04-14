@@ -18,13 +18,11 @@ const SearchScreen = (props: Props) => {
 
   const getGames = async (search : string) => {
       const result : Result[] | null = await handleFetch(search);
-      console.log(result);
 
       if(result!=null){
          setGames(result);
       }
 
-      console.log(games);
     }
 
   return (
@@ -48,12 +46,23 @@ const SearchScreen = (props: Props) => {
         contentContainerStyle={{ paddingVertical: 16 }}
         className="mt-4"
         renderItem={({ item }) => (
-          <TouchableOpacity className="flex-row items-center bg-[#1E222A] p-3 mb-3 rounded-lg">
-            <Image
-              source={{ uri: item.background_image }}
-              className="w-14 h-14 rounded-md mr-4"
-              resizeMode="cover"
-            />
+          <TouchableOpacity className="flex-row items-center bg-[#1E222A] p-3 mb-3 rounded-lg"
+            onPress={() => props}
+          >
+            {
+              item.background_image  ?
+              <Image
+                source={{ uri: item.background_image }}
+                className="w-14 h-14 rounded-md mr-4"
+                resizeMode="cover"
+              />  
+              :
+              <Icon
+                name='image'
+                className="w-14 h-14 rounded-md mr-4"
+              />
+            }
+
             <Text className="text-[#F6F7F7] text-base font-semibold flex-1">
               {item.name}
             </Text>
@@ -61,7 +70,7 @@ const SearchScreen = (props: Props) => {
         )}
         ListEmptyComponent={() => (
           <View className="items-center justify-center mt-12">
-          <Icon name="game-controller-outline" size={48} color="#1E222A" />
+            <Icon name="game-controller-outline" size={78} color="#1E222A" />
         </View>
         )}
       />
