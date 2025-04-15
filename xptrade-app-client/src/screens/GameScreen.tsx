@@ -13,11 +13,33 @@ const GameScreen = (props: Props) => {
 
   return (
     <ScrollView className="flex-1 bg-[#0F1218]">
-      <Image
-        source={{ uri: currentGame.background_image }}
-        className="w-full h-60"
-        resizeMode="cover"
-      />
+      {
+        currentGame.background_image &&
+        <Image
+          source={{ uri: currentGame.background_image }}
+          className="w-full h-60"
+          resizeMode="cover"
+        />
+      }
+
+      {
+        !currentGame.background_image && currentGame.short_screenshots && currentGame.short_screenshots.length > 0 &&
+         <Image
+           source={{ uri: currentGame.short_screenshots[0].image }}
+           className="w-full h-60"
+           resizeMode="cover"
+         />
+      }
+
+      {
+        !currentGame.background_image && (!currentGame.short_screenshots || currentGame.short_screenshots.length === 0) && (
+          <Image
+            source={require('../resources/xp-trade.png')}
+            className="w-full h-60"
+            resizeMode="cover"
+          />
+        )
+      }
 
       <View className="p-4">
         <Text className="text-[#F6F7F7] text-2xl font-bold mb-2">

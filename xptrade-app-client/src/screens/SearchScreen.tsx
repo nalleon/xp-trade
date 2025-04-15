@@ -66,19 +66,31 @@ const SearchScreen = (props: Props) => {
             onPress={() => navigateToGame(item)}
           >
             {
-              item.background_image  ?
+              item.background_image  &&
               <Image
                 source={{ uri: item.background_image }}
                 className="w-14 h-14 rounded-md mr-4"
                 resizeMode="cover"
               />  
-              :
-              <Icon
-                name='image'
-                className="w-14 h-14 rounded-md mr-4"
-                size={48}
-                color="#556791"
-              />
+            }
+
+            {
+              !item.background_image && item.short_screenshots && item.short_screenshots.length > 0 &&
+               <Image
+               source={{ uri: item.short_screenshots[0].image }}
+               className="w-14 h-14 rounded-md mr-4"
+               resizeMode="cover"
+             />
+            }
+
+            {
+              !item.background_image && (!item.short_screenshots || item.short_screenshots.length === 0) && (
+                <Image
+                  source={require('../resources/xp-trade.png')}
+                  className="w-14 h-14 rounded-md mr-4"
+                  resizeMode="cover"
+                />
+              )
             }
 
             <Text className="text-[#F6F7F7] text-base font-semibold flex-1">

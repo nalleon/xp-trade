@@ -28,9 +28,29 @@ const UseRAWGApi = () => {
 
       return null;
   };
-    
+
+  //https://api.rawg.io/api/games/2727/movies?key=1a094ebbcbef4440a46abee88f222abb
+
+    const handleGetTrailer = async (search: string) => {
+      if (!search?.trim()) return null;
+  
+      try {
+          const response = await axios.get(`https://api.rawg.io/api/games/${search}/movies?key=1a094ebbcbef4440a46abee88f222abb`, {
+              headers: { 'Content-Type': 'application/json' }
+          });
+
+          if (response?.data) {
+            return response.data.results;
+          }
+        } catch (error) {
+            console.error("Error fetching data from the api"); 
+        }
+
+      return null;
+    };
+  
     return {
-        handleFetch
+        handleFetch, handleGetTrailer
     }
 
 }
