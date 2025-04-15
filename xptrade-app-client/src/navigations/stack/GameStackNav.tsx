@@ -13,7 +13,6 @@ type Props = {}
 export type GameStackParamList = {
     SearchScreen: undefined,
     GameScreen: undefined,
-    RegisterScreen: undefined
 };
 
 const Stack = createNativeStackNavigator<GameStackParamList>();

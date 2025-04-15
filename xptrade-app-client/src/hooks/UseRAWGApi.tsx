@@ -20,7 +20,6 @@ const UseRAWGApi = () => {
           });
 
           if (response?.data) {
-            console.log("RESULTS: " + response.data.results);
             return response.data.results;
           }
         } catch (error) {

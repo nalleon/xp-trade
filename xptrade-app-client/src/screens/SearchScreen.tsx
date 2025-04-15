@@ -1,10 +1,13 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import UseRAWGApi from '../hooks/UseRAWGApi';
+import { AppContext } from '../context/AppContext';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { GameStackParamList } from '../navigations/stack/GameStackNav';
 
-type Props = {}
+type Props = NativeStackScreenProps<GameStackParamList, 'SearchScreen'>;
 
 const SearchScreen = (props: Props) => {
   const [search, setSearch] = useState<string>("")
@@ -13,6 +16,8 @@ const SearchScreen = (props: Props) => {
   useEffect(() => {
    
   }, [])
+
+  const context = useContext(AppContext);
   
   const { handleFetch } = UseRAWGApi();
 
@@ -23,7 +28,18 @@ const SearchScreen = (props: Props) => {
          setGames(result);
       }
 
-    }
+  }
+
+  const navigateToGame = async (game : Result) => {
+    if (!game){
+     return;
+    }  
+
+    context.setCurrentGame(game);
+    console.log(game);
+    props.navigation.navigate("GameScreen");
+
+  }
 
   return (
     <View className="flex-1 bg-[#0F1218] pt-10 px-4">
@@ -47,7 +63,7 @@ const SearchScreen = (props: Props) => {
         className="mt-4"
         renderItem={({ item }) => (
           <TouchableOpacity className="flex-row items-center bg-[#1E222A] p-3 mb-3 rounded-lg"
-            onPress={() => props}
+            onPress={() => navigateToGame(item)}
           >
             {
               item.background_image  ?
@@ -60,6 +76,8 @@ const SearchScreen = (props: Props) => {
               <Icon
                 name='image'
                 className="w-14 h-14 rounded-md mr-4"
+                size={48}
+                color="#556791"
               />
             }
 
