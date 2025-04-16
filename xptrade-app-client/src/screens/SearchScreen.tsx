@@ -26,10 +26,25 @@ const SearchScreen = (props: Props) => {
       const result : Result[] | null = await handleFetch(search);
 
       if(result!=null){
-         setGames(result);
-      }
+        const filteredByTagGames = result.filter(
+          (game) =>            
+            !game.tags.some(
+              (tag) => tag.name.toLowerCase() === 'fangame' || tag.slug.toLowerCase().includes('fangame')
+            )
+        );
 
-  }
+        const filteredByName = filteredByTagGames.filter(
+          (game) =>
+            (
+              !game.name.toLowerCase().includes('hentai') && !game.name.toLowerCase().includes('porn') &&
+              !game.name.toLowerCase().includes('porno') && !game.name.toLowerCase().includes('sex') && !game.name.toLowerCase().includes('pene') 
+              && !game.name.toLowerCase().includes('penis') && !game.name.toLowerCase().includes('dick')
+            ) 
+        );
+        
+         setGames(filteredByName);
+      }
+    }
 
   const navigateToGame = async (game : Result) => {
     if (!game){
