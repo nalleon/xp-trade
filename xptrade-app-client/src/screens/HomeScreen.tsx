@@ -1,8 +1,6 @@
 import { Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-
-import { GameRepository } from '../data/Database';
 import { AuthStackParamList } from '../navigations/stack/AuthStackNav';
 import PostButton from '../components/PostButton';
 
