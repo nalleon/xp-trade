@@ -4,30 +4,30 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../../screens/LoginScreen';
 import RegisterScreen from '../../screens/RegisterScreen';
 import HomeScreen from '../../screens/HomeScreen';
+import CollectionScreen from '../../screens/CollectionScreen';
+import GameScreen from '../../screens/GameScreen';
 
 type Props = {}
 
 
 export type GameStackParamList = {
-    HomeScreen: undefined,
-    LoginScreen: undefined,
-    RegisterScreen: undefined
+    CollectionScreen: undefined,
+    GameScreen: undefined,
 };
 
 const Stack = createNativeStackNavigator<GameStackParamList>();
 
-const ProfileStackNav = (props: Props) => {
+const CollectionStackNav = (props: Props) => {
     return (
         <Stack.Navigator id={undefined}
             screenOptions={{
                 headerShown: false,
             }}
         >
-            <Stack.Screen name="HomeScreen" component={HomeScreen} />
-            <Stack.Screen name="LoginScreen" component={LoginScreen} />
-            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+            <Stack.Screen name="CollectionScreen" component={CollectionScreen} />
+            <Stack.Screen name="GameScreen" component={GameScreen} />
         </Stack.Navigator>
     )
 }
 
-export default ProfileStackNav
+export default CollectionStackNav

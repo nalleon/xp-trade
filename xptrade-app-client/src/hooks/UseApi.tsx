@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { AppContext } from '../context/AppContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../navigations/stack/AuthStackNav';
+import { userInfo } from 'os';
 
 const UseApi = () => {
 
@@ -66,9 +67,31 @@ const UseApi = () => {
       
     };
 
+    const handleCollection = async (username : string) => {
+        if (!username?.trim()) return null;
+    
+        try {
+            const response = await axios.post(`${URL_API}/v2/collections/users/${username}`, {
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + context.token                  
+                }
+            });
+    
+            if (response?.data) {
+                return response?.data;
+            } else {
+              return null;
+            }
+  
+        } catch (error) {
+          console.error("Error while fetching collections", error);
+        }
+        
+    };
     
     return {
-        handleLogin, handleRegister
+        handleLogin, handleRegister, handleCollection
     }
 
 }

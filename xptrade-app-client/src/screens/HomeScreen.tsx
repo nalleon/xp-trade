@@ -1,9 +1,8 @@
 import { Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-
-import { GameRepository } from '../data/Database';
 import { AuthStackParamList } from '../navigations/stack/AuthStackNav';
+import PostButton from '../components/PostButton';
 
 
 
@@ -14,74 +13,11 @@ type AuthProps = NativeStackScreenProps<AuthStackParamList, 'TabNav'>;
 function HomeScreen(props:AuthProps) {
 
     return (
-      <View style={styles.container}>
-    
-        <View className="flex-1 justify-center items-center bg-blue-500">
-          <Text className="text-white text-lg">Hello, NativeWind!</Text>
-        </View>
-
+      <View className="flex-1 bg-[#0F1218] px-3 pt-6">
+        <Text className="text-2xl font-bold text-[#F6F7F7] mb-4">Home</Text>
+        <PostButton/>
       </View>
     );
 }
-
-
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f4f4f4",
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    color: "#333",
-  },
-  
-  input: {
-    width: "100%",
-    height: 50,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    borderWidth: 1,
-    borderColor: "#008080",
-  },
-
-  button: {
-    width: "100%",
-    backgroundColor: "#008080",
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-    margin:10
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  flatListElement: {
-    padding: 15,
-    marginBottom: 10,
-    backgroundColor: "#fff",
-    borderRadius: 50,
-    borderWidth: 1,
-    borderColor: "#008080",
-    flexDirection: 'row',
-    alignItems: 'center',
-    elevation: 3, 
-  },
-
-  flatListElementText: {
-    fontSize: 17,
-    flex: 1,
-    marginLeft: 25,
-    color: '#333',
-  },
-});
 
 export default HomeScreen;

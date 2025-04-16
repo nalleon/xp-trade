@@ -9,31 +9,6 @@ import { AppContext } from '../context/AppContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../navigations/stack/AuthStackNav';
 
-export type GameOutput = {
-  player1: string;
-  player2: string;
-  board: string[][];
-  finished: boolean;
-  turnPlayer: string;
-};
-
-export type GameOutputList = {
-  id:number,
-  player1: string;
-  player2: string;
-  board: string[][];
-  finished: boolean;
-  turnPlayer: string;
-};
-
-export type GamePlay = {
-  playername: string;
-  posX: number;
-  posY: number;
-};
-
-
-
 
 const UseApi = () => {
     const context = useContext(AppContext);
