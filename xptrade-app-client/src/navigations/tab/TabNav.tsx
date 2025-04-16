@@ -4,10 +4,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../../screens/HomeScreen';
 import ProfileScreen from '../../screens/ProfileScreen';
-import NotificationsScreen from '../../screens/NotificationsScreen';
+import NotificationScreen from '../../screens/NotificationScreen';
 import CollectionScreen from '../../screens/CollectionScreen';
 import SearchScreen from '../../screens/SearchScreen';
 import GameStackNav from '../stack/GameStackNav';
+import NotificationStackNav from '../stack/NotificationStackNav';
 
 type Props = {}
 const Tab = createBottomTabNavigator();
@@ -45,7 +46,7 @@ const TabNav = (props: Props) => {
             }
         }/>
 
-          <Tab.Screen name='Notificaciones' component={NotificationsScreen}
+          <Tab.Screen name='Notificaciones' component={NotificationStackNav}
               options={ {tabBarIcon: ({focused}) => 
                 <Icon name={(focused) ? 'notifications' : 'notifications-outline'} size={30}/>
               }
