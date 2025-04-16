@@ -26,7 +26,13 @@ const SearchScreen = (props: Props) => {
       const result : Result[] | null = await handleFetch(search);
 
       if(result!=null){
-         setGames(result);
+        const filteredGames = result.filter(
+          (game) =>
+            !game.tags.some(
+              (tag) => tag.name.toLowerCase() === 'fangame' || tag.slug.toLowerCase().includes('fangame')
+          ) 
+        );
+         setGames(filteredGames);
       }
 
   }
