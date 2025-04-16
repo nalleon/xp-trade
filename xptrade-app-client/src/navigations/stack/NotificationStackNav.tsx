@@ -7,6 +7,7 @@ import HomeScreen from '../../screens/HomeScreen';
 import SearchScreen from '../../screens/SearchScreen';
 import PostScreen from '../../screens/PostScreen';
 import CommentScreen from '../../screens/CommentScreen';
+import NotificationScreen from '../../screens/NotificationScreen';
 
 type Props = {}
 
@@ -26,7 +27,7 @@ const NotificationStackNav = (props: Props) => {
                 headerShown: false,
             }}
         >
-            <Stack.Screen name="NotificationScreen" component={SearchScreen} />
+            <Stack.Screen name="NotificationScreen" component={NotificationScreen} />
             <Stack.Screen name="PostScreen" component={PostScreen} />
             <Stack.Screen name="CommentScreen" component={CommentScreen} />
         </Stack.Navigator>

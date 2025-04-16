@@ -159,3 +159,11 @@ interface RootObject {
     count: number;
     percent: number;
   }
+
+  interface Comment {
+    id:number,
+    id_post: number,
+    username: string,
+    content: string,
+    creation_date: Date
+  }

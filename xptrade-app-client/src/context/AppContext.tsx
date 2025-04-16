@@ -13,7 +13,8 @@ type AppContextType ={
     setToken: (token: string) => void,
     currentGame: Result,
     setCurrentGame: (game: Result) => void,
-    
+    currentComment: Comment,
+    setCurrentComment: (comment: Comment) => void,
 }
 
 export const AppContext = createContext<AppContextType>({} as AppContextType );
@@ -21,6 +22,7 @@ const AppContextProvider = (props: Props) => {
     const [username, setUsername] = useState<string>("");
     const [token, setToken] = useState<string>("");
     const [currentGame, setCurrentGame] = useState<Result>({} as Result);
+    const [currentComment, setCurrentComment] = useState<Comment>({} as Comment);
 
     const contextValues: AppContextType  = {
         username,
@@ -28,7 +30,9 @@ const AppContextProvider = (props: Props) => {
         token,
         setToken,
         currentGame,
-        setCurrentGame
+        setCurrentGame,
+        currentComment,
+        setCurrentComment
     }
     
         return (

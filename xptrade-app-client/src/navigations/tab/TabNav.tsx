@@ -9,6 +9,7 @@ import CollectionScreen from '../../screens/CollectionScreen';
 import SearchScreen from '../../screens/SearchScreen';
 import GameStackNav from '../stack/GameStackNav';
 import NotificationStackNav from '../stack/NotificationStackNav';
+import CollectionStackNav from '../stack/CollectionStackNav';
 
 type Props = {}
 const Tab = createBottomTabNavigator();
@@ -40,7 +41,7 @@ const TabNav = (props: Props) => {
           }/>
 
 
-          <Tab.Screen name='Colección' component={CollectionScreen}
+          <Tab.Screen name='Colección' component={CollectionStackNav}
               options={ {tabBarIcon: ({focused}) => 
                 <Icon name={(focused) ? 'game-controller' : 'game-controller-outline'} size={30}/>
             }
