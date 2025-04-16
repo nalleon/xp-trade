@@ -6,6 +6,7 @@ import UseRAWGApi from '../hooks/UseRAWGApi';
 import { AppContext } from '../context/AppContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { GameStackParamList } from '../navigations/stack/GameStackNav';
+import PostButton from '../components/PostButton';
 
 type Props = NativeStackScreenProps<GameStackParamList, 'SearchScreen'>;
 
@@ -36,7 +37,6 @@ const SearchScreen = (props: Props) => {
     }  
 
     context.setCurrentGame(game);
-    console.log(game);
     props.navigation.navigate("GameScreen");
 
   }
@@ -104,13 +104,7 @@ const SearchScreen = (props: Props) => {
         </View>
         )}
       />
-
-      <TouchableOpacity 
-        className="absolute bottom-6 right-6 bg-[#556791] rounded-full p-4"
-        onPress={() => console.log("createPost")}
-      >
-        <Icon name="add" size={28} color="#F6F7F7" />
-      </TouchableOpacity>
+      <PostButton/>
     </View>
   )
 }
