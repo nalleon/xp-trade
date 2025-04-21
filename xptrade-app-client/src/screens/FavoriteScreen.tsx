@@ -1,7 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-type Props = {}
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
+
+type Props = NativeStackScreenProps<ProfileStackParamList, 'FavoriteScreen'>;
+
 
 const FavoriteScreen = (props: Props) => {
   return (

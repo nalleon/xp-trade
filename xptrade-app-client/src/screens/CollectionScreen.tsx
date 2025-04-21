@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
 
-type Props = {}
+type Props = NativeStackScreenProps<ProfileStackParamList, 'CollectionScreen'>;
 
 const CollectionScreen = (props: Props) => {
   return (
