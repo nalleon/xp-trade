@@ -80,18 +80,19 @@ const ScreenshotGallery = ({ screenshots }) => {
                 {loading && (
                   <ActivityIndicator size="large" color="#fff" style={{ position: 'absolute' }} />
                 )}
-                <ImageZoom
-                    key={index}
-                    minScale={1} 
-                    maxScale={5} 
-                    style={{width, height}}
-                    doubleTapScale={5} 
-                    isPinchEnabled={true}
-                    isPanEnabled={true}
-                    onLoad={handleImageLoad}
-                    resizeMode="contain"
-                    source={{ uri: item.image }} 
-                />
+                    <ImageZoom
+                        key={index}
+                        minScale={1}
+                        maxScale={200}
+                        style={{ width, height }}
+                        doubleTapScale={90}
+                        isPinchEnabled={true}
+                        isPanEnabled={true}
+                        isDoubleTapEnabled={true}
+                        onLoad={handleImageLoad}
+                        resizeMode="contain"
+                        source={{ uri: item.image }}
+                    />
               </View>
             )}
           />

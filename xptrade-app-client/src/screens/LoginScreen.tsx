@@ -16,6 +16,8 @@ const LoginScreen = ({ navigation }: Props) => {
   const { handleLogin } = UseApi();
 
   const login = async () => {
+    navigation.replace('TabNav');
+
     const result = await handleLogin(username, password);
     if (result === SUCCESS) {
       navigation.replace('TabNav');
