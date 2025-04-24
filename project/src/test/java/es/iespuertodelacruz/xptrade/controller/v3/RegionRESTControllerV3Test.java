@@ -1,9 +1,14 @@
 package es.iespuertodelacruz.xptrade.controller.v3;
 
 import es.iespuertodelacruz.xptrade.controllers.v3.RegionRESTController;
+import es.iespuertodelacruz.xptrade.controllers.v3.RegionRESTController;
+import es.iespuertodelacruz.xptrade.domain.Region;
 import es.iespuertodelacruz.xptrade.domain.Region;
 import es.iespuertodelacruz.xptrade.domain.service.RegionService;
+import es.iespuertodelacruz.xptrade.domain.service.RegionService;
 import es.iespuertodelacruz.xptrade.dto.output.RegionOutputDTO;
+import es.iespuertodelacruz.xptrade.dto.output.RegionOutputDTO;
+import es.iespuertodelacruz.xptrade.model.service.rest.RegionEntityService;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class RegionRESTControllerV3Test  extends TestUtilities {
@@ -27,36 +33,69 @@ public class RegionRESTControllerV3Test  extends TestUtilities {
     @InjectMocks
     RegionRESTController controller;
 
+    @Mock
+    RegionEntityService entityServiceMock;
+
+    @InjectMocks
+    RegionService serviceMockException;
 
     @BeforeEach
     public void beforeEach (){
         MockitoAnnotations.openMocks(this);
-        controller = new RegionRESTController();
         controller.setService(serviceMock);
-    }
-    @Test
-    void getAllTest() {
-        List<Region> list = new ArrayList<>();
-        list.add(new Region(1));
-        list.add(new Region(2));
-        list.add(new Region(3));
-        when(serviceMock.findAll()).thenReturn(list);
-        Assertions.assertNotNull(controller.getAll(), MESSAGE_ERROR);
+        serviceMockException.setRepository(entityServiceMock);
     }
 
+
+    @Test
+    void getAllEmptyTest() {
+        when(serviceMock.findAll()).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAll().getStatusCode(), MESSAGE_ERROR);
+    }
 
     @Test
     void getOneTest() {
         when(serviceMock.findById(1)).thenReturn(new Region(1));
         Assertions.assertNotNull(controller.getById(1), MESSAGE_ERROR);
     }
+    @Test
+    void getOneNotFoundTest() {
+        when(serviceMock.findById(1)).thenReturn(null);
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
+    }
 
+    @Test
+    void getOneByNameTest() {
+        when(serviceMock.findByName(anyString())).thenReturn(new Region(1));
+        Assertions.assertNotNull(controller.getByName("A"), MESSAGE_ERROR);
+    }
+    @Test
+    void getOneByNameNotFoundTest() {
+        when(serviceMock.findByName(anyString())).thenReturn(null);
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByName("A").getStatusCode(), MESSAGE_ERROR);
+    }
     @Test
     void addTest() {
         when(serviceMock.add(any(String.class))).thenReturn(new Region());
         RegionOutputDTO aux = new RegionOutputDTO(1, "ADMIN");
         ResponseEntity responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void addNullTest() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(null).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void addThrowsExceptionTest() {
+        RegionOutputDTO dto = new RegionOutputDTO(1, "a");
+
+        when(entityServiceMock.save(any(Region.class))).thenThrow(new RuntimeException());
+
+        controller.setService(serviceMockException);
+
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, controller.add(dto).getStatusCode(), MESSAGE_ERROR);
     }
 
 

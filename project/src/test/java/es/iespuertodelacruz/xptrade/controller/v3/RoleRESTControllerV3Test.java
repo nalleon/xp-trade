@@ -1,9 +1,14 @@
 package es.iespuertodelacruz.xptrade.controller.v3;
 
 import es.iespuertodelacruz.xptrade.controllers.v3.RoleRESTController;
+import es.iespuertodelacruz.xptrade.controllers.v3.RoleRESTController;
+import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.service.RoleService;
+import es.iespuertodelacruz.xptrade.domain.service.RoleService;
 import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
+import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
+import es.iespuertodelacruz.xptrade.model.service.rest.RoleEntityService;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class RoleRESTControllerV3Test extends TestUtilities {
@@ -27,13 +33,19 @@ public class RoleRESTControllerV3Test extends TestUtilities {
     @InjectMocks
     RoleRESTController controller;
 
+    @Mock
+    RoleEntityService entityServiceMock;
+
+    @InjectMocks
+    RoleService serviceMockException;
 
     @BeforeEach
     public void beforeEach (){
         MockitoAnnotations.openMocks(this);
-        controller = new RoleRESTController();
         controller.setService(serviceMock);
+        serviceMockException.setRepository(entityServiceMock);
     }
+
     @Test
     void getAllTest() {
         List<Role> list = new ArrayList<>();
@@ -46,19 +58,56 @@ public class RoleRESTControllerV3Test extends TestUtilities {
 
 
     @Test
-    void getOneTest() {
-        when(serviceMock.findById(1)).thenReturn(new Role(1, "Admin"));
-        List<Role> list = new ArrayList<>();
-        Assertions.assertNotNull(controller.getById(1), MESSAGE_ERROR);
+    void getAllEmptyTest() {
+        when(serviceMock.findAll()).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAll().getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
+    void getOneTest() {
+        when(serviceMock.findById(1)).thenReturn(new Role(1));
+        Assertions.assertNotNull(controller.getById(1), MESSAGE_ERROR);
+    }
+    @Test
+    void getOneNotFoundTest() {
+        when(serviceMock.findById(1)).thenReturn(null);
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getOneByNameTest() {
+        when(serviceMock.findByName(anyString())).thenReturn(new Role(1));
+        Assertions.assertNotNull(controller.getByName("A"), MESSAGE_ERROR);
+    }
+    @Test
+    void getOneByNameNotFoundTest() {
+        when(serviceMock.findByName(anyString())).thenReturn(null);
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByName("A").getStatusCode(), MESSAGE_ERROR);
+    }
+    @Test
     void addTest() {
         when(serviceMock.add(any(String.class))).thenReturn(new Role());
-        RoleOutputDTO aux = new RoleOutputDTO(1, "Admin");
+        RoleOutputDTO aux = new RoleOutputDTO(1, "ADMIN");
         ResponseEntity responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
+
+    @Test
+    void addNullTest() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(null).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void addThrowsExceptionTest() {
+        RoleOutputDTO dto = new RoleOutputDTO(1, "a");
+
+        when(entityServiceMock.save(any(Role.class))).thenThrow(new RuntimeException());
+
+        controller.setService(serviceMockException);
+
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, controller.add(dto).getStatusCode(), MESSAGE_ERROR);
+    }
+
 
 
     @Test
