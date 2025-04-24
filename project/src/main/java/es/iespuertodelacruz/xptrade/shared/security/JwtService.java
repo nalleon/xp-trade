@@ -56,7 +56,6 @@ public class JwtService {
         infoToken.put("role", claims.get("role").asString());
         infoToken.put("verified", String.valueOf(claims.get("verified").asInt()));
 
-        System.out.println(infoToken);
         return infoToken;
     }
 }
