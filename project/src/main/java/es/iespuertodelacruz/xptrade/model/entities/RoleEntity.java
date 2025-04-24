@@ -9,6 +9,7 @@ import java.util.Set;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Entity
 @Table(name="roles")
 @NamedQuery(name="RoleEntity.findAll", query="SELECT r FROM RoleEntity r")

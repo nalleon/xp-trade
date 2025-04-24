@@ -16,6 +16,7 @@ import java.util.Set;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Entity
 @Table(name="users")
 @NamedQuery(name="UserEntity.findAll", query="SELECT u FROM UserEntity u")

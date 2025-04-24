@@ -5,6 +5,11 @@ import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import java.util.List;
 
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+
 @WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces")
 public interface IGenericSocialSoapService<T, E, U, G> {
     @WebMethod

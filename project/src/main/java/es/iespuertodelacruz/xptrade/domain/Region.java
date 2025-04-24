@@ -5,10 +5,12 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 import java.util.Set;
+
 /**
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 public class Region {
     /**
      * Properties

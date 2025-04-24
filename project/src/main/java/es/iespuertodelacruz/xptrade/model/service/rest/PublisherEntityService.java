@@ -15,6 +15,7 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Service
 public class PublisherEntityService implements IGenericRepository<Publisher, Integer, String> {
 

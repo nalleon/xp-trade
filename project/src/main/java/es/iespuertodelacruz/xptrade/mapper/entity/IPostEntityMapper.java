@@ -11,6 +11,7 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Mapper(uses = {IUserEntityMapper.class, IGameEntityMapper.class})
 public interface IPostEntityMapper {
     IPostEntityMapper INSTANCE = Mappers.getMapper(IPostEntityMapper.class);

@@ -8,6 +8,7 @@ import java.util.Set;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Entity
 @Table(name="platforms")
 @NamedQuery(name="PlatformEntity.findAll", query="SELECT r FROM PlatformEntity r")

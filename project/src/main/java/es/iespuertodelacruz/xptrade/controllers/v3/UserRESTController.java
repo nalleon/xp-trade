@@ -23,6 +23,11 @@ import java.net.URLConnection;
 
 import org.springframework.core.io.Resource;
 
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v3/users")

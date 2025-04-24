@@ -6,6 +6,11 @@ import es.iespuertodelacruz.xptrade.domain.User;
 
 import java.util.List;
 
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+
 public interface IPostService {
     Post add(Game game, User user, String content, String picture);
     Post findById(Integer id);

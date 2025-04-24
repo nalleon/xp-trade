@@ -14,6 +14,7 @@ import java.util.Optional;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Repository
 public interface IUserEntityRepository extends JpaRepository<UserEntity, Integer> {
 

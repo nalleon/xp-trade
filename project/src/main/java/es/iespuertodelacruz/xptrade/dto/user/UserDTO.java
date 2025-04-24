@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
 
 import java.util.Date;
+
 /**
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 public record UserDTO (@JsonIgnore int id,
                        String username,
                        @JsonIgnore String password,

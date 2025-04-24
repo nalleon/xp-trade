@@ -8,6 +8,12 @@ import java.util.List;
 import es.iespuertodelacruz.xptrade.domain.User;
 
 import java.util.List;
+
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+
 @WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces")
 public interface IUserSoapService {
     @WebMethod

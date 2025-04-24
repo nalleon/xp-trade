@@ -11,12 +11,11 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 
-
-
 /**
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Configuration
 @OpenAPIDefinition(info = @Info(title = "XP Trade API", version = "v1"))
 public class SwaggerConfig{

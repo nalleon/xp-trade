@@ -8,6 +8,7 @@ import java.util.Objects;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Entity
 @Table(name="collections")
 @NamedQuery(name="CollectionEntity.findAll", query="SELECT r FROM CollectionEntity r")

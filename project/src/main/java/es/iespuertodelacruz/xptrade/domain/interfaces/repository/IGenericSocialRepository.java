@@ -2,6 +2,11 @@ package es.iespuertodelacruz.xptrade.domain.interfaces.repository;
 
 import java.util.List;
 
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+
 public interface IGenericSocialRepository <T, E, U, G> {
     T save(T t);
     List<T> findAll();

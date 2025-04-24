@@ -6,6 +6,11 @@ import es.iespuertodelacruz.xptrade.domain.User;
 
 import java.util.List;
 
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+
 public interface IFavoriteService {
     Favorite add(Game game, User user);
     Favorite findById(Integer id);

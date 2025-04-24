@@ -12,6 +12,7 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Mapper(uses = {IPlatformEntityMapper.class, IDeveloperEntityMapper.class, IRegionEntityMapper.class, 
         IPublisherEntityMapper.class, IGenreEntityMapper.class})
 public interface IGameEntityMapper {

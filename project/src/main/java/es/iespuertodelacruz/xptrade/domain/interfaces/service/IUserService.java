@@ -4,6 +4,11 @@ import es.iespuertodelacruz.xptrade.domain.User;
 
 import java.util.List;
 
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+
 public interface IUserService {
     User add(String name, String email, String password);
     User findById(Integer id);

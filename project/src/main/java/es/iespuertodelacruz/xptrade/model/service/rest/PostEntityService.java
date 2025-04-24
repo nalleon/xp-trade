@@ -13,10 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+
 /**
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Service
 public class PostEntityService  implements IGenericSocialRepository<Post, Integer, User, Game> {
 

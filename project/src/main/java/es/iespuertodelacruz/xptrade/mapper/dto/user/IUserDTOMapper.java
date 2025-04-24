@@ -13,6 +13,7 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Mapper(uses = {IRoleOutputDTOMapper.class})
 public interface IUserDTOMapper {
     IUserDTOMapper INSTANCE = Mappers.getMapper(IUserDTOMapper.class);

@@ -20,6 +20,7 @@ import java.util.UUID;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Service
 public class UserEntityService implements IUserRepository {
 

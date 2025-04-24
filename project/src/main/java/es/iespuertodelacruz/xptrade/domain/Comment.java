@@ -11,6 +11,7 @@ import java.util.Objects;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 public class Comment {
     /**
      * Properties

@@ -3,8 +3,10 @@ package es.iespuertodelacruz.xptrade.shared.utils;
 import jakarta.persistence.AttributeConverter;
 
 import java.util.Date;
+
 /**
- * @author Nabil Leon Alvarez <@nalleon>
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
  */
 
 public class DateToLongConverter implements AttributeConverter<Date, Long> {

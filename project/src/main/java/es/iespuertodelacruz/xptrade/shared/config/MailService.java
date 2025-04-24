@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Service
 public class MailService {
     private JavaMailSender sender;

@@ -13,6 +13,7 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Repository
 public interface IPostEntityRepository extends JpaRepository<PostEntity, Integer> {
 

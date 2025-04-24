@@ -11,6 +11,7 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Mapper
 public interface IDeveloperOutputDTOMapper {
     IDeveloperOutputDTOMapper INSTANCE = Mappers.getMapper(IDeveloperOutputDTOMapper.class);

@@ -6,6 +6,11 @@ import es.iespuertodelacruz.xptrade.domain.User;
 
 import java.util.List;
 
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+
 public interface ICollectionService {
     Collection add(Game game, User user);
     Collection findById(Integer id);

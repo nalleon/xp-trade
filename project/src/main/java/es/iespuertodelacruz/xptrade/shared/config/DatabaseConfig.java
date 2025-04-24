@@ -15,6 +15,7 @@ import javax.sql.DataSource;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Configuration
 public class DatabaseConfig {
     @Bean

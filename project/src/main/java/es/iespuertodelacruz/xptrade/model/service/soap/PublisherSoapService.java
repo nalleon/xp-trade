@@ -15,6 +15,7 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSoapService")
 @Component
 public class PublisherSoapService implements IGenericSoapService<Publisher, Integer, String> {

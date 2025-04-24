@@ -20,6 +20,11 @@ import java.io.IOException;
 import java.net.URLConnection;
 import java.util.List;
 
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v3/games")

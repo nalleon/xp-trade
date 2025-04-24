@@ -12,6 +12,7 @@ import java.util.Set;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 public class Post {
     /**
      * Properties

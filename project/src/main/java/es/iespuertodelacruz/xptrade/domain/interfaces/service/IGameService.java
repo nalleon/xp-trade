@@ -6,6 +6,11 @@ import es.iespuertodelacruz.xptrade.model.entities.*;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+
 public interface IGameService {
     Game add(String title, String coverArt, Set<Developer> developerSet, Set<Genre> genreSet,
              Set<Platform> platformSet, Set<Publisher> publisherSet,

@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Configuration
 public class MailConfig{
 

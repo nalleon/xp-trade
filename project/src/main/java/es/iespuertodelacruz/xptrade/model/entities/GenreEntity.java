@@ -9,6 +9,7 @@ import java.util.Set;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Entity
 @Table(name="genres")
 @NamedQuery(name="GenreEntity.findAll", query="SELECT r FROM GenreEntity r")

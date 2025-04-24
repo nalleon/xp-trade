@@ -4,6 +4,11 @@ import es.iespuertodelacruz.xptrade.domain.*;
 
 import java.util.List;
 
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+
 public interface IGameRepository {
     Game save(Game game);
     List<Game> findAll();

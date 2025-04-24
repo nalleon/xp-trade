@@ -12,6 +12,7 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Mapper(uses = {IPlatformOutputDTOMapper.class, IDeveloperOutputDTOMapper.class, IRegionOutputDTOMapper.class,
         IPublisherOutputDTOMapper.class, IGenreOutputDTOMapper.class})
 public interface IGameOutputDTOMapper {

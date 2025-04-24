@@ -8,6 +8,7 @@ import java.util.Objects;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 @Entity
 @Table(name="favorites")
 @NamedQuery(name="FavoriteEntity.findAll", query="SELECT r FROM FavoriteEntity r")

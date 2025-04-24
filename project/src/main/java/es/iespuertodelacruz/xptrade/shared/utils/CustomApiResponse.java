@@ -1,8 +1,10 @@
 package es.iespuertodelacruz.xptrade.shared.utils;
+
 /**
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
+
 public class CustomApiResponse<T> {
     /**
      * Properties
