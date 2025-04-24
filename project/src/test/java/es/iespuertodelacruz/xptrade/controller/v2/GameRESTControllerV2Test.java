@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class GameRESTControllerV2Test extends MapperDTOHelper {
@@ -30,9 +32,6 @@ public class GameRESTControllerV2Test extends MapperDTOHelper {
 
     @Mock
     GenreService serviceGenreMock;
-
-    @Mock
-    FileStorageService serviceStorageMock;
 
     @Mock
     PlatformService servicePlatformMock;
@@ -51,7 +50,6 @@ public class GameRESTControllerV2Test extends MapperDTOHelper {
     public void beforeEach(){
         MockitoAnnotations.openMocks(this);
 
-        controller = new GameRESTControllerV2();
         controller.setService(serviceMock);
         controller.setDeveloperService(serviceDeveloperMock);
         controller.setGenreService(serviceGenreMock);
@@ -148,13 +146,33 @@ public class GameRESTControllerV2Test extends MapperDTOHelper {
     }
 
     @Test
+    void getAllEmptyTest() {
+        when(serviceMock.findAll()).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAll().getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
     void getAllGenreTest() {
         List<Game> list = new ArrayList<>();
         list.add(new Game(1));
         list.add(new Game(2));
         list.add(new Game(3));
-        when(serviceMock.findAllByGenre(genreDomain)).thenReturn(list);
+        when(serviceGenreMock.findByName(anyString())).thenReturn(new Genre());
+        when(serviceMock.findAllByGenre(new Genre())).thenReturn(list);
         Assertions.assertNotNull(controller.getAllByGenre(NAME), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllGenreNoFilterTest() {
+        when(serviceGenreMock.findByName(anyString())).thenReturn(null);
+        Assertions.assertNotNull(controller.getAllByGenre(NAME), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllGenreEmptyTest() {
+        when(serviceGenreMock.findByName(anyString())).thenReturn(new Genre());
+        when(serviceMock.findAllByPlatform(new Platform())).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAllByGenre(NAME).getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -163,8 +181,22 @@ public class GameRESTControllerV2Test extends MapperDTOHelper {
         list.add(new Game(1));
         list.add(new Game(2));
         list.add(new Game(3));
-        when(serviceMock.findAllByPlatform(platformDomain)).thenReturn(list);
+        when(servicePlatformMock.findByName(anyString())).thenReturn(new Platform());
+        when(serviceMock.findAllByPlatform(new Platform())).thenReturn(list);
         Assertions.assertNotNull(controller.getAllByPlatform(NAME), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllPlatformNoFilterTest() {
+        when(servicePlatformMock.findByName(anyString())).thenReturn(null);
+        Assertions.assertNotNull(controller.getAllByPlatform(NAME), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllPlatformEmptyTest() {
+        when(servicePlatformMock.findByName(anyString())).thenReturn(new Platform());
+        when(serviceMock.findAllByPlatform(new Platform())).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAllByPlatform(NAME).getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -173,19 +205,49 @@ public class GameRESTControllerV2Test extends MapperDTOHelper {
         list.add(new Game(1));
         list.add(new Game(2));
         list.add(new Game(3));
-        when(serviceMock.findAllByDeveloper(developerDomain)).thenReturn(list);
+        when(serviceDeveloperMock.findByName(anyString())).thenReturn(new Developer());
+        when(serviceMock.findAllByDeveloper(new Developer())).thenReturn(list);
         Assertions.assertNotNull(controller.getAllByDeveloper(NAME), MESSAGE_ERROR);
     }
 
     @Test
+    void getAllDeveloperNoFilterTest() {
+        when(serviceDeveloperMock.findByName(anyString())).thenReturn(null);
+        Assertions.assertNotNull(controller.getAllByDeveloper(NAME), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllDeveloperEmptyTest() {
+        when(serviceDeveloperMock.findByName(anyString())).thenReturn(new Developer());
+        when(serviceMock.findAllByPlatform(new Platform())).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAllByDeveloper(NAME).getStatusCode(), MESSAGE_ERROR);
+    }
+
+
+        @Test
     void getAllPublisherTest() {
         List<Game> list = new ArrayList<>();
         list.add(new Game(1));
         list.add(new Game(2));
         list.add(new Game(3));
-        when(serviceMock.findAllByPublisher(publisherDomain)).thenReturn(list);
+        when(servicePublisherMock.findByName(anyString())).thenReturn(new Publisher());
+        when(serviceMock.findAllByPublisher(new Publisher())).thenReturn(list);
         Assertions.assertNotNull(controller.getAllByPublisher(NAME), MESSAGE_ERROR);
     }
+
+    @Test
+    void getAllPublisherNoFilterTest() {
+        when(servicePublisherMock.findByName(anyString())).thenReturn(null);
+        Assertions.assertNotNull(controller.getAllByPublisher(NAME), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllPublisherEmptyTest() {
+        when(servicePublisherMock.findByName(anyString())).thenReturn(new Publisher());
+        when(serviceMock.findAllByPlatform(new Platform())).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAllByPublisher(NAME).getStatusCode(), MESSAGE_ERROR);
+    }
+
 
     @Test
     void getAllRegionTest() {
@@ -193,8 +255,22 @@ public class GameRESTControllerV2Test extends MapperDTOHelper {
         list.add(new Game(1));
         list.add(new Game(2));
         list.add(new Game(3));
-        when(serviceMock.findAllByRegion(regionDomain)).thenReturn(list);
+        when(serviceRegionMock.findByName(anyString())).thenReturn(new Region());
+        when(serviceMock.findAllByRegion(new Region())).thenReturn(list);
         Assertions.assertNotNull(controller.getAllByRegion(NAME), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllRegionNoFilterTest() {
+        when(serviceRegionMock.findByName(anyString())).thenReturn(null);
+        Assertions.assertNotNull(controller.getAllByRegion(NAME), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllRegionEmptyTest() {
+        when(serviceRegionMock.findByName(anyString())).thenReturn(new Region());
+        when(serviceMock.findAllByPlatform(new Platform())).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAllByRegion(NAME).getStatusCode(), MESSAGE_ERROR);
     }
 
 
@@ -205,8 +281,20 @@ public class GameRESTControllerV2Test extends MapperDTOHelper {
     }
 
     @Test
+    void getOneNotFoundTest() {
+        when(serviceMock.findById(1)).thenReturn(null);
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
     void getOneByTitleTest() {
         when(serviceMock.findByTitle(TITLE)).thenReturn(new Game(TITLE));
         Assertions.assertNotNull(controller.getByTitle(TITLE), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getOneByTitleNotFoundTest() {
+        when(serviceMock.findByTitle(anyString())).thenReturn(null);
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByTitle(TITLE).getStatusCode(), MESSAGE_ERROR);
     }
 }
