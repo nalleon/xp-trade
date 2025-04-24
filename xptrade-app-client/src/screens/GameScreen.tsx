@@ -85,6 +85,13 @@ const GameScreen = (props: Props) => {
             {currentGame.platforms.map(p => p.platform.name).join(', ')}
           </Text>
         </View>
+
+        <View className="mb-4">
+          <Text className="text-[#F6F7F7] font-semibold mb-1">ESRB:</Text>
+          <Text className="text-[#ccc]">
+            {currentGame.added.toFixed(1)}
+          </Text>
+        </View>
         {currentGame.genres?.length > 0 && 
         <View className="mb-4">
           <Text className="text-[#F6F7F7] font-semibold mb-1">Géneros:</Text>
