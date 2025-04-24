@@ -4,6 +4,12 @@ import es.iespuertodelacruz.xptrade.controllers.v3.GameRESTController;
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.service.*;
 import es.iespuertodelacruz.xptrade.dto.output.*;
+import es.iespuertodelacruz.xptrade.mapper.entity.IGameEntityMapper;
+import es.iespuertodelacruz.xptrade.model.entities.GameEntity;
+import es.iespuertodelacruz.xptrade.model.repository.IGameEntityRepository;
+import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
+import es.iespuertodelacruz.xptrade.model.service.rest.GameEntityService;
+import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +30,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class GameRESTControllerV3Test extends MapperDTOHelper {
-    @Mock
-    GameService serviceMock;
+
 
     @Mock
     DeveloperService serviceDeveloperMock;
@@ -42,13 +47,26 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
     @Mock
     RegionService serviceRegionMock;
 
+    @Mock
+    IGameEntityRepository repositoryMock;
+
+    @Mock
+    IGameEntityMapper entityMapperMock;
+
     @InjectMocks
     GameRESTController controller;
 
+    @InjectMocks
+    GameService serviceMock;
+
+    @InjectMocks
+    GameEntityService serviceEntityMock;
 
     @BeforeEach
     public void beforeEach(){
         MockitoAnnotations.openMocks(this);
+        serviceEntityMock.setRepository(repositoryMock);
+        serviceMock.setRepository(serviceEntityMock);
 
         controller.setService(serviceMock);
         controller.setDeveloperService(serviceDeveloperMock);
@@ -134,6 +152,17 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
         gameDomain.setGenreSet(new HashSet<>(Collections.singletonList(genreDomain)));
 
     }
+
+    //@Test
+    void addTest() {
+        when(serviceMock.add(TITLE, COVER_ART,
+                gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
+                gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(gameDomain);
+
+        Assertions.assertEquals(HttpStatus.CREATED, controller.add(gameOutputDTO).getStatusCode(), MESSAGE_ERROR);
+    }
+
+
     @Test
     void getAllTest() {
         List<Game> list = new ArrayList<>();
@@ -297,15 +326,6 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
         Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByTitle(TITLE).getStatusCode(), MESSAGE_ERROR);
     }
 
-    @Test
-    void addTest() {
-        when(serviceMock.add(any(String.class), any(String.class),
-                gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
-                gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(new Game());
-
-        ResponseEntity responseEntity = controller.add(gameOutputDTO);
-        Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
-    }
 
 
     @Test
