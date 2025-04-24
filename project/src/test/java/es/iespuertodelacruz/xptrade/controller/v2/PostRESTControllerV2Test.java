@@ -1,11 +1,19 @@
 package es.iespuertodelacruz.xptrade.controller.v2;
 
 import es.iespuertodelacruz.xptrade.controllers.v2.PostRESTControllerV2;
+import es.iespuertodelacruz.xptrade.domain.Collection;
 import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.Post;
 import es.iespuertodelacruz.xptrade.domain.User;
+import es.iespuertodelacruz.xptrade.domain.service.CollectionService;
+import es.iespuertodelacruz.xptrade.domain.service.GameService;
 import es.iespuertodelacruz.xptrade.domain.service.PostService;
+import es.iespuertodelacruz.xptrade.domain.service.UserService;
+import es.iespuertodelacruz.xptrade.dto.output.CollectionOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.PostOutputDTO;
+import es.iespuertodelacruz.xptrade.model.service.rest.CollectionEntityService;
+import es.iespuertodelacruz.xptrade.model.service.rest.PostEntityService;
+import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,12 +28,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class PostRESTControllerV2Test extends MapperDTOHelper {
     @Mock
     PostService serviceMock;
+    @Mock
+    UserService serviceUserMock;
+    @Mock
+    GameService serviceGameMock;
+    @Mock
+    PostEntityService entityServiceMock;
 
+    @InjectMocks
+    PostService serviceMockException;
     @InjectMocks
     PostRESTControllerV2 controller;
 
@@ -33,8 +50,11 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
     @BeforeEach
     public void beforeEach (){
         MockitoAnnotations.openMocks(this);
-        controller = new PostRESTControllerV2();
+        serviceMock.setRepository(entityServiceMock);
         controller.setService(serviceMock);
+        controller.setGameService(serviceGameMock);
+        controller.setUserService(serviceUserMock);
+        serviceMockException.setRepository(entityServiceMock);
     }
     @Test
     void getAllTest() {
@@ -46,11 +66,72 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
         Assertions.assertNotNull(controller.getAll(), MESSAGE_ERROR);
     }
 
+    @Test
+    void getAllEmptyTest() {
+        when(serviceMock.findAll()).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAll().getStatusCode(), MESSAGE_ERROR);
+    }
+    @Test
+    void getAllByUserTest() {
+        List<Post> list = new ArrayList<>();
+        list.add(new Post(1));
+        list.add(new Post(2));
+        list.add(new Post(3));
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
+        when(serviceMock.findByUser(new User())).thenReturn(list);
+        Assertions.assertNotNull(controller.getAllByUser("A"), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void getAllByUserNoFilterTest() {
+        when(serviceMock.findByUser(new User())).thenReturn(null);
+        Assertions.assertNotNull(controller.getAllByUser("A"), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllByUserEmptyTest() {
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
+        when(serviceMock.findByUser(new User())).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAllByUser("A").getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllByGameTest() {
+        List<Post> list = new ArrayList<>();
+        list.add(new Post(1));
+        list.add(new Post(2));
+        list.add(new Post(3));
+        when(serviceGameMock.findByTitle(anyString())).thenReturn(new Game());
+        when(serviceMock.findByGame(new Game())).thenReturn(list);
+        Assertions.assertNotNull(controller.getAllByGame("A"), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void getAllByGameNoFilterTest() {
+        when(serviceMock.findByGame(new Game())).thenReturn(null);
+        Assertions.assertNotNull(controller.getAllByGame("A"), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllByGameEmptyTest() {
+        when(serviceGameMock.findByTitle(anyString())).thenReturn(new Game());
+        when(serviceMock.findByGame(new Game())).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAllByGame("A").getStatusCode(), MESSAGE_ERROR);
+    }
+
 
     @Test
     void getOneTest() {
         when(serviceMock.findById(1)).thenReturn(new Post(1));
         Assertions.assertNotNull(controller.getById(1), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getOneNotFoundTest() {
+        when(serviceMock.findById(1)).thenReturn(null);
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -62,6 +143,23 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
+    @Test
+    void addNullTest() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(null).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void addThrowsExceptionTest() {
+        PostOutputDTO dto = new PostOutputDTO(1, gameOutputDTO, userDTO, CONTENT, PICTURE, CREATION_DATE);
+
+        when(entityServiceMock.save(any(Post.class))).thenThrow(new RuntimeException());
+
+        controller.setService(serviceMockException);
+
+        ResponseEntity<CustomApiResponse<?>> response = controller.add(dto);
+
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode(), MESSAGE_ERROR);
+    }
 
     @Test
     void deleteTest() {
