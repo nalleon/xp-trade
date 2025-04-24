@@ -3,12 +3,15 @@ package es.iespuertodelacruz.xptrade.shared.security;
 import es.iespuertodelacruz.xptrade.shared.security.JwtService;
 import es.iespuertodelacruz.xptrade.shared.security.JwtFilter;
 import es.iespuertodelacruz.xptrade.shared.security.CustomUserDetails;
+import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.mock.web.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 import java.io.IOException;
@@ -17,7 +20,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class JwtFilterTest {
+class JwtFilterTest extends TestUtilities {
 
     @InjectMocks
     private JwtFilter jwtFilter;
@@ -62,7 +65,7 @@ class JwtFilterTest {
 
         jwtFilter.doFilterInternal(request, response, filterChain);
 
-        assertEquals(200, response.getStatus()); // no se interrumpe
+        Assertions.assertEquals(200, response.getStatus());
         verify(filterChain).doFilter(request, response);
     }
 
@@ -81,8 +84,8 @@ class JwtFilterTest {
 
         jwtFilter.doFilterInternal(request, response, filterChain);
 
-        assertEquals(403, response.getStatus());
-        assertEquals("Account not verified yet", response.getContentAsString());
+        Assertions.assertEquals(403, response.getStatus());
+        Assertions.assertEquals("Account not verified yet", response.getContentAsString());
         verify(filterChain, never()).doFilter(any(), any());
     }
 
@@ -95,8 +98,31 @@ class JwtFilterTest {
 
         jwtFilter.doFilterInternal(request, response, filterChain);
 
-        assertEquals(401, response.getStatus());
+        Assertions.assertEquals(401, response.getStatus());
         verify(filterChain, never()).doFilter(any(), any());
     }
+    @Test
+    void testHeaderPresentButNotBearerPrefix() throws Exception {
+        request.setRequestURI("/api/protected");
+        request.addHeader("Authorization", "Token abc.def.ghi");
+
+        jwtFilter.doFilterInternal(request, response, filterChain);
+
+        Assertions.assertNull(SecurityContextHolder.getContext().getAuthentication(), MESSAGE_ERROR);
+        verify(jwtService, never()).validateAndGetClaims(any());
+        verify(filterChain, never()).doFilter(request, response);
+    }
+
+    @Test
+    void testHeaderNotPresent() throws Exception {
+        request.setRequestURI("/api/protected");
+
+        jwtFilter.doFilterInternal(request, response, filterChain);
+
+        Assertions.assertNull(SecurityContextHolder.getContext().getAuthentication(), MESSAGE_ERROR);
+        verify(jwtService, never()).validateAndGetClaims(any());
+        verify(filterChain, never()).doFilter(request, response);
+    }
+
 }
 
