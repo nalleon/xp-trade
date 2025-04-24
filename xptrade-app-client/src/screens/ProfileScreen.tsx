@@ -1,12 +1,58 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { AppContext } from '../context/AppContext';
 
-type Props = {}
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
+
+type Props = NativeStackScreenProps<ProfileStackParamList, 'ProfileScreen'>;
 
 const ProfileScreen = (props: Props) => {
   const [search, setSearch] = useState<string>("")
+
+  const context = useContext(AppContext);
+
+  const navigateToPost = async (post : Result) => {
+    if (!post){
+     return;
+    }  
+
+    context.setCurrentGame(post);
+    props.navigation.navigate("ProfileScreen");
+
+  }
+
+  const navigateCollection = async (collection : Result) => {
+    if (!collection){
+     return;
+    }  
+
+    context.setCurrentGame(collection);
+    props.navigation.navigate("CollectionScreen");
+
+  }
+
+  const navigateFavorite = async (favorite : Result) => {
+    if (!favorite){
+     return;
+    }  
+
+    context.setCurrentGame(favorite);
+    props.navigation.navigate("FavoriteScreen");
+
+  }
+
+  const navigateToGame = async (game : Result) => {
+    if (!game){
+     return;
+    }  
+
+    context.setCurrentGame(game);
+    props.navigation.navigate("GameScreen");
+  }
+
   return (
     <View className="flex-1 bg-[#0F1218] pt-10 px-4 items-center">
 
@@ -26,7 +72,9 @@ const ProfileScreen = (props: Props) => {
           className="flex-row space-x-4 px-2"
         >
           <View className="w-40 h-20 bg-[#1E222A] rounded-md justify-center items-center relative">
-            <Icon name="image-outline" size={30} color="#556791" />
+            <TouchableOpacity onPress={() => navigateToGame}>
+              <Icon name="image-outline" size={30} color="#556791" />
+            </TouchableOpacity>
             <Icon
               name="star"
               size={18}
@@ -49,7 +97,7 @@ const ProfileScreen = (props: Props) => {
         </View>
       </View>
     
-      <TouchableOpacity className="bg-[#66B3B7] px-6 py-2 rounded-lg" onPress={() => setSearch}>
+      <TouchableOpacity className="bg-[#66B3B7] px-6 py-2 rounded-lg" onPress={() => navigateCollection}>
         <Text className="text-[#F6F7F7] text-base font-semibold">SHOW COLLECTION</Text>
       </TouchableOpacity>
     </View>

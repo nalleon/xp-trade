@@ -5,6 +5,8 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { GameStackParamList } from '../navigations/stack/GameStackNav';
 import { AppContext } from '../context/AppContext';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { ImageZoom } from '@likashefqet/react-native-image-zoom';
+import ScreenshotGallery from '../components/ScreenshotGallery';
 
 type Props = NativeStackScreenProps<GameStackParamList, 'GameScreen'>;
 
@@ -83,6 +85,13 @@ const GameScreen = (props: Props) => {
             {currentGame.platforms.map(p => p.platform.name).join(', ')}
           </Text>
         </View>
+
+        <View className="mb-4">
+          <Text className="text-[#F6F7F7] font-semibold mb-1">ESRB:</Text>
+          <Text className="text-[#ccc]">
+            {currentGame.added.toFixed(1)}
+          </Text>
+        </View>
         {currentGame.genres?.length > 0 && 
         <View className="mb-4">
           <Text className="text-[#F6F7F7] font-semibold mb-1">Géneros:</Text>
@@ -109,20 +118,9 @@ const GameScreen = (props: Props) => {
         )}
 
 
+
         {currentGame.short_screenshots?.length > 0 && (
-          <View className="mb-8">
-            <Text className="text-[#F6F7F7] font-semibold mb-2">Otras imágenes:</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {currentGame.short_screenshots.map((screenshot) => (
-                <Image
-                  key={screenshot.id}
-                  source={{ uri: screenshot.image }}
-                  className="w-40 h-24 mr-3 rounded-lg"
-                  resizeMode="cover"
-                />
-              ))}
-            </ScrollView>
-          </View>
+            <ScreenshotGallery screenshots={currentGame.short_screenshots}/>
         )}
 
       </View>

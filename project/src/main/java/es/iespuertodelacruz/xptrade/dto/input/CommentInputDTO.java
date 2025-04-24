@@ -5,5 +5,5 @@ import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
 
 import java.util.Date;
 
-public record CommentInputDTO(int id, PostOutputDTO post, UserDTO user, String content) {
+public record CommentInputDTO(PostOutputDTO post, UserDTO user, String content) {
 }

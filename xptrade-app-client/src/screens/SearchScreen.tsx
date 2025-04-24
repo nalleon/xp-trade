@@ -29,7 +29,7 @@ const SearchScreen = (props: Props) => {
         const filteredByTagGames = result.filter(
           (game) =>            
             !game.tags.some(
-              (tag) => tag.name.toLowerCase() === 'fangame' || tag.slug.toLowerCase().includes('fangame')
+              (tag) => tag.name.toLowerCase() === 'fangame' || tag.slug.toLowerCase().includes('fangame') || tag.name.toLocaleLowerCase() === 'randomizer' || tag.slug.toLocaleLowerCase() === 'randomizer'
             )
         );
         

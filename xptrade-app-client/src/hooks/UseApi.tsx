@@ -32,8 +32,8 @@ const UseApi = () => {
                   ["username", username]
               ]);
   
-              // context.setUsername(username);
-              // context.setToken(response.data);
+              context.setUsername(username);
+
               return "success";
           }
       } catch (error) {

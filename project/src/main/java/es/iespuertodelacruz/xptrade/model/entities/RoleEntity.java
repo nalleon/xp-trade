@@ -41,6 +41,16 @@ public class RoleEntity {
         this.id = id;
     }
 
+    /**
+     * Full constructor of the class
+     * @param id of the role
+     * @param name of the role
+     */
+    public RoleEntity(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public RoleEntity(String name) {
         this.name = name;
     }
