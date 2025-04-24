@@ -37,16 +37,17 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
     UserService serviceUserMock;
     @Mock
     GameService serviceGameMock;
-
     @Mock
     CollectionEntityService entityServiceMock;
+
+    @InjectMocks
+    CollectionService serviceMockException;
+
 
     @InjectMocks
     CollectionRESTControllerV2 controller;
 
 
-    @InjectMocks
-    CollectionService serviceMockException;
 
 
     @BeforeEach
@@ -124,8 +125,6 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         when(serviceMock.findByGame(new Game())).thenReturn(new ArrayList<>());
         Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAllByGame("A").getStatusCode(), MESSAGE_ERROR);
     }
-
-
 
     @Test
     void getOneTest() {
