@@ -4,6 +4,8 @@ import es.iespuertodelacruz.xptrade.controllers.v3.DeveloperRESTController;
 import es.iespuertodelacruz.xptrade.domain.Developer;
 import es.iespuertodelacruz.xptrade.domain.service.DeveloperService;
 import es.iespuertodelacruz.xptrade.dto.output.DeveloperOutputDTO;
+import es.iespuertodelacruz.xptrade.model.service.rest.DeveloperEntityService;
+import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +19,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ch.qos.logback.core.joran.spi.ConsoleTarget.findByName;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class DeveloperRESTControllerV3Test extends TestUtilities {
@@ -27,11 +31,17 @@ public class DeveloperRESTControllerV3Test extends TestUtilities {
     @InjectMocks
     DeveloperRESTController controller;
 
+    @Mock
+    DeveloperEntityService entityServiceMock;
+
+    @InjectMocks
+    DeveloperService serviceMockException;
 
     @BeforeEach
     public void beforeEach (){
         MockitoAnnotations.openMocks(this);
         controller.setService(serviceMock);
+        serviceMockException.setRepository(entityServiceMock);
     }
 
     @Test
@@ -44,19 +54,55 @@ public class DeveloperRESTControllerV3Test extends TestUtilities {
         Assertions.assertNotNull(controller.getAll(), MESSAGE_ERROR);
     }
 
+    @Test
+    void getAllEmptyTest() {
+        when(serviceMock.findAll()).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAll().getStatusCode(), MESSAGE_ERROR);
+    }
 
     @Test
     void getOneTest() {
         when(serviceMock.findById(1)).thenReturn(new Developer(1));
         Assertions.assertNotNull(controller.getById(1), MESSAGE_ERROR);
     }
+    @Test
+    void getOneNotFoundTest() {
+        when(serviceMock.findById(1)).thenReturn(null);
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
+    }
 
+    @Test
+    void getOneByNameTest() {
+        when(serviceMock.findByName(anyString())).thenReturn(new Developer(1));
+        Assertions.assertNotNull(controller.getByName("A"), MESSAGE_ERROR);
+    }
+    @Test
+    void getOneByNameNotFoundTest() {
+        when(serviceMock.findByName(anyString())).thenReturn(null);
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByName("A").getStatusCode(), MESSAGE_ERROR);
+    }
     @Test
     void addTest() {
         when(serviceMock.add(any(String.class))).thenReturn(new Developer());
         DeveloperOutputDTO aux = new DeveloperOutputDTO(1, "ADMIN");
         ResponseEntity responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void addNullTest() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(null).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void addThrowsExceptionTest() {
+        DeveloperOutputDTO dto = new DeveloperOutputDTO(1, "a");
+
+        when(entityServiceMock.save(any(Developer.class))).thenThrow(new RuntimeException());
+
+        controller.setService(serviceMockException);
+
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, controller.add(dto).getStatusCode(), MESSAGE_ERROR);
     }
 
 
