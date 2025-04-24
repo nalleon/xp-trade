@@ -31,9 +31,9 @@ public class DeveloperRESTControllerV3Test extends TestUtilities {
     @BeforeEach
     public void beforeEach (){
         MockitoAnnotations.openMocks(this);
-        controller = new DeveloperRESTController();
         controller.setService(serviceMock);
     }
+
     @Test
     void getAllTest() {
         List<Developer> list = new ArrayList<>();
@@ -48,7 +48,6 @@ public class DeveloperRESTControllerV3Test extends TestUtilities {
     @Test
     void getOneTest() {
         when(serviceMock.findById(1)).thenReturn(new Developer(1));
-        List<Developer> list = new ArrayList<>();
         Assertions.assertNotNull(controller.getById(1), MESSAGE_ERROR);
     }
 

@@ -34,6 +34,7 @@ public class PlatformRESTControllerV3Test extends TestUtilities {
         controller = new PlatformRESTController();
         controller.setService(serviceMock);
     }
+
     @Test
     void getAllTest() {
         List<Platform> list = new ArrayList<>();
