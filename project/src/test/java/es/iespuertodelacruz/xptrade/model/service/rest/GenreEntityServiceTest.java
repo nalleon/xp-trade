@@ -91,11 +91,6 @@ public class GenreEntityServiceTest extends TestUtilities {
         Assertions.assertNull(service.save(null), MESSAGE_ERROR);
     }
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        when(repositoryMock.findUserByName(NAME)).thenThrow(new RuntimeException());
-//        Assertions.assertThrows(RuntimeException.class, () -> service.update(new User(1)), MESSAGE_ERROR);
-//    }
 
 
     @Test
