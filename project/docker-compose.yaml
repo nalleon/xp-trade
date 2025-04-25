@@ -3,31 +3,31 @@ version: '3'
 services:
   mongodb:
     image: mongo:8.0.4
-    container_name: mongodb-tictactoe
+    container_name: mongodb-xptrade
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: 1q2w3e4r
     volumes:
-      - tictactoe-volume:/data/db
+      - xptrade-volume:/data/db
     ports:
       - "27017:27017"
     networks:
-      - tictactoe-network
+      - xptrade-network
 
   mongo-express:
     image: mongo-express:1.0.2
-    container_name: mongo-express-tictactoe
+    container_name: mongo-express-xptrade
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: 1q2w3e4r
-      ME_CONFIG_MONGODB_URL: mongodb://root:1q2w3e4r@mongodb-tictactoe
+      ME_CONFIG_MONGODB_URL: mongodb://root:1q2w3e4r@mongodb-xptrade
     ports:
       - "8081:8081"
     networks:
-      - tictactoe-network
+      - xptrade-network
 
 
 volumes:
-  tictactoe-volume:
+  xptrade-volume:
 networks:
-  tictactoe-network:
+  xptrade-network:
