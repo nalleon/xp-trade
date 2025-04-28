@@ -1,5 +1,6 @@
 package es.iespuertodelacruz.xptrade.model.documents;
 
+import jakarta.persistence.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -11,6 +12,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "feedback")
 public class FeedbackDocument {
 
+    @Id
+    @Field(name = "_id")
+    private String id;
+
     @Field(name = "content")
     private String content;
 
@@ -21,10 +26,11 @@ public class FeedbackDocument {
     }
 
     /**
-     * Constructor with feedback content
+     * Constructor with all content
      * @param content of feedback
      */
-    public FeedbackDocument(String content) {
+    public FeedbackDocument(String id, String content) {
+        this.id = id;
         this.content = content;
     }
 
@@ -37,5 +43,13 @@ public class FeedbackDocument {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
