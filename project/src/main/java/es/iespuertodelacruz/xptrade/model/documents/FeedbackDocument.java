@@ -28,6 +28,14 @@ public class FeedbackDocument {
     }
 
     /**
+     * Constructor used for searches
+     * @param id of feedback
+     */
+    public FeedbackDocument(String id) {
+        this.id = id;
+    }
+
+    /**
      * Constructor with all content
      * @param content of feedback
      */
