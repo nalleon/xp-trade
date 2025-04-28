@@ -11,8 +11,10 @@
   - [Objetivo.](#objetivo)
   - [Descripción del problema.](#descripción-del-problema)
   - [Arquitectura y tecnologías a utilizar.](#tecnologías-utilizadas)
+- [Diagrama de Casos de Uso](#diagrama-de-casos-de-uso)
 - [Diagrama Entidad/Relación](#diagrama-entidadrelación)
 - [Diagrama de Clases](#diagrama-de-clases)
+- [Diagrama de Paquetes](#diagrama-de-paquetes)
 
 
 ***
@@ -68,9 +70,18 @@ Estas son las tecnologías que utilizaremos a lo largo del desarrollar del proye
 
 <br>
 
+## Diagrama de Casos de Uso
+
+Este ha sido el diagrama de casos de uso que hemos diseñado para nuestra aplicación:
+
+
+<div align="center">
+    <img src="./img/diagrama-cu.drawio.png">
+</div>
+
 ## Diagrama Entidad/Relación
 
-Tras analizar nuestro objetivo hemos diseñado este diagrama:
+Tras analizar nuestro objetivo hemos diseñado este diagrama para la definición de la base de datos:
 
 <div align="center">
     <img src="./img/diagrama-er.png">
@@ -82,8 +93,16 @@ Tras analizar nuestro objetivo hemos diseñado este diagrama:
 Hemos propuesto la siguiente implementación programática de las entidades planteadas:
 
 <div align="center">
-    <img src="./img/diagrama-clases.png">
+    <img src="./img/diagrama-clCasos de Usoases.png">
 </div>
 
+
+## Diagrama de Paquetes
+
+Esta será la estructura de paquetes que utilizaremos durante el desarrollo del proyecto:
+
+<div align="center">
+<img src="./img/diagrama-pkg.drawio.png">
+</div>
 
 </div>
