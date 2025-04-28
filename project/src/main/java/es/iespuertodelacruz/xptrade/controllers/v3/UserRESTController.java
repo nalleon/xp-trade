@@ -1,5 +1,8 @@
 package es.iespuertodelacruz.xptrade.controllers.v3;
 
+import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.user.IUserDTOMapper;
+import es.iespuertodelacruz.xptrade.mapper.entity.IUserEntityMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.FileStorageService;
 import es.iespuertodelacruz.xptrade.domain.User;
@@ -69,7 +72,6 @@ public class UserRESTController {
     public ResponseEntity<?> getAll() {
         List<UserOutputDTO> filteredList = service.findAll().stream().map(usuario ->
                 new UserOutputDTO(usuario.getUsername(), usuario.getEmail())).collect(Collectors.toList());
-
         if (filteredList.isEmpty()) {
             String message = "There are no users";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
@@ -94,6 +96,35 @@ public class UserRESTController {
         CustomApiResponse<UserOutputDTO> errorResponse = new CustomApiResponse<>(404, "User NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
+
+    @GetMapping("username/{username}")
+    public ResponseEntity<?> getByUsername(@PathVariable String username) {
+        User aux = service.findByUsername(username);
+        if (aux != null){
+            UserOutputDTO dto =  new UserOutputDTO(aux.getUsername(), aux.getEmail());
+
+            CustomApiResponse<UserOutputDTO> response = new CustomApiResponse<>(200, "User found", dto);
+            return ResponseEntity.ok(response);
+        }
+
+        CustomApiResponse<UserOutputDTO> errorResponse = new CustomApiResponse<>(404, "User NOT found", null);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @GetMapping("email/{email}")
+    public ResponseEntity<?> getByEmail(@PathVariable String email) {
+        User aux = service.findByEmail(email);
+        if (aux != null){
+            UserOutputDTO dto =  new UserOutputDTO(aux.getUsername(), aux.getEmail());
+
+            CustomApiResponse<UserOutputDTO> response = new CustomApiResponse<>(200, "User found", dto);
+            return ResponseEntity.ok(response);
+        }
+
+        CustomApiResponse<UserOutputDTO> errorResponse = new CustomApiResponse<>(404, "User NOT found", null);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
 
     @PostMapping
     public ResponseEntity<CustomApiResponse<?>> add(UserRegisterDTO registerDTO) {

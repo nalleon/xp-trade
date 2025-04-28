@@ -6,6 +6,7 @@ import es.iespuertodelacruz.xptrade.domain.service.*;
 import es.iespuertodelacruz.xptrade.dto.output.*;
 import es.iespuertodelacruz.xptrade.shared.utils.FileStorageService;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
+import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class GameRESTControllerV2Test extends MapperDTOHelper {
+public class GameRESTControllerV2Test extends TestUtilities {
     @Mock
     GameService serviceMock;
 
@@ -56,83 +57,6 @@ public class GameRESTControllerV2Test extends MapperDTOHelper {
         controller.setRegionService(serviceRegionMock);
         controller.setPlatformService(servicePlatformMock);
         controller.setPublisherService(servicePublisherMock);
-
-
-        genreDomain = new Genre();
-        genreDomain.setId(ID);
-        genreDomain.setName(NAME);
-
-        genreOutputDTOList = new ArrayList<>();
-        genreOutputDTOList.add(genreOutputDTO);
-
-        genreDomains = new ArrayList<>();
-        genreDomains.add(genreDomain);
-
-        developerOutputDTO = new DeveloperOutputDTO(ID, NAME);
-
-        developerDomain = new Developer();
-        developerDomain.setId(ID);
-        developerDomain.setName(NAME);
-
-        developerDomains = new ArrayList<>();
-        developerDomains.add(developerDomain);
-
-        developerOutputDTOList = new ArrayList<>();
-        developerOutputDTOList.add(developerOutputDTO);
-
-        regionOutputDTO = new RegionOutputDTO(ID, NAME);
-
-        regionDomain = new Region();
-        regionDomain.setId(ID);
-        regionDomain.setName(NAME);
-
-        regionOutputDTOList = new ArrayList<>();
-        regionOutputDTOList.add(regionOutputDTO);
-
-        regionDomains = new ArrayList<>();
-        regionDomains.add(regionDomain);
-
-        publisherOutputDTO = new PublisherOutputDTO(ID, NAME);
-
-
-        publisherDomain = new Publisher();
-        publisherDomain.setId(ID);
-        publisherDomain.setName(NAME);
-
-        publisherDomains = new ArrayList<>();
-        publisherDomains.add(publisherDomain);
-
-        publisherOutputDTOList = new ArrayList<>();
-        publisherOutputDTOList.add(publisherOutputDTO);
-
-        platformOutputDTO = new PlatformOutputDTO(ID, NAME);
-
-        platformDomain = new Platform();
-        platformDomain.setId(ID);
-        platformDomain.setName(NAME);
-
-        platformDomains = new ArrayList<>();
-        platformDomains.add(platformDomain);
-
-        platformOutputDTOList = new ArrayList<>();
-        platformOutputDTOList.add(platformOutputDTO);
-
-        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART,new HashSet<>(Collections.singletonList(developerOutputDTO)),
-                new HashSet<>(Collections.singletonList(genreOutputDTO)),
-                new HashSet<>(Collections.singletonList(platformOutputDTO)),
-                new HashSet<>(Collections.singletonList(publisherOutputDTO)),
-                new HashSet<>(Collections.singletonList(regionOutputDTO))
-        );
-
-        gameDomain = new Game();
-        gameDomain.setId(ID);
-        gameDomain.setTitle(TITLE);
-        gameDomain.setCoverArt(COVER_ART);
-        gameDomain.setPublisherSet(new HashSet<>(Collections.singletonList(publisherDomain)));
-        gameDomain.setDeveloperSet(new HashSet<>(Collections.singletonList(developerDomain)));
-        gameDomain.setPlatformSet(new HashSet<>(Collections.singletonList(platformDomain)));
-        gameDomain.setRegionSet(new HashSet<>(Collections.singletonList(regionDomain)));
-        gameDomain.setGenreSet(new HashSet<>(Collections.singletonList(genreDomain)));
 
     }
     @Test
