@@ -33,8 +33,7 @@ public class FeedbackDocumentTest extends TestUtilities {
     public void equalsTest(){
         FeedbackDocument equals = new FeedbackDocument(item.getId(), TITLE);
 
-        FeedbackDocument differentId = new FeedbackDocument();
-        equals.setId("no");
+        FeedbackDocument differentId = new FeedbackDocument("no");
         String str = "str";
         FeedbackDocument nullObject = null;
 
@@ -42,7 +41,7 @@ public class FeedbackDocumentTest extends TestUtilities {
         Assertions.assertEquals(item, item, MESSAGE_ERROR);
         Assertions.assertEquals(item.hashCode(), equals.hashCode(), MESSAGE_ERROR);
         Assertions.assertNotEquals(item, differentId, MESSAGE_ERROR);
-        Assertions.assertNotEquals(item,nullObject,  MESSAGE_ERROR);
-        Assertions.assertNotEquals(item, str, MESSAGE_ERROR);
+        Assertions.assertNotEquals(nullObject, item,  MESSAGE_ERROR);
+        Assertions.assertNotEquals(str, item, MESSAGE_ERROR);
     }
 }
