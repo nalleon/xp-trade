@@ -33,8 +33,7 @@ public class FeedbackDocumentTest extends TestUtilities {
     public void equalsTest(){
         FeedbackDocument equals = new FeedbackDocument(item.getId(), TITLE);
 
-        FeedbackDocument differentId = new FeedbackDocument();
-        equals.setId("no");
+        FeedbackDocument differentId = new FeedbackDocument("no");
         String str = "str";
         FeedbackDocument nullObject = null;
 
