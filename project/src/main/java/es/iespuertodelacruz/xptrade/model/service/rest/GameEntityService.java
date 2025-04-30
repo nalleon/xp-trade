@@ -2,14 +2,18 @@ package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGameRepository;
-import es.iespuertodelacruz.xptrade.mapper.entity.IGameEntityMapper;
-import es.iespuertodelacruz.xptrade.model.entities.GameEntity;
-import es.iespuertodelacruz.xptrade.model.repository.IGameEntityRepository;
+import es.iespuertodelacruz.xptrade.mapper.entity.*;
+import es.iespuertodelacruz.xptrade.model.entities.*;
+import es.iespuertodelacruz.xptrade.model.repository.*;
+import es.iespuertodelacruz.xptrade.shared.utils.ComparisionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 /**
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
@@ -21,6 +25,11 @@ public class GameEntityService implements IGameRepository {
      * Properties
      */
     IGameEntityRepository repository;
+    IPublisherEntityRepository publisherRepository;
+    IDeveloperEntityRepository developerRepository;
+    IGenreEntityRepository genreRepository;
+    IRegionEntityRepository regionRepository;
+    IPlatformEntityRepository platformRepository;
 
     /**
      * Setter for the autowired service
@@ -31,14 +40,89 @@ public class GameEntityService implements IGameRepository {
         this.repository = repository;
     }
 
+
+    /**
+     * Setter for the autowired service
+     * @param publisherRepository of the service
+     */
+    @Autowired
+    public void setPublisherRepository(IPublisherEntityRepository publisherRepository) {
+        this.publisherRepository = publisherRepository;
+    }
+
+
+    /**
+     * Setter for the autowired service
+     * @param developerRepository of the service
+     */
+    @Autowired
+    public void setDeveloperRepository(IDeveloperEntityRepository developerRepository) {
+        this.developerRepository = developerRepository;
+    }
+
+
+    /**
+     * Setter for the autowired service
+     * @param genreRepository of the service
+     */
+    @Autowired
+    public void setGenreRepository(IGenreEntityRepository genreRepository) {
+        this.genreRepository = genreRepository;
+    }
+
+    /**
+     * Setter for the autowired service
+     * @param regionRepository of the service
+     */
+    @Autowired
+    public void setRegionRepository(IRegionEntityRepository regionRepository) {
+        this.regionRepository = regionRepository;
+    }
+
+    /**
+     * Setter for the autowired service
+     * @param platformRepository of the service
+     */
+    @Autowired
+    public void setPlatformRepository(IPlatformEntityRepository platformRepository) {
+        this.platformRepository = platformRepository;
+    }
+
     @Override
     @Transactional
     public Game save(Game game) {
         if(game == null){
             return null;
         }
+        
+        Set<Developer> developerEntities = checkIfDevelopersExists(game.getDeveloperSet());
+        Set<Publisher> publisherEntities = checkIfPublishersExists(game.getPublisherSet());
+        Set<Genre> genreEntities = checkIfGenresExists(game.getGenreSet());
+        Set<Region> regionEntities = checkIfRegionsExists(game.getRegionSet());
+        Set<Platform> platformEntities = checkIfPlatformExists(game.getPlatformSet());
+
+        GameEntity dbItem = repository.findByTitle(game.getTitle()).orElse(null);
+
+        if(dbItem != null){
+                if (
+                        ComparisionUtils.setsAreEqualByName(
+                                game.getDeveloperSet(),
+                                dbItem.getDeveloperEntitySet(),
+                                Developer::getName,
+                                DeveloperEntity::getName)
+//                                &&
+//                        ComparisionUtils.setsAreEqual(dbItem.getDeveloperEntitySet(), developerEntities) &&
+//                        ComparisionUtils.setsAreEqual(dbItem.getGenreEntitySet(), genreEntities) &&
+//                        ComparisionUtils.setsAreEqual(dbItem.getRegionEntitySet(), regionEntities) &&
+//                        ComparisionUtils.setsAreEqual(dbItem.getPlatformEntitySet(), platformEntities)
+                ) {
+                    return null;
+                }
+
+        }
 
         try {
+
             GameEntity entity = IGameEntityMapper.INSTANCE.toEntity(game);
             GameEntity savedEntity = repository.save(entity);
             return IGameEntityMapper.INSTANCE.toDomain(savedEntity);
@@ -47,6 +131,112 @@ public class GameEntityService implements IGameRepository {
         }
     }
 
+    public Set<Developer> checkIfDevelopersExists(Set<Developer> domains){
+        if(domains.isEmpty()){
+            return null;
+        }
+    
+        Set<Developer> results = new HashSet<>();
+        
+        for (Developer domain : domains){
+            DeveloperEntity item = developerRepository.findByName(domain.getName()).orElse(null);
+            
+            if(item == null){
+                item = new DeveloperEntity(domain.getName());
+                developerRepository.save(item);
+            }
+            
+            results.add(IDeveloperEntityMapper.INSTANCE.toDomain(item));
+        }
+
+        return results;
+    }
+
+
+    public Set<Publisher> checkIfPublishersExists(Set<Publisher> domains){
+        if(domains.isEmpty()){
+            return null;
+        }
+
+        Set<Publisher> results = new HashSet<>();
+
+        for (Publisher domain : domains){
+            PublisherEntity item = publisherRepository.findByName(domain.getName()).orElse(null);
+
+            if(item == null){
+                item = new PublisherEntity(domain.getName());
+                publisherRepository.save(item);
+            }
+
+            results.add(IPublisherEntityMapper.INSTANCE.toDomain(item));
+        }
+
+        return results;
+    }
+
+    public Set<Genre> checkIfGenresExists(Set<Genre> domains){
+        if(domains.isEmpty()){
+            return null;
+        }
+
+        Set<Genre> results = new HashSet<>();
+
+        for (Genre domain : domains){
+            GenreEntity item = genreRepository.findByName(domain.getName()).orElse(null);
+
+            if(item == null){
+                item = new GenreEntity(domain.getName());
+                genreRepository.save(item);
+            }
+
+            results.add(IGenreEntityMapper.INSTANCE.toDomain(item));
+        }
+
+        return results;
+    }
+
+    public Set<Region> checkIfRegionsExists(Set<Region> domains){
+        if(domains.isEmpty()){
+            return null;
+        }
+
+        Set<Region> results = new HashSet<>();
+
+        for (Region domain : domains){
+            RegionEntity item = regionRepository.findByName(domain.getName()).orElse(null);
+
+            if(item == null){
+                item = new RegionEntity(domain.getName());
+                regionRepository.save(item);
+            }
+
+            results.add(IRegionEntityMapper.INSTANCE.toDomain(item));
+        }
+
+        return results;
+    }
+
+    public Set<Platform> checkIfPlatformExists(Set<Platform> domains){
+        if(domains.isEmpty()){
+            return null;
+        }
+
+        Set<Platform> results = new HashSet<>();
+
+        for (Platform domain : domains){
+            PlatformEntity item = platformRepository.findByName(domain.getName()).orElse(null);
+
+            if(item == null){
+                item = new PlatformEntity(domain.getName());
+                platformRepository.save(item);
+            }
+
+            results.add(IPlatformEntityMapper.INSTANCE.toDomain(item));
+        }
+
+        return results;
+    }
+    
     @Override
     public List<Game> findAll() {
         List<GameEntity> listEntities = repository.findAll();
