@@ -93,7 +93,7 @@ Tras analizar nuestro objetivo hemos diseñado este diagrama para la definición
 Hemos propuesto la siguiente implementación programática de las entidades planteadas:
 
 <div align="center">
-    <img src="./img/diagrama-clCasos de Usoases.png">
+    <img src="./img/diagrama-clases.png">
 </div>
 
 
