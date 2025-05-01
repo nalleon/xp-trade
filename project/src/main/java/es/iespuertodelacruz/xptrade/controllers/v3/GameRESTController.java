@@ -3,7 +3,9 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
+import es.iespuertodelacruz.xptrade.dto.input.GameInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.GameOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.input.IGameInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.IGameOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.FileStorageService;
@@ -264,7 +266,7 @@ public class GameRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(GameOutputDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(@RequestBody GameInputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El juego no puede ser nulo", null));
@@ -272,7 +274,9 @@ public class GameRESTController {
 
         try {
 
-            Game aux = IGameOutputDTOMapper.INSTANCE.toDomain(dto);
+
+
+            Game aux = IGameInputDTOMapper.INSTANCE.toDomain(dto);
             
             Game dbItem = service.add(aux.getTitle(), aux.getCoverArt(), 
                     aux.getDeveloperSet(), aux.getGenreSet(), aux.getPlatformSet(),

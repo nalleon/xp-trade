@@ -38,20 +38,20 @@ public class GameInputDTOTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        item = new GameInputDTO(ID, TITLE, COVER_ART, developerSet, genreSet, platformSet, publisherSet, regionSet);
+        item = new GameInputDTO(TITLE, COVER_ART, developerSet, genreSet, platformSet, publisherSet, regionSet);
     }
 
 
     @Test
     public void getSetTest(){
-        Assertions.assertEquals(ID, item.id(), MESSAGE_ERROR);
+       // Assertions.assertEquals(ID, item.id(), MESSAGE_ERROR);
         Assertions.assertEquals(TITLE, item.title(), MESSAGE_ERROR);
         Assertions.assertEquals(COVER_ART, item.coverArt(), MESSAGE_ERROR);
-        Assertions.assertEquals(developerSet, item.developerDTOSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(developerSet, item.developerInputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(genreSet, item.genreInputDTOSet(), MESSAGE_ERROR);
-        Assertions.assertEquals(platformSet, item.platformDTOSet(), MESSAGE_ERROR);
-        Assertions.assertEquals(publisherSet, item.publisherDTOSet(), MESSAGE_ERROR);
-        Assertions.assertEquals(regionSet, item.regionDTOSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(platformSet, item.platformInputDTOSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(publisherSet, item.publisherInputDTOSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(regionSet, item.regionInputDTOSet(), MESSAGE_ERROR);
     }
 
 }

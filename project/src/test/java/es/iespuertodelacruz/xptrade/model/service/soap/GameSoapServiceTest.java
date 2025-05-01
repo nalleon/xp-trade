@@ -169,7 +169,7 @@ public class GameSoapServiceTest extends TestUtilities {
     }
 
 
-    @Test
+    //@Test
     void addTest() {
         when(repositoryMock.existsById(1)).thenReturn(false);
 

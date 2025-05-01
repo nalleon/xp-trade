@@ -4,8 +4,8 @@ import es.iespuertodelacruz.xptrade.dto.output.*;
 
 import java.util.Set;
 
-public record GameInputDTO(int id, String title, String coverArt, Set<DeveloperInputDTO> developerDTOSet,
-                           Set<GenreInputDTO> genreInputDTOSet, Set<PlatformInputDTO> platformDTOSet,
-                           Set<PublisherInputDTO> publisherDTOSet,
-                           Set<RegionInputDTO> regionDTOSet) {
+public record GameInputDTO(String title, String coverArt, Set<DeveloperInputDTO> developerInputDTOSet,
+                           Set<GenreInputDTO> genreInputDTOSet, Set<PlatformInputDTO> platformInputDTOSet,
+                           Set<PublisherInputDTO> publisherInputDTOSet,
+                           Set<RegionInputDTO> regionInputDTOSet) {
 }

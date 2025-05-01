@@ -94,36 +94,52 @@ public class GameEntityService implements IGameRepository {
         if(game == null){
             return null;
         }
-        
-        Set<Developer> developerEntities = checkIfDevelopersExists(game.getDeveloperSet());
-        Set<Publisher> publisherEntities = checkIfPublishersExists(game.getPublisherSet());
-        Set<Genre> genreEntities = checkIfGenresExists(game.getGenreSet());
-        Set<Region> regionEntities = checkIfRegionsExists(game.getRegionSet());
-        Set<Platform> platformEntities = checkIfPlatformExists(game.getPlatformSet());
+        Set<RegionEntity> regions = checkIfRegionsExists(game.getRegionSet());
+
+        if (regions == null){
+            return null;
+        }
 
         GameEntity dbItem = repository.findByTitle(game.getTitle()).orElse(null);
 
         if(dbItem != null){
-                if (
-                        ComparisionUtils.setsAreEqualByName(
-                                game.getDeveloperSet(),
-                                dbItem.getDeveloperEntitySet(),
-                                Developer::getName,
-                                DeveloperEntity::getName)
-//                                &&
-//                        ComparisionUtils.setsAreEqual(dbItem.getDeveloperEntitySet(), developerEntities) &&
-//                        ComparisionUtils.setsAreEqual(dbItem.getGenreEntitySet(), genreEntities) &&
-//                        ComparisionUtils.setsAreEqual(dbItem.getRegionEntitySet(), regionEntities) &&
-//                        ComparisionUtils.setsAreEqual(dbItem.getPlatformEntitySet(), platformEntities)
-                ) {
-                    return null;
+            try {
+                Set<RegionEntity> updatedRegions = dbItem.getRegionEntitySet();
+
+                for (RegionEntity region:regions){
+                    if (!dbItem.getRegionEntitySet().contains(region)){
+                        updatedRegions.add(region);
+                    }
                 }
 
+                dbItem.setRegionEntitySet(updatedRegions);
+
+                GameEntity updated = repository.save(dbItem);
+
+                return IGameEntityMapper.INSTANCE.toDomain(updated);
+            } catch (RuntimeException e) {
+                throw new RuntimeException("Invalid region data: " + e);
+            }
         }
 
+
+        Set<PlatformEntity> platforms = checkIfPlatformExists(game.getPlatformSet());
+        Set<DeveloperEntity> developers = checkIfDevelopersExists(game.getDeveloperSet());
+        Set<PublisherEntity> publishers = checkIfPublishersExists(game.getPublisherSet());
+        Set<GenreEntity> genres = checkIfGenresExists(game.getGenreSet());
+
+        if (platforms == null || developers == null || publishers == null || genres == null){
+            return null;
+        }
         try {
 
             GameEntity entity = IGameEntityMapper.INSTANCE.toEntity(game);
+            entity.setDeveloperEntitySet(developers);
+            entity.setGenreEntitySet(genres);
+            entity.setRegionEntitySet(regions);
+            entity.setPlatformEntitySet(platforms);
+            entity.setPublisherEntitySet(publishers);
+
             GameEntity savedEntity = repository.save(entity);
             return IGameEntityMapper.INSTANCE.toDomain(savedEntity);
         } catch (RuntimeException e) {
@@ -131,12 +147,12 @@ public class GameEntityService implements IGameRepository {
         }
     }
 
-    public Set<Developer> checkIfDevelopersExists(Set<Developer> domains){
+    public Set<DeveloperEntity> checkIfDevelopersExists(Set<Developer> domains){
         if(domains.isEmpty()){
             return null;
         }
     
-        Set<Developer> results = new HashSet<>();
+        Set<DeveloperEntity> results = new HashSet<>();
         
         for (Developer domain : domains){
             DeveloperEntity item = developerRepository.findByName(domain.getName()).orElse(null);
@@ -146,19 +162,19 @@ public class GameEntityService implements IGameRepository {
                 developerRepository.save(item);
             }
             
-            results.add(IDeveloperEntityMapper.INSTANCE.toDomain(item));
+            results.add(item);
         }
 
         return results;
     }
 
 
-    public Set<Publisher> checkIfPublishersExists(Set<Publisher> domains){
+    public Set<PublisherEntity> checkIfPublishersExists(Set<Publisher> domains){
         if(domains.isEmpty()){
             return null;
         }
 
-        Set<Publisher> results = new HashSet<>();
+        Set<PublisherEntity> results = new HashSet<>();
 
         for (Publisher domain : domains){
             PublisherEntity item = publisherRepository.findByName(domain.getName()).orElse(null);
@@ -168,18 +184,18 @@ public class GameEntityService implements IGameRepository {
                 publisherRepository.save(item);
             }
 
-            results.add(IPublisherEntityMapper.INSTANCE.toDomain(item));
+            results.add(item);
         }
 
         return results;
     }
 
-    public Set<Genre> checkIfGenresExists(Set<Genre> domains){
+    public Set<GenreEntity> checkIfGenresExists(Set<Genre> domains){
         if(domains.isEmpty()){
             return null;
         }
 
-        Set<Genre> results = new HashSet<>();
+        Set<GenreEntity> results = new HashSet<>();
 
         for (Genre domain : domains){
             GenreEntity item = genreRepository.findByName(domain.getName()).orElse(null);
@@ -189,18 +205,18 @@ public class GameEntityService implements IGameRepository {
                 genreRepository.save(item);
             }
 
-            results.add(IGenreEntityMapper.INSTANCE.toDomain(item));
+            results.add(item);
         }
 
         return results;
     }
 
-    public Set<Region> checkIfRegionsExists(Set<Region> domains){
+    public Set<RegionEntity> checkIfRegionsExists(Set<Region> domains){
         if(domains.isEmpty()){
             return null;
         }
 
-        Set<Region> results = new HashSet<>();
+        Set<RegionEntity> results = new HashSet<>();
 
         for (Region domain : domains){
             RegionEntity item = regionRepository.findByName(domain.getName()).orElse(null);
@@ -210,18 +226,18 @@ public class GameEntityService implements IGameRepository {
                 regionRepository.save(item);
             }
 
-            results.add(IRegionEntityMapper.INSTANCE.toDomain(item));
+            results.add(item);
         }
 
         return results;
     }
 
-    public Set<Platform> checkIfPlatformExists(Set<Platform> domains){
+    public Set<PlatformEntity> checkIfPlatformExists(Set<Platform> domains){
         if(domains.isEmpty()){
             return null;
         }
 
-        Set<Platform> results = new HashSet<>();
+        Set<PlatformEntity> results = new HashSet<>();
 
         for (Platform domain : domains){
             PlatformEntity item = platformRepository.findByName(domain.getName()).orElse(null);
@@ -231,7 +247,7 @@ public class GameEntityService implements IGameRepository {
                 platformRepository.save(item);
             }
 
-            results.add(IPlatformEntityMapper.INSTANCE.toDomain(item));
+            results.add(item);
         }
 
         return results;
