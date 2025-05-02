@@ -103,6 +103,10 @@ public class GameEntityService implements IGameRepository {
         GameEntity dbItem = repository.findByTitle(game.getTitle()).orElse(null);
 
         if(dbItem != null){
+            if(dbItem.getRegionEntitySet().equals(regions)){
+                return IGameEntityMapper.INSTANCE.toDomain(dbItem);
+            }
+
             try {
                 Set<RegionEntity> updatedRegions = dbItem.getRegionEntitySet();
 
@@ -223,7 +227,7 @@ public class GameEntityService implements IGameRepository {
 
             if(item == null){
                 item = new RegionEntity(domain.getName());
-                regionRepository.save(item);
+                item = regionRepository.save(item);
             }
 
             results.add(item);

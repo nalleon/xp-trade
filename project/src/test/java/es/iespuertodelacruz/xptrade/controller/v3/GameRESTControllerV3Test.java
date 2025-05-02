@@ -311,7 +311,7 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
         Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByTitle(TITLE).getStatusCode(), MESSAGE_ERROR);
     }
 
-    //@Test
+   // @Test
     void addTest() {
         when(serviceMock.add(any(String.class), any(String.class),
                 gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
