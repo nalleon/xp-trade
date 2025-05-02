@@ -1,9 +1,8 @@
-package es.iespuertodelacruz.xptrade.mapper.dto;
+package es.iespuertodelacruz.xptrade.mapper.dto.output;
 
 import es.iespuertodelacruz.xptrade.domain.Genre;
 
 import es.iespuertodelacruz.xptrade.dto.output.GenreOutputDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.output.IGenreOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

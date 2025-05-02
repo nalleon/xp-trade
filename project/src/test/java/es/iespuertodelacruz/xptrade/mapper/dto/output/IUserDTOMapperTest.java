@@ -1,9 +1,8 @@
-package es.iespuertodelacruz.xptrade.mapper.dto;
+package es.iespuertodelacruz.xptrade.mapper.dto.output;
 
 import es.iespuertodelacruz.xptrade.domain.User;
 
 import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
-import es.iespuertodelacruz.xptrade.dto.user.UserSearchDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.user.IUserDTOMapper;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import org.junit.jupiter.api.Assertions;
