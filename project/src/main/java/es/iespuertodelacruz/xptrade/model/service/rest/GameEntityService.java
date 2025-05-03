@@ -163,11 +163,12 @@ public class GameEntityService implements IGameRepository {
             
             if(item == null){
                 item = new DeveloperEntity(domain.getName());
-                developerRepository.save(item);
+                item = developerRepository.save(item);
             }
             
             results.add(item);
         }
+        System.out.println("DEVELOPERS: " + results);
 
         return results;
     }
@@ -185,7 +186,7 @@ public class GameEntityService implements IGameRepository {
 
             if(item == null){
                 item = new PublisherEntity(domain.getName());
-                publisherRepository.save(item);
+                item = publisherRepository.save(item);
             }
 
             results.add(item);
@@ -206,7 +207,7 @@ public class GameEntityService implements IGameRepository {
 
             if(item == null){
                 item = new GenreEntity(domain.getName());
-                genreRepository.save(item);
+                item = genreRepository.save(item);
             }
 
             results.add(item);
@@ -248,7 +249,7 @@ public class GameEntityService implements IGameRepository {
 
             if(item == null){
                 item = new PlatformEntity(domain.getName());
-                platformRepository.save(item);
+                item = platformRepository.save(item);
             }
 
             results.add(item);
@@ -357,25 +358,27 @@ public class GameEntityService implements IGameRepository {
             return null;
         }
 
-        Set<RegionEntity> regions = checkIfRegionsExists(game.getRegionSet());
-        Set<PlatformEntity> platforms = checkIfPlatformExists(game.getPlatformSet());
-        Set<DeveloperEntity> developers = checkIfDevelopersExists(game.getDeveloperSet());
-        Set<PublisherEntity> publishers = checkIfPublishersExists(game.getPublisherSet());
-        Set<GenreEntity> genres = checkIfGenresExists(game.getGenreSet());
-
-        if (regions == null || platforms == null || developers == null || publishers == null || genres == null){
-            return null;
-        }
 
         try {
+
+            Set<RegionEntity> regions = checkIfRegionsExists(game.getRegionSet());
+            Set<PlatformEntity> platforms = checkIfPlatformExists(game.getPlatformSet());
+            Set<DeveloperEntity> developers = checkIfDevelopersExists(game.getDeveloperSet());
+            Set<PublisherEntity> publishers = checkIfPublishersExists(game.getPublisherSet());
+            Set<GenreEntity> genres = checkIfGenresExists(game.getGenreSet());
+
+            if (regions == null || platforms == null || developers == null || publishers == null || genres == null){
+                return null;
+            }
+
             GameEntity entity = IGameEntityMapper.INSTANCE.toEntity(game);
             dbItem.setTitle(entity.getTitle());
             dbItem.setCoverArt(entity.getCoverArt());
-            dbItem.setDeveloperEntitySet(entity.getDeveloperEntitySet());
-            dbItem.setGenreEntitySet(entity.getGenreEntitySet());
-            dbItem.setPlatformEntitySet(entity.getPlatformEntitySet());
-            dbItem.setRegionEntitySet(entity.getRegionEntitySet());
-            dbItem.setPublisherEntitySet(entity.getPublisherEntitySet());
+            dbItem.setDeveloperEntitySet(developers);
+            dbItem.setGenreEntitySet(genres);
+            dbItem.setPlatformEntitySet(platforms);
+            dbItem.setRegionEntitySet(regions);
+            dbItem.setPublisherEntitySet(publishers);
 
             return IGameEntityMapper.INSTANCE.toDomain(dbItem);
         } catch (RuntimeException e) {

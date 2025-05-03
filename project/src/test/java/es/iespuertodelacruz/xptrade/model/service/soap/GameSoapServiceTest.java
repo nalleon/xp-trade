@@ -2,7 +2,7 @@ package es.iespuertodelacruz.xptrade.model.service.soap;
 
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.model.entities.GameEntity;
-import es.iespuertodelacruz.xptrade.model.repository.IGameEntityRepository;
+import es.iespuertodelacruz.xptrade.model.repository.*;
 import es.iespuertodelacruz.xptrade.model.service.rest.GameEntityService;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
@@ -23,6 +23,17 @@ public class GameSoapServiceTest extends TestUtilities {
 
     @Mock
     GameEntityService serviceMock;
+
+    @Mock
+    IDeveloperEntityRepository developerRepositoryMock;
+    @Mock
+    IPublisherEntityRepository publisherRepositoryMock;
+    @Mock
+    IGenreEntityRepository genreRepositoryMock;
+    @Mock
+    IPlatformEntityRepository platformRepositoryMock;
+    @Mock
+    IRegionEntityRepository regionRepositoryMock;
 
     @InjectMocks
     GameSoapService service;
@@ -66,9 +77,15 @@ public class GameSoapServiceTest extends TestUtilities {
         MockitoAnnotations.openMocks(this);
         serviceMock = new GameEntityService();
         serviceMock.setRepository(repositoryMock);
+        serviceMock.setRegionRepository(regionRepositoryMock);
+        serviceMock.setPublisherRepository(publisherRepositoryMock);
+        serviceMock.setDeveloperRepository(developerRepositoryMock);
+        serviceMock.setGenreRepository(genreRepositoryMock);
+        serviceMock.setPlatformRepository(platformRepositoryMock);
 
         service = new GameSoapService();
         service.setService(serviceMock);
+
 
     }
     @Test

@@ -348,14 +348,10 @@ public class GameEntityServiceTest extends TestUtilities {
 
     @Test
     void updateForceExceptionTest() {
-        Game item = new Game();
-        item.setId(1);
-        item.setTitle(NAME);
-
         GameEntity dbItemMock = mock(GameEntity.class);
         when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(dbItemMock));
 
-        doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setTitle(NAME);
+        doThrow(new RuntimeException()).when(dbItemMock).setTitle(item.getTitle());
 
         RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
             service.update(item);
