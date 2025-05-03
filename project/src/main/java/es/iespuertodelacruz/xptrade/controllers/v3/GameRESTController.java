@@ -296,7 +296,7 @@ public class GameRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody GameOutputDTO dto) {
+            @RequestBody GameInputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest()
@@ -312,8 +312,8 @@ public class GameRESTController {
 
         try {
 
-            Game aux = IGameOutputDTOMapper.INSTANCE.toDomain(dto);
-            
+            Game aux = IGameInputDTOMapper.INSTANCE.toDomain(dto);
+
             dbItem.setTitle(aux.getTitle());
             dbItem.setCoverArt(aux.getCoverArt());
             dbItem.setPublisherSet(aux.getPublisherSet());

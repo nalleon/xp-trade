@@ -2,10 +2,9 @@ package es.iespuertodelacruz.xptrade.model.service.rest;
 
 import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.*;
-import es.iespuertodelacruz.xptrade.model.entities.GameEntity;
-import es.iespuertodelacruz.xptrade.model.entities.PostEntity;
-import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
-import es.iespuertodelacruz.xptrade.model.repository.IGameEntityRepository;
+import es.iespuertodelacruz.xptrade.mapper.entity.IGameEntityMapper;
+import es.iespuertodelacruz.xptrade.model.entities.*;
+import es.iespuertodelacruz.xptrade.model.repository.*;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -22,12 +22,25 @@ import static org.mockito.Mockito.*;
 public class GameEntityServiceTest extends TestUtilities {
     @Mock
     IGameEntityRepository repositoryMock;
+    @Mock
+    IDeveloperEntityRepository developerRepositoryMock;
+    @Mock
+    IPublisherEntityRepository publisherRepositoryMock;
+    @Mock
+    IGenreEntityRepository genreRepositoryMock;
+    @Mock
+    IPlatformEntityRepository platformRepositoryMock;
+    @Mock
+    IRegionEntityRepository regionRepositoryMock;
+
+
 
     @InjectMocks
     GameEntityService service;
 
 
     Game item;
+    GameEntity entity;
 
     Genre genre;
     Region region;
@@ -63,9 +76,19 @@ public class GameEntityServiceTest extends TestUtilities {
         item =  new Game(TITLE, COVER_ART, developerSet, genreSet, platformSet, publisherSet, regionSet);
         item.setId(ID);
 
+        entity = IGameEntityMapper.INSTANCE.toEntity(item);
+
+
         MockitoAnnotations.openMocks(this);
         service = new GameEntityService();
         service.setRepository(repositoryMock);
+        service.setDeveloperRepository(developerRepositoryMock);
+        service.setGenreRepository(genreRepositoryMock);
+        service.setPlatformRepository(platformRepositoryMock);
+        service.setPublisherRepository(publisherRepositoryMock);
+        service.setRegionRepository(regionRepositoryMock);
+
+
 
     }
     @Test
@@ -166,7 +189,7 @@ public class GameEntityServiceTest extends TestUtilities {
     }
 
 
-    //@Test
+    @Test
     void addTest() {
         when(repositoryMock.existsById(1)).thenReturn(false);
 
@@ -174,24 +197,136 @@ public class GameEntityServiceTest extends TestUtilities {
 
         Assertions.assertNotNull(service.save(item), MESSAGE_ERROR);
     }
+    @Test
+    void addNullRegionsTest() {
+        item.setRegionSet(new HashSet<>());
+        Assertions.assertNull(service.save(item), MESSAGE_ERROR);
+    }
 
+
+    @Test
+    void addNullPlatformsTest() {
+        when(repositoryMock.existsById(1)).thenReturn(false);
+
+        item.setPlatformSet(new HashSet<>());
+        Assertions.assertNull(service.save(item), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void addNullDevelopersTest() {
+        when(repositoryMock.existsById(1)).thenReturn(false);
+
+        item.setDeveloperSet(new HashSet<>());
+        Assertions.assertNull(service.save(item), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void addNullPublishersTest() {
+        when(repositoryMock.existsById(1)).thenReturn(false);
+
+        item.setPublisherSet(new HashSet<>());
+        Assertions.assertNull(service.save(item), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void addNullGenresTest() {
+        when(repositoryMock.existsById(1)).thenReturn(false);
+
+        item.setGenreSet(new HashSet<>());
+        Assertions.assertNull(service.save(item), MESSAGE_ERROR);
+    }
+
+    @Test
+    void addExistingSameRegionsTest() {
+        when(repositoryMock.findByTitle(item.getTitle())).thenReturn(Optional.ofNullable(entity));
+        when(regionRepositoryMock.save(any(RegionEntity.class))).thenReturn(new RegionEntity(ID));
+
+        when(repositoryMock.save(any(GameEntity.class))).thenReturn(new GameEntity());
+        Assertions.assertNotNull(service.save(item), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void addExistingDiffRegionsTest() {
+        when(repositoryMock.findByTitle(item.getTitle())).thenReturn(Optional.ofNullable(entity));
+
+        item.setRegionSet(new HashSet<>(List.of(new Region("reg1"))));
+        when(repositoryMock.save(any(GameEntity.class))).thenReturn(new GameEntity());
+        when(regionRepositoryMock.save(any(RegionEntity.class))).thenReturn(new RegionEntity());
+        Assertions.assertNotNull(service.save(item), MESSAGE_ERROR);
+    }
+
+    @Test
+    void addExistingAndDiffRegionsTest() {
+        when(repositoryMock.findByTitle(item.getTitle())).thenReturn(Optional.ofNullable(entity));
+
+
+        when(regionRepositoryMock.findByName("reg1")).thenReturn(Optional.empty());
+        when(regionRepositoryMock.findByName("reg2")).thenReturn(Optional.empty());
+        when(repositoryMock.save(any(GameEntity.class))).thenReturn(new GameEntity());
+
+        AtomicInteger callCount = new AtomicInteger(0);
+
+        when(regionRepositoryMock.save(any(RegionEntity.class)))
+                .thenAnswer(invocation -> {
+                    RegionEntity input = invocation.getArgument(0);
+                    int count = callCount.incrementAndGet();
+
+                    if (count == 1) {
+                        return new RegionEntity(1, input.getName());
+                    } else if (count == 2) {
+                        return new RegionEntity(2, input.getName());
+                    } else {
+                        throw new IllegalStateException("save() called more than twice in test");
+                    }
+                });
+
+
+        Region region1 = new Region(NAME);
+        Region region2 = new Region("reg2");
+        region1.setId(ID);
+        region2.setId(2);
+        item.setRegionSet(new HashSet<>(List.of(region1, region2)));
+
+        Assertions.assertNotNull(service.save(item), MESSAGE_ERROR);
+    }
 
     @Test
     void addNullTest() {
         Assertions.assertNull(service.save(null), MESSAGE_ERROR);
     }
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        when(repositoryMock.findUserByName(NAME)).thenThrow(new RuntimeException());
-//        Assertions.assertThrows(RuntimeException.class, () -> service.update(new User(1)), MESSAGE_ERROR);
-//    }
-
+    @Test
+    void addExistingExceptionTest() throws Exception {
+        when(repositoryMock.findByTitle(item.getTitle())).thenReturn(Optional.ofNullable(entity));
+        when(repositoryMock.save(any(GameEntity.class))).thenThrow(new RuntimeException());
+        Assertions.assertThrows(RuntimeException.class, () -> service.save(item), MESSAGE_ERROR);
+    }
 
     @Test
     void addExceptionTest() throws Exception {
+        when(regionRepositoryMock.save(any(RegionEntity.class))).thenReturn(new RegionEntity());
+        when(platformRepositoryMock.save(any(PlatformEntity.class))).thenReturn(new PlatformEntity());
+        when(developerRepositoryMock.save(any(DeveloperEntity.class))).thenReturn(new DeveloperEntity());
+        when(publisherRepositoryMock.save(any(PublisherEntity.class))).thenReturn(new PublisherEntity());
+        when(genreRepositoryMock.save(any(GenreEntity.class))).thenReturn(new GenreEntity());
+
         when(repositoryMock.save(any(GameEntity.class))).thenThrow(new RuntimeException());
-        Assertions.assertThrows(RuntimeException.class, () -> service.save(new Game(1)), MESSAGE_ERROR);
+        Assertions.assertThrows(RuntimeException.class, () -> service.save(item), MESSAGE_ERROR);
+    }
+    @Test
+    void addWithExistingTest() throws Exception {
+        when(regionRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new RegionEntity()));
+        when(platformRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new PlatformEntity()));
+        when(developerRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new DeveloperEntity()));
+        when(publisherRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new PublisherEntity()));
+        when(genreRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new GenreEntity()));
+
+        when(repositoryMock.save(any(GameEntity.class))).thenThrow(new RuntimeException());
+        Assertions.assertThrows(RuntimeException.class, () -> service.save(item), MESSAGE_ERROR);
     }
 
     @Test
@@ -213,14 +348,10 @@ public class GameEntityServiceTest extends TestUtilities {
 
     @Test
     void updateForceExceptionTest() {
-        Game item = new Game();
-        item.setId(1);
-        item.setTitle(NAME);
-
         GameEntity dbItemMock = mock(GameEntity.class);
         when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(dbItemMock));
 
-        doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setTitle(NAME);
+        doThrow(new RuntimeException()).when(dbItemMock).setTitle(item.getTitle());
 
         RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
             service.update(item);

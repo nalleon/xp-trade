@@ -48,6 +48,16 @@ public class RegionEntity {
     }
 
     /**
+     * Full constructor of the class
+     * @param id of the region
+     * @param name of the region
+     */
+    public RegionEntity(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    /**
      * Getters and setters
      */
     public int getId() {
