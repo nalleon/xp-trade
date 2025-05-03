@@ -17,11 +17,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -490,8 +494,46 @@ public class GameRESTControllerV3Test extends TestUtilities {
                 anyString())
         ).thenThrow(new RuntimeException());
 
-
         Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, controller.uploadFile(NAME, mockFile).getStatusCode(), MESSAGE_ERROR);
     }
 
+    @Test
+    void getGameCoverNullTest() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.getFiles(null).getStatusCode(), MESSAGE_ERROR);
+    }
+    @Test
+    void getGameCoverEmptyTest() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.getFiles("").getStatusCode(), MESSAGE_ERROR);
+    }
+    @Test
+    void getGameCoverTest() throws IOException {
+        Resource resource = mock(Resource.class);
+        InputStream mockInputStream = new ByteArrayInputStream("dummy content".getBytes());
+        when(resource.getInputStream()).thenReturn(mockInputStream);
+        when(resource.getFilename()).thenReturn("dummy.txt");
+        when(storageServiceMock.get(anyString())).thenReturn(resource);
+
+        Assertions.assertEquals(HttpStatus.OK, controller.getFiles("dummy.txt").getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getGameCoverNullContentTypeTest() throws IOException {
+        Resource resource = mock(Resource.class);
+        InputStream mockInputStream = new ByteArrayInputStream("dummy content".getBytes());
+        when(resource.getInputStream()).thenReturn(mockInputStream);
+        when(resource.getFilename()).thenReturn("application/octet-stream");
+        when(storageServiceMock.get(anyString())).thenReturn(resource);
+
+        Assertions.assertEquals(HttpStatus.OK, controller.getFiles("dummy.txt").getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getGameCoverExceptionTest() throws IOException {
+        Resource resource = mock(Resource.class);
+        when(resource.getInputStream()).thenThrow(new IOException());
+        when(resource.getFilename()).thenReturn("dummy.txt");
+        when(storageServiceMock.get(anyString())).thenReturn(resource);
+
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, controller.getFiles("dummy.txt").getStatusCode(), MESSAGE_ERROR);
+    }
 }

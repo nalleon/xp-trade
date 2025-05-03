@@ -389,13 +389,19 @@ public class GameRESTController {
 
     @GetMapping("/img/{filename}")
     public ResponseEntity<?> getFiles(@PathVariable String filename) {
+        if(filename == null || filename.isEmpty()){
+            return ResponseEntity.badRequest()
+                .body(new CustomApiResponse<>(400, "Invalid data", null));
+        }
+
         Resource resource = storageService.get(filename);
 
         String contentType = null;
         try {
             contentType = URLConnection.guessContentTypeFromStream(resource.getInputStream());
         } catch (IOException ex) {
-            System.out.println("Could not determine file type.");
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
+                    new CustomApiResponse<>(417, "Could not determine file type.", null));
         }
 
         if (contentType == null) {
