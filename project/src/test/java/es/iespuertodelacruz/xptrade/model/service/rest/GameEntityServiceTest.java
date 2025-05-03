@@ -318,6 +318,18 @@ public class GameEntityServiceTest extends TestUtilities {
         Assertions.assertThrows(RuntimeException.class, () -> service.save(item), MESSAGE_ERROR);
     }
     @Test
+    void addWithExistingTest() throws Exception {
+        when(regionRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new RegionEntity()));
+        when(platformRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new PlatformEntity()));
+        when(developerRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new DeveloperEntity()));
+        when(publisherRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new PublisherEntity()));
+        when(genreRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new GenreEntity()));
+
+        when(repositoryMock.save(any(GameEntity.class))).thenThrow(new RuntimeException());
+        Assertions.assertThrows(RuntimeException.class, () -> service.save(item), MESSAGE_ERROR);
+    }
+
+    @Test
     void updateTest() throws Exception {
         when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
         Assertions.assertNotNull(service.update(item), MESSAGE_ERROR);

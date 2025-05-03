@@ -357,6 +357,16 @@ public class GameEntityService implements IGameRepository {
             return null;
         }
 
+        Set<RegionEntity> regions = checkIfRegionsExists(game.getRegionSet());
+        Set<PlatformEntity> platforms = checkIfPlatformExists(game.getPlatformSet());
+        Set<DeveloperEntity> developers = checkIfDevelopersExists(game.getDeveloperSet());
+        Set<PublisherEntity> publishers = checkIfPublishersExists(game.getPublisherSet());
+        Set<GenreEntity> genres = checkIfGenresExists(game.getGenreSet());
+
+        if (regions == null || platforms == null || developers == null || publishers == null || genres == null){
+            return null;
+        }
+
         try {
             GameEntity entity = IGameEntityMapper.INSTANCE.toEntity(game);
             dbItem.setTitle(entity.getTitle());

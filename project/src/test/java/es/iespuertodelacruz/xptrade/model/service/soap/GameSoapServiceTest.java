@@ -169,26 +169,12 @@ public class GameSoapServiceTest extends TestUtilities {
     }
 
 
-    //@Test
-    void addTest() {
-        when(repositoryMock.existsById(1)).thenReturn(false);
-
-        when(repositoryMock.save(any(GameEntity.class))).thenReturn(new GameEntity());
-
-        Assertions.assertNotNull(service.save(item), MESSAGE_ERROR);
-    }
 
 
     @Test
     void addNullTest() {
         Assertions.assertNull(service.save(null), MESSAGE_ERROR);
     }
-
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        when(repositoryMock.findUserByName(NAME)).thenThrow(new RuntimeException());
-//        Assertions.assertThrows(RuntimeException.class, () -> service.update(new User(1)), MESSAGE_ERROR);
-//    }
 
 
     @Test
@@ -214,14 +200,6 @@ public class GameSoapServiceTest extends TestUtilities {
         Assertions.assertNull(service.update(item), MESSAGE_ERROR);
     }
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        Game item = new Game();
-//        item.setId(1);
-//        item.setName(NAME);
-//        when(repositoryMock.findByName(item.getName())).thenReturn(Optional.empty());
-//        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
-//    }
 
     @Test
     void deleteAdminTest() {
