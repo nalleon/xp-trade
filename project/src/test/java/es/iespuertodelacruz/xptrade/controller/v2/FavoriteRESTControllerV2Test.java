@@ -237,7 +237,9 @@ public class FavoriteRESTControllerV2Test extends MapperDTOHelper {
         FavoriteInputDTO aux = new FavoriteInputDTO(
                 new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
                         new HashSet<>()),
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME),
+                        VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
+
         when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
