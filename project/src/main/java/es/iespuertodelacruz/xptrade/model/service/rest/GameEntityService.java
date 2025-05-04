@@ -5,7 +5,6 @@ import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGameRepository
 import es.iespuertodelacruz.xptrade.mapper.entity.*;
 import es.iespuertodelacruz.xptrade.model.entities.*;
 import es.iespuertodelacruz.xptrade.model.repository.*;
-import es.iespuertodelacruz.xptrade.shared.utils.ComparisionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

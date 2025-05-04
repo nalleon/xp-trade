@@ -6,7 +6,9 @@ import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IFavoriteService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
+import es.iespuertodelacruz.xptrade.dto.input.FavoriteInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.FavoriteOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.input.IFavoriteInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.IFavoriteOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -133,35 +135,53 @@ public class FavoriteRESTController {
 
 
 
-
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(FavoriteOutputDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(@RequestBody FavoriteInputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
-                    .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
+                    .body(new CustomApiResponse<>(400, "Item cannot be null", null));
         }
 
         try {
-            Favorite aux = IFavoriteOutputDTOMapper.INSTANCE.toDomain(dto);
-            Favorite dbItem = service.add(aux.getGame(), aux.getUser());
+            Favorite aux = IFavoriteInputDTOMapper.INSTANCE.toDomain(dto);
+
+            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(),
+                    aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
+                    aux.getGame().getPublisherSet(), aux.getGame().getRegionSet());
+
+            if(gameDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            User userDb = userService.findByUsername(aux.getUser().getUsername());
+
+            if(userDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            Favorite dbItem = service.add(gameDb, userDb);
+
             FavoriteOutputDTO result = IFavoriteOutputDTOMapper.INSTANCE.toDTO(dbItem);
+
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
+                    .body(new CustomApiResponse<>(201, "Item created successfully", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el item", null));
+                    .body(new CustomApiResponse<>(500, "Error while trying to add item", null));
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody FavoriteOutputDTO dto) {
+            @RequestBody FavoriteInputDTO dto) {
 
         if (dto == null) {
-            return ResponseEntity.badRequest().build();
-        }
+            return ResponseEntity.badRequest()
+                    .body(new CustomApiResponse<>(400, "Item cannot be null", null));        }
 
         Favorite dbItem = service.findById(id);
 
@@ -172,9 +192,31 @@ public class FavoriteRESTController {
 
         try {
 
-            Favorite aux = IFavoriteOutputDTOMapper.INSTANCE.toDomain(dto);
+            Favorite aux = IFavoriteInputDTOMapper.INSTANCE.toDomain(dto);
 
-            Favorite updatedDbItem = service.update(aux.getId(), aux.getGame(), aux.getUser());
+            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(),
+                    aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
+                    aux.getGame().getPublisherSet(), aux.getGame().getRegionSet());
+
+            if(gameDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            User userDb = userService.findByUsername(aux.getUser().getUsername());
+
+            if(userDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+
+            Favorite updatedDbItem = service.update(id, gameDb, userDb);
+
+            if(updatedDbItem == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new CustomApiResponse<>(404, "Item does not exists", null));
+            }
 
             FavoriteOutputDTO result = IFavoriteOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
@@ -185,6 +227,7 @@ public class FavoriteRESTController {
                     .body(new CustomApiResponse<>(500, "Error while trying to update", null));
         }
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
 

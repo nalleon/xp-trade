@@ -356,14 +356,27 @@ public class GameRESTController {
 
     @PostMapping(value = "/upload/{title}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadFile(@RequestParam("title") String title, @RequestParam("file") MultipartFile file) {
+
+        if(title == null || file == null) {
+            return ResponseEntity.badRequest()
+                    .body(new CustomApiResponse<>(400, "Invalid data", null));
+        }
+
+        Game dbItem = service.findByTitle(title);
+
+        if(dbItem == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, "Game NOT found", null));
+        }
+
         String message = "";
+
         try {
             String namefile = storageService.save(file);
             message = "" + namefile;
 
-            Game aux = service.findByTitle(title);
-            aux.setCoverArt(namefile);
-            Game result = service.updateCoverArt(aux.getId(), aux.getCoverArt());
+            dbItem.setCoverArt(namefile);
+            Game result = service.updateCoverArt(dbItem.getId(), dbItem.getCoverArt());
             GameOutputDTO dto = IGameOutputDTOMapper.INSTANCE.toDTO(result);
 
             return ResponseEntity.status(HttpStatus.OK).body(new CustomApiResponse<>(200, message, dto));
@@ -376,13 +389,19 @@ public class GameRESTController {
 
     @GetMapping("/img/{filename}")
     public ResponseEntity<?> getFiles(@PathVariable String filename) {
+        if(filename == null || filename.isEmpty()){
+            return ResponseEntity.badRequest()
+                .body(new CustomApiResponse<>(400, "Invalid data", null));
+        }
+
         Resource resource = storageService.get(filename);
 
         String contentType = null;
         try {
             contentType = URLConnection.guessContentTypeFromStream(resource.getInputStream());
         } catch (IOException ex) {
-            System.out.println("Could not determine file type.");
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
+                    new CustomApiResponse<>(417, "Could not determine file type.", null));
         }
 
         if (contentType == null) {

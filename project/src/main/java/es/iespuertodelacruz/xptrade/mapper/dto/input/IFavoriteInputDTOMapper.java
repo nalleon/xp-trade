@@ -14,7 +14,7 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
-@Mapper(uses = {IUserDTOMapper.class, IGameOutputDTOMapper.class})
+@Mapper(uses = {IUserDTOMapper.class, IGameInputDTOMapper.class})
 public interface IFavoriteInputDTOMapper {
     IFavoriteInputDTOMapper INSTANCE = Mappers.getMapper(IFavoriteInputDTOMapper.class);
     Favorite toDomain(FavoriteInputDTO dto);

@@ -208,7 +208,7 @@ public class MapperInputDTOHelper extends TestUtilities {
         gameInputDTOList = new ArrayList<>();
         gameInputDTOList.add(gameInputDTO);
 
-        collectionInputDTO = new CollectionInputDTO(gameOutputDTO, userDTO);
+        collectionInputDTO = new CollectionInputDTO(gameInputDTO, userDTO);
 
         collectionDomain = new Collection();
         collectionDomain.setUser(userDomain);
@@ -220,7 +220,7 @@ public class MapperInputDTOHelper extends TestUtilities {
         collectionInputDTOList = new ArrayList<>();
         collectionInputDTOList.add(collectionInputDTO);
 
-        favoriteInputDTO = new FavoriteInputDTO(gameOutputDTO, userDTO);
+        favoriteInputDTO = new FavoriteInputDTO(gameInputDTO, userDTO);
 
         favoriteDomain = new Favorite();
         favoriteDomain.setUser(userDomain);

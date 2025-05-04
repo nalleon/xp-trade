@@ -360,6 +360,50 @@ public class GameEntityServiceTest extends TestUtilities {
         Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
     }
 
+
+    @Test
+    void updateNullRegionsTest() {
+        when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
+        item.setRegionSet(new HashSet<>());
+        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void updateNullPlatformsTest() {
+        when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
+        item.setPlatformSet(new HashSet<>());
+        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void updateNullDevelopersTest() {
+        when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
+
+        item.setDeveloperSet(new HashSet<>());
+        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void updateNullPublishersTest() {
+        when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
+
+        item.setPublisherSet(new HashSet<>());
+        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void updateNullGenresTest() {
+        when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
+
+        item.setGenreSet(new HashSet<>());
+        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
+    }
+
+
     @Test
     void deleteAdminTest() {
         when(repositoryMock.findById(1)).thenReturn(Optional.of(new GameEntity(1)));
@@ -439,5 +483,7 @@ public class GameEntityServiceTest extends TestUtilities {
 
         Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
     }
+
+
 }
 
