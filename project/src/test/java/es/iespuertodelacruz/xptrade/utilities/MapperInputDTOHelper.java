@@ -208,7 +208,7 @@ public class MapperInputDTOHelper extends TestUtilities {
         gameInputDTOList = new ArrayList<>();
         gameInputDTOList.add(gameInputDTO);
 
-        collectionInputDTO = new CollectionInputDTO(gameOutputDTO, userDTO);
+        collectionInputDTO = new CollectionInputDTO(gameInputDTO, userDTO);
 
         collectionDomain = new Collection();
         collectionDomain.setUser(userDomain);

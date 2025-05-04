@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -46,6 +47,11 @@ public class RegionRESTControllerV3Test  extends TestUtilities {
         serviceMockException.setRepository(entityServiceMock);
     }
 
+    @Test
+    void getAllTest() {
+        when(serviceMock.findAll()).thenReturn(new ArrayList<>(List.of(new Region())));
+        Assertions.assertEquals(HttpStatus.OK, controller.getAll().getStatusCode(), MESSAGE_ERROR);
+    }
 
     @Test
     void getAllEmptyTest() {
