@@ -47,7 +47,6 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
     @InjectMocks
     CollectionService serviceMockException;
 
-
     @InjectMocks
     CollectionRESTControllerV2 controller;
 
@@ -64,6 +63,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         serviceMockException.setRepository(entityServiceMock);
 
     }
+
     @Test
     void getAllTest() {
         List<Collection> list = new ArrayList<>();

@@ -220,7 +220,7 @@ public class MapperInputDTOHelper extends TestUtilities {
         collectionInputDTOList = new ArrayList<>();
         collectionInputDTOList.add(collectionInputDTO);
 
-        favoriteInputDTO = new FavoriteInputDTO(gameOutputDTO, userDTO);
+        favoriteInputDTO = new FavoriteInputDTO(gameInputDTO, userDTO);
 
         favoriteDomain = new Favorite();
         favoriteDomain.setUser(userDomain);

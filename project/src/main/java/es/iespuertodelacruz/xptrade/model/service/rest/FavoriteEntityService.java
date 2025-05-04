@@ -105,9 +105,11 @@ public class FavoriteEntityService implements IGenericSocialRepository<Favorite,
         if (dbItem == null) {
             return null;
         }
+
         try {
-            dbItem.setGame(IGameEntityMapper.INSTANCE.toEntity(favorite.getGame()));
-            dbItem.setUser(IUserEntityMapper.INSTANCE.toEntity(favorite.getUser()));
+            FavoriteEntity aux = IFavoriteEntityMapper.INSTANCE.toEntity(favorite);
+            dbItem.setGame(aux.getGame());
+            dbItem.setUser(aux.getUser());
             return IFavoriteEntityMapper.INSTANCE.toDomain(dbItem);
         } catch (RuntimeException e) {
             throw new RuntimeException("Invalid data: " + e);
