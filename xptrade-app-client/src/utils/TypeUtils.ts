@@ -1,4 +1,8 @@
-interface RootObject {
+
+  /**
+   * RAWGAPI types
+   */
+  export interface RootObject {
     count: number;
     next: string;
     previous: null;
@@ -14,11 +18,11 @@ interface RootObject {
     nofollow_collections: string[];
   }
   
-  interface Filters {
+  export interface Filters {
     years: Year2[];
   }
   
-  interface Year2 {
+  export interface Year2 {
     from: number;
     to: number;
     filter: string;
@@ -28,13 +32,13 @@ interface RootObject {
     count: number;
   }
   
-  interface Year {
+  export interface Year {
     year: number;
     count: number;
     nofollow: boolean;
   }
   
-  interface Result {
+  export interface Result {
     id: number;
     slug: string;
     name: string;
@@ -66,12 +70,12 @@ interface RootObject {
     short_screenshots: Shortscreenshot[];
   }
   
-  interface Shortscreenshot {
+  export interface Shortscreenshot {
     id: number;
     image: string;
   }
   
-  interface Tag {
+  export interface Tag {
     id: number;
     name: string;
     slug: string;
@@ -80,12 +84,12 @@ interface RootObject {
     image_background: string;
   }
   
-  interface Store2 {
+  export interface Store2 {
     id: number;
     store: Store;
   }
   
-  interface Store {
+  export interface Store {
     id: number;
     name: string;
     slug: string;
@@ -94,7 +98,7 @@ interface RootObject {
     image_background: string;
   }
   
-  interface Genre {
+  export interface Genre {
     id: number;
     name: string;
     slug: string;
@@ -102,38 +106,38 @@ interface RootObject {
     image_background: string;
   }
   
-  interface Parentplatform {
+  export interface Parentplatform {
     platform: Platform3;
   }
   
-  interface Platform3 {
+  export interface Platform3 {
     id: number;
     name: string;
     slug: string;
   }
   
-  interface Platform2 {
+  export interface Platform2 {
     platform: Platform;
     released_at: string;
     requirements_en: Requirementsen | Requirementsen2 | Requirementsen3 | null | null | null;
     requirements_ru: Requirementsen | null | null;
   }
   
-  interface Requirementsen3 {
+  export interface Requirementsen3 {
     minimum: string;
     recommended?: string;
   }
   
-  interface Requirementsen2 {
+  export interface Requirementsen2 {
     minimum: string;
   }
   
-  interface Requirementsen {
+  export interface Requirementsen {
     minimum: string;
     recommended: string;
   }
   
-  interface Platform {
+  export interface Platform {
     id: number;
     name: string;
     slug: string;
@@ -144,7 +148,7 @@ interface RootObject {
     image_background: string;
   }
   
-  interface Addedbystatus {
+  export interface Addedbystatus {
     yet: number;
     owned: number;
     beaten: number;
@@ -153,17 +157,47 @@ interface RootObject {
     playing: number;
   }
   
-  interface Rating {
+  export interface Rating {
     id: number;
     title: string;
     count: number;
     percent: number;
   }
 
-  interface Comment {
+  export interface Comment {
     id:number,
     id_post: number,
     username: string,
     content: string,
     creation_date: Date
   }
+
+
+  /**
+   * Own types
+   */
+   export interface XPTradeInputGame {
+    game: {
+      title: string;
+      coverArt: string;
+      developerInputDTOSet: {
+        name: string;
+      }[];
+      genreInputDTOSet: {
+        name: string;
+      }[];
+      platformInputDTOSet: {
+        name: string;
+      }[];
+      publisherInputDTOSet: {
+        name: string;
+      }[];
+      regionInputDTOSet: {
+        name: string;
+      }[];
+    };
+    user: {
+      username: string;
+    };
+  }
+  

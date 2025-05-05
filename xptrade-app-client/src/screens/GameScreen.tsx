@@ -1,18 +1,58 @@
 import { Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Text, View } from 'react-native';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { GameStackParamList } from '../navigations/stack/GameStackNav';
 import { AppContext } from '../context/AppContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { ImageZoom } from '@likashefqet/react-native-image-zoom';
 import ScreenshotGallery from '../components/ScreenshotGallery';
+import UseApi from '../hooks/UseApi';
+import { Result, XPTradeInputGame } from '../utils/TypeUtils';
+import { GameDetails } from '../utils/GameDetailsType';
+import UseRAWGApi from '../hooks/UseRAWGApi';
 
 type Props = NativeStackScreenProps<GameStackParamList, 'GameScreen'>;
 
 const GameScreen = (props: Props) => {
-  const { currentGame } = useContext(AppContext);
+  const [showPlatforms, setShowPlatforms] = useState(false);
+  const [showGenres, setShowGenres] = useState(false);
 
+  const [showPublishers, setShowPublishers] = useState(false);
+  const [showDevelopers, setShowDevelopers] = useState(false);
+  
+  const { currentGame, currentGameDetailed, username } = useContext(AppContext);
+
+  const { handleAddToCollection } = UseApi();
+
+  const addToCollection = async (game: GameDetails) => {
+    if(!game){
+      return;
+    }
+
+    const aux: XPTradeInputGame = {
+      game: {
+        title: game.name,
+        coverArt: game.background_image,
+        developerInputDTOSet: [], 
+        genreInputDTOSet: game.genres.map((genre) => ({
+          name: genre.name,
+        })),
+        platformInputDTOSet: game.platforms.map((p) => ({
+          name: p.platform.name,
+        })),
+        publisherInputDTOSet: [],
+        regionInputDTOSet: [],
+      },
+      user: {
+        username,
+      },
+    };
+  }
+
+  const addToFavorite = async (game: Result) => {
+
+  }
   return (
     <ScrollView className="flex-1 bg-[#0F1218]">
       {
@@ -62,14 +102,14 @@ const GameScreen = (props: Props) => {
 
           <View className="flex-row space-x-4">
             <TouchableOpacity
-              onPress={() => console.log("A")}
+              onPress={() => addToCollection(currentGameDetailed)}
               className="p-2"
             >
               <Icon name="add-circle-outline" size={22} color="#F6F7F7" />
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => console.log("A2")}
+              onPress={() => addToFavorite(currentGame)}
               className="p-2"
             >
               <Icon name="heart-outline" size={22} color="#F6F7F7" />
@@ -78,28 +118,104 @@ const GameScreen = (props: Props) => {
         </View>
 
         <View className="h-px bg-[#2C3038] mb-6" />
+{/* Plataformas */}
+{currentGame.platforms?.length > 0 && (
+  <View className="mb-4">
+    <TouchableOpacity 
+      onPress={() => setShowPlatforms(prev => !prev)} 
+      className="flex-row items-center mb-1"
+    >
+      <Text className="text-[#F6F7F7] font-semibold mr-2">Plataformas</Text>
+      <Icon 
+        name={showPlatforms ? 'caret-up-outline' : 'caret-down-outline'} 
+        size={16} 
+        color="#F6F7F7" 
+      />
+    </TouchableOpacity>
+    {showPlatforms && (
+      <View className="ml-2">
+        {currentGame.platforms.map((p) => (
+          <Text key={p.platform.id} className="text-[#ccc] mb-1">
+            {p.platform.name}
+          </Text>
+        ))}
+      </View>
+    )}
+  </View>
+)}
 
-        <View className="mb-4">
-          <Text className="text-[#F6F7F7] font-semibold mb-1">Plataformas:</Text>
-          <Text className="text-[#ccc]">
-            {currentGame.platforms.map(p => p.platform.name).join(', ')}
+{/* Géneros */}
+{currentGame.genres?.length > 0 && (
+  <View className="mb-4">
+    <TouchableOpacity 
+      onPress={() => setShowGenres(prev => !prev)} 
+      className="flex-row items-center mb-1"
+    >
+      <Text className="text-[#F6F7F7] font-semibold mr-2">Géneros</Text>
+      <Icon 
+        name={showGenres ? 'caret-up-outline' : 'caret-down-outline'} 
+        size={16} 
+        color="#F6F7F7" 
+      />
+    </TouchableOpacity>
+    {showGenres && (
+      <View className="ml-2">
+        {currentGame.genres.map((g) => (
+          <Text key={g.id} className="text-[#ccc] mb-1">
+            {g.name}
           </Text>
-        </View>
+        ))}
+      </View>
+    )}
+  </View>
+)}
 
-        <View className="mb-4">
-          <Text className="text-[#F6F7F7] font-semibold mb-1">ESRB:</Text>
-          <Text className="text-[#ccc]">
-            {currentGame.added.toFixed(1)}
-          </Text>
-        </View>
-        {currentGame.genres?.length > 0 && 
-        <View className="mb-4">
-          <Text className="text-[#F6F7F7] font-semibold mb-1">Géneros:</Text>
-          <Text className="text-[#ccc]">
-            {currentGame.genres.map(g => g.name).join(', ')}
-          </Text>
-        </View>
-        }
+<View className="mb-4">
+  <TouchableOpacity 
+    onPress={() => setShowPublishers(prev => !prev)} 
+    className="flex-row items-center mb-1"
+  >
+    <Text className="text-[#F6F7F7] font-semibold mr-2">Publisher(s)</Text>
+    <Icon 
+      name={showPublishers ? 'caret-up-outline' : 'caret-down-outline'} 
+      size={16} 
+      color="#F6F7F7" 
+    />
+  </TouchableOpacity>
+  {showPublishers && (
+    <View className="ml-2">
+      {currentGameDetailed.publishers.map((pub) => (
+        <Text key={pub.id} className="text-[#ccc] mb-1">
+          {pub.name}
+        </Text>
+      ))}
+    </View>
+  )}
+</View>
+
+<View className="mb-4">
+  <TouchableOpacity 
+    onPress={() => setShowDevelopers(prev => !prev)} 
+    className="flex-row items-center mb-1"
+  >
+    <Text className="text-[#F6F7F7] font-semibold mr-2">Desarrolladora(s)</Text>
+    <Icon 
+      name={showDevelopers ? 'caret-up-outline' : 'caret-down-outline'} 
+      size={16} 
+      color="#F6F7F7" 
+    />
+  </TouchableOpacity>
+  {showDevelopers && (
+    <View className="ml-2">
+      {currentGameDetailed.developers.map((dev) => (
+        <Text key={dev.id} className="text-[#ccc] mb-1">
+          {dev.name}
+        </Text>
+      ))}
+    </View>
+  )}
+</View>
+
 
         {currentGame.tags?.length > 0 && (
           <View className="mb-6">

@@ -6,6 +6,7 @@ import { AppContext } from '../context/AppContext';
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
+import { Result } from '../utils/TypeUtils';
 
 type Props = NativeStackScreenProps<ProfileStackParamList, 'ProfileScreen'>;
 

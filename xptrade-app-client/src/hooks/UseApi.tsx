@@ -9,6 +9,7 @@ import { AppContext } from '../context/AppContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../navigations/stack/AuthStackNav';
 import { userInfo } from 'os';
+import { XPTradeInputGame } from '../utils/TypeUtils';
 
 const UseApi = () => {
 
@@ -33,6 +34,7 @@ const UseApi = () => {
               ]);
   
               context.setUsername(username);
+              context.setToken(response.data)
 
               return "success";
           }
@@ -67,15 +69,25 @@ const UseApi = () => {
       
     };
 
-    const handleCollection = async (username : string) => {
-        if (!username?.trim()) return null;
+    /**
+     * Function to add a game to the collection
+     * @param username of the user
+     * @param game game to add
+     * @returns 
+     */
+    const handleAddToCollection = async (username : string, game : XPTradeInputGame) => {
+        if (!username?.trim() || !game) return null;
     
         try {
-            const response = await axios.post(`${URL_API}/v2/collections/users/${username}`, {
+            const response = await axios.post(`${URL_API}/v2/collections`, {
+                game,
+                user: username
+            },
+            {
                 headers: { 
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + context.token                  
-                }
+                }, 
             });
     
             if (response?.data) {
@@ -91,7 +103,7 @@ const UseApi = () => {
     };
     
     return {
-        handleLogin, handleRegister, handleCollection
+        handleLogin, handleRegister, handleAddToCollection
     }
 
 }

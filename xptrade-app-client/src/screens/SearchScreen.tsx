@@ -7,6 +7,7 @@ import { AppContext } from '../context/AppContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { GameStackParamList } from '../navigations/stack/GameStackNav';
 import PostButton from '../components/PostButton';
+import { Result } from '../utils/TypeUtils';
 
 type Props = NativeStackScreenProps<GameStackParamList, 'SearchScreen'>;
 
@@ -20,7 +21,7 @@ const SearchScreen = (props: Props) => {
 
   const context = useContext(AppContext);
   
-  const { handleFetch } = UseRAWGApi();
+  const { handleFetch, handleGameDetailsFetch } = UseRAWGApi();
 
   const getGames = async (search : string) => {
       const result : Result[] | null = await handleFetch(search);
@@ -43,6 +44,8 @@ const SearchScreen = (props: Props) => {
     }  
 
     context.setCurrentGame(game);
+    context.setCurrentGameDetailed(await handleGameDetailsFetch(game.slug));      
+
     props.navigation.navigate("GameScreen");
 
   }
