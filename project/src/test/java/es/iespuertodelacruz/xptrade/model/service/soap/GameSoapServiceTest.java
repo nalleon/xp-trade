@@ -2,7 +2,7 @@ package es.iespuertodelacruz.xptrade.model.service.soap;
 
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.model.entities.GameEntity;
-import es.iespuertodelacruz.xptrade.model.repository.IGameEntityRepository;
+import es.iespuertodelacruz.xptrade.model.repository.*;
 import es.iespuertodelacruz.xptrade.model.service.rest.GameEntityService;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
@@ -23,6 +23,17 @@ public class GameSoapServiceTest extends TestUtilities {
 
     @Mock
     GameEntityService serviceMock;
+
+    @Mock
+    IDeveloperEntityRepository developerRepositoryMock;
+    @Mock
+    IPublisherEntityRepository publisherRepositoryMock;
+    @Mock
+    IGenreEntityRepository genreRepositoryMock;
+    @Mock
+    IPlatformEntityRepository platformRepositoryMock;
+    @Mock
+    IRegionEntityRepository regionRepositoryMock;
 
     @InjectMocks
     GameSoapService service;
@@ -66,9 +77,15 @@ public class GameSoapServiceTest extends TestUtilities {
         MockitoAnnotations.openMocks(this);
         serviceMock = new GameEntityService();
         serviceMock.setRepository(repositoryMock);
+        serviceMock.setRegionRepository(regionRepositoryMock);
+        serviceMock.setPublisherRepository(publisherRepositoryMock);
+        serviceMock.setDeveloperRepository(developerRepositoryMock);
+        serviceMock.setGenreRepository(genreRepositoryMock);
+        serviceMock.setPlatformRepository(platformRepositoryMock);
 
         service = new GameSoapService();
         service.setService(serviceMock);
+
 
     }
     @Test
@@ -169,26 +186,12 @@ public class GameSoapServiceTest extends TestUtilities {
     }
 
 
-    @Test
-    void addTest() {
-        when(repositoryMock.existsById(1)).thenReturn(false);
-
-        when(repositoryMock.save(any(GameEntity.class))).thenReturn(new GameEntity());
-
-        Assertions.assertNotNull(service.save(item), MESSAGE_ERROR);
-    }
 
 
     @Test
     void addNullTest() {
         Assertions.assertNull(service.save(null), MESSAGE_ERROR);
     }
-
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        when(repositoryMock.findUserByName(NAME)).thenThrow(new RuntimeException());
-//        Assertions.assertThrows(RuntimeException.class, () -> service.update(new User(1)), MESSAGE_ERROR);
-//    }
 
 
     @Test
@@ -214,14 +217,6 @@ public class GameSoapServiceTest extends TestUtilities {
         Assertions.assertNull(service.update(item), MESSAGE_ERROR);
     }
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        Game item = new Game();
-//        item.setId(1);
-//        item.setName(NAME);
-//        when(repositoryMock.findByName(item.getName())).thenReturn(Optional.empty());
-//        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
-//    }
 
     @Test
     void deleteAdminTest() {

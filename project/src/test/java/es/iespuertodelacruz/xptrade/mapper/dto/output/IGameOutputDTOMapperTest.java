@@ -1,9 +1,8 @@
-package es.iespuertodelacruz.xptrade.mapper.dto;
+package es.iespuertodelacruz.xptrade.mapper.dto.output;
 
 import es.iespuertodelacruz.xptrade.domain.Game;
 
 import es.iespuertodelacruz.xptrade.dto.output.GameOutputDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.output.IGameOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

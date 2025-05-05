@@ -3,7 +3,9 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
+import es.iespuertodelacruz.xptrade.dto.input.GameInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.GameOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.input.IGameInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.IGameOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.shared.utils.FileStorageService;
@@ -264,7 +266,7 @@ public class GameRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(GameOutputDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(@RequestBody GameInputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El juego no puede ser nulo", null));
@@ -272,7 +274,9 @@ public class GameRESTController {
 
         try {
 
-            Game aux = IGameOutputDTOMapper.INSTANCE.toDomain(dto);
+
+
+            Game aux = IGameInputDTOMapper.INSTANCE.toDomain(dto);
             
             Game dbItem = service.add(aux.getTitle(), aux.getCoverArt(), 
                     aux.getDeveloperSet(), aux.getGenreSet(), aux.getPlatformSet(),
@@ -292,7 +296,7 @@ public class GameRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody GameOutputDTO dto) {
+            @RequestBody GameInputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest()
@@ -308,8 +312,8 @@ public class GameRESTController {
 
         try {
 
-            Game aux = IGameOutputDTOMapper.INSTANCE.toDomain(dto);
-            
+            Game aux = IGameInputDTOMapper.INSTANCE.toDomain(dto);
+
             dbItem.setTitle(aux.getTitle());
             dbItem.setCoverArt(aux.getCoverArt());
             dbItem.setPublisherSet(aux.getPublisherSet());
@@ -352,14 +356,27 @@ public class GameRESTController {
 
     @PostMapping(value = "/upload/{title}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadFile(@RequestParam("title") String title, @RequestParam("file") MultipartFile file) {
+
+        if(title == null || file == null) {
+            return ResponseEntity.badRequest()
+                    .body(new CustomApiResponse<>(400, "Invalid data", null));
+        }
+
+        Game dbItem = service.findByTitle(title);
+
+        if(dbItem == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, "Game NOT found", null));
+        }
+
         String message = "";
+
         try {
             String namefile = storageService.save(file);
             message = "" + namefile;
 
-            Game aux = service.findByTitle(title);
-            aux.setCoverArt(namefile);
-            Game result = service.updateCoverArt(aux.getId(), aux.getCoverArt());
+            dbItem.setCoverArt(namefile);
+            Game result = service.updateCoverArt(dbItem.getId(), dbItem.getCoverArt());
             GameOutputDTO dto = IGameOutputDTOMapper.INSTANCE.toDTO(result);
 
             return ResponseEntity.status(HttpStatus.OK).body(new CustomApiResponse<>(200, message, dto));
@@ -372,13 +389,19 @@ public class GameRESTController {
 
     @GetMapping("/img/{filename}")
     public ResponseEntity<?> getFiles(@PathVariable String filename) {
+        if(filename == null || filename.isEmpty()){
+            return ResponseEntity.badRequest()
+                .body(new CustomApiResponse<>(400, "Invalid data", null));
+        }
+
         Resource resource = storageService.get(filename);
 
         String contentType = null;
         try {
             contentType = URLConnection.guessContentTypeFromStream(resource.getInputStream());
         } catch (IOException ex) {
-            System.out.println("Could not determine file type.");
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
+                    new CustomApiResponse<>(417, "Could not determine file type.", null));
         }
 
         if (contentType == null) {

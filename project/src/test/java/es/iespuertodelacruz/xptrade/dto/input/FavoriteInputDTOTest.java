@@ -13,34 +13,13 @@ import java.util.Set;
 
 public class FavoriteInputDTOTest extends TestUtilities {
     FavoriteInputDTO item;
-    GameOutputDTO game;
+    GameInputDTO game;
     UserDTO user;
-    GenreOutputDTO genre;
-    RegionOutputDTO region;
-    PublisherOutputDTO publisher;
-    DeveloperOutputDTO developer;
-    PlatformOutputDTO platform;
-    Set<DeveloperOutputDTO> developerSet;
-    Set<GenreOutputDTO> genreSet;
-    Set<PlatformOutputDTO> platformSet;
-    Set<PublisherOutputDTO> publisherSet;
-    Set<RegionOutputDTO> regionSet;
 
     @BeforeEach
     public void beforeEach() {
-        genre = new GenreOutputDTO(ID, NAME);
-        region = new RegionOutputDTO(ID, NAME);
-        publisher = new PublisherOutputDTO(ID, NAME);
-        developer = new DeveloperOutputDTO(ID, NAME);
-        platform = new PlatformOutputDTO(ID, NAME);
 
-        developerSet = new HashSet<>(Collections.singletonList(developer));
-        genreSet = new HashSet<>(Collections.singletonList(genre));
-        platformSet = new HashSet<>(Collections.singletonList(platform));
-        publisherSet = new HashSet<>(Collections.singletonList(publisher));
-        regionSet = new HashSet<>(Collections.singletonList(region));
-
-        game = new GameOutputDTO(ID, TITLE, COVER_ART, developerSet, genreSet, platformSet, publisherSet, regionSet);
+        game = new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
         user =new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, ROLE_NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE);
         item = new FavoriteInputDTO(game, user);
 

@@ -8,7 +8,11 @@ import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.service.FavoriteService;
 import es.iespuertodelacruz.xptrade.domain.service.GameService;
 import es.iespuertodelacruz.xptrade.domain.service.UserService;
+import es.iespuertodelacruz.xptrade.dto.input.FavoriteInputDTO;
+import es.iespuertodelacruz.xptrade.dto.input.GameInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.FavoriteOutputDTO;
+import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
+import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
 import es.iespuertodelacruz.xptrade.model.service.rest.FavoriteEntityService;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
@@ -22,10 +26,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.when;
 
 public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
@@ -135,7 +140,13 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void addTest() {
         when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(new Favorite());
-        FavoriteOutputDTO aux = new FavoriteOutputDTO(1, gameOutputDTO, userDTO);
+        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
+
+        FavoriteInputDTO aux = new FavoriteInputDTO(
+                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                        new HashSet<>()),
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
 
         Assertions.assertEquals(HttpStatus.CREATED, controller.add(aux).getStatusCode(), MESSAGE_ERROR);
     }
@@ -145,19 +156,49 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(null).getStatusCode(), MESSAGE_ERROR);
     }
 
+    @Test
+    void addGameNullTest() {
+        FavoriteInputDTO aux = new FavoriteInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                new HashSet<>()),
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
+        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(aux).getStatusCode(), MESSAGE_ERROR);    }
+
+
+    @Test
+    void addUserNullTest() {
+        FavoriteInputDTO aux = new FavoriteInputDTO(
+                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                        new HashSet<>()),
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
+        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(null);
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(aux).getStatusCode(), MESSAGE_ERROR);
+    }
+
+
 
     @Test
     void addThrowsExceptionTest() {
-        FavoriteOutputDTO dto = new FavoriteOutputDTO(1, gameOutputDTO, userDTO);
+        FavoriteInputDTO aux = new FavoriteInputDTO(
+                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                        new HashSet<>()),
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
+        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
+        when(serviceMock.add(any(Game.class), any(User.class))).thenThrow(new RuntimeException());
         when(entityServiceMock.save(any(Favorite.class))).thenThrow(new RuntimeException());
 
         controller.setService(serviceMockException);
 
-        ResponseEntity<CustomApiResponse<?>> response = controller.add(dto);
+        ResponseEntity<CustomApiResponse<?>> response = controller.add(aux);
 
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode(), MESSAGE_ERROR);
     }
+
 
 
     @Test
@@ -179,41 +220,98 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
                 responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
+
     @Test
     void updateTest() {
-        Favorite aux = new Favorite(userDomain, gameDomain);
-        when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
-        when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(new Favorite());
-        when(serviceMock.update(any(Integer.class), any(Game.class), any(User.class))).thenReturn(aux);
+        FavoriteInputDTO aux = new FavoriteInputDTO(
+                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                        new HashSet<>()),
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
+        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
-        ResponseEntity responseEntity = controller.update(1, new FavoriteOutputDTO(aux.getId(), gameOutputDTO, userDTO));
+        when(serviceMock.findById(anyInt())).thenReturn(new Favorite());
+        when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(new Favorite());
+        when(serviceMock.update(anyInt(), any(Game.class), any(User.class))).thenReturn(new Favorite());
+
+
+        ResponseEntity responseEntity = controller.update(1, aux);
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
     void updateNotFoundTest() {
-        Favorite aux = new Favorite(1);
+        FavoriteInputDTO aux = new FavoriteInputDTO(
+                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                        new HashSet<>()),
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
+
         when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(new Favorite());
-        ResponseEntity responseEntity = controller.update(1, new FavoriteOutputDTO(aux.getId(), gameOutputDTO, userDTO));
+        ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
-    void updateInvalidDataTest() {
+    void updateNullTest() {
         when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(null);
-        ResponseEntity responseEntity = controller.update(1, null);
+        ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, null);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
-    void updateExceptionTest() throws Exception {
-        Favorite aux = new Favorite(1);
-        when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
-        when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(null);
+    void updateGameNullTest() {
+        FavoriteInputDTO aux = new FavoriteInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                new HashSet<>()),
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
+        when(serviceMock.findById(anyInt())).thenReturn(new Favorite());
+        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
 
-        when(serviceMock.update(1, gameDomain, userDomain)).thenThrow(new RuntimeException("Database error"));
-        ResponseEntity responseEntity = controller.update(1, new FavoriteOutputDTO(aux.getId(), gameOutputDTO, userDTO));
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.update(ID, aux).getStatusCode(), MESSAGE_ERROR);    }
+
+
+    @Test
+    void updateUserNullTest() {
+        FavoriteInputDTO aux = new FavoriteInputDTO(
+                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                        new HashSet<>()),
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
+        when(serviceMock.findById(anyInt())).thenReturn(new Favorite());
+        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(null);
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.update(ID,aux).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void updateIdNullTest() {
+        FavoriteInputDTO aux = new FavoriteInputDTO(
+                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                        new HashSet<>()),
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
+        when(serviceMock.findById(anyInt())).thenReturn(new Favorite());
+        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
+        when(serviceMock.update(anyInt(), any(Game.class), any(User.class))).thenReturn(null);
+
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.update(ID,aux).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void updateExceptionTest() throws Exception {
+        FavoriteInputDTO aux = new FavoriteInputDTO(
+                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                        new HashSet<>()),
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
+
+        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
+
+        when(serviceMock.findById(any(Integer.class))).thenReturn(new Favorite());
+        when(serviceMock.update(anyInt(),any(Game.class), any(User.class))).thenThrow(new RuntimeException());
+
+        ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
+
 
 }

@@ -115,11 +115,20 @@ public class UserEntityServiceTest extends TestUtilities {
         Assertions.assertNull(service.save(null), MESSAGE_ERROR);
     }
 
-//    @Test
-//    void updateExceptionTest() throws Exception {
-//        when(repositoryMock.findUserByName(NAME)).thenThrow(new RuntimeException());
-//        Assertions.assertThrows(RuntimeException.class, () -> service.update(new User(1)), MESSAGE_ERROR);
-//    }
+    @Test
+    void getRoleUserTest() throws Exception {
+        User user = new User();
+        user.setId(1);
+        user.setRole(new Role(1, "ROLE_ADMIN"));
+        user.setEmail("example@email.com");
+        user.setPassword("1q2w3e4r");
+        user.setUsername("nameTest");
+        when(service.getRoleUser()).thenReturn(new RoleEntity());
+
+        when(repositoryRoleMock.findRoleByName(anyString())).thenReturn(Optional.of(new RoleEntity()));
+        when(repositoryMock.save(any(UserEntity.class))).thenReturn(new UserEntity());
+        Assertions.assertNotNull(service.save(user), MESSAGE_ERROR);
+    }
 
 
     @Test

@@ -140,10 +140,9 @@ public class RoleRESTControllerV3Test extends TestUtilities {
 
     @Test
     void deleteNotFoundTest() {
-        Role aux = new Role(1, "ROLE_ADMIN");
-        when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
+        when(serviceMock.findById(any(Integer.class))).thenReturn(null);
         ResponseEntity responseEntity = controller.delete(1);
-        Assertions.assertEquals(HttpStatus.FORBIDDEN,
+        Assertions.assertEquals(HttpStatus.NOT_FOUND,
                 responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
