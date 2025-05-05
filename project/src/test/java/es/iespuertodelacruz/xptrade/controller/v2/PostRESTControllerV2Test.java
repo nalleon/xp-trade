@@ -315,7 +315,7 @@ PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new 
 
     @Test
     void updateExceptionTest() throws Exception {
-PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
         new HashSet<>(), new HashSet<>(), new HashSet<>()), 
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),

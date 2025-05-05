@@ -2,6 +2,7 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Region;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
+import es.iespuertodelacruz.xptrade.dto.input.RegionInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.RegionOutputDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.IRegionOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
@@ -82,7 +83,7 @@ public class RegionRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(RegionOutputDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(@RequestBody RegionInputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -103,7 +104,7 @@ public class RegionRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody RegionOutputDTO dto) {
+            @RequestBody RegionInputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
