@@ -6,7 +6,10 @@ import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.ICommentService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IPostService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
+import es.iespuertodelacruz.xptrade.dto.input.CommentInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.CommentOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.input.ICollectionInputDTOMapper;
+import es.iespuertodelacruz.xptrade.mapper.dto.input.ICommentInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.ICommentOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -133,29 +136,46 @@ public class CommentRESTControllerV2 {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(CommentOutputDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(@RequestBody CommentInputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
-            Comment aux = ICommentOutputDTOMapper.INSTANCE.toDomain(dto);
-            Comment dbItem = service.add(aux.getPost(), aux.getUser(), aux.getContent());
+            Comment aux = ICommentInputDTOMapper.INSTANCE.toDomain(dto);
+
+            Post postDb = postService.findById(dto.post().id());
+
+            if(postDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            User userDb = userService.findByUsername(aux.getUser().getUsername());
+
+            if(userDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            Comment dbItem = service.add(postDb, userDb, aux.getContent());
+
             CommentOutputDTO result = ICommentOutputDTOMapper.INSTANCE.toDTO(dbItem);
+
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new CustomApiResponse<>(201, "Comentario creado correctamente", result));
+                    .body(new CustomApiResponse<>(201, "Item successfully created", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el item", null));
+                    .body(new CustomApiResponse<>(500, "Error while creating item", null));
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody CommentOutputDTO dto) {
+            @RequestBody CommentInputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -170,11 +190,30 @@ public class CommentRESTControllerV2 {
 
         try {
 
-            Comment aux = ICommentOutputDTOMapper.INSTANCE.toDomain(dto);
+            Comment aux = ICommentInputDTOMapper.INSTANCE.toDomain(dto);
 
-            Comment updatedDbItem = service.update(aux.getId(), aux.getPost(), aux.getUser(), aux.getContent());
+            Post postDb = postService.findById(dto.post().id());
+
+            if(postDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            User userDb = userService.findByUsername(aux.getUser().getUsername());
+
+            if(userDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            Comment updatedDbItem = service.update(aux.getId(), postDb, userDb, aux.getContent());
 
             CommentOutputDTO result = ICommentOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
+
+            if(result == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new CustomApiResponse<>(404, "Item does not exists", null));
+            }
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
@@ -183,6 +222,7 @@ public class CommentRESTControllerV2 {
                     .body(new CustomApiResponse<>(500, "Error while trying to update", null));
         }
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
 

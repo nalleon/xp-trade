@@ -2,6 +2,7 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Developer;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
+import es.iespuertodelacruz.xptrade.dto.input.DeveloperInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.DeveloperOutputDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.IDeveloperOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
@@ -83,7 +84,7 @@ public class DeveloperRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(DeveloperOutputDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(@RequestBody DeveloperInputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -104,7 +105,7 @@ public class DeveloperRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody DeveloperOutputDTO dto) {
+            @RequestBody DeveloperInputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();

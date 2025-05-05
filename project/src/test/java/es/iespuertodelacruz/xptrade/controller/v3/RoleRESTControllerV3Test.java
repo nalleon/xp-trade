@@ -6,6 +6,7 @@ import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.service.RoleService;
 import es.iespuertodelacruz.xptrade.domain.service.RoleService;
+import es.iespuertodelacruz.xptrade.dto.input.RoleInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
 import es.iespuertodelacruz.xptrade.model.service.rest.RoleEntityService;
@@ -22,8 +23,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 public class RoleRESTControllerV3Test extends TestUtilities {
@@ -87,7 +87,7 @@ public class RoleRESTControllerV3Test extends TestUtilities {
     @Test
     void addTest() {
         when(serviceMock.add(any(String.class))).thenReturn(new Role());
-        RoleOutputDTO aux = new RoleOutputDTO(1, "ADMIN");
+        RoleInputDTO aux = new RoleInputDTO("a");
         ResponseEntity responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
@@ -99,7 +99,7 @@ public class RoleRESTControllerV3Test extends TestUtilities {
 
     @Test
     void addThrowsExceptionTest() {
-        RoleOutputDTO dto = new RoleOutputDTO(1, "a");
+        RoleInputDTO dto = new RoleInputDTO("a");
 
         when(entityServiceMock.save(any(Role.class))).thenThrow(new RuntimeException());
 
@@ -178,7 +178,7 @@ public class RoleRESTControllerV3Test extends TestUtilities {
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.update(any(Integer.class), any(String.class))).thenReturn(null);
 
-        when(serviceMock.update(1, aux.getName())).thenThrow(new RuntimeException("Database error"));
+        when(serviceMock.update(anyInt(), anyString())).thenThrow(new RuntimeException("Database error"));
         ResponseEntity responseEntity = controller.update(1, new RoleOutputDTO(aux.getId(), aux.getName()));
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }

@@ -4,8 +4,13 @@ import es.iespuertodelacruz.xptrade.controllers.v2.CommentRESTControllerV2;
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.Post;
 import es.iespuertodelacruz.xptrade.domain.service.*;
+import es.iespuertodelacruz.xptrade.dto.input.CommentInputDTO;
+import es.iespuertodelacruz.xptrade.dto.input.PostInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.CommentOutputDTO;
+import es.iespuertodelacruz.xptrade.dto.output.GameOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.PostOutputDTO;
+import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
+import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
 import es.iespuertodelacruz.xptrade.model.service.rest.CommentEntityService;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
@@ -19,12 +24,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-
+//TODO: actualizar tests de commentcontroller
 public class CommentRESTControllerV2Test extends MapperDTOHelper {
     @Mock
     CommentService serviceMock;
@@ -133,10 +138,21 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
     @Test
     void addTest() {
         when(serviceMock.add(any(Post.class), any(User.class), any(String.class))).thenReturn(new Comment());
-        CommentOutputDTO aux = new CommentOutputDTO(1, postOutputDTO, userDTO, CONTENT, CREATION_DATE);
+        CommentInputDTO aux = new CommentInputDTO(
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                        new HashSet<>(), new HashSet<>(),
+                new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                        new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
+                        CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE), CONTENT);
 
 
-        ResponseEntity responseEntity = controller.add(aux);
+        when(servicePostMock.findById(anyInt())).thenReturn(new Post());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
+
+
+        ResponseEntity<CustomApiResponse<?>> responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -146,17 +162,64 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
     }
 
     @Test
-    void addThrowsExceptionTest() {
-        CommentOutputDTO dto = new CommentOutputDTO(1, postOutputDTO, userDTO, CONTENT, CREATION_DATE);
+    void addPostNullTest() {
+        CommentInputDTO aux = new CommentInputDTO(
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                        new HashSet<>(), new HashSet<>(),
+                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
+                        CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE), CONTENT);
 
+
+        when(servicePostMock.findById(anyInt())).thenReturn(null);
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(aux).getStatusCode(), MESSAGE_ERROR);    }
+
+
+    @Test
+    void addUserNullTest() {
+        CommentInputDTO aux = new CommentInputDTO(
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                        new HashSet<>(), new HashSet<>(),
+                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
+                        CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE), CONTENT);
+
+
+        when(servicePostMock.findById(anyInt())).thenReturn(new Post());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(null);
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(aux).getStatusCode(), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void addThrowsExceptionTest() {
+        CommentInputDTO aux = new CommentInputDTO(
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                        new HashSet<>(), new HashSet<>(),
+                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
+                        CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE), CONTENT);
+
+        when(servicePostMock.findById(anyInt())).thenReturn(new Post());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
         when(entityServiceMock.save(any(Comment.class))).thenThrow(new RuntimeException());
 
         controller.setService(serviceMockException);
 
-        ResponseEntity<CustomApiResponse<?>> response = controller.add(dto);
+        ResponseEntity<CustomApiResponse<?>> response = controller.add(aux);
 
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode(), MESSAGE_ERROR);
     }
+
+
 
     @Test
     void deleteTest() {
@@ -180,43 +243,126 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
 
     @Test
     void updateTest() {
-        Comment aux = new Comment(postDomain, userDomain, CONTENT);
-        when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
-        when(serviceMock.add(any(Post.class), any(User.class), any(String.class))).thenReturn(new Comment());
-        when(serviceMock.update(any(Integer.class), any(Post.class), any(User.class),any(String.class))).thenReturn(aux);
-        CommentOutputDTO result = new CommentOutputDTO(1, postOutputDTO, userDTO, CONTENT, CREATION_DATE);
+        CommentInputDTO aux = new CommentInputDTO(
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                        new HashSet<>(), new HashSet<>(),
+                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
+                        CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE), CONTENT);
 
-        ResponseEntity responseEntity = controller.update(1, result);
+
+        when(servicePostMock.findById(anyInt())).thenReturn(new Post());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
+
+        when(serviceMock.findById(anyInt())).thenReturn(new Comment());
+        when(servicePostMock.add(any(Game.class), any(User.class), anyString(), anyString())).thenReturn(new Post());
+        when(serviceMock.update(anyInt(), any(Post.class), any(User.class), anyString())).thenReturn(new Comment());
+
+        ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
+
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
     void updateNotFoundTest() {
-        Comment aux = new Comment(1);
-        CommentOutputDTO result = new CommentOutputDTO(1, postOutputDTO, userDTO, CONTENT, CREATION_DATE);
+        CommentInputDTO aux = new CommentInputDTO(
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                        new HashSet<>(), new HashSet<>(),
+                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
+                        CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE), CONTENT);
 
-        when(serviceMock.add(any(Post.class), any(User.class), any(String.class))).thenReturn(new Comment());
-        ResponseEntity responseEntity = controller.update(1, result);
+
+        ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
-    void updateInvalidDataTest() {
-        when(serviceMock.add(any(Post.class), any(User.class), any(String.class))).thenReturn(null);
-        ResponseEntity responseEntity = controller.update(1, null);
+    void updateNullTest() {
+        ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, null);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
+    void updateGameNullTest() {
+        CommentInputDTO aux = new CommentInputDTO(
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                        new HashSet<>(), new HashSet<>(),
+                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
+                        CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE), CONTENT);
+
+        when(serviceMock.findById(anyInt())).thenReturn(new Comment());
+        when(servicePostMock.findById(anyInt())).thenReturn(null);
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.update(ID, aux).getStatusCode(), MESSAGE_ERROR);    }
+
+
+    @Test
+    void updateUserNullTest() {
+
+        CommentInputDTO aux = new CommentInputDTO(
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                        new HashSet<>(), new HashSet<>(),
+                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
+                        CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE), CONTENT);
+
+
+        when(serviceMock.findById(anyInt())).thenReturn(new Comment());
+        when(servicePostMock.findById(anyInt())).thenReturn(new Post());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(null);
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.update(ID,aux).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void updateIdNullTest() {
+        CommentInputDTO aux = new CommentInputDTO(
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                        new HashSet<>(), new HashSet<>(),
+                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
+                        CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE), CONTENT);
+
+
+        when(serviceMock.findById(anyInt())).thenReturn(new Comment());
+        when(servicePostMock.findById(anyInt())).thenReturn(new Post());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
+        when(serviceMock.update(anyInt(),any(Post.class), any(User.class), anyString())).thenReturn(null);
+
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.update(ID,aux).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
     void updateExceptionTest() throws Exception {
-        Comment aux = new Comment(1);
-        CommentOutputDTO result = new CommentOutputDTO(1, postOutputDTO, userDTO, CONTENT, CREATION_DATE);
+        CommentInputDTO aux = new CommentInputDTO(
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                        new HashSet<>(), new HashSet<>(),
+                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
+                        CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+                new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE), CONTENT);
 
-        when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
-        when(serviceMock.add(any(Post.class), any(User.class), any(String.class))).thenReturn(null);
 
-        when(serviceMock.update(1, postDomain, userDomain, CONTENT)).thenThrow(new RuntimeException("Database error"));
-        ResponseEntity responseEntity = controller.update(1, result);
+        when(servicePostMock.findById(anyInt())).thenReturn(new Post());
+        when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
+
+        when(serviceMock.findById(any(Integer.class))).thenReturn(new Comment());
+        when(serviceMock.update(anyInt(),any(Post.class), any(User.class), anyString())).thenThrow(new RuntimeException());
+
+        ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
