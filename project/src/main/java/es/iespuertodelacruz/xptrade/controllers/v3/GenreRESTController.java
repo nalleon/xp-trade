@@ -2,6 +2,7 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Genre;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
+import es.iespuertodelacruz.xptrade.dto.input.GenreInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.GenreOutputDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.IGenreOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
@@ -82,7 +83,7 @@ public class GenreRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(GenreOutputDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(@RequestBody GenreInputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -103,7 +104,7 @@ public class GenreRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody GenreOutputDTO dto) {
+            @RequestBody GenreInputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();

@@ -2,6 +2,7 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IRoleService;
+import es.iespuertodelacruz.xptrade.dto.input.RoleInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.IRoleOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
@@ -83,7 +84,7 @@ public class RoleRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(RoleOutputDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(@RequestBody RoleInputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));

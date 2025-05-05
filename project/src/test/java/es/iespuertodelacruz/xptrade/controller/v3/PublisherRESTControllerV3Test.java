@@ -4,8 +4,10 @@ import es.iespuertodelacruz.xptrade.controllers.v3.PublisherRESTController;
 import es.iespuertodelacruz.xptrade.controllers.v3.PublisherRESTController;
 import es.iespuertodelacruz.xptrade.domain.Publisher;
 import es.iespuertodelacruz.xptrade.domain.Publisher;
+import es.iespuertodelacruz.xptrade.domain.Publisher;
 import es.iespuertodelacruz.xptrade.domain.service.PublisherService;
 import es.iespuertodelacruz.xptrade.domain.service.PublisherService;
+import es.iespuertodelacruz.xptrade.dto.input.PublisherInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.PublisherOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.PublisherOutputDTO;
 import es.iespuertodelacruz.xptrade.model.service.rest.PublisherEntityService;
@@ -22,8 +24,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 public class PublisherRESTControllerV3Test extends TestUtilities {
@@ -48,15 +49,9 @@ public class PublisherRESTControllerV3Test extends TestUtilities {
 
     @Test
     void getAllTest() {
-        List<Publisher> list = new ArrayList<>();
-        list.add(new Publisher(1));
-        list.add(new Publisher(2));
-        list.add(new Publisher(3));
-        when(serviceMock.findAll()).thenReturn(list);
-        Assertions.assertNotNull(controller.getAll(), MESSAGE_ERROR);
+        when(serviceMock.findAll()).thenReturn(new ArrayList<>(List.of(new Publisher())));
+        Assertions.assertEquals(HttpStatus.OK, controller.getAll().getStatusCode(), MESSAGE_ERROR);
     }
-
-
 
     @Test
     void getAllEmptyTest() {
@@ -88,7 +83,7 @@ public class PublisherRESTControllerV3Test extends TestUtilities {
     @Test
     void addTest() {
         when(serviceMock.add(any(String.class))).thenReturn(new Publisher());
-        PublisherOutputDTO aux = new PublisherOutputDTO(1, "ADMIN");
+        PublisherInputDTO aux = new PublisherInputDTO("ADMIN");
         ResponseEntity responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
@@ -100,7 +95,7 @@ public class PublisherRESTControllerV3Test extends TestUtilities {
 
     @Test
     void addThrowsExceptionTest() {
-        PublisherOutputDTO dto = new PublisherOutputDTO(1, "a");
+        PublisherInputDTO dto = new PublisherInputDTO("ADMIN");
 
         when(entityServiceMock.save(any(Publisher.class))).thenThrow(new RuntimeException());
 
@@ -108,7 +103,6 @@ public class PublisherRESTControllerV3Test extends TestUtilities {
 
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, controller.add(dto).getStatusCode(), MESSAGE_ERROR);
     }
-
 
 
     @Test
@@ -139,7 +133,8 @@ public class PublisherRESTControllerV3Test extends TestUtilities {
         when(serviceMock.add(any(String.class))).thenReturn(new Publisher());
         when(serviceMock.update(any(Integer.class), any(String.class))).thenReturn(aux);
 
-        ResponseEntity responseEntity = controller.update(1, new PublisherOutputDTO(aux.getId(), aux.getName()));
+
+        ResponseEntity responseEntity = controller.update(1, new PublisherInputDTO("ADMIN"));
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -147,7 +142,7 @@ public class PublisherRESTControllerV3Test extends TestUtilities {
     void updateNotFoundTest() {
         Publisher aux = new Publisher(1);
         when(serviceMock.add(any(String.class))).thenReturn(new Publisher());
-        ResponseEntity responseEntity = controller.update(1, new PublisherOutputDTO(aux.getId(), aux.getName()));
+        ResponseEntity responseEntity = controller.update(1, new PublisherInputDTO("ADMIN"));
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -164,8 +159,8 @@ public class PublisherRESTControllerV3Test extends TestUtilities {
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.update(any(Integer.class), any(String.class))).thenReturn(null);
 
-        when(serviceMock.update(1, aux.getName())).thenThrow(new RuntimeException("Database error"));
-        ResponseEntity responseEntity = controller.update(1, new PublisherOutputDTO(aux.getId(), aux.getName()));
+        when(serviceMock.update(anyInt(), anyString())).thenThrow(new RuntimeException("Database error"));
+        ResponseEntity responseEntity = controller.update(1,new PublisherInputDTO("ADMIN"));
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 

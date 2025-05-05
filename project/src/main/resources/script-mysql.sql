@@ -167,13 +167,13 @@ CREATE TABLE `collections` (
     CONSTRAINT `fk_collections2` FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE `favourites` (
+CREATE TABLE `favorites` (
     id INTEGER AUTO_INCREMENT NOT NULL,
     game_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
-    CONSTRAINT `pk_favourites` PRIMARY KEY (id),
-    CONSTRAINT `fk_favourites1` FOREIGN KEY (game_id) REFERENCES games(id),
-    CONSTRAINT `fk_favourites2` FOREIGN KEY (user_id) REFERENCES users(id)
+    CONSTRAINT `pk_favorites` PRIMARY KEY (id),
+    CONSTRAINT `fk_favorites` FOREIGN KEY (game_id) REFERENCES games(id),
+    CONSTRAINT `fk_favorites2` FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE `comments` (

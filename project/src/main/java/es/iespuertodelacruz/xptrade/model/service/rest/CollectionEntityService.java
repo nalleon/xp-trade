@@ -39,13 +39,13 @@ public class CollectionEntityService implements IGenericSocialRepository<Collect
 
     @Override
     @Transactional
-    public Collection save(Collection favorite) {
-        if (favorite == null) {
+    public Collection save(Collection collection) {
+        if (collection == null) {
             return null;
         }
 
         try {
-            CollectionEntity entity = ICollectionEntityMapper.INSTANCE.toEntity(favorite);
+            CollectionEntity entity = ICollectionEntityMapper.INSTANCE.toEntity(collection);
             CollectionEntity savedEntity = repository.save(entity);
             return ICollectionEntityMapper.INSTANCE.toDomain(savedEntity);
         } catch (RuntimeException e) {
@@ -96,18 +96,19 @@ public class CollectionEntityService implements IGenericSocialRepository<Collect
 
     @Override
     @Transactional
-    public Collection update(Collection favorite) {
-        if (favorite == null) {
+    public Collection update(Collection collection) {
+        if (collection == null) {
             return null;
         }
-        CollectionEntity dbItem = repository.findById(favorite.getId()).orElse(null);
+        CollectionEntity dbItem = repository.findById(collection.getId()).orElse(null);
 
         if (dbItem == null) {
             return null;
         }
         try {
-            dbItem.setGame(IGameEntityMapper.INSTANCE.toEntity(favorite.getGame()));
-            dbItem.setUser(IUserEntityMapper.INSTANCE.toEntity(favorite.getUser()));
+            CollectionEntity aux = ICollectionEntityMapper.INSTANCE.toEntity(collection);
+            dbItem.setGame(aux.getGame());
+            dbItem.setUser(aux.getUser());
             return ICollectionEntityMapper.INSTANCE.toDomain(dbItem);
         } catch (RuntimeException e) {
             throw new RuntimeException("Invalid data: " + e);

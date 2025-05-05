@@ -2,6 +2,7 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Platform;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
+import es.iespuertodelacruz.xptrade.dto.input.PlatformInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.PlatformOutputDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.IPlatformOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
@@ -82,7 +83,7 @@ public class PlatformRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(PlatformOutputDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(@RequestBody PlatformInputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -103,7 +104,7 @@ public class PlatformRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody PlatformOutputDTO dto) {
+            @RequestBody PlatformInputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();

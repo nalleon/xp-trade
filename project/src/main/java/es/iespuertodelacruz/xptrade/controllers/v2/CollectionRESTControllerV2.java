@@ -6,7 +6,9 @@ import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.ICollectionService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
+import es.iespuertodelacruz.xptrade.dto.input.CollectionInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.CollectionOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.input.ICollectionInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.ICollectionOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -135,29 +137,48 @@ public class CollectionRESTControllerV2 {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(CollectionOutputDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(@RequestBody CollectionInputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
-                    .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
+                    .body(new CustomApiResponse<>(400, "Item cannot be null", null));
         }
 
         try {
-            Collection aux = ICollectionOutputDTOMapper.INSTANCE.toDomain(dto);
-            Collection dbItem = service.add(aux.getGame(), aux.getUser());
+            Collection aux = ICollectionInputDTOMapper.INSTANCE.toDomain(dto);
+
+            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(),
+                    aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
+                    aux.getGame().getPublisherSet(), aux.getGame().getRegionSet());
+
+            if(gameDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            User userDb = userService.findByUsername(aux.getUser().getUsername());
+
+            if(userDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            Collection dbItem = service.add(gameDb, userDb);
+
             CollectionOutputDTO result = ICollectionOutputDTOMapper.INSTANCE.toDTO(dbItem);
+
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
+                    .body(new CustomApiResponse<>(201, "Item created successfully", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el item", null));
+                    .body(new CustomApiResponse<>(500, "Error while trying to add item", null));
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody CollectionOutputDTO dto) {
+            @RequestBody CollectionInputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -172,9 +193,32 @@ public class CollectionRESTControllerV2 {
 
         try {
 
-            Collection aux = ICollectionOutputDTOMapper.INSTANCE.toDomain(dto);
+            Collection aux = ICollectionInputDTOMapper.INSTANCE.toDomain(dto);
 
-            Collection updatedDbItem = service.update(aux.getId(), aux.getGame(), aux.getUser());
+            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(),
+                    aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
+                    aux.getGame().getPublisherSet(), aux.getGame().getRegionSet());
+
+            if(gameDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            User userDb = userService.findByUsername(aux.getUser().getUsername());
+
+            if(userDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+
+            Collection updatedDbItem = service.update(id, gameDb, userDb);
+
+            if(updatedDbItem == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new CustomApiResponse<>(404, "Item does not exists", null));
+            }
+
 
             CollectionOutputDTO result = ICollectionOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
@@ -185,6 +229,7 @@ public class CollectionRESTControllerV2 {
                     .body(new CustomApiResponse<>(500, "Error while trying to update", null));
         }
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
 

@@ -3,34 +3,44 @@ package es.iespuertodelacruz.xptrade.controller.v3;
 import es.iespuertodelacruz.xptrade.controllers.v3.GameRESTController;
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.service.*;
+import es.iespuertodelacruz.xptrade.dto.input.*;
 import es.iespuertodelacruz.xptrade.dto.output.*;
-import es.iespuertodelacruz.xptrade.model.entities.GameEntity;
+import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
 import es.iespuertodelacruz.xptrade.model.repository.IGameEntityRepository;
-import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
 import es.iespuertodelacruz.xptrade.model.service.rest.GameEntityService;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
-import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
+import es.iespuertodelacruz.xptrade.shared.utils.FileStorageService;
+import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class GameRESTControllerV3Test extends MapperDTOHelper {
+public class GameRESTControllerV3Test extends TestUtilities {
     @Mock
     GameService serviceMock;
+
+    @Mock
+    FileStorageService storageServiceMock;
 
     @Mock
     DeveloperService serviceDeveloperMock;
@@ -55,8 +65,41 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
     @InjectMocks
     GameRESTController controller;
 
+    public UserDTO userDTO;
+    public User userDomain;
+
+    public GenreOutputDTO genreOutputDTO;
+    public Genre genreDomain;
+    public List<GenreOutputDTO> genreOutputDTOList;
+    public List<Genre> genreDomains;
+
+    public PublisherOutputDTO publisherOutputDTO;
+    public Publisher publisherDomain;
+    public List<PublisherOutputDTO> publisherOutputDTOList;
+    public List<Publisher> publisherDomains;
+
+    public DeveloperOutputDTO developerOutputDTO;
+    public Developer developerDomain;
+    public List<DeveloperOutputDTO> developerOutputDTOList;
+    public List<Developer> developerDomains;
+
+    public PlatformOutputDTO platformOutputDTO;
+    public Platform platformDomain;
+    public List<PlatformOutputDTO> platformOutputDTOList;
+    public List<Platform> platformDomains;
+
+    public RegionOutputDTO regionOutputDTO;
+    public Region regionDomain;
+    public List<RegionOutputDTO> regionOutputDTOList;
+    public List<Region> regionDomains;
+
+    public GameOutputDTO gameOutputDTO;
+    public Game gameDomain;
+    public Post postDomain;
 
 
+    public GameInputDTO gameInputDTO;
+    public List<GameInputDTO> gameInputDTOList;
 
     @BeforeEach
     public void beforeEach(){
@@ -70,6 +113,7 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
         controller.setRegionService(serviceRegionMock);
         controller.setPlatformService(servicePlatformMock);
         controller.setPublisherService(servicePublisherMock);
+        controller.setStorageService(storageServiceMock);
 
         genreDomain = new Genre();
         genreDomain.setId(ID);
@@ -147,6 +191,12 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
         gameDomain.setRegionSet(new HashSet<>(Collections.singletonList(regionDomain)));
         gameDomain.setGenreSet(new HashSet<>(Collections.singletonList(genreDomain)));
 
+        gameInputDTO = new GameInputDTO(TITLE, COVER_ART,new HashSet<>(Collections.singletonList(new DeveloperInputDTO(NAME))),
+                new HashSet<>(Collections.singletonList(new GenreInputDTO(NAME))),
+                new HashSet<>(Collections.singletonList(new PlatformInputDTO(NAME))),
+                new HashSet<>(Collections.singletonList(new PublisherInputDTO(NAME))),
+                new HashSet<>(Collections.singletonList(new RegionInputDTO(NAME)))
+        );
     }
     @Test
     void getAllTest() {
@@ -311,15 +361,29 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
         Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByTitle(TITLE).getStatusCode(), MESSAGE_ERROR);
     }
 
-    //@Test
+   @Test
     void addTest() {
-        when(serviceMock.add(any(String.class), any(String.class),
+        when(serviceMock.add(gameInputDTO.title(), gameInputDTO.coverArt(),
                 gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
                 gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(gameDomain);
 
-        Assertions.assertEquals(HttpStatus.CREATED, controller.add(gameOutputDTO).getStatusCode(), MESSAGE_ERROR);
+       Assertions.assertEquals(HttpStatus.CREATED, controller.add(gameInputDTO).getStatusCode(), MESSAGE_ERROR);
+    }
+    @Test
+    void addNullTest() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(null).getStatusCode(), MESSAGE_ERROR);
     }
 
+    @Test
+    void addExceptionTest() {
+        when(serviceMock.add(
+                anyString(), anyString(),
+                anySet(), anySet(), anySet(),
+                anySet(), anySet())
+        ).thenThrow(new RuntimeException());
+
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, controller.add(gameInputDTO).getStatusCode(), MESSAGE_ERROR);
+    }
 
     @Test
     void deleteTest() {
@@ -338,62 +402,138 @@ public class GameRESTControllerV3Test extends MapperDTOHelper {
                 responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
-    //@Test
+    @Test
     void updateTest() {
         when(serviceMock.findById(any(Integer.class))).thenReturn(gameDomain);
-        when(serviceMock.add(any(String.class), any(String.class),
-                gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
-                gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(new Game());
+        when(serviceMock.add(
+                anyString(), anyString(),
+                anySet(), anySet(), anySet(),
+                anySet(), anySet())
+        ).thenReturn(new Game());
 
+        when(serviceMock.update(anyInt(),
+                anyString(), anyString(),
+                anySet(), anySet(), anySet(),
+                anySet(), anySet())
+        ).thenReturn(gameDomain);
 
-        when(serviceMock.update(any(Integer.class),any(String.class), any(String.class),
-                gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
-                gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(gameDomain);
-
-        ResponseEntity responseEntity = controller.update(1, gameOutputDTO);
+        ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, gameInputDTO);
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
-    //@Test
+    @Test
+    void updateNullTest() {
+      ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, null);
+      Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
     void updateNotFoundTest() {
+        when(serviceMock.findById(any(Integer.class))).thenReturn(null);
 
-        when(serviceMock.add(any(String.class), any(String.class),
-                gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
-                gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(new Game());
-
-        when(serviceMock.update(any(Integer.class),any(String.class), any(String.class),
-                gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
-                gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(gameDomain);
-
-        ResponseEntity responseEntity = controller.update(1, gameOutputDTO);
+        ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, gameInputDTO);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
-    //@Test
-    void updateInvalidDataTest() {
-
-        when(serviceMock.add(any(String.class), any(String.class),
-                gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
-                gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(new Game());
-
-        ResponseEntity responseEntity = controller.update(1, null);
-        Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode(), MESSAGE_ERROR);
-    }
-
-    //@Test
+    @Test
     void updateExceptionTest() throws Exception {
 
         when(serviceMock.findById(any(Integer.class))).thenReturn(gameDomain);
-        when(serviceMock.add(any(String.class), any(String.class),
-                gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
-                gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(new Game());
 
-        when(serviceMock.update(any(Integer.class),any(String.class), any(String.class),
-                gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
-                gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenThrow(new RuntimeException("Database error"));
+        when(serviceMock.update(anyInt(),
+                anyString(), anyString(),
+                anySet(), anySet(), anySet(),
+                anySet(), anySet())
+        ).thenThrow(new RuntimeException());
 
-        ResponseEntity responseEntity = controller.update(1, gameOutputDTO);
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, controller.update(1,gameInputDTO).getStatusCode(), MESSAGE_ERROR);
+    }
+    @Test
+    void updateCoverTest() {
+        MultipartFile mockFile = mock(MultipartFile.class);
+
+        when(serviceMock.findByTitle(anyString())).thenReturn(gameDomain);
+        when(storageServiceMock.save(mockFile)).thenReturn("gameDomain");
+
+
+        when(serviceMock.updateCoverArt(anyInt(),
+                anyString())
+        ).thenReturn(gameDomain);
+
+
+        Assertions.assertEquals(HttpStatus.OK, controller.uploadFile(NAME, mockFile).getStatusCode(), MESSAGE_ERROR);
     }
 
+    @Test
+    void updateCoverNullTitleTest() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.uploadFile(null, null).getStatusCode(), MESSAGE_ERROR);
+
+    }
+
+    @Test
+    void updateCoverNullFileTest() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.uploadFile(NAME, null).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void updateCoverNotFoundTest() {
+        MultipartFile mockFile = mock(MultipartFile.class);
+        when(serviceMock.findByTitle(anyString())).thenReturn(null);
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.uploadFile(NAME, mockFile).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void updateCoverExceptionTest() throws Exception {
+        MultipartFile mockFile = mock(MultipartFile.class);
+
+        when(serviceMock.findByTitle(anyString())).thenReturn(gameDomain);
+        when(storageServiceMock.save(mockFile)
+        ).thenThrow(new RuntimeException());
+
+        when(serviceMock.updateCoverArt(anyInt(),
+                anyString())
+        ).thenThrow(new RuntimeException());
+
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, controller.uploadFile(NAME, mockFile).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getGameCoverNullTest() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.getFiles(null).getStatusCode(), MESSAGE_ERROR);
+    }
+    @Test
+    void getGameCoverEmptyTest() {
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.getFiles("").getStatusCode(), MESSAGE_ERROR);
+    }
+    @Test
+    void getGameCoverTest() throws IOException {
+        Resource resource = mock(Resource.class);
+        InputStream mockInputStream = new ByteArrayInputStream("dummy content".getBytes());
+        when(resource.getInputStream()).thenReturn(mockInputStream);
+        when(resource.getFilename()).thenReturn("dummy.txt");
+        when(storageServiceMock.get(anyString())).thenReturn(resource);
+
+        Assertions.assertEquals(HttpStatus.OK, controller.getFiles("dummy.txt").getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getGameCoverNullContentTypeTest() throws IOException {
+        Resource resource = mock(Resource.class);
+        InputStream mockInputStream = new ByteArrayInputStream("dummy content".getBytes());
+        when(resource.getInputStream()).thenReturn(mockInputStream);
+        when(resource.getFilename()).thenReturn("application/octet-stream");
+        when(storageServiceMock.get(anyString())).thenReturn(resource);
+
+        Assertions.assertEquals(HttpStatus.OK, controller.getFiles("dummy.txt").getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getGameCoverExceptionTest() throws IOException {
+        Resource resource = mock(Resource.class);
+        when(resource.getInputStream()).thenThrow(new IOException());
+        when(resource.getFilename()).thenReturn("dummy.txt");
+        when(storageServiceMock.get(anyString())).thenReturn(resource);
+
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, controller.getFiles("dummy.txt").getStatusCode(), MESSAGE_ERROR);
+    }
 }

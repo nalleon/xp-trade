@@ -2,7 +2,9 @@ package es.iespuertodelacruz.xptrade.controller.v3;
 
 import es.iespuertodelacruz.xptrade.controllers.v3.DeveloperRESTController;
 import es.iespuertodelacruz.xptrade.domain.Developer;
+import es.iespuertodelacruz.xptrade.domain.Developer;
 import es.iespuertodelacruz.xptrade.domain.service.DeveloperService;
+import es.iespuertodelacruz.xptrade.dto.input.DeveloperInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.DeveloperOutputDTO;
 import es.iespuertodelacruz.xptrade.model.service.rest.DeveloperEntityService;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
@@ -20,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ch.qos.logback.core.joran.spi.ConsoleTarget.findByName;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 public class DeveloperRESTControllerV3Test extends TestUtilities {
@@ -46,12 +47,8 @@ public class DeveloperRESTControllerV3Test extends TestUtilities {
 
     @Test
     void getAllTest() {
-        List<Developer> list = new ArrayList<>();
-        list.add(new Developer(1));
-        list.add(new Developer(2));
-        list.add(new Developer(3));
-        when(serviceMock.findAll()).thenReturn(list);
-        Assertions.assertNotNull(controller.getAll(), MESSAGE_ERROR);
+        when(serviceMock.findAll()).thenReturn(new ArrayList<>(List.of(new Developer())));
+        Assertions.assertEquals(HttpStatus.OK, controller.getAll().getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -84,7 +81,7 @@ public class DeveloperRESTControllerV3Test extends TestUtilities {
     @Test
     void addTest() {
         when(serviceMock.add(any(String.class))).thenReturn(new Developer());
-        DeveloperOutputDTO aux = new DeveloperOutputDTO(1, "ADMIN");
+        DeveloperInputDTO aux = new DeveloperInputDTO("ADMIN");
         ResponseEntity responseEntity = controller.add(aux);
         Assertions.assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
@@ -96,7 +93,7 @@ public class DeveloperRESTControllerV3Test extends TestUtilities {
 
     @Test
     void addThrowsExceptionTest() {
-        DeveloperOutputDTO dto = new DeveloperOutputDTO(1, "a");
+        DeveloperInputDTO dto = new DeveloperInputDTO("ADMIN");
 
         when(entityServiceMock.save(any(Developer.class))).thenThrow(new RuntimeException());
 
@@ -134,7 +131,8 @@ public class DeveloperRESTControllerV3Test extends TestUtilities {
         when(serviceMock.add(any(String.class))).thenReturn(new Developer());
         when(serviceMock.update(any(Integer.class), any(String.class))).thenReturn(aux);
 
-        ResponseEntity responseEntity = controller.update(1, new DeveloperOutputDTO(aux.getId(), aux.getName()));
+
+        ResponseEntity responseEntity = controller.update(1, new DeveloperInputDTO("ADMIN"));
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -142,7 +140,7 @@ public class DeveloperRESTControllerV3Test extends TestUtilities {
     void updateNotFoundTest() {
         Developer aux = new Developer(1);
         when(serviceMock.add(any(String.class))).thenReturn(new Developer());
-        ResponseEntity responseEntity = controller.update(1, new DeveloperOutputDTO(aux.getId(), aux.getName()));
+        ResponseEntity responseEntity = controller.update(1, new DeveloperInputDTO("ADMIN"));
         Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -159,8 +157,8 @@ public class DeveloperRESTControllerV3Test extends TestUtilities {
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.update(any(Integer.class), any(String.class))).thenReturn(null);
 
-        when(serviceMock.update(1, aux.getName())).thenThrow(new RuntimeException("Database error"));
-        ResponseEntity responseEntity = controller.update(1, new DeveloperOutputDTO(aux.getId(), aux.getName()));
+        when(serviceMock.update(anyInt(), anyString())).thenThrow(new RuntimeException("Database error"));
+        ResponseEntity responseEntity = controller.update(1,new DeveloperInputDTO("ADMIN"));
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 

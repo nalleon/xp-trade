@@ -2,6 +2,8 @@ package es.iespuertodelacruz.xptrade.controllers.v3;
 
 import es.iespuertodelacruz.xptrade.domain.Publisher;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGenericService;
+import es.iespuertodelacruz.xptrade.dto.input.PlatformInputDTO;
+import es.iespuertodelacruz.xptrade.dto.input.PublisherInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.PublisherOutputDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.IPublisherOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
@@ -83,7 +85,7 @@ public class PublisherRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(PublisherOutputDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(@RequestBody PublisherInputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
@@ -104,7 +106,7 @@ public class PublisherRESTController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody PublisherOutputDTO dto) {
+            @RequestBody PublisherInputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();

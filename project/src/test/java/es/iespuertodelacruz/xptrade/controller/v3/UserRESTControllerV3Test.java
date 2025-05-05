@@ -1,15 +1,13 @@
 package es.iespuertodelacruz.xptrade.controller.v3;
 
 import es.iespuertodelacruz.xptrade.controllers.v3.UserRESTController;
-import es.iespuertodelacruz.xptrade.domain.Collection;
-import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.Role;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.service.UserService;
-import es.iespuertodelacruz.xptrade.dto.output.CollectionOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserRegisterDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserUpdateInputDTO;
 import es.iespuertodelacruz.xptrade.mapper.entity.IUserEntityMapper;
+import es.iespuertodelacruz.xptrade.model.entities.UserEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IRoleEntityRepository;
 import es.iespuertodelacruz.xptrade.model.repository.IUserEntityRepository;
 import es.iespuertodelacruz.xptrade.model.service.rest.UserEntityService;
@@ -28,16 +26,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
 
 
 public class UserRESTControllerV3Test extends TestUtilities {
@@ -56,6 +54,8 @@ public class UserRESTControllerV3Test extends TestUtilities {
     @Mock
     IRoleEntityRepository repositoryRoleMock;
 
+    @Mock
+    IUserEntityMapper userEntityMapperMock;
 
     @InjectMocks
     UserService serviceMockException;
@@ -68,8 +68,8 @@ public class UserRESTControllerV3Test extends TestUtilities {
     public void beforeEach (){
         MockitoAnnotations.openMocks(this);
 
-        entityServiceMock.setRoleRepository(repositoryRoleMock);
         entityServiceMock.setRepository(repositoryMock);
+        entityServiceMock.setRoleRepository(repositoryRoleMock);
         serviceMock.setRepository(entityServiceMock);
 
         controller.setService(serviceMock);
@@ -132,10 +132,8 @@ public class UserRESTControllerV3Test extends TestUtilities {
         Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByEmail("a").getStatusCode(), MESSAGE_ERROR);
     }
 
-   // @Test
+    //@Test
     void addTest() {
-        when(serviceMock.add(anyString(), anyString(), anyString())).thenReturn(new User());
-        when(entityServiceMock.save(any(User.class))).thenReturn(new User());
 
         UserRegisterDTO aux = new UserRegisterDTO(USERNAME, PASSWORD, EMAIL);
         Assertions.assertEquals(HttpStatus.CREATED, controller.add(aux).getStatusCode(), MESSAGE_ERROR);
@@ -162,42 +160,34 @@ public class UserRESTControllerV3Test extends TestUtilities {
     @Test
     void addTestNullRequest() {
         ResponseEntity<?> responseEntity = controller.add(null);
-        Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode(), "Request should be rejected with BAD_REQUEST.");
-        Assertions.assertInstanceOf(CustomApiResponse.class, responseEntity.getBody(), "Response should be CustomApiResponse.");
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
    @Test
     void addTestNameConflict() {
-        User existingUser = new User();
-        existingUser.setUsername(NAME);
-        //"name", "pass", "mail", new Role(1, "ROLE_USER"
-
-        when(repositoryMock.findUserByName(NAME)).thenReturn(Optional.of(IUserEntityMapper.INSTANCE.toEntity(existingUser)));
+       when(serviceMock.findByUsername(anyString())).thenReturn(new User());
+       when(repositoryMock.findUserByName(anyString())).thenReturn(Optional.of(new UserEntity()));
 
         ResponseEntity<?> responseEntity = controller.add(new UserRegisterDTO(NAME, EMAIL, PASSWORD));
 
-        Assertions.assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode(), "User creation should be rejected due to name conflict.");
-        Assertions.assertInstanceOf(CustomApiResponse.class, responseEntity.getBody(), "Response should be CustomApiResponse.");
+        Assertions.assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
     void addTestEmailConflict() {
-        User existingUser = new User();
-        existingUser.setEmail(EMAIL);
-        when(repositoryMock.findUserByEmail(EMAIL)).thenReturn(Optional.of(IUserEntityMapper.INSTANCE.toEntity(existingUser)));
+        when(serviceMock.findByEmail(anyString())).thenReturn(new User());
+        when(repositoryMock.findUserByEmail(anyString())).thenReturn(Optional.of(new UserEntity()));
 
         ResponseEntity<?> responseEntity = controller.add(new UserRegisterDTO(NAME, EMAIL, PASSWORD));
 
-        Assertions.assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode(), "User creation should be rejected due to email conflict.");
-        Assertions.assertInstanceOf(CustomApiResponse.class, responseEntity.getBody(), "Response should be CustomApiResponse.");
-    }
+        Assertions.assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode(), MESSAGE_ERROR);}
 
     @Test
     void deleteOKTest() {
         when(repositoryMock.deleteEntityById(2)).thenReturn(1);
 
         when(serviceMock.delete(2)).thenReturn(true);
-        ResponseEntity responseEntity = controller.delete(2);
+        ResponseEntity<?> responseEntity = controller.delete(2);
         Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -216,10 +206,18 @@ public class UserRESTControllerV3Test extends TestUtilities {
 
     @Test
     void updateNullTest() {
-        ResponseEntity responseEntity = controller.update(1, null);
+        ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, null);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
+
+    @Test
+    void updateNotFoundTest() {
+        when(serviceMock.findById(anyInt())).thenReturn(null);
+
+        ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, new UserUpdateInputDTO(EMAIL, PASSWORD) );
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
+    }
 
     //@Test
     void updateTest() {
@@ -316,6 +314,16 @@ public class UserRESTControllerV3Test extends TestUtilities {
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode(), MESSAGE_ERROR);
         Assertions.assertNotNull(response.getBody(), MESSAGE_ERROR);
         Assertions.assertEquals("application/octet-stream", response.getHeaders().getContentType().toString(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getFileExceptionTest() throws IOException {
+        Resource resource = mock(Resource.class);
+        when(resource.getInputStream()).thenThrow(new IOException());
+        when(resource.getFilename()).thenReturn("dummy.txt");
+        when(storageServiceMock.get(anyString())).thenReturn(resource);
+
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, controller.getFiles("dummy.txt").getStatusCode(), MESSAGE_ERROR);
     }
 
 

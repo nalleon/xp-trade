@@ -6,7 +6,9 @@ import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IPostService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
+import es.iespuertodelacruz.xptrade.dto.input.PostInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.PostOutputDTO;
+import es.iespuertodelacruz.xptrade.mapper.dto.input.IPostInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.IPostOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -135,29 +137,49 @@ public class PostRESTController {
 
 
     @PostMapping
-    public ResponseEntity<CustomApiResponse<?>> add(PostOutputDTO dto) {
+    public ResponseEntity<CustomApiResponse<?>> add(@RequestBody PostInputDTO dto) {
         if (dto == null) {
             return ResponseEntity.badRequest()
                     .body(new CustomApiResponse<>(400, "El item no puede ser nulo", null));
         }
 
         try {
-            Post aux = IPostOutputDTOMapper.INSTANCE.toDomain(dto);
-            Post dbItem = service.add(aux.getGame(), aux.getUser(), aux.getContent(), aux.getPicture());
+            Post aux = IPostInputDTOMapper.INSTANCE.toDomain(dto);
+
+            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(),
+                    aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
+                    aux.getGame().getPublisherSet(), aux.getGame().getRegionSet());
+
+
+            if(gameDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            User userDb = userService.findByUsername(aux.getUser().getUsername());
+
+            if(userDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            Post dbItem = service.add(gameDb, userDb, aux.getContent(), aux.getPicture());
+
             PostOutputDTO result = IPostOutputDTOMapper.INSTANCE.toDTO(dbItem);
+
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el item", null));
+                    .body(new CustomApiResponse<>(500, "Error while creating item", null));
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody PostOutputDTO dto) {
+            @RequestBody PostInputDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -172,9 +194,30 @@ public class PostRESTController {
 
         try {
 
-            Post aux = IPostOutputDTOMapper.INSTANCE.toDomain(dto);
+            Post aux = IPostInputDTOMapper.INSTANCE.toDomain(dto);
+
+            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(),
+                    aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
+                    aux.getGame().getPublisherSet(), aux.getGame().getRegionSet());
+
+            if(gameDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            User userDb = userService.findByUsername(aux.getUser().getUsername());
+
+            if(userDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
 
             Post updatedDbItem = service.update(aux.getId(), aux.getGame(), aux.getUser(), aux.getContent(), aux.getPicture());
+
+            if(updatedDbItem == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new CustomApiResponse<>(404, "Item does not exists", null));
+            }
 
             PostOutputDTO result = IPostOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
@@ -185,6 +228,7 @@ public class PostRESTController {
                     .body(new CustomApiResponse<>(500, "Error while trying to update", null));
         }
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
 
