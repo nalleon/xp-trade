@@ -43,8 +43,6 @@ const ScreenshotGallery = ({ screenshots }) => {
 
   return (
     <View className="mb-8">
-      <Text className="text-[#F6F7F7] font-semibold mb-2">Otras imágenes:</Text>
-
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {screenshots.map((screenshot, index) => (
           <TouchableOpacity
