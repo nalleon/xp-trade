@@ -177,42 +177,55 @@ const GameScreen = (props: Props) => {
             </View>
             }
 
-{(currentGame.genres?.length > 0 || currentGame.tags?.length > 0 || currentGameDetailed.genres?.length > 0) && (
-  <View className="mb-6">
-    <View className="flex-row items-center justify-center my-6">
-      <View className="flex-1 h-px bg-[#3A3F4A]" />
-      <Text className="mx-3 text-[#999] text-xs uppercase">ETIQUETAS</Text>
-      <View className="flex-1 h-px bg-[#3A3F4A]" />
-    </View>
+        {(currentGame.genres?.length > 0 || currentGame.tags?.length > 0 || currentGameDetailed.genres?.length > 0) && (
+          <View className="mb-6">
+            <View className="flex-row items-center justify-center my-6">
+              <View className="flex-1 h-px bg-[#3A3F4A]" />
+              <Text className="mx-3 text-[#999] text-xs uppercase">ETIQUETAS</Text>
+              <View className="flex-1 h-px bg-[#3A3F4A]" />
+            </View>
 
-    <View className="flex-row flex-wrap justify-between gap-2">
-      {(currentGame.genres.length > 0 ? currentGame.genres : currentGameDetailed.genres)?.map((genre) => (
-        <View
-          key={`genre-${genre.id}`}
-          className="bg-[#1E222A] px-3 py-1 rounded-full mb-2 flex-grow"
-        >
-          <Text className="text-[#9D8D6A] text-xs text-center">{genre.name}</Text>
-        </View>
-      ))}
+            
+            <View className="flex-row flex-wrap justify-between gap-2">
+              {(currentGame.genres.length > 0 ? currentGame.genres : currentGameDetailed.genres)?.map((genre) => (
+                <View
+                  key={`genre-${genre.id}`}
+                  className="bg-[#1E222A] px-3 py-1 rounded-full mb-2 flex-grow"
+                >
+                  <Text
+                    className="text-[#9D8D6A] text-xs text-center"
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
+                    {genre.name}
+                  </Text>
+                </View>
+              ))}
 
-      {currentGame.tags
-        .filter((tag) => tag.language !== 'rus')
-        .filter((tag) => {
-          const genres = currentGame.genres.length > 0 ? currentGame.genres : currentGameDetailed.genres;
-          return !genres.some((genre) => genre.name.toLowerCase() === tag.name.toLowerCase());
-        })
-        .slice(0, 10)
-        .map((tag) => (
-          <View
-            key={`tag-${tag.id}`}
-            className="bg-[#1E222A] px-3 py-1 rounded-full mb-2 flex-grow"
-          >
-            <Text className="text-[#66B3B7] text-xs capitalize text-center">{tag.name}</Text>
+              {currentGame.tags
+                .filter((tag) => tag.language !== 'rus')
+                .filter((tag) => {
+                  const genres = currentGame.genres.length > 0 ? currentGame.genres : currentGameDetailed.genres;
+                  return !genres.some((genre) => genre.name.toLowerCase() === tag.name.toLowerCase());
+                })
+                .slice(0, 10)
+                .map((tag) => (
+                  <View
+                    key={`tag-${tag.id}`}
+                    className="bg-[#1E222A] px-3 py-1 rounded-full mb-2 flex-grow"
+                  >
+                    <Text
+                      className="text-[#66B3B7] text-xs capitalize text-center"
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {tag.name}
+                    </Text>
+                  </View>
+                ))}
+            </View>
           </View>
-        ))}
-    </View>
-  </View>
-)}
+        )}
 
         {currentGame.short_screenshots?.length > 0 && (
             <ScreenshotGallery screenshots={currentGame.short_screenshots}/>
