@@ -118,120 +118,99 @@ const GameScreen = (props: Props) => {
         </View>
 
         <View className="h-px bg-[#2C3038] mb-6" />
-{/* Plataformas */}
-{currentGame.platforms?.length > 0 && (
-  <View className="mb-4">
+
+
+<View className="flex-row justify-between gap-4 mb-4">
+
+  <View className="flex-1">
     <TouchableOpacity 
-      onPress={() => setShowPlatforms(prev => !prev)} 
+      onPress={() => setShowDevelopers(prev => !prev)} 
       className="flex-row items-center mb-1"
     >
-      <Text className="text-[#F6F7F7] font-semibold mr-2">Plataformas</Text>
+      <Text className="text-[#F6F7F7] font-semibold mr-2">Desarrolladora(s)</Text>
       <Icon 
-        name={showPlatforms ? 'caret-up-outline' : 'caret-down-outline'} 
+        name={showDevelopers ? 'caret-up-outline' : 'caret-down-outline'} 
         size={16} 
         color="#F6F7F7" 
       />
     </TouchableOpacity>
-    {showPlatforms && (
+    {showDevelopers && (
       <View className="ml-2">
-        {currentGame.platforms.map((p) => (
-          <Text key={p.platform.id} className="text-[#ccc] mb-1">
-            {p.platform.name}
+        {currentGameDetailed.developers.map((dev) => (
+          <Text key={dev.id} className="text-[#ccc] mb-1">
+            {dev.name}
           </Text>
         ))}
       </View>
     )}
   </View>
-)}
-
-{/* Géneros */}
-{currentGame.genres?.length > 0 && (
-  <View className="mb-4">
+    <View className="flex-1">
     <TouchableOpacity 
-      onPress={() => setShowGenres(prev => !prev)} 
+      onPress={() => setShowPublishers(prev => !prev)} 
       className="flex-row items-center mb-1"
     >
-      <Text className="text-[#F6F7F7] font-semibold mr-2">Géneros</Text>
+      <Text className="text-[#F6F7F7] font-semibold mr-2">Publisher(s)</Text>
       <Icon 
-        name={showGenres ? 'caret-up-outline' : 'caret-down-outline'} 
+        name={showPublishers ? 'caret-up-outline' : 'caret-down-outline'} 
         size={16} 
         color="#F6F7F7" 
       />
     </TouchableOpacity>
-    {showGenres && (
+    {showPublishers && (
       <View className="ml-2">
-        {currentGame.genres.map((g) => (
-          <Text key={g.id} className="text-[#ccc] mb-1">
-            {g.name}
+        {currentGameDetailed.publishers.map((pub) => (
+          <Text key={pub.id} className="text-[#ccc] mb-1">
+            {pub.name}
           </Text>
         ))}
       </View>
     )}
   </View>
-)}
 
-<View className="mb-4">
-  <TouchableOpacity 
-    onPress={() => setShowPublishers(prev => !prev)} 
-    className="flex-row items-center mb-1"
-  >
-    <Text className="text-[#F6F7F7] font-semibold mr-2">Publisher(s)</Text>
-    <Icon 
-      name={showPublishers ? 'caret-up-outline' : 'caret-down-outline'} 
-      size={16} 
-      color="#F6F7F7" 
-    />
-  </TouchableOpacity>
-  {showPublishers && (
-    <View className="ml-2">
-      {currentGameDetailed.publishers.map((pub) => (
-        <Text key={pub.id} className="text-[#ccc] mb-1">
-          {pub.name}
-        </Text>
-      ))}
-    </View>
-  )}
 </View>
 
-<View className="mb-4">
-  <TouchableOpacity 
-    onPress={() => setShowDevelopers(prev => !prev)} 
-    className="flex-row items-center mb-1"
-  >
-    <Text className="text-[#F6F7F7] font-semibold mr-2">Desarrolladora(s)</Text>
-    <Icon 
-      name={showDevelopers ? 'caret-up-outline' : 'caret-down-outline'} 
-      size={16} 
-      color="#F6F7F7" 
-    />
-  </TouchableOpacity>
-  {showDevelopers && (
-    <View className="ml-2">
-      {currentGameDetailed.developers.map((dev) => (
-        <Text key={dev.id} className="text-[#ccc] mb-1">
-          {dev.name}
-        </Text>
-      ))}
-    </View>
-  )}
+{currentGame.platforms?.length > 0 && 
+        <View className="mb-4">
+          <Text className="text-[#F6F7F7] font-semibold mb-1">Plataformas:</Text>
+          <Text className="text-[#ccc]">
+            {currentGame.platforms.map(p => p.platform.name).join(', ')}
+          </Text>
+        </View>
+        }
+
+{(currentGame.genres?.length > 0 || currentGame.tags?.length > 0) && (
+  <View className="mb-6">
+<View className="flex-row items-center justify-center my-6">
+  <View className="flex-1 h-px bg-[#3A3F4A]" />
+  <Text className="mx-3 text-[#999] text-xs uppercase">ETIQUETAS</Text>
+  <View className="flex-1 h-px bg-[#3A3F4A]" />
 </View>
 
+    <View className="flex-row flex-wrap justify-between gap-2">
+      {currentGame.genres.map((genre) => (
+        <View
+          key={`genre-${genre.id}`}
+          className="bg-[#1E222A] px-3 py-1 rounded-full mb-2 flex-grow"
+        >
+          <Text className="text-[#9D8D6A] text-xs text-center">{genre.name}</Text>
+        </View>
+      ))}
 
-        {currentGame.tags?.length > 0 && (
-          <View className="mb-6">
-            <Text className="text-[#F6F7F7] font-semibold mb-2">Tags:</Text>
-            <View className="flex-row flex-wrap justify-between gap-2">
-              {currentGame.tags.slice(0, 10).map((tag) => (
-                <View
-                  key={tag.id}
-                  className="bg-[#1E222A] px-3 py-1 rounded-full mb-2 flex-grow"
-                >
-                  <Text className="text-[#66B3B7] text-xs capitalize text-center">{tag.name}</Text>
-                </View>
-              ))}
-            </View>
+      {currentGame.tags
+        .filter((tag) => tag.language !== 'rus')
+        .filter((tag) => !currentGame.genres.some((genre) => genre.name.toLowerCase() === tag.name.toLowerCase()))
+        .slice(0, 10)
+        .map((tag) => (
+          <View
+            key={`tag-${tag.id}`}
+            className="bg-[#1E222A] px-3 py-1 rounded-full mb-2 flex-grow"
+          >
+            <Text className="text-[#66B3B7] text-xs capitalize text-center">{tag.name}</Text>
           </View>
-        )}
+        ))}
+    </View>
+  </View>
+)}
 
 
 
