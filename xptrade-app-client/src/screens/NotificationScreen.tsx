@@ -16,10 +16,16 @@ const NotificationScreen = (props: Props) => {
   const [comments, setComments] = useState<Comment[]>([]);
 
   const context = useContext(AppContext);
-  const [showPostModal, setShowPostModal] = useState(false);
-  const handleCreatePost = (text: string) => {
-    console.log('Publicación enviada:', text);
+const [showPostModal, setShowPostModal] = useState(false);
+
+  const handlePostCreated = (postData: {
+    text: string;
+    image?: string;
+    game: any;
+  }) => {
+    console.log('Nueva publicación creada:', postData);
   };
+  
   const navigateToComment = async (comment: Comment) => {
     if (!comment) {
       return;
@@ -53,9 +59,9 @@ const NotificationScreen = (props: Props) => {
       />
 
       <CreatePostModal
-        showModal={showPostModal}
+        visible={showPostModal}
         onClose={() => setShowPostModal(false)}
-        onSubmit={handleCreatePost}
+        onPostCreated={handlePostCreated}
       />
       <PostButton onPress={() => setShowPostModal(true)} />
     </View>

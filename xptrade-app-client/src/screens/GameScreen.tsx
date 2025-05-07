@@ -82,7 +82,9 @@ const GameScreen = (props: Props) => {
 
   }
   return (
-    <ScrollView className="flex-1 bg-[#0F1218]" scrollEnabled={isScrollEnabled}>
+    <ScrollView className="flex-1 bg-[#0F1218]" scrollEnabled={isScrollEnabled}
+      contentContainerStyle={{flexGrow:1}}
+    >
       {
         currentGame.background_image &&
         <Image

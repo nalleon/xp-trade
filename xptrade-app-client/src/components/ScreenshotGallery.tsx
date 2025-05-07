@@ -42,7 +42,7 @@ const ScreenshotGallery = ({ screenshots }) => {
   };
 
   return (
-    <View className="mb-8">
+    <View className="mb-8 mt-4">
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {screenshots.map((screenshot, index) => (
           <TouchableOpacity

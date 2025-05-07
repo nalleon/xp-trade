@@ -29,6 +29,7 @@ const SearchScreen = (props: Props) => {
   }) => {
     console.log('Nueva publicación creada:', postData);
   };
+  
   const context = useContext(AppContext);
 
   const { handleFetch, handleGameDetailsFetch } = UseRAWGApi();

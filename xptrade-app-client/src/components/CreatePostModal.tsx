@@ -1,7 +1,7 @@
 import { View, Text, Modal, TouchableOpacity, TextInput, Image, FlatList } from 'react-native';
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Result } from '../utils/TypeUtils'; // Asegúrate de que esté tipado correctamente
+import { Result } from '../utils/TypeUtils';
 import UseRAWGApi from '../hooks/UseRAWGApi';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';
 
@@ -12,7 +12,7 @@ type Props = {
 };
 
 const CreatePostModal = ({ visible, onClose, onPostCreated }: Props) => {
-    const [text, setText] = useState('');
+    const [text, setText] = useState<string>('');
     const [imageUri, setImageUri] = useState<string | null>(null);
     const [search, setSearch] = useState('');
     const [games, setGames] = useState<Result[]>([]);
@@ -50,7 +50,7 @@ const CreatePostModal = ({ visible, onClose, onPostCreated }: Props) => {
     };
 
     const handlePost = () => {
-        if (!selectedGame) return;
+        if (!selectedGame || !text || text.trim().length == 0) return;
         onPostCreated?.({
             text,
             image: imageUri || undefined,
@@ -69,26 +69,25 @@ const CreatePostModal = ({ visible, onClose, onPostCreated }: Props) => {
             <View className="flex-1 bg-black/50 justify-center items-center px-4">
                 <View className="bg-[#1E222A] w-full max-h-[90%] rounded-xl p-4">
                     <View className="flex-row justify-between items-center mb-4">
-                        {/* Botón Cerrar */}
                         <TouchableOpacity onPress={onClose}>
                             <Icon name="close" size={22} color="#F6F7F7" />
                         </TouchableOpacity>
 
-                        {/* Botón Publicar */}
                         <TouchableOpacity
-                            disabled={!text || !selectedGame}
+                            disabled={text.trim().length === 0 || !selectedGame}
                             onPress={handlePost}
-                            className={`px-3 py-1 rounded-full ${!text || !selectedGame ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
+                            className={`px-3 py-1 rounded-full ${text.trim().length === 0 || !selectedGame ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
                         >
-                            <Text className={`text-sm font-semibold ${!text || !selectedGame ? 'text-[#0F1218]' : 'text-[#F6F7F7]'} `}>Publicar</Text>
+                            <Text className={`text-sm font-semibold ${text.trim().length === 0 || !selectedGame ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
+                                Publicar
+                            </Text>
                         </TouchableOpacity>
+
                     </View>
 
 
-                    {/* Game search input */}
                     {!selectedGame && (
                         <>
-                            {/* Barra de búsqueda minimalista */}
                             <View className="flex-row items-center bg-[#2C3038] rounded-tl-xl rounded-br-xl px-3  mb-3">
                                 <TextInput
                                     className="flex-1 text-[#F6F7F7] text-xs placeholder-[#888] border-none"
@@ -149,7 +148,6 @@ const CreatePostModal = ({ visible, onClose, onPostCreated }: Props) => {
                         </>
                     )}
 
-                    {/* Selected Game */}
                     {selectedGame && (
                         <View className="flex-row items-center p-1 rounded bg-[#2C3038] mb-2">
                             {selectedGame.background_image && (
@@ -186,7 +184,6 @@ const CreatePostModal = ({ visible, onClose, onPostCreated }: Props) => {
                         </View>
                     )}
 
-                    {/* Post text */}
                     <TextInput
                         placeholder="¿Qué estás pensando?"
                         placeholderTextColor="#aaa"
@@ -195,16 +192,28 @@ const CreatePostModal = ({ visible, onClose, onPostCreated }: Props) => {
                         multiline
                         className="bg-[#2C3038] text-white rounded p-3 h-24 mb-3"
                     />
-
-                    {/* Image */}
-                    {imageUri && (
-                        <Image source={{ uri: imageUri }} className="w-full h-40 rounded mb-3" resizeMode="cover" />
+                    {image?.uri && (
+                        <View className="relative mb-2 w-full items-end">
+                            <Image
+                                source={{ uri: image.uri }}
+                                className="w-full h-40 rounded"
+                                resizeMode="cover"
+                            />
+                            <TouchableOpacity
+                                onPress={() => setImage(undefined)}
+                                className="absolute top-1 right-1 bg-black/80 rounded-full p-1"
+                            >
+                                <Icon name="close" size={16} color="#fff" />
+                            </TouchableOpacity>
+                        </View>
                     )}
 
                     <TouchableOpacity onPress={pickImage} className="flex-row items-center space-x-2 mt-2">
                         <Icon name="image-outline" size={24} color="#556791" />
                         <Text className="text-[#556791] font-medium text-sm">Añadir imagen</Text>
                     </TouchableOpacity>
+
+
                 </View>
             </View>
         </Modal>
