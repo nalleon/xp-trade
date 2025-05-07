@@ -167,8 +167,7 @@ public class GameEntityService implements IGameRepository {
             
             results.add(item);
         }
-        System.out.println("DEVELOPERS: " + results);
-
+        
         return results;
     }
 

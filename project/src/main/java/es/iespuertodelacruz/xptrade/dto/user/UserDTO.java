@@ -16,5 +16,5 @@ public record UserDTO (@JsonIgnore int id,
                        @JsonIgnore int verified,
                        @JsonIgnore String verificationToken,
                        @JsonIgnore Date creationDate,
-                       @JsonIgnore String profilePicture){
+                       String profilePicture){
 }
