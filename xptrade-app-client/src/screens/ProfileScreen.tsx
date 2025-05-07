@@ -7,13 +7,21 @@ import { AppContext } from '../context/AppContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
 import { Result } from '../utils/TypeUtils';
+import CreatePostModal from '../components/CreatePostModal';
+import PostButton from '../components/PostButton';
 
 type Props = NativeStackScreenProps<ProfileStackParamList, 'ProfileScreen'>;
 
 const ProfileScreen = (props: Props) => {
   const [search, setSearch] = useState<string>("")
-
+  
   const context = useContext(AppContext);
+  
+  const [showPostModal, setShowPostModal] = useState(false);
+  const handleCreatePost = (text: string) => {
+    console.log('Publicación enviada:', text);
+  };
+
 
   const navigateToPost = async (post : Result) => {
     if (!post){
@@ -101,6 +109,13 @@ const ProfileScreen = (props: Props) => {
       <TouchableOpacity className="bg-[#66B3B7] px-6 py-2 rounded-lg" onPress={() => navigateCollection}>
         <Text className="text-[#F6F7F7] text-base font-semibold">SHOW COLLECTION</Text>
       </TouchableOpacity>
+      <CreatePostModal
+        showModal={showPostModal}
+        onClose={() => setShowPostModal(false)}
+        onSubmit={handleCreatePost}
+      />
+      <PostButton onPress={() => setShowPostModal(true)} />
+
     </View>
   
   )
