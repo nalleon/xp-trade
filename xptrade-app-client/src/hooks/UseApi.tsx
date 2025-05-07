@@ -14,72 +14,133 @@ import { XPTradeInputGame } from '../utils/TypeUtils';
 const UseApi = () => {
 
     const context = useContext(AppContext);
-    const pullingInterval = useRef<NodeJS.Timeout | null>(null); 
-    
+    const pullingInterval = useRef<NodeJS.Timeout | null>(null);
+
     /**
      * Function to login
      * @param username of the user
      * @param password of the user
-     * @returns success if registration is okay, null otherwise
+     * @returns success if login is okay, null otherwise
      */
     const handleLogin = async (username: string, password: string): Promise<string | null> => {
-      if (!username?.trim() || !password?.trim()) return null;
-  
-      try {
-          const response = await axios.post(`${URL_API}/v1/auth/login`, {
-              name: username,
-              password: password 
-          }, {
-              headers: { 'Content-Type': 'application/json' }
-          });
-  
-          if (response?.data) {
-              await AsyncStorage.multiSet([
-                  ["token", response.data],
-                  ["username", username]
-              ]);
-  
-              context.setUsername(username);
-              context.setToken(response.data)
+        if (!username?.trim() || !password?.trim()) return null;
 
-              return "success";
-          }
-      } catch (error) {
-          console.error("Error al iniciar sesión"); 
-      }
-  
-      return null;
-  };
+        try {
+            const response = await axios.post(`${URL_API}/v1/auth/login`, {
+                name: username,
+                password: password
+            }, {
+                headers: { 'Content-Type': 'application/json' }
+            });
 
-  /**
-   * Function to register an user 
-   * @param username of the user
-   * @param email of the user
-   * @param password of the user
-   * @returns success if registration is okay, null otherwise
-   */
-    const handleRegister = async (username : string, email : string, password : string) => {
-      if (!username?.trim() || !password?.trim() || !email?.trim()) return null;
-  
-      try {
-          const response = await axios.post(`${URL_API}/v1/auth/register`, {
-              name: username,
-              email: email,
-              password: password 
-          }, {
-              headers: { 'Content-Type': 'application/json' }
-          });
-  
-          if (response?.data) {
-              return "success";
-          } else {
-            return null;
-          }
+            if (response?.data) {
+                await AsyncStorage.multiSet([
+                    ["token", response.data],
+                    ["username", username]
+                ]);
 
-      } catch (error) {
-        console.error("Error while registering", error);
-      }
-      
+                context.setToken(response.data)
+
+                return "success";
+            }
+        } catch (error) {
+            console.error("Error al iniciar sesión");
+        }
+
+        return null;
+    };
+
+    /**
+     * Function to get an user name and pfp's name
+     * @param username of the user
+     * @returns success if petition is okay, null otherwise
+     */
+    const getUser = async (username: string): Promise<string | null> => {
+        if (!username?.trim()) return null;
+
+        try {
+            const response = await axios.get(`${URL_API}/v2/users/username/${username}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + context.token
+                }
+            });
+
+            if (response?.data) {
+                await AsyncStorage.multiSet([
+                    ["username", response.data.username],
+                    ["pfp", response.data.profilePicture]
+                ]);
+
+                context.setUsername(username);
+
+                return "success";
+            }
+        } catch (error) {
+            console.error("Error al iniciar sesión");
+        }
+
+        return null;
+    };
+
+
+    //TODO
+    const getUserPfp = async (pfpName: string): Promise<string | null> => {
+        if (!pfpName?.trim()) return null;
+
+
+        try {
+            const response = await axios.get(`${URL_API}/v2/users/images/${pfpName}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + context.token
+                }
+            });
+
+            if (response?.data) {
+                await AsyncStorage.multiSet([
+                    ["username", response.data.username],
+                    ["pfp", response.data.profilePicture]
+                ]);
+
+                return "success";
+            }
+        } catch (error) {
+            console.error("Error al iniciar sesión");
+        }
+
+        return null;
+    };
+
+    /**
+     * Function to register an user 
+     * @param username of the user
+     * @param email of the user
+     * @param password of the user
+     * @returns success if registration is okay, null otherwise
+     */
+    const handleRegister = async (username: string, email: string, password: string) => {
+        if (!username?.trim() || !password?.trim() || !email?.trim()) return null;
+
+        try {
+            const response = await axios.post(`${URL_API}/v1/auth/register`, {
+                name: username,
+                email: email,
+                password: password
+            }, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (response?.data) {
+                return "success";
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while registering", error);
+        }
+
     };
 
     /**
@@ -88,33 +149,33 @@ const UseApi = () => {
      * @param game game to add
      * @returns 
      */
-    const handleAddToCollection = async (username : string, game : XPTradeInputGame) => {
+    const handleAddToCollection = async (username: string, game: XPTradeInputGame) => {
         if (!username?.trim() || !game) return null;
-    
+
         try {
             const response = await axios.post(`${URL_API}/v2/collections`, {
                 game,
                 user: username
             },
-            {
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + context.token                  
-                }, 
-            });
-    
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
             if (response?.data) {
                 return response?.data;
             } else {
-              return null;
+                return null;
             }
-  
+
         } catch (error) {
-          console.error("Error while fetching collections", error);
+            console.error("Error while fetching collections", error);
         }
-        
+
     };
-    
+
     return {
         handleLogin, handleRegister, handleAddToCollection
     }

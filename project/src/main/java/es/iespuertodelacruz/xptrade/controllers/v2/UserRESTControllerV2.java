@@ -140,7 +140,7 @@ public class UserRESTControllerV2 {
 
             User result = service.updatePicture(aux.getUsername(), aux.getEmail(), aux.getPassword(), aux.getProfilePicture());
 
-            UserOutputDTO dto = new UserOutputDTO(result.getUsername(), result.getEmail());
+            UserDTO dto = IUserDTOMapper.INSTANCE.toDTO(result);
             return ResponseEntity.status(HttpStatus.OK).body(new CustomApiResponse<>(200, message, dto));
         } catch (Exception e) {
             message = "Could not upload the file: " + file.getOriginalFilename()
