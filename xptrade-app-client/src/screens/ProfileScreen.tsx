@@ -59,7 +59,7 @@ const ProfileScreen = (props: Props) => {
 
       <View className="items-center mb-6">
         <View className="w-24 h-24 rounded-full bg-[#1E222A] mb-2" />
-        <Text className="text-[#F6F7F7] text-lg font-semibold">gatoviotas</Text>
+        <Text className="text-[#F6F7F7] text-lg font-semibold">{context.username}</Text>
         <Text className="text-[#999] text-sm">derecha donde tu izquierda yo</Text>
       </View>
     

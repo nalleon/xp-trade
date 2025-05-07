@@ -16,6 +16,12 @@ const UseApi = () => {
     const context = useContext(AppContext);
     const pullingInterval = useRef<NodeJS.Timeout | null>(null); 
     
+    /**
+     * Function to login
+     * @param username of the user
+     * @param password of the user
+     * @returns success if registration is okay, null otherwise
+     */
     const handleLogin = async (username: string, password: string): Promise<string | null> => {
       if (!username?.trim() || !password?.trim()) return null;
   
@@ -45,6 +51,13 @@ const UseApi = () => {
       return null;
   };
 
+  /**
+   * Function to register an user 
+   * @param username of the user
+   * @param email of the user
+   * @param password of the user
+   * @returns success if registration is okay, null otherwise
+   */
     const handleRegister = async (username : string, email : string, password : string) => {
       if (!username?.trim() || !password?.trim() || !email?.trim()) return null;
   
