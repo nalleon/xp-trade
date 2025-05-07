@@ -9,6 +9,7 @@ import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
 import { Result } from '../utils/TypeUtils';
 import CreatePostModal from '../components/CreatePostModal';
 import PostButton from '../components/PostButton';
+import UseApi from '../hooks/UseApi';
 
 type Props = NativeStackScreenProps<ProfileStackParamList, 'ProfileScreen'>;
 
@@ -18,8 +19,14 @@ const ProfileScreen = (props: Props) => {
   const context = useContext(AppContext);
   
   const [showPostModal, setShowPostModal] = useState(false);
-  const handleCreatePost = (text: string) => {
-    console.log('Publicación enviada:', text);
+
+  const {handleGetFavorites, handleGetCollection } = UseApi();
+  const handlePostCreated = (postData: {
+    text: string;
+    image?: string;
+    game: any;
+  }) => {
+    console.log('Nueva publicación creada:', postData);
   };
 
 
@@ -110,9 +117,9 @@ const ProfileScreen = (props: Props) => {
         <Text className="text-[#F6F7F7] text-base font-semibold">SHOW COLLECTION</Text>
       </TouchableOpacity>
       <CreatePostModal
-        showModal={showPostModal}
+        visible={showPostModal}
         onClose={() => setShowPostModal(false)}
-        onSubmit={handleCreatePost}
+        onPostCreated={handlePostCreated}
       />
       <PostButton onPress={() => setShowPostModal(true)} />
 

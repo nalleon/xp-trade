@@ -176,8 +176,67 @@ const UseApi = () => {
 
     };
 
+
+    /**
+     * Function to get an user favorite games
+     * @param username of the user
+     * @returns the favorites
+     */
+    const handleGetFavorites = async (username: string) => {
+        if (!username?.trim()) return null;
+
+        try {
+            const response = await axios.get(`${URL_API}/v2/favorites/users/${username}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
+            if (response?.data) {
+                return response?.data;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while fetching favorites", error);
+        }
+
+    };
+
+    /**
+     * Function to get an user games' collection
+     * @param username of the user
+     * @returns the favorites
+     */
+    const handleGetCollection = async (username: string) => {
+        if (!username?.trim()) return null;
+
+        try {
+            const response = await axios.get(`${URL_API}/v2/collections/users/${username}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
+            if (response?.data) {
+                return response?.data;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while fetching collections", error);
+        }
+
+    };
+
     return {
-        handleLogin, handleRegister, handleAddToCollection
+        handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites
     }
 
 }
