@@ -30,7 +30,10 @@ const SearchScreen = (props: Props) => {
         const filteredByTagGames = result.filter(
           (game) =>            
             !game.tags.some(
-              (tag) => tag.name.toLowerCase() === 'fangame' || tag.slug.toLowerCase().includes('fangame') || tag.name.toLocaleLowerCase() === 'randomizer' || tag.slug.toLocaleLowerCase() === 'randomizer'
+              (tag) => tag.name.toLowerCase() === 'fangame' || tag.slug.toLowerCase().includes('fangame') ||
+                       tag.name.toLocaleLowerCase() === 'randomizer' || tag.slug.toLocaleLowerCase() === 'randomizer' ||
+                       tag.name.toLocaleLowerCase() === 'doujin' || tag.slug.toLocaleLowerCase() === 'doujin' ||
+                       tag.name.toLocaleLowerCase() === 'doujin-game' || tag.slug.toLocaleLowerCase() === 'doujin-game' 
             )
         );
         

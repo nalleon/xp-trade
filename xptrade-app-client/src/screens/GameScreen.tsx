@@ -11,22 +11,49 @@ import UseApi from '../hooks/UseApi';
 import { Result, XPTradeInputGame } from '../utils/TypeUtils';
 import { GameDetails } from '../utils/GameDetailsType';
 import UseRAWGApi from '../hooks/UseRAWGApi';
+import PlatformModal from '../components/PlatformModal';
+import RegionModal from '../components/RegionModal';
 
 type Props = NativeStackScreenProps<GameStackParamList, 'GameScreen'>;
 
 const GameScreen = (props: Props) => {
-  const [showPlatforms, setShowPlatforms] = useState(false);
-  const [showGenres, setShowGenres] = useState(false);
-
   const [showPublishers, setShowPublishers] = useState(false);
   const [showDevelopers, setShowDevelopers] = useState(false);
-  
+  const [showPlatformModal, setShowPlatformModal] = useState(false);
+  const [showRegionModal, setShowRegionModal] = useState(false);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
+  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
+  const [isScrollEnabled, setIsScrollEnabled] = useState(true);
+
   const { currentGame, currentGameDetailed, username } = useContext(AppContext);
 
   const { handleAddToCollection } = UseApi();
 
+  const toggleScroll = (isModalOpen: boolean) => {
+    setIsScrollEnabled(!isModalOpen);
+  };
+
+  const handlePressAddToCollection = () => {
+    setShowPlatformModal(true);
+    toggleScroll(true);
+  };
+
+  const handlePlatformSelectionDone = () => {
+    setShowPlatformModal(false);
+    toggleScroll(true);
+    setTimeout(() => setShowRegionModal(true), 200);
+  };
+
+  const handleRegionSelectionDone = () => {
+    setShowRegionModal(false);
+
+    setTimeout(() => {
+      addToCollection(currentGameDetailed);
+    }, 200);
+  };
+
   const addToCollection = async (game: GameDetails) => {
-    if(!game){
+    if (!game) {
       return;
     }
 
@@ -34,7 +61,7 @@ const GameScreen = (props: Props) => {
       game: {
         title: game.name,
         coverArt: game.background_image,
-        developerInputDTOSet: [], 
+        developerInputDTOSet: [],
         genreInputDTOSet: game.genres.map((genre) => ({
           name: genre.name,
         })),
@@ -48,13 +75,14 @@ const GameScreen = (props: Props) => {
         username,
       },
     };
+    setIsScrollEnabled(true);
   }
 
   const addToFavorite = async (game: Result) => {
 
   }
   return (
-    <ScrollView className="flex-1 bg-[#0F1218]">
+    <ScrollView className="flex-1 bg-[#0F1218]" scrollEnabled={isScrollEnabled}>
       {
         currentGame.background_image &&
         <Image
@@ -66,11 +94,11 @@ const GameScreen = (props: Props) => {
 
       {
         !currentGame.background_image && currentGame.short_screenshots && currentGame.short_screenshots.length > 0 &&
-         <Image
-           source={{ uri: currentGame.short_screenshots[0].image }}
-           className="w-full h-60"
-           resizeMode="cover"
-         />
+        <Image
+          source={{ uri: currentGame.short_screenshots[0].image }}
+          className="w-full h-60"
+          resizeMode="cover"
+        />
       }
 
       {
@@ -90,19 +118,19 @@ const GameScreen = (props: Props) => {
 
         <View className="flex-row justify-between items-center mb-4">
           <View className="flex-row items-center space-x-6">
-              <View className="flex-row items-center space-x-1">
-                <Icon name="star" size={16} color="#9D8D6A" />
-                <Text className="text-[#F6F7F7]">{currentGame.rating.toFixed(1)} / 5</Text>
-              </View>
-              <View className="flex-row items-center space-x-1">
-                <Icon name="calendar-outline" size={16} color="#999" />
-                <Text className="text-[#999]">{currentGame.released}</Text>
-              </View>
+            <View className="flex-row items-center space-x-1">
+              <Icon name="star" size={16} color="#9D8D6A" />
+              <Text className="text-[#F6F7F7]">{currentGame.rating.toFixed(1)} / 5</Text>
+            </View>
+            <View className="flex-row items-center space-x-1">
+              <Icon name="calendar-outline" size={16} color="#999" />
+              <Text className="text-[#999]">{currentGame.released}</Text>
+            </View>
           </View>
 
           <View className="flex-row space-x-4">
             <TouchableOpacity
-              onPress={() => addToCollection(currentGameDetailed)}
+              onPress={handlePressAddToCollection}
               className="p-2"
             >
               <Icon name="add-circle-outline" size={22} color="#F6F7F7" />
@@ -120,62 +148,62 @@ const GameScreen = (props: Props) => {
         <View className="h-px bg-[#2C3038] mb-6" />
 
 
-<View className="flex-row justify-between gap-4 mb-4">
+        <View className="flex-row justify-between gap-4 mb-4">
 
-  <View className="flex-1">
-    <TouchableOpacity 
-      onPress={() => setShowDevelopers(prev => !prev)} 
-      className="flex-row items-center mb-1"
-    >
-      <Text className="text-[#F6F7F7] font-semibold mr-2">Desarrolladora(s)</Text>
-      <Icon 
-        name={showDevelopers ? 'caret-up-outline' : 'caret-down-outline'} 
-        size={16} 
-        color="#F6F7F7" 
-      />
-    </TouchableOpacity>
-    {showDevelopers && (
-      <View className="ml-2">
-        {currentGameDetailed.developers.map((dev) => (
-          <Text key={dev.id} className="text-[#ccc] mb-1">
-            {dev.name}
-          </Text>
-        ))}
-      </View>
-    )}
-  </View>
-    <View className="flex-1">
-    <TouchableOpacity 
-      onPress={() => setShowPublishers(prev => !prev)} 
-      className="flex-row items-center mb-1"
-    >
-      <Text className="text-[#F6F7F7] font-semibold mr-2">Publisher(s)</Text>
-      <Icon 
-        name={showPublishers ? 'caret-up-outline' : 'caret-down-outline'} 
-        size={16} 
-        color="#F6F7F7" 
-      />
-      </TouchableOpacity>
-      {showPublishers && (
-        <View className="ml-2">
-          {currentGameDetailed.publishers.map((pub) => (
-            <Text key={pub.id} className="text-[#ccc] mb-1">
-              {pub.name}
-            </Text>
-          ))}
+          <View className="flex-1">
+            <TouchableOpacity
+              onPress={() => setShowDevelopers(prev => !prev)}
+              className="flex-row items-center mb-1"
+            >
+              <Text className="text-[#F6F7F7] font-semibold mr-2">Desarrolladora(s)</Text>
+              <Icon
+                name={showDevelopers ? 'caret-up-outline' : 'caret-down-outline'}
+                size={16}
+                color="#F6F7F7"
+              />
+            </TouchableOpacity>
+            {showDevelopers && (
+              <View className="ml-2">
+                {currentGameDetailed.developers.map((dev) => (
+                  <Text key={dev.id} className="text-[#ccc] mb-1">
+                    {dev.name}
+                  </Text>
+                ))}
+              </View>
+            )}
+          </View>
+          <View className="flex-1">
+            <TouchableOpacity
+              onPress={() => setShowPublishers(prev => !prev)}
+              className="flex-row items-center mb-1"
+            >
+              <Text className="text-[#F6F7F7] font-semibold mr-2">Publisher(s)</Text>
+              <Icon
+                name={showPublishers ? 'caret-up-outline' : 'caret-down-outline'}
+                size={16}
+                color="#F6F7F7"
+              />
+            </TouchableOpacity>
+            {showPublishers && (
+              <View className="ml-2">
+                {currentGameDetailed.publishers.map((pub) => (
+                  <Text key={pub.id} className="text-[#ccc] mb-1">
+                    {pub.name}
+                  </Text>
+                ))}
+              </View>
+            )}
+          </View>
         </View>
-      )}
-    </View>
-  </View>
 
-    {currentGame.platforms?.length > 0 && 
-            <View className="mb-1">
-              <Text className="text-[#F6F7F7] font-semibold mb-1">Plataformas:</Text>
-              <Text className="text-[#ccc]">
-                {currentGame.platforms.map(p => p.platform.name).join(', ')}
-              </Text>
-            </View>
-            }
+        {currentGame.platforms?.length > 0 &&
+          <View className="mb-1">
+            <Text className="text-[#F6F7F7] font-semibold mb-1">Plataformas:</Text>
+            <Text className="text-[#ccc]">
+              {currentGame.platforms.map(p => p.platform.name).join(', ')}
+            </Text>
+          </View>
+        }
 
         {(currentGame.genres?.length > 0 || currentGame.tags?.length > 0 || currentGameDetailed.genres?.length > 0) && (
           <View className="mb-6">
@@ -185,7 +213,7 @@ const GameScreen = (props: Props) => {
               <View className="flex-1 h-px bg-[#3A3F4A]" />
             </View>
 
-            
+
             <View className="flex-row flex-wrap justify-between gap-2">
               {(currentGame.genres.length > 0 ? currentGame.genres : currentGameDetailed.genres)?.map((genre) => (
                 <View
@@ -228,10 +256,29 @@ const GameScreen = (props: Props) => {
         )}
 
         {currentGame.short_screenshots?.length > 0 && (
-            <ScreenshotGallery screenshots={currentGame.short_screenshots}/>
+          <ScreenshotGallery screenshots={currentGame.short_screenshots} />
         )}
 
       </View>
+      <PlatformModal
+        showModal={showPlatformModal}
+        platforms={currentGame.platforms}
+        selectedPlatforms={selectedPlatforms}
+        setSelectedPlatforms={setSelectedPlatforms}
+        handlePlatformSelectionDone={() =>
+          handlePlatformSelectionDone()
+        }
+      />
+      <RegionModal
+        showModal={showRegionModal}
+        selectedRegions={selectedRegions}
+        setSelectedRegions={setSelectedRegions}
+        handleRegionSelectionDone={() =>
+          handleRegionSelectionDone()
+        }
+      />
+
+
     </ScrollView>
   );
 };
