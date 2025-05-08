@@ -58,7 +58,7 @@ public class Developer {
     public String toString() {
         return "Developer{" +
                 "id=" + id +
-                ", username='" + name + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 
@@ -66,11 +66,11 @@ public class Developer {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Developer developer = (Developer) o;
-        return id == developer.id;
+        return Objects.equals(name, developer.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(name);
     }
 }

@@ -39,6 +39,7 @@ const UseApi = () => {
                     ["username", username]
                 ]);
 
+                context.setUsername(username);
                 context.setToken(response.data)
 
                 return "success";
@@ -72,8 +73,6 @@ const UseApi = () => {
                     ["pfp", response.data.profilePicture]
                 ]);
 
-                context.setUsername(username);
-
                 return "success";
             }
         } catch (error) {
@@ -102,6 +101,7 @@ const UseApi = () => {
                     ["username", response.data.username],
                     ["pfp", response.data.profilePicture]
                 ]);
+
 
                 return "success";
             }
@@ -155,7 +155,6 @@ const UseApi = () => {
         try {
             const response = await axios.post(`${URL_API}/v2/collections`, {
                 game,
-                user: username
             },
                 {
                     headers: {
@@ -235,8 +234,44 @@ const UseApi = () => {
 
     };
 
+    /**
+     * Function to add a game to the favorites list
+     * @param username of the user
+     * @param inputXPTrade game to add
+     * @returns 
+     */
+    const handleAddToFavorite = async (inputXPTrade: XPTradeInputGame) => {
+        if (!inputXPTrade) return null;
+
+        try {
+            const response = await axios.post(`${URL_API}/v2/favorites`, inputXPTrade, {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + context.token
+                },
+              });
+              
+
+            console.log(response.data)
+            if (response?.data) {
+                return response?.data;
+            } else {
+                return null;
+            }
+
+        } catch (error: any) {
+            if (error.response) {
+                console.error('Server responded with error:', error.response.data);
+            } else {
+                console.error('Error while creating favorites:', error.message);
+            }
+        }
+
+
+    };
+
     return {
-        handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites
+        handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite
     }
 
 }

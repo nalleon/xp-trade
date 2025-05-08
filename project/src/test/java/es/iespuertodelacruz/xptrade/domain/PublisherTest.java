@@ -33,6 +33,8 @@ public class PublisherTest extends TestUtilities {
     public void equalsTest(){
         Publisher equals = new Publisher(ID);
         Publisher differentId = new Publisher(2);
+        equals.setName(NAME);
+        differentId.setName("diff");
         String str = "str";
         Publisher nullObject = null;
 

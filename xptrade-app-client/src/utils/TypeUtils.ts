@@ -198,6 +198,7 @@
     };
     user: {
       username: string;
+      profilePicture: string;
     };
   }
   

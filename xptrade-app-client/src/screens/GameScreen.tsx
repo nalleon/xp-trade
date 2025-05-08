@@ -13,6 +13,8 @@ import { GameDetails } from '../utils/GameDetailsType';
 import UseRAWGApi from '../hooks/UseRAWGApi';
 import PlatformModal from '../components/PlatformModal';
 import RegionModal from '../components/RegionModal';
+import { REGIONS } from '../utils/Utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = NativeStackScreenProps<GameStackParamList, 'GameScreen'>;
 
@@ -27,7 +29,7 @@ const GameScreen = (props: Props) => {
 
   const { currentGame, currentGameDetailed, username } = useContext(AppContext);
 
-  const { handleAddToCollection } = UseApi();
+  const { handleAddToCollection, handleAddToFavorite } = UseApi();
 
   const toggleScroll = (isModalOpen: boolean) => {
     setIsScrollEnabled(!isModalOpen);
@@ -57,33 +59,81 @@ const GameScreen = (props: Props) => {
       return;
     }
 
-    const aux: XPTradeInputGame = {
+    const gameXPTrade: XPTradeInputGame = {
       game: {
         title: game.name,
         coverArt: game.background_image,
-        developerInputDTOSet: [],
-        genreInputDTOSet: game.genres.map((genre) => ({
-          name: genre.name,
+        developerInputDTOSet: game.developers.map((d) => ({
+          name: d.name,
+        })),
+        genreInputDTOSet: game.genres.map((g) => ({
+          name: g.name,
         })),
         platformInputDTOSet: game.platforms.map((p) => ({
           name: p.platform.name,
         })),
-        publisherInputDTOSet: [],
-        regionInputDTOSet: [],
+        publisherInputDTOSet: selectedPlatforms.map((p) => ({ 
+          name: p 
+        })),
+        regionInputDTOSet: selectedRegions.map((r) => ({
+           name: r 
+          })),
       },
       user: {
         username,
+        profilePicture: null
       },
     };
+
+    await handleAddToCollection(username, gameXPTrade);
+
     setIsScrollEnabled(true);
   }
 
-  const addToFavorite = async (game: Result) => {
+  const addToFavorite = async (game: GameDetails) => {
+    if (!game) {
+      return;
+    }
 
+    const usernameXP = await AsyncStorage.getItem('username');
+    
+    const inputXPTrade: XPTradeInputGame = {
+      game: {
+        title: game.name,
+        coverArt: game.background_image,
+        developerInputDTOSet: game.developers.map((d) => ({
+          name: d.name,
+        })),
+        genreInputDTOSet: game.genres.map((g) => ({
+          name: g.name,
+        })),
+        platformInputDTOSet: game.platforms.map((p) => ({
+          name: p.platform.name,
+        })),
+        publisherInputDTOSet: game.publishers.map((p) => ({
+          name: p.name,
+        })),
+        regionInputDTOSet: REGIONS.map((region) => ({
+          name: region,
+        })),
+      },
+      user: {
+        username: usernameXP,
+        profilePicture: ''
+      },
+    };
+
+    console.log(JSON.stringify(inputXPTrade, null, 2));
+
+    
+    await handleAddToFavorite(inputXPTrade);
+
+    setIsScrollEnabled(true);
   }
+
   return (
     <ScrollView className="flex-1 bg-[#0F1218]" scrollEnabled={isScrollEnabled}
-      contentContainerStyle={{flexGrow:1}}
+      contentContainerStyle={{ flexGrow: 1 }}
     >
       {
         currentGame.background_image &&
@@ -132,14 +182,14 @@ const GameScreen = (props: Props) => {
 
           <View className="flex-row space-x-4">
             <TouchableOpacity
-              onPress={handlePressAddToCollection}
+              onPress={() => addToCollection(currentGameDetailed)}
               className="p-2"
             >
               <Icon name="add-circle-outline" size={22} color="#F6F7F7" />
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => addToFavorite(currentGame)}
+              onPress={() => addToFavorite(currentGameDetailed)}
               className="p-2"
             >
               <Icon name="heart-outline" size={22} color="#F6F7F7" />

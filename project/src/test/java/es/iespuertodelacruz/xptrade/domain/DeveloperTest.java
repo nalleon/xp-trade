@@ -33,6 +33,8 @@ public class DeveloperTest extends TestUtilities {
     public void equalsTest(){
         Developer equals = new Developer(ID);
         Developer differentId = new Developer(2);
+        equals.setName(NAME);
+        differentId.setName("diff");
         String str = "str";
         Developer nullObject = null;
 

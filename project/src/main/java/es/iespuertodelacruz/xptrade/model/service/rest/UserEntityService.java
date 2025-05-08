@@ -99,6 +99,7 @@ public class UserEntityService implements IUserRepository {
     public User findByUserame(String username) {
         UserEntity entityFound = repository.findUserByName(username).orElse(null);
 
+        System.out.println("ORVITO =======================> " +entityFound);
         if (entityFound != null){
             return IUserEntityMapper.INSTANCE.toDomain(entityFound);
         }

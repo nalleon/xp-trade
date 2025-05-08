@@ -7,3 +7,5 @@ export const SUCCESS = "success";
 export const RAWG_API_SEARCH = "https://api.rawg.io/api/games?key=1a094ebbcbef4440a46abee88f222abb&search_precise=true&search=";
 export const RAWG_API = "https://api.rawg.io/api/games";
 export const RAWG_API_KEY = "?key=1a094ebbcbef4440a46abee88f222abb";
+
+export const REGIONS = ['EU', 'USA', 'ASIA', 'JP', 'GLOBAL'];

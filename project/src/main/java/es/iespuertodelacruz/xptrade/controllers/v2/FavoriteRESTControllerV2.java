@@ -147,6 +147,8 @@ public class FavoriteRESTControllerV2 {
                     .body(new CustomApiResponse<>(400, "Item cannot be null", null));
         }
 
+        System.out.println("Incoming DTO: " + dto);
+
         try {
             Favorite aux = IFavoriteInputDTOMapper.INSTANCE.toDomain(dto);
 
@@ -161,12 +163,18 @@ public class FavoriteRESTControllerV2 {
 
             User userDb = userService.findByUsername(aux.getUser().getUsername());
 
+            System.out.println("USER: " + userDb);
+
             if(userDb == null){
                 return ResponseEntity.badRequest()
                         .body(new CustomApiResponse<>(400, "Item cannot be null", null));
             }
 
+
+
             Favorite dbItem = service.add(gameDb, userDb);
+
+            System.out.println("fav " + dbItem);
 
 
             FavoriteOutputDTO result = IFavoriteOutputDTOMapper.INSTANCE.toDTO(dbItem);

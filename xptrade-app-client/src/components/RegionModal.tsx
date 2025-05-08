@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
+import { REGIONS } from '../utils/Utils';
 
 const RegionModal = ({ showModal, selectedRegions, setSelectedRegions, handleRegionSelectionDone }) => {
     if (!showModal) return null;
@@ -11,7 +12,7 @@ const RegionModal = ({ showModal, selectedRegions, setSelectedRegions, handleReg
                     Región
                 </Text>
 
-                {['EU', 'USA', 'ASIA', 'JP', 'GLOBAL'].map((region) => (
+                {REGIONS.map((region) => (
                     <TouchableOpacity
                         key={region}
                         onPress={() => {

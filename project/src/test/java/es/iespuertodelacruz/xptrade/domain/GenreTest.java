@@ -33,6 +33,8 @@ public class GenreTest extends TestUtilities {
     public void equalsTest(){
         Genre equals = new Genre(ID);
         Genre differentId = new Genre(2);
+        equals.setName(NAME);
+        differentId.setName("diff");
         String str = "str";
         Genre nullObject = null;
 

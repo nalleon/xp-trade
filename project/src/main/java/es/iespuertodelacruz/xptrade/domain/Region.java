@@ -62,7 +62,7 @@ public class Region {
     public String toString() {
         return "Region{" +
                 "id=" + id +
-                ", username='" + name + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 
@@ -70,11 +70,11 @@ public class Region {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Region region = (Region) o;
-        return id == region.id;
+        return Objects.equals(name, region.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(name);
     }
 }
