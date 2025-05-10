@@ -1,30 +1,29 @@
-import { FlatList, Image, Text, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
 import PostButton from '../components/PostButton';
 import CreatePostModal from '../components/CreatePostModal';
 import UseApi from '../hooks/UseApi';
+import { Touchable } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { HomeStackParamList } from '../navigations/stack/PostStackNav';
+import { AppContext } from '../context/AppContext';
+import { PostXPTrade } from '../utils/TypeUtils';
 
-const dummyPosts = [
-  {
-    id: '1',
-    user: { username: 'root', profilePicture: null },
-    content: 'Este juego es una locura 🔥',
-    game: {
-      title: 'Umamusume: Pretty Derby – Party Dash',
-      coverArt: 'https://media.rawg.io/media/screenshots/12d/12d04f00a2eb84ac1523533c5adcf631.jpg',
-    },
-    picture: null,
-  }
-];
+type Props = NativeStackScreenProps<HomeStackParamList, 'HomeScreen'>;
 
-function HomeScreen() {
+function HomeScreen({ navigation }: Props) {
   const [posts, setPosts] = useState([]);
   const [showPostModal, setShowPostModal] = useState(false);
 
   const { handleGetPosts } = UseApi();
+  const context = useContext(AppContext);
 
   useEffect(() => {
-    getPosts();
+    const interval = setInterval(() => {
+      getPosts();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
 
@@ -32,8 +31,10 @@ function HomeScreen() {
   const getPosts = async () => {
     const result = await handleGetPosts();
 
-    if (result != null)
+    if (result != null) {
+
       setPosts(result);
+    }
   }
 
 
@@ -49,6 +50,12 @@ function HomeScreen() {
       hour12: false,
     }).replace(',', '');
   };
+
+
+  const navigateToPostDetails = (item : PostXPTrade) => {
+    context.setCurrentPost(item);
+    navigation.navigate('PostScreen')
+  }
 
   return (
     <View className="flex-1 bg-[#0F1218] pt-10">
@@ -67,15 +74,29 @@ function HomeScreen() {
                 className="w-10 h-10 rounded-full mr-3"
               />
               <View>
-                <Text className="text-[#F6F7F7] font-semibold">@{item.user.username}</Text>
-                <Text className="text-xs text-[#8899A6]">{item.game.title}</Text>
+                <TouchableOpacity>
+                  <Text className="text-[#F6F7F7] font-semibold">@{item.user.username}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Text className="text-xs text-[#8899A6]">{item.game.title}</Text>
+                </TouchableOpacity>
               </View>
             </View>
 
             <View className="h-px bg-[#2C3038] mb-6" />
 
 
-            <Text className="text-[#F6F7F7] mb-2">{item.content}</Text>
+            <Text
+              className="text-[#F6F7F7] mb-2"
+              numberOfLines={6}
+            >
+              {item.content}
+
+            </Text>
+
+            <TouchableOpacity onPress={() => navigateToPostDetails(item)}>
+              <Text className="text-xs text-blue-400">Ver más</Text>
+            </TouchableOpacity>
 
             {item.picture && (
               <Image

@@ -138,7 +138,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
 
     @Test
     void addTest() {
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
         new HashSet<>(), new HashSet<>(), new HashSet<>()), 
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
@@ -160,7 +160,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
 
     @Test
     void addGameNullTest() {
-PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
         new HashSet<>(), new HashSet<>(), new HashSet<>()), 
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
@@ -173,7 +173,7 @@ PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new 
 
     @Test
     void addUserNullTest() {
-PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
         new HashSet<>(), new HashSet<>(), new HashSet<>()), 
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
@@ -189,7 +189,7 @@ PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new 
 
     @Test
     void addThrowsExceptionTest() {
-PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
         new HashSet<>(), new HashSet<>(), new HashSet<>()), 
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
@@ -231,7 +231,7 @@ PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new 
 
     @Test
     void updateTest() {
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+                PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
         new HashSet<>(), new HashSet<>(), new HashSet<>()), 
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
@@ -251,7 +251,7 @@ PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new 
 
     @Test
     void updateNotFoundTest() {
-PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
         new HashSet<>(), new HashSet<>(), new HashSet<>()), 
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
@@ -269,7 +269,7 @@ PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new 
 
     @Test
     void updateGameNullTest() {
-PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
         new HashSet<>(), new HashSet<>(), new HashSet<>()), 
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
@@ -284,7 +284,7 @@ PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new 
     @Test
     void updateUserNullTest() {
 
-PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
         new HashSet<>(), new HashSet<>(), new HashSet<>()), 
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
@@ -299,7 +299,7 @@ PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new 
 
     @Test
     void updateIdNullTest() {
-PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
         new HashSet<>(), new HashSet<>(), new HashSet<>()), 
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
@@ -315,7 +315,7 @@ PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new 
 
     @Test
     void updateExceptionTest() throws Exception {
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+                PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
         new HashSet<>(), new HashSet<>(), new HashSet<>()), 
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),

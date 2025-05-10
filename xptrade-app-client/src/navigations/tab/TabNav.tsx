@@ -10,6 +10,7 @@ import SearchScreen from '../../screens/SearchScreen';
 import GameStackNav from '../stack/GameStackNav';
 import NotificationStackNav from '../stack/NotificationStackNav';
 import CollectionStackNav from '../stack/CollectionStackNav';
+import HomeStackNav from '../stack/PostStackNav';
 
 type Props = {}
 const Tab = createBottomTabNavigator();
@@ -44,7 +45,7 @@ const TabNav = (props: Props) => {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStackNav}
         options={{
           tabBarIcon: ({ focused, color }) => (
             <Icon

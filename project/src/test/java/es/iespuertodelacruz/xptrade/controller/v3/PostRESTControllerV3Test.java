@@ -8,6 +8,7 @@ import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.service.GameService;
 import es.iespuertodelacruz.xptrade.domain.service.PostService;
 import es.iespuertodelacruz.xptrade.domain.service.UserService;
+import es.iespuertodelacruz.xptrade.dto.input.GameInputDTO;
 import es.iespuertodelacruz.xptrade.dto.input.PostInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.GameOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.PostOutputDTO;
@@ -137,9 +138,9 @@ public class PostRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void addTest() {
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>()),
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
@@ -159,9 +160,9 @@ public class PostRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void addGameNullTest() {
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>()),
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
@@ -172,9 +173,9 @@ public class PostRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void addUserNullTest() {
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>()),
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
@@ -188,9 +189,9 @@ public class PostRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void addThrowsExceptionTest() {
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>()),
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
@@ -230,9 +231,9 @@ public class PostRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void updateTest() {
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>()),
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
@@ -250,9 +251,9 @@ public class PostRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void updateNotFoundTest() {
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>()),
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
@@ -268,9 +269,9 @@ public class PostRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void updateGameNullTest() {
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>()),
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
@@ -283,9 +284,9 @@ public class PostRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateUserNullTest() {
 
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>()),
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
@@ -298,9 +299,9 @@ public class PostRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void updateIdNullTest() {
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>()),
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
@@ -314,9 +315,9 @@ public class PostRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void updateExceptionTest() throws Exception {
-        PostInputDTO aux = new PostInputDTO(new GameOutputDTO(ID, TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>()),
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(),
+        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
+                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 

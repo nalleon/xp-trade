@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { createContext, useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Comment, Result } from '../utils/TypeUtils';
+import { Comment, PostXPTrade, Result } from '../utils/TypeUtils';
 import { GameDetails } from '../utils/GameDetailsType';
 
 
@@ -19,6 +19,8 @@ type AppContextType ={
     setCurrentGameDetailed: (game: GameDetails | null) => void,
     currentComment: Comment,
     setCurrentComment: (comment: Comment) => void,
+    currentPost: PostXPTrade,
+    setCurrentPost: (post: PostXPTrade) => void,
 }
 
 export const AppContext = createContext<AppContextType>({} as AppContextType );
@@ -29,6 +31,7 @@ const AppContextProvider = (props: Props) => {
     const [currentGameDetailed, setCurrentGameDetailed] = useState<GameDetails | null>(null);
 
     const [currentComment, setCurrentComment] = useState<Comment>({} as Comment);
+    const [currentPost, setCurrentPost] = useState<PostXPTrade>({} as PostXPTrade);
 
     const contextValues: AppContextType  = {
         username,
@@ -40,7 +43,9 @@ const AppContextProvider = (props: Props) => {
         currentGameDetailed,
         setCurrentGameDetailed,
         currentComment,
-        setCurrentComment
+        setCurrentComment,
+        currentPost,
+        setCurrentPost
     }
     
         return (

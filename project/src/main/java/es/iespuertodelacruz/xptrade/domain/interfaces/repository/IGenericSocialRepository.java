@@ -14,6 +14,10 @@ public interface IGenericSocialRepository <T, E, U, G> {
         return null;
     }
 
+    default List<T> findAllLatest() {
+        return null;
+    }
+
     List<T> findAllByUser(U u);
     List<T> findAllBySubject(G g);
     boolean delete(E id);

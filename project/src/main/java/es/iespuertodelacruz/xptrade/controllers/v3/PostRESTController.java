@@ -72,6 +72,21 @@ public class PostRESTController {
         return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
     }
 
+
+    @GetMapping("/latest")
+    public ResponseEntity<?> getAllLatest() {
+        List<PostOutputDTO> filteredList = IPostOutputDTOMapper.INSTANCE.toDTOList(service.findAllLatest());
+
+        if (filteredList.isEmpty()) {
+            String message = "There are no posts";
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, message, filteredList));
+        }
+
+        String message = "List successfully obtained";
+        return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
+    }
+
     @GetMapping("/games/{title}")
     public ResponseEntity<?> getAllByGame(@PathVariable String title) {
         Game filter = gameService.findByTitle(title);

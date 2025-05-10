@@ -232,7 +232,7 @@ public class MapperInputDTOHelper extends TestUtilities {
         favoriteInputDTOList = new ArrayList<>();
         favoriteInputDTOList.add(favoriteInputDTO);
 
-        postInputDTO = new PostInputDTO(gameOutputDTO, userDTO, CONTENT, PICTURE);
+        postInputDTO = new PostInputDTO(gameInputDTO, userDTO, CONTENT, PICTURE);
 
         postDomain = new Post();
         postDomain.setUser(userDomain);

@@ -369,7 +369,7 @@ const UseApi = () => {
      */
     const handleGetPosts = async () => {
         try {
-            const response = await axios.get(`${URL_API}/v2/posts`,
+            const response = await axios.get(`${URL_API}/v2/posts/latest`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
