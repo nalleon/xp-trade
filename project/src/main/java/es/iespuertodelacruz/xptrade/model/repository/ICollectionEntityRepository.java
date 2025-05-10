@@ -2,6 +2,7 @@ package es.iespuertodelacruz.xptrade.model.repository;
 
 import es.iespuertodelacruz.xptrade.model.entities.CollectionEntity;
 import es.iespuertodelacruz.xptrade.model.entities.DeveloperEntity;
+import es.iespuertodelacruz.xptrade.model.entities.FavoriteEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,6 +26,15 @@ public interface ICollectionEntityRepository extends JpaRepository<CollectionEnt
     )
     int deleteEntityById(@Param("id") Integer id);
 
+
+    @Query(
+            value =
+                    "SELECT * FROM collections AS c " +
+                            "INNER JOIN games AS g ON g.id = c.game_id " +
+                            "WHERE c.user_id = :user_id AND g.title = :title",
+            nativeQuery = true
+    )
+    Optional<FavoriteEntity> checkIfInCollection(@Param("user_id") int userId, @Param("title") String title);
 
     @Query(
             value="SELECT * FROM collections WHERE user_id =:user_id",

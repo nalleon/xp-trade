@@ -46,12 +46,13 @@ public class Game {
         this.id = id;
     }
 
+
     /**
      * Constructor of the class
-     * @param coverArt of the game
+     * @param title of the game
      */
-    public Game(String coverArt) {
-        this.coverArt = coverArt;
+    public Game(String title) {
+        this.title = title;
     }
 
     /**

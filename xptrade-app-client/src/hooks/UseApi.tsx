@@ -3,7 +3,7 @@ import React, { useContext, useRef, useState } from 'react'
 import { TextInput } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { PULLING_INTERVAL, URL_API as URL_API } from '../utils/Utils';
+import { PULLING_INTERVAL, SUCCESS, URL_API as URL_API } from '../utils/Utils';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AppContext } from '../context/AppContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -206,6 +206,71 @@ const UseApi = () => {
     };
 
     /**
+    * Function to check if an user has a game in favorites
+    * @param username of the user
+    * @param title of the game
+    * @returns success if exists, null if not
+    */
+    const handleCheckIfExistsFavorites = async (username: string, title: string) => {
+        if (!username?.trim() || !title?.trim()) return null;
+
+        try {
+            const response = await axios.get(`${URL_API}/v2/favorites/users/${username}/games/${title}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
+            if (response?.data) {
+                return response?.data.data;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while fetching favorites", error);
+        }
+
+    };
+
+    /**
+    * Function to check if an user has a game in favorites
+    * @param username of the user
+    * @param title of the game
+    * @returns success if exists, null if not
+    */
+    const handleDeleteFromFavorites = async (username: string, title: string) => {
+        if (!username?.trim() || !title?.trim()) return null;
+
+        const result = await handleCheckIfExistsFavorites(username, title);
+        if (result == null) {
+            return null;
+        }
+
+        try {
+            const response = await axios.delete(`${URL_API}/v2/favorites/${result?.id}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
+            if (response?.status === 204) {
+                return SUCCESS;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while fetching favorites", error);
+        }
+
+    };
+
+    /**
      * Function to get an user games' collection
      * @param username of the user
      * @returns the favorites
@@ -246,15 +311,14 @@ const UseApi = () => {
         try {
             const response = await axios.post(`${URL_API}/v2/favorites`, inputXPTrade, {
                 headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': 'Bearer ' + context.token
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + context.token
                 },
-              });
-              
+            });
 
-            console.log(response.data)
+
             if (response?.data) {
-                return response?.data;
+                return SUCCESS;
             } else {
                 return null;
             }
@@ -271,7 +335,8 @@ const UseApi = () => {
     };
 
     return {
-        handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite
+        handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite,
+        handleCheckIfExistsFavorites, handleDeleteFromFavorites
     }
 
 }

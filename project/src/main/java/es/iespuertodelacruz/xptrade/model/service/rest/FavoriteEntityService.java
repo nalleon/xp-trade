@@ -70,6 +70,16 @@ public class FavoriteEntityService implements IGenericSocialRepository<Favorite,
     }
 
     @Override
+    public Favorite checkIfExists(User user, Game game) {
+        FavoriteEntity entityFound = repository.checkIfInFavorite(user.getUsername(), game.getTitle()).orElse(null);
+
+        if (entityFound != null) {
+            return IFavoriteEntityMapper.INSTANCE.toDomain(entityFound);
+        }
+        return null;
+    }
+
+    @Override
     public List<Favorite> findAllByUser(User user) {
         if(user == null){
             return null;

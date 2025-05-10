@@ -9,6 +9,7 @@ import java.util.List;
 public interface IFavoriteService {
     Favorite add(Game game, User user);
     Favorite findById(Integer id);
+    Favorite checkIfExists(User user, Game game);
     List<Favorite> findByUser (User user);
     List<Favorite> findByGame (Game game);
     List<Favorite> findAll();

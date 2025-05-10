@@ -28,39 +28,6 @@ public interface IGameEntityRepository  extends JpaRepository<GameEntity, Intege
     int deleteEntityById(@Param("id") Integer id);
 
     @Query(
-            value = "SELECT g.* FROM games g " +
-                    "INNER JOIN games_publishers gp ON g.id = gp.game_id " +
-                    "INNER JOIN publishers p ON gp.publisher_id = p.id " +
-
-                    "INNER JOIN games_developers gd ON g.id = gd.game_id " +
-                    "INNER JOIN developers d ON gd.developer_id = d.id " +
-
-                    "INNER JOIN games_genres gg ON g.id = gg.game_id " +
-                    "INNER JOIN genres gr ON gg.genre_id = gr.id " +
-
-                    "INNER JOIN games_regions gr ON g.id = gr.game_id " +
-                    "INNER JOIN regions r ON gr.region_id = r.id " +
-
-                    "INNER JOIN games_platforms gpl ON g.id = gpl.game_id " +
-                    "INNER JOIN platforms pl ON gpl.platform_id = pl.id " +
-
-                    "WHERE p.id = :publisher_id " +
-                    "AND d.id = :developer_id " +
-                    "AND gr.id = :genre_id " +
-                    "AND r.id = :region_id " +
-                    "AND pl.id = :platform_id " +
-                    "AND g.title = :title",
-            nativeQuery = true
-    )
-    Optional<GameEntity> checkIfGameExists(@Param("title") String title,
-                                       @Param("publisher_id") int publisherId,
-                                       @Param("developer_id") int developerId,
-                                       @Param("genre_id") int genreId,
-                                       @Param("region_id") int regionId,
-                                       @Param("platform_id") int platformId
-    );
-
-    @Query(
             value="SELECT * FROM games WHERE title=:title",
             nativeQuery=true
     )

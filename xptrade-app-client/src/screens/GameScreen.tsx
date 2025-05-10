@@ -1,4 +1,4 @@
-import { Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Alert, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Text, View } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -13,8 +13,9 @@ import { GameDetails } from '../utils/GameDetailsType';
 import UseRAWGApi from '../hooks/UseRAWGApi';
 import PlatformModal from '../components/PlatformModal';
 import RegionModal from '../components/RegionModal';
-import { REGIONS } from '../utils/Utils';
+import { REGIONS, SUCCESS } from '../utils/Utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FavoriteScreen from './FavoriteScreen';
 
 type Props = NativeStackScreenProps<GameStackParamList, 'GameScreen'>;
 
@@ -26,33 +27,51 @@ const GameScreen = (props: Props) => {
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [isScrollEnabled, setIsScrollEnabled] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const { currentGame, currentGameDetailed, username } = useContext(AppContext);
 
-  const { handleAddToCollection, handleAddToFavorite } = UseApi();
+  const { handleAddToCollection, handleAddToFavorite, handleCheckIfExistsFavorites, handleDeleteFromFavorites } = UseApi();
 
-  const toggleScroll = (isModalOpen: boolean) => {
-    setIsScrollEnabled(!isModalOpen);
-  };
+  /**
+   * UseEffect 
+   */
+  useEffect(() => {
+    checkIfIsFavorites();
+  }, [isFavorite]);
 
-  const handlePressAddToCollection = () => {
-    setShowPlatformModal(true);
-    toggleScroll(true);
-  };
 
-  const handlePlatformSelectionDone = () => {
-    setShowPlatformModal(false);
-    toggleScroll(true);
-    setTimeout(() => setShowRegionModal(true), 200);
-  };
 
-  const handleRegionSelectionDone = () => {
-    setShowRegionModal(false);
+  /**
+     * Function to check if a game is in favorites
+     */
+  const checkIfIsFavorites = async () => {
+    const usernameXP = await AsyncStorage.getItem('username');
+    const title = currentGame.name;
 
-    setTimeout(() => {
-      addToCollection(currentGameDetailed);
-    }, 200);
-  };
+    const result = await handleCheckIfExistsFavorites(usernameXP, title);
+
+    if (result != null) {
+      setIsFavorite(true);
+    }
+  }
+
+  /**
+   * Function to delete a game from favorites
+   */
+  const deleteFromFavorites = async () => {
+    const usernameXP = await AsyncStorage.getItem('username');
+    const title = currentGame.name;
+
+    const result = await handleDeleteFromFavorites(usernameXP, title);
+    console.log("Resultado de eliminar de favoritos:", result); // Debug
+
+    if (result != null) {
+      setIsFavorite(!isFavorite);
+    }
+  }
+
+
 
   const addToCollection = async (game: GameDetails) => {
     if (!game) {
@@ -69,15 +88,15 @@ const GameScreen = (props: Props) => {
         genreInputDTOSet: game.genres.map((g) => ({
           name: g.name,
         })),
-        platformInputDTOSet: game.platforms.map((p) => ({
-          name: p.platform.name,
+        platformInputDTOSet: selectedPlatforms.map((p) => ({
+          name: p,
         })),
-        publisherInputDTOSet: selectedPlatforms.map((p) => ({ 
-          name: p 
+        publisherInputDTOSet: game.publishers.map((p) => ({
+          name: p.name
         })),
         regionInputDTOSet: selectedRegions.map((r) => ({
-           name: r 
-          })),
+          name: r
+        })),
       },
       user: {
         username,
@@ -91,45 +110,100 @@ const GameScreen = (props: Props) => {
   }
 
   const addToFavorite = async (game: GameDetails) => {
-    if (!game) {
-      return;
-    }
+    if (!game) return;
 
     const usernameXP = await AsyncStorage.getItem('username');
-    
+
+    const developers =
+      game.developers?.length > 0
+        ? game.developers.map((d) => ({ name: d.name }))
+        : game.publishers?.length > 0
+          ? game.publishers.map((p) => ({ name: p.name }))
+          : [{ name: "TBA" }];
+
+    const publishers =
+      game.publishers?.length > 0
+        ? game.publishers.map((p) => ({ name: p.name }))
+        : game.developers?.length > 0
+          ? game.developers.map((d) => ({ name: d.name }))
+          : [{ name: "TBA" }];
+
+    const genres =
+      game.genres?.length > 0
+        ? game.genres.map((g) => ({ name: g.name }))
+        : game.tags?.length > 0
+          ? game.tags.map((tag) => ({ name: tag.name }))
+          : [{ name: "TBA" }];
+
     const inputXPTrade: XPTradeInputGame = {
       game: {
         title: game.name,
         coverArt: game.background_image,
-        developerInputDTOSet: game.developers.map((d) => ({
-          name: d.name,
-        })),
-        genreInputDTOSet: game.genres.map((g) => ({
-          name: g.name,
-        })),
-        platformInputDTOSet: game.platforms.map((p) => ({
-          name: p.platform.name,
-        })),
-        publisherInputDTOSet: game.publishers.map((p) => ({
-          name: p.name,
-        })),
+        developerInputDTOSet: developers,
+        genreInputDTOSet: genres,
+        platformInputDTOSet: game.platforms?.length > 0
+          ? game.platforms.map((p) => ({
+            name: p.platform.name,
+          }))
+          : [{ name: "TBA" }],
+        publisherInputDTOSet: publishers,
         regionInputDTOSet: REGIONS.map((region) => ({
           name: region,
         })),
       },
       user: {
         username: usernameXP,
-        profilePicture: ''
+        profilePicture: '',
       },
     };
 
-    console.log(JSON.stringify(inputXPTrade, null, 2));
+    const result = await handleAddToFavorite(inputXPTrade);
 
-    
-    await handleAddToFavorite(inputXPTrade);
-
+    if (result == SUCCESS) {
+      setIsFavorite(true);
+      Alert.alert("El juego ha sido añadido a sus favoritos");
+    } else {
+      Alert.alert("Error al tratar de añadir el juego en favoritos");
+    }
     setIsScrollEnabled(true);
-  }
+  };
+
+  /**
+   * Function to block the scroll of the screen
+   * @param isModalOpen true if any of the modals is open, false otherwise
+   */
+  const toggleScroll = (isModalOpen: boolean) => {
+    setIsScrollEnabled(!isModalOpen);
+  };
+
+  /**
+   * Function to handle the press on add to collection
+   */
+  const handlePressAddToCollection = () => {
+    setShowPlatformModal(true);
+    toggleScroll(true);
+  };
+
+  /**
+   * Function to handle finishing se lecting platforms
+   */
+  const handlePlatformSelectionDone = () => {
+    setShowPlatformModal(false);
+    toggleScroll(true);
+    setTimeout(() => setShowRegionModal(true), 200);
+  };
+
+  /**
+   *  Function to handle finishing selecting regions
+   */
+  const handleRegionSelectionDone = () => {
+    setShowRegionModal(false);
+
+    setTimeout(() => {
+      addToCollection(currentGameDetailed);
+    }, 200);
+  };
+
 
   return (
     <ScrollView className="flex-1 bg-[#0F1218]" scrollEnabled={isScrollEnabled}
@@ -188,12 +262,23 @@ const GameScreen = (props: Props) => {
               <Icon name="add-circle-outline" size={22} color="#F6F7F7" />
             </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => addToFavorite(currentGameDetailed)}
-              className="p-2"
-            >
-              <Icon name="heart-outline" size={22} color="#F6F7F7" />
-            </TouchableOpacity>
+            {
+              isFavorite == false ?
+                <TouchableOpacity
+                  onPress={() => addToFavorite(currentGameDetailed)}
+                  className="p-2"
+                >
+                  <Icon name="heart-outline" size={22} color="#F6F7F7" />
+                </TouchableOpacity>
+
+                :
+                <TouchableOpacity
+                  onPress={() => deleteFromFavorites()}
+                  className="p-2"
+                >
+                  <Icon name="heart" size={22} color="#cd776c" />
+                </TouchableOpacity>
+            }
           </View>
         </View>
 
