@@ -16,15 +16,8 @@ const SearchScreen = (props: Props) => {
   const [search, setSearch] = useState<string>("")
   const [games, setGames] = useState<Result[]>([])
 
-  useEffect(() => {
-
-  }, [])
-
   const [showPostModal, setShowPostModal] = useState(false);
 
-  const handlePostCreated = () => {
-    console.log('Nueva publicación creada:');
-  };
   
   const context = useContext(AppContext);
 

@@ -202,7 +202,6 @@ const UseApi = () => {
         } catch (error) {
             console.error("Error while fetching favorites", error);
         }
-
     };
 
     /**
@@ -332,10 +331,9 @@ const UseApi = () => {
         }
     };
 
-        /**
-     * Function to add a game to the favorites list
-     * @param username of the user
-     * @param inputPostXPTrade game to add
+    /**
+     * Function to create a post a
+     * @param inputPostXPTrade json to add
      * @returns 
      */
     const handleCreatePost = async (inputPostXPTrade) => {
@@ -348,9 +346,6 @@ const UseApi = () => {
                     'Authorization': 'Bearer ' + context.token
                 },
             });
-
-            console.log(response);
-
 
             if (response?.data) {
                 return SUCCESS;
@@ -365,13 +360,38 @@ const UseApi = () => {
                 console.error('Error while creating favorites:', error.message);
             }
         }
-
-
     };
+
+    /**
+     * Function to get an user favorite games
+     * @param username of the user
+     * @returns the favorites
+     */
+    const handleGetPosts = async () => {
+        try {
+            const response = await axios.get(`${URL_API}/v2/posts`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
+            if (response?.data) {
+                return response?.data?.data;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while fetching posts", error);
+        }
+    };
+
 
     return {
         handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite,
-        handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost
+        handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost, handleGetPosts
     }
 
 }

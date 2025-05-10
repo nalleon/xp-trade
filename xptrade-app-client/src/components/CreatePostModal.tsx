@@ -104,7 +104,6 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
             picture: imageUri
         };
 
-        console.log("INPUT: ======>", inputXPTrade);
 
         const result = await handleCreatePost(inputXPTrade);
 
