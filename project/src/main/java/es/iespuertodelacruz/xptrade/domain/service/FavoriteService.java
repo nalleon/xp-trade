@@ -41,6 +41,11 @@ public class FavoriteService implements IFavoriteService {
     }
 
     @Override
+    public Favorite checkIfExists(User user, Game game) {
+        return repository.checkIfExists(user, game);
+    }
+
+    @Override
     public List<Favorite> findByUser(User user) {
         return repository.findAllByUser(user);
     }

@@ -125,13 +125,30 @@ public class FavoriteRESTController {
             FavoriteOutputDTO dto = IFavoriteOutputDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<FavoriteOutputDTO> response =
-                    new CustomApiResponse<>(302, "Favorite found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Favorite found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
         CustomApiResponse<FavoriteOutputDTO> errorResponse = new CustomApiResponse<>(404, "Favorite NOT found", null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
+
+    @GetMapping("/users/{username}/games/{title}")
+    public ResponseEntity<?> checkIfExists(@PathVariable String username, @PathVariable String title) {
+
+        Favorite aux = service.checkIfExists(new User(username), new Game(title));
+        if (aux != null){
+            FavoriteOutputDTO dto = IFavoriteOutputDTOMapper.INSTANCE.toDTO(aux);
+
+            CustomApiResponse<FavoriteOutputDTO> response =
+                    new CustomApiResponse<>(200, "Favorite found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+
+        CustomApiResponse<FavoriteOutputDTO> errorResponse = new CustomApiResponse<>(204, "Favorite NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
+    }
+
 
 
 
