@@ -4,14 +4,16 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Result } from '../utils/TypeUtils';
 import UseRAWGApi from '../hooks/UseRAWGApi';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';
+import { REGIONS, SUCCESS } from '../utils/Utils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import UseApi from '../hooks/UseApi';
 
 type Props = {
     visible: boolean;
     onClose: () => void;
-    onPostCreated?: (post: { text: string; image?: string; game: Result }) => void;
 };
 
-const CreatePostModal = ({ visible, onClose, onPostCreated }: Props) => {
+const CreatePostModal = ({ visible, onClose }: Props) => {
     const [text, setText] = useState<string>('');
     const [imageUri, setImageUri] = useState<string | null>(null);
     const [search, setSearch] = useState('');
@@ -19,7 +21,9 @@ const CreatePostModal = ({ visible, onClose, onPostCreated }: Props) => {
     const [selectedGame, setSelectedGame] = useState<Result | null>(null);
     const [image, setImage] = useState<Asset>();
 
-    const { handleFetch } = UseRAWGApi();
+    const { handleFetch, handleGameDetailsFetch } = UseRAWGApi();
+    const { handleCreatePost } = UseApi();
+
 
     const pickImage = async () => {
         launchImageLibrary({ mediaType: "photo" }, (response) => {
@@ -39,28 +43,79 @@ const CreatePostModal = ({ visible, onClose, onPostCreated }: Props) => {
         const result: Result[] | null = await handleFetch(search);
         if (result) {
             const filtered = result.filter(
-                (game) =>
-                    !game.tags.some(tag =>
-                        ['fangame', 'randomizer', 'doujin', 'doujin-game'].includes(tag.name.toLowerCase()) ||
-                        ['fangame', 'randomizer', 'doujin', 'doujin-game'].includes(tag.slug.toLowerCase())
+                (gameDetailed) =>
+                    !gameDetailed.tags.some(tag =>
+                        ['fangame', 'randomizer', 'doujin', 'doujin-gameDetailed'].includes(tag.name.toLowerCase()) ||
+                        ['fangame', 'randomizer', 'doujin', 'doujin-gameDetailed'].includes(tag.slug.toLowerCase())
                     )
             );
             setGames(filtered);
         }
     };
 
-    const handlePost = () => {
+    const handlePost = async () => {
         if (!selectedGame || !text || text.trim().length == 0) return;
-        onPostCreated?.({
-            text,
-            image: imageUri || undefined,
-            game: selectedGame,
-        });
-        setText('');
-        setImageUri(null);
-        setSelectedGame(null);
-        setSearch('');
-        setGames([]);
+
+        const gameDetailed = await handleGameDetailsFetch(selectedGame.slug);
+        const usernameXP = await AsyncStorage.getItem('username');
+
+        const developers =
+            gameDetailed.developers?.length > 0
+                ? gameDetailed.developers.map((d) => ({ name: d.name }))
+                : gameDetailed.publishers?.length > 0
+                    ? gameDetailed.publishers.map((p) => ({ name: p.name }))
+                    : [{ name: "TBA" }];
+
+        const publishers =
+            gameDetailed.publishers?.length > 0
+                ? gameDetailed.publishers.map((p) => ({ name: p.name }))
+                : gameDetailed.developers?.length > 0
+                    ? gameDetailed.developers.map((d) => ({ name: d.name }))
+                    : [{ name: "TBA" }];
+
+        const genres =
+            gameDetailed.genres?.length > 0
+                ? gameDetailed.genres.map((g) => ({ name: g.name }))
+                : gameDetailed.tags?.length > 0
+                    ? gameDetailed.tags.map((tag) => ({ name: tag.name }))
+                    : [{ name: "TBA" }];
+
+        const inputXPTrade = {
+            game: {
+                title: gameDetailed.name,
+                coverArt: gameDetailed.background_image,
+                developerInputDTOSet: developers,
+                genreInputDTOSet: genres,
+                platformInputDTOSet: gameDetailed.platforms?.length > 0
+                    ? gameDetailed.platforms.map((p) => ({
+                        name: p.platform.name,
+                    }))
+                    : [{ name: "TBA" }],
+                publisherInputDTOSet: publishers,
+                regionInputDTOSet: REGIONS.map((region) => ({
+                    name: region,
+                })),
+            },
+            user: {
+                username: usernameXP,
+                profilePicture: null
+            },
+            content: text,
+            picture: imageUri
+        };
+
+        console.log("INPUT: ======>", inputXPTrade);
+
+        const result = await handleCreatePost(inputXPTrade);
+
+        if (result == SUCCESS) {
+            setText('');
+            setImageUri(null);
+            setSelectedGame(null);
+            setSearch('');
+            setGames([]);
+        }
+
         onClose();
     };
 

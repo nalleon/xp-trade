@@ -330,13 +330,48 @@ const UseApi = () => {
                 console.error('Error while creating favorites:', error.message);
             }
         }
+    };
+
+        /**
+     * Function to add a game to the favorites list
+     * @param username of the user
+     * @param inputPostXPTrade game to add
+     * @returns 
+     */
+    const handleCreatePost = async (inputPostXPTrade) => {
+        if (!inputPostXPTrade) return null;
+
+        try {
+            const response = await axios.post(`${URL_API}/v2/posts`, inputPostXPTrade, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + context.token
+                },
+            });
+
+            console.log(response);
+
+
+            if (response?.data) {
+                return SUCCESS;
+            } else {
+                return null;
+            }
+
+        } catch (error: any) {
+            if (error.response) {
+                console.error('Server responded with error:', error.response.data);
+            } else {
+                console.error('Error while creating favorites:', error.message);
+            }
+        }
 
 
     };
 
     return {
         handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite,
-        handleCheckIfExistsFavorites, handleDeleteFromFavorites
+        handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost
     }
 
 }

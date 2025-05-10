@@ -22,12 +22,8 @@ const SearchScreen = (props: Props) => {
 
   const [showPostModal, setShowPostModal] = useState(false);
 
-  const handlePostCreated = (postData: {
-    text: string;
-    image?: string;
-    game: any;
-  }) => {
-    console.log('Nueva publicación creada:', postData);
+  const handlePostCreated = () => {
+    console.log('Nueva publicación creada:');
   };
   
   const context = useContext(AppContext);
@@ -131,7 +127,6 @@ const SearchScreen = (props: Props) => {
       <CreatePostModal
         visible={showPostModal}
         onClose={() => setShowPostModal(false)}
-        onPostCreated={handlePostCreated}
       />
       <PostButton onPress={() => setShowPostModal(true)} />
     </View>
