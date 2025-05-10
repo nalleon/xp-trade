@@ -33,28 +33,45 @@ const GameScreen = (props: Props) => {
 
   const { handleAddToCollection, handleAddToFavorite, handleCheckIfExistsFavorites, handleDeleteFromFavorites } = UseApi();
 
-  const toggleScroll = (isModalOpen: boolean) => {
-    setIsScrollEnabled(!isModalOpen);
-  };
+  /**
+   * UseEffect 
+   */
+  useEffect(() => {
+    checkIfIsFavorites();
+  }, [isFavorite]);
 
-  const handlePressAddToCollection = () => {
-    setShowPlatformModal(true);
-    toggleScroll(true);
-  };
 
-  const handlePlatformSelectionDone = () => {
-    setShowPlatformModal(false);
-    toggleScroll(true);
-    setTimeout(() => setShowRegionModal(true), 200);
-  };
 
-  const handleRegionSelectionDone = () => {
-    setShowRegionModal(false);
+  /**
+     * Function to check if a game is in favorites
+     */
+  const checkIfIsFavorites = async () => {
+    const usernameXP = await AsyncStorage.getItem('username');
+    const title = currentGame.name;
 
-    setTimeout(() => {
-      addToCollection(currentGameDetailed);
-    }, 200);
-  };
+    const result = await handleCheckIfExistsFavorites(usernameXP, title);
+
+    if (result != null) {
+      setIsFavorite(true);
+    }
+  }
+
+  /**
+   * Function to delete a game from favorites
+   */
+  const deleteFromFavorites = async () => {
+    const usernameXP = await AsyncStorage.getItem('username');
+    const title = currentGame.name;
+
+    const result = await handleDeleteFromFavorites(usernameXP, title);
+    console.log("Resultado de eliminar de favoritos:", result); // Debug
+
+    if (result != null) {
+      setIsFavorite(!isFavorite);
+    }
+  }
+
+
 
   const addToCollection = async (game: GameDetails) => {
     if (!game) {
@@ -151,39 +168,42 @@ const GameScreen = (props: Props) => {
     setIsScrollEnabled(true);
   };
 
+  /**
+   * Function to block the scroll of the screen
+   * @param isModalOpen true if any of the modals is open, false otherwise
+   */
+  const toggleScroll = (isModalOpen: boolean) => {
+    setIsScrollEnabled(!isModalOpen);
+  };
 
   /**
-   * UseEffect 
+   * Function to handle the press on add to collection
    */
-  useEffect(() => {
-    checkIfIsFavorites();
-  }, [isFavorite]);
+  const handlePressAddToCollection = () => {
+    setShowPlatformModal(true);
+    toggleScroll(true);
+  };
 
+  /**
+   * Function to handle finishing se lecting platforms
+   */
+  const handlePlatformSelectionDone = () => {
+    setShowPlatformModal(false);
+    toggleScroll(true);
+    setTimeout(() => setShowRegionModal(true), 200);
+  };
 
+  /**
+   *  Function to handle finishing selecting regions
+   */
+  const handleRegionSelectionDone = () => {
+    setShowRegionModal(false);
 
+    setTimeout(() => {
+      addToCollection(currentGameDetailed);
+    }, 200);
+  };
 
-  const checkIfIsFavorites = async () => {
-    const usernameXP = await AsyncStorage.getItem('username');
-    const title = currentGame.name;
-
-    const result = await handleCheckIfExistsFavorites(usernameXP, title);
-
-    if (result != null) {
-      setIsFavorite(true);
-    }
-  }
-
-  const deleteFromFavorites = async () => {
-    const usernameXP = await AsyncStorage.getItem('username');
-    const title = currentGame.name;
-
-    const result = await handleDeleteFromFavorites(usernameXP, title);
-      console.log("Resultado de eliminar de favoritos:", result); // Debug
-
-    if (result != null) {
-      setIsFavorite(!isFavorite);
-    }
-  }
 
   return (
     <ScrollView className="flex-1 bg-[#0F1218]" scrollEnabled={isScrollEnabled}

@@ -66,7 +66,7 @@ const SearchScreen = (props: Props) => {
 
   return (
     <View className="flex-1 bg-[#0F1218] pt-10 px-4">
-      <View className="flex-row items-center bg-[#1E222A] rounded-lg px-3 py-2 self-center w-full max-w-md">
+      <View className="flex-row items-center bg-[#1E222A] rounded-tl-xl rounded-br-xl px-3 py-2 self-center w-full max-w-md">
         <TextInput
           className="flex-1 text-[#F6F7F7] text-base mr-2"
           placeholder="Nombre del juego"
