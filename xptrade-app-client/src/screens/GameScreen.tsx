@@ -69,15 +69,15 @@ const GameScreen = (props: Props) => {
         genreInputDTOSet: game.genres.map((g) => ({
           name: g.name,
         })),
-        platformInputDTOSet: game.platforms.map((p) => ({
-          name: p.platform.name,
+        platformInputDTOSet: selectedPlatforms.map((p) => ({
+          name: p,
         })),
-        publisherInputDTOSet: selectedPlatforms.map((p) => ({ 
-          name: p 
+        publisherInputDTOSet: game.publishers.map((p) => ({
+          name: p.name
         })),
         regionInputDTOSet: selectedRegions.map((r) => ({
-           name: r 
-          })),
+          name: r
+        })),
       },
       user: {
         username,
@@ -91,45 +91,58 @@ const GameScreen = (props: Props) => {
   }
 
   const addToFavorite = async (game: GameDetails) => {
-    if (!game) {
-      return;
-    }
-
+    if (!game) return;
+  
     const usernameXP = await AsyncStorage.getItem('username');
-    
+  
+    const developers =
+      game.developers?.length > 0
+        ? game.developers.map((d) => ({ name: d.name }))
+        : game.publishers?.length > 0
+          ? game.publishers.map((p) => ({ name: p.name }))
+          : [{ name: "TBA" }];
+  
+    const publishers =
+      game.publishers?.length > 0
+        ? game.publishers.map((p) => ({ name: p.name }))
+        : game.developers?.length > 0
+          ? game.developers.map((d) => ({ name: d.name }))
+          : [{ name: "TBA" }];
+  
+    const genres =
+      game.genres?.length > 0
+        ? game.genres.map((g) => ({ name: g.name }))
+        : game.tags?.length > 0
+          ? game.tags.map((tag) => ({ name: tag.name }))
+          : [{ name: "TBA" }];
+  
     const inputXPTrade: XPTradeInputGame = {
       game: {
         title: game.name,
         coverArt: game.background_image,
-        developerInputDTOSet: game.developers.map((d) => ({
-          name: d.name,
-        })),
-        genreInputDTOSet: game.genres.map((g) => ({
-          name: g.name,
-        })),
-        platformInputDTOSet: game.platforms.map((p) => ({
-          name: p.platform.name,
-        })),
-        publisherInputDTOSet: game.publishers.map((p) => ({
-          name: p.name,
-        })),
+        developerInputDTOSet: developers,
+        genreInputDTOSet: genres,
+        platformInputDTOSet: game.platforms?.length > 0
+          ? game.platforms.map((p) => ({
+              name: p.platform.name,
+            }))
+          : [{ name: "TBA" }],
+        publisherInputDTOSet: publishers,
         regionInputDTOSet: REGIONS.map((region) => ({
           name: region,
         })),
       },
       user: {
         username: usernameXP,
-        profilePicture: ''
+        profilePicture: '',
       },
     };
-
-    console.log(JSON.stringify(inputXPTrade, null, 2));
-
-    
+  
     await handleAddToFavorite(inputXPTrade);
-
     setIsScrollEnabled(true);
-  }
+  };
+  
+
 
   return (
     <ScrollView className="flex-1 bg-[#0F1218]" scrollEnabled={isScrollEnabled}

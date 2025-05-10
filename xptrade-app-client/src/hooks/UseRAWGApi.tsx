@@ -36,8 +36,8 @@ const UseRAWGApi = () => {
     if (!slug?.trim()) return null;
 
     try {
-      console.log(`${RAWG_API}/${slug}${RAWG_API_KEY}`);
-        const response = await axios.get(`${RAWG_API}/${slug}${RAWG_API_KEY}`, {
+
+          const response = await axios.get(`${RAWG_API}/${slug}${RAWG_API_KEY}`, {
             headers: { 'Content-Type': 'application/json' }
         });
 
