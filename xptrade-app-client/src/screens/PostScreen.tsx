@@ -10,18 +10,43 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { HomeStackParamList } from '../navigations/stack/PostStackNav';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppContext } from '../context/AppContext';
 import Icon from 'react-native-vector-icons/Ionicons';
+import CommentButton from '../components/CommentButton';
+import CreatePostModal from '../components/CreatePostModal';
+import CreateCommentModal from '../components/CreateCommentModal';
+import UseApi from '../hooks/UseApi';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'PostScreen'>;
 
 const PostScreen = ({ navigation }: Props) => {
   const { currentPost } = useContext(AppContext);
   const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState('');
+  const [showPostModal, setShowPostModal] = useState(false);
+  const { handleGetPostsComments } = UseApi();
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getComments();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+
+  const getComments = async () => {
+    const result = await handleGetPostsComments(currentPost.id);
+
+    if (result != null) {
+      setComments(result);
+    }
+  }
+
+
 
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
@@ -35,23 +60,35 @@ const PostScreen = ({ navigation }: Props) => {
       hour12: false,
     }).replace(',', '');
   };
-
   const renderComment = ({ item }) => (
-    <View className="bg-[#161A20] rounded-xl p-3 mb-2 mx-4">
-      <View className="flex-row items-center mb-1">
+    <View className="bg-[#1E222A] rounded-tr-xl rounded-bl-xl px-4 py-3 mt-2 mx-4">
+      <View className="flex-row items-start">
         <Image
           source={
             item.user.profilePicture
               ? { uri: item.user.profilePicture }
               : require('../resources/xp-trade.png')
           }
-          className="w-8 h-8 rounded-full mr-2"
+          className="w-8 h-8 rounded-full mr-3 mt-1"
         />
-        <Text className="text-[#F6F7F7] font-semibold">@{item.user.username}</Text>
+        <View className="flex-1">
+          <View className="flex-row items-center justify-between">
+            <Text className="text-[#F6F7F7] font-semibold text-sm">
+              @{item.user.username}
+            </Text>
+            <Text className="text-xs text-[#8899A6] ml-auto">
+              {formatDate(item.creationDate)}
+            </Text>
+          </View>
+          <Text className="text-[#D1D5DB] text-sm mt-1">
+            {item.content}
+          </Text>
+        </View>
       </View>
-      <Text className="text-[#F6F7F7]">{item.content}</Text>
     </View>
   );
+
+
 
   return (
     <KeyboardAvoidingView
@@ -64,7 +101,6 @@ const PostScreen = ({ navigation }: Props) => {
       >
         <View className="bg-[#1E222A] rounded-tl-xl rounded-br-xl p-4 mb-4 mx-4 mt-4">
           <View className="flex-row items-center justify-between mb-2">
-            {/* Info del usuario y juego */}
             <View className="flex-row items-center">
               <Image
                 source={
@@ -125,19 +161,11 @@ const PostScreen = ({ navigation }: Props) => {
         {comments.map((item) => renderComment({ item }))}
       </ScrollView>
 
-      <View className="bg-[#1E222A] px-4 py-3 border-t border-[#2C3038] flex-row items-center">
-        <TextInput
-          className="flex-1 bg-[#2C3038] text-white rounded-xl px-4 py-2 mr-2"
-          placeholder="Escribe un comentario..."
-          placeholderTextColor="#8899A6"
-          value={newComment}
-          onChangeText={setNewComment}
-          multiline
-        />
-        <TouchableOpacity>
-          <Text className="text-blue-400 font-semibold">Enviar</Text>
-        </TouchableOpacity>
-      </View>
+      <CreateCommentModal
+        visible={showPostModal}
+        onClose={() => setShowPostModal(false)}
+      />
+      <CommentButton onPress={() => setShowPostModal(true)} />
     </KeyboardAvoidingView>
   );
 };

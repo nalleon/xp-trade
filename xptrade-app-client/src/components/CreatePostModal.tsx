@@ -53,6 +53,8 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
         }
     };
 
+    
+
     const handlePost = async () => {
         if (!selectedGame || !text || text.trim().length == 0) return;
 

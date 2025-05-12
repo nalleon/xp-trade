@@ -363,6 +363,36 @@ const UseApi = () => {
     };
 
     /**
+     * Function to create a comment in a post
+     * @param inputPostXPTrade json to add
+     * @returns 
+     */
+    const handleCreateComment = async (inputPostXPTrade) => {
+        if (!inputPostXPTrade) return null;
+
+        try {
+            const response = await axios.post(`${URL_API}/v2/comments`, inputPostXPTrade, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + context.token
+                },
+            });
+
+            if (response?.data) {
+                return SUCCESS;
+            } else {
+                return null;
+            }
+
+        } catch (error: any) {
+            if (error.response) {
+                console.error('Server responded with error:', error.response.data);
+            } else {
+                console.error('Error while creating favorites:', error.message);
+            }
+        }
+    };
+    /**
      * Function to get an user favorite games
      * @param username of the user
      * @returns the favorites
@@ -388,10 +418,36 @@ const UseApi = () => {
         }
     };
 
+    /**
+     * Function to get an user favorite games
+     * @param username of the user
+     * @returns the favorites
+     */
+    const handleGetPostsComments = async (id : any) => {
+        try {
+            const response = await axios.get(`${URL_API}/v2/comments/posts/${id}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
+            if (response?.data) {
+                return response?.data?.data;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while fetching posts", error);
+        }
+    };
+
 
     return {
         handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite,
-        handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost, handleGetPosts
+        handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost, handleGetPosts, handleCreateComment, handleGetPostsComments
     }
 
 }
