@@ -33,7 +33,7 @@ public interface ICommentEntityRepository extends JpaRepository<CommentEntity, I
 
 
     @Query(
-            value="SELECT * FROM comments WHERE post_id =:postId",
+            value="SELECT * FROM comments WHERE post_id =:post_id",
             nativeQuery=true
     )
     List<CommentEntity> findAllByPost(@Param("post_id") int post_id);
