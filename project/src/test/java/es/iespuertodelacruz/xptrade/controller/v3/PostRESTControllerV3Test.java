@@ -73,6 +73,23 @@ public class PostRESTControllerV3Test extends MapperDTOHelper {
         when(serviceMock.findAll()).thenReturn(new ArrayList<>());
         Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAll().getStatusCode(), MESSAGE_ERROR);
     }
+
+    @Test
+    void getAllLatestTest() {
+        List<Post> list = new ArrayList<>();
+        list.add(new Post(1));
+        list.add(new Post(2));
+        list.add(new Post(3));
+        when(serviceMock.findAllLatest()).thenReturn(list);
+        Assertions.assertNotNull(controller.getAllLatest(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllLatestEmptyTest() {
+        when(serviceMock.findAllLatest()).thenReturn(new ArrayList<>());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAllLatest().getStatusCode(), MESSAGE_ERROR);
+    }
+
     @Test
     void getAllByUserTest() {
         List<Post> list = new ArrayList<>();

@@ -134,6 +134,19 @@ public class FavoriteRESTControllerV2Test extends MapperDTOHelper {
 
 
     @Test
+    void checkIfExistsTest() {
+        when(serviceMock.checkIfExists(any(User.class), any(Game.class))).thenReturn(new Favorite(1));
+        Assertions.assertNotNull(controller.checkIfExists(NAME, TITLE), MESSAGE_ERROR);
+    }
+
+
+    @Test
+    void checkIfExistsNotFoundTest() {
+        when(serviceMock.checkIfExists(any(User.class), any(Game.class))).thenReturn(null);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.checkIfExists(NAME, TITLE).getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
     void getOneTest() {
         when(serviceMock.findById(1)).thenReturn(new Favorite(1));
         Assertions.assertNotNull(controller.getById(1), MESSAGE_ERROR);
