@@ -200,6 +200,8 @@ public class GameEntityServiceTest extends TestUtilities {
     @Test
     void addNullRegionsTest() {
         item.setRegionSet(new HashSet<>());
+        when(regionRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new RegionEntity(NAME)));
+
         Assertions.assertNull(service.save(item), MESSAGE_ERROR);
     }
 

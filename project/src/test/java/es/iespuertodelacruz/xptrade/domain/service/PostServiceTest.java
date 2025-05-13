@@ -41,6 +41,16 @@ public class PostServiceTest extends TestUtilities {
     }
 
     @Test
+    void getAllLatestTest() {
+        List<Post> list = new ArrayList<>();
+        list.add(new Post(new Game(1), new User(1), "EEE", "default.png"));
+        list.add(new Post(new Game(2), new User(2), "EEE", "default.png"));
+        Mockito.when(repositoryMock.findAllLatest()).thenReturn(list);
+        Assertions.assertNotNull(service.findAllLatest(), MESSAGE_ERROR);
+    }
+
+
+    @Test
     void getByIdNullTest() {
         Assertions.assertNull(service.findById(1), MESSAGE_ERROR);
     }

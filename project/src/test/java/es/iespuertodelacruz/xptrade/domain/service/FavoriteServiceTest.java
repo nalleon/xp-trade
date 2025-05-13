@@ -16,6 +16,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+
 public class FavoriteServiceTest extends TestUtilities {
     @Mock
     IGenericSocialRepository<Favorite, Integer, User, Game> repositoryMock;
@@ -53,6 +55,12 @@ public class FavoriteServiceTest extends TestUtilities {
     }
 
     @Test
+    void checkIfExistsTest() {
+        Mockito.when(repositoryMock.checkIfExists(any(User.class), any(Game.class))).thenReturn(new Favorite());
+        Assertions.assertNotNull(service.checkIfExists(new User(), new Game()), MESSAGE_ERROR);
+    }
+
+    @Test
     void getAllByGameNullTest() {
         Mockito.when(repositoryMock.findAllBySubject(new Game())).thenReturn(null);
         Assertions.assertNull(service.findByGame(new Game()), MESSAGE_ERROR);
@@ -81,7 +89,7 @@ public class FavoriteServiceTest extends TestUtilities {
 
     @Test
     void addTest() {
-        Mockito.when(repositoryMock.save(Mockito.any(Favorite.class))).thenReturn(new Favorite());
+        Mockito.when(repositoryMock.save(any(Favorite.class))).thenReturn(new Favorite());
         Assertions.assertNotNull(service.add(new Game(), new User()), MESSAGE_ERROR);
     }
 
@@ -97,7 +105,7 @@ public class FavoriteServiceTest extends TestUtilities {
     }
     @Test
     void updateTest() throws Exception {
-        Mockito.when(repositoryMock.update(Mockito.any(Favorite.class))).thenReturn(new Favorite());
+        Mockito.when(repositoryMock.update(any(Favorite.class))).thenReturn(new Favorite());
         Assertions.assertNotNull(service.update(1,new Game(), new User()), MESSAGE_ERROR);
     }
 

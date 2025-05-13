@@ -105,10 +105,6 @@ public class GameEntityService implements IGameRepository {
                 regionRepository::save
         );
 
-        if (regions == null){
-            return null;
-        }
-
         GameEntity dbItem = repository.findByTitle(game.getTitle()).orElse(null);
 
         if(dbItem != null){

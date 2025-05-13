@@ -107,7 +107,15 @@ public class FavoriteEntityServiceTest extends TestUtilities {
         when(repositoryMock.findById(1)).thenReturn(Optional.of(new FavoriteEntity()));
         Assertions.assertNotNull(service.findById(1), MESSAGE_ERROR);
     }
-
+    @Test
+    void checkIfExistsTest() {
+        when(repositoryMock.checkIfInFavorite(anyString(), anyString())).thenReturn(Optional.of(new FavoriteEntity()));
+        Assertions.assertNotNull(service.checkIfExists(user, game), MESSAGE_ERROR);
+    }
+    @Test
+    void checkIfExistsNullTest() {
+        Assertions.assertNull(service.checkIfExists(user, game), MESSAGE_ERROR);
+    }
 
     @Test
     void getByNameTest() {

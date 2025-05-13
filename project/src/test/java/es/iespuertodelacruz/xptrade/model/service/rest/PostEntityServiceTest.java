@@ -84,6 +84,14 @@ public class PostEntityServiceTest extends TestUtilities {
     }
 
     @Test
+    void getAllLatestTest() {
+        List<PostEntity> list = new ArrayList<>();
+        list.add(new PostEntity());
+        when(repositoryMock.findAllLatest()).thenReturn(list);
+        Assertions.assertNotNull(service.findAllLatest(), MESSAGE_ERROR);
+    }
+
+    @Test
     void getByIdNullTest() {
         Assertions.assertNull(service.findById(1), MESSAGE_ERROR);
     }

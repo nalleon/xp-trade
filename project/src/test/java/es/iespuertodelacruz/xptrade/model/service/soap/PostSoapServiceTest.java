@@ -87,6 +87,7 @@ public class PostSoapServiceTest extends TestUtilities {
         Assertions.assertNotNull(service.findAll(), MESSAGE_ERROR);
     }
 
+
     @Test
     void getByIdNullTest() {
         Assertions.assertNull(service.findById(1), MESSAGE_ERROR);
