@@ -19,7 +19,7 @@ import CommentButton from '../components/CommentButton';
 import CreatePostModal from '../components/CreatePostModal';
 import CreateCommentModal from '../components/CreateCommentModal';
 import UseApi from '../hooks/UseApi';
-import { Alert } from 'react-native'; // para mostrar un menú de ejemplo
+import { Alert } from 'react-native';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'PostScreen'>;
 
@@ -29,6 +29,7 @@ const PostScreen = ({ navigation }: Props) => {
   const [showPostModal, setShowPostModal] = useState(false);
   const { handleGetPostsComments } = UseApi();
 
+  const isOwner = currentPost.user.username === username;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -47,7 +48,18 @@ const PostScreen = ({ navigation }: Props) => {
     }
   }
 
-
+  const handleOptions = () => {
+    Alert.alert(
+      '',
+      '',
+      [
+        { text: 'Editar', onPress: () => console.log('test edit') },
+        { text: 'Eliminar', onPress: () => console.log('test delete'), style: 'destructive' },
+        { text: 'Cancelar', style: 'cancel' },
+      ],
+      { cancelable: true }
+    );
+  };
 
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
@@ -62,63 +74,51 @@ const PostScreen = ({ navigation }: Props) => {
     }).replace(',', '');
   };
 
-const renderComment = ({ item }) => {
-  const isOwner = item.user.username === username;
+  const renderComment = ({ item }) => {
+    const isCommentOwner = item.user.username === username;
 
-  const handleOptions = () => {
-    Alert.alert(
-      'Opciones del comentario',
-      '',
-      [
-        { text: 'Editar', onPress: () => console.log('Editar comentario') },
-        { text: 'Eliminar', onPress: () => console.log('Eliminar comentario'), style: 'destructive' },
-        { text: 'Cancelar', style: 'cancel' },
-      ],
-      { cancelable: true }
+    return (
+      <View className="bg-[#1E222A] rounded-tl-xl rounded-br-xl px-4 py-3 mt-2 mx-4" key={item.id}>
+        <View className="flex-row items-start justify-between">
+          <View className="flex-row">
+            <Image
+              source={
+                item.user.profilePicture
+                  ? { uri: item.user.profilePicture }
+                  : require('../resources/xp-trade.png')
+              }
+              className="w-8 h-8 rounded-full mr-3 mt-1"
+            />
+            <View>
+              <Text className="text-[#F6F7F7] font-semibold text-sm">
+                @{item.user.username}
+              </Text>
+              <Text className="text-[#D1D5DB] text-sm mt-1">
+                {item.content}
+              </Text>
+            </View>
+          </View>
+
+          {isCommentOwner && (
+            <TouchableOpacity onPress={handleOptions}>
+              <Icon
+                name="ellipsis-vertical-outline"
+                size={18}
+                color="#F6F7F7"
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+
+        <View className="flex-row items-end mt-2">
+          <Text className="text-xs text-[#8899A6] ml-auto">
+            {formatDate(item.creationDate)}
+          </Text>
+        </View>
+      </View>
     );
   };
 
-  return (
-    <View className="bg-[#1E222A] rounded-tl-xl rounded-br-xl px-4 py-3 mt-2 mx-4">
-      <View className="flex-row items-start justify-between">
-        <View className="flex-row">
-          <Image
-            source={
-              item.user.profilePicture
-                ? { uri: item.user.profilePicture }
-                : require('../resources/xp-trade.png')
-            }
-            className="w-8 h-8 rounded-full mr-3 mt-1"
-          />
-          <View>
-            <Text className="text-[#F6F7F7] font-semibold text-sm">
-              @{item.user.username}
-            </Text>
-            <Text className="text-[#D1D5DB] text-sm mt-1">
-              {item.content}
-            </Text>
-          </View>
-        </View>
-
-        {isOwner && (
-          <TouchableOpacity onPress={handleOptions}>
-            <Icon
-              name="ellipsis-vertical-outline"
-              size={18}
-              color="#F6F7F7"
-            />
-          </TouchableOpacity>
-        )}
-      </View>
-
-      <View className="flex-row items-end mt-2">
-        <Text className="text-xs text-[#8899A6] ml-auto">
-          {formatDate(item.creationDate)}
-        </Text>
-      </View>
-    </View>
-  );
-};
 
 
 
@@ -146,6 +146,16 @@ const renderComment = ({ item }) => {
                 <Text className="text-[#F6F7F7] font-semibold">@{currentPost.user.username}</Text>
               </View>
             </View>
+
+            {isOwner && (
+              <TouchableOpacity onPress={handleOptions}>
+                <Icon
+                  name="ellipsis-vertical-outline"
+                  size={18}
+                  color="#F6F7F7"
+                />
+              </TouchableOpacity>
+            )}
           </View>
 
 

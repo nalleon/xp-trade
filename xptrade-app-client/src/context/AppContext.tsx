@@ -17,10 +17,10 @@ type AppContextType ={
     setCurrentGame: (game: Result) => void,
     currentGameDetailed: GameDetails | null,
     setCurrentGameDetailed: (game: GameDetails | null) => void,
-    currentComment: Comment,
-    setCurrentComment: (comment: Comment) => void,
-    currentPost: PostXPTrade,
-    setCurrentPost: (post: PostXPTrade) => void,
+    currentComment: any,
+    setCurrentComment: (comment: any) => void,
+    currentPost: any,
+    setCurrentPost: (post: any) => void,
 }
 
 export const AppContext = createContext<AppContextType>({} as AppContextType );
@@ -30,8 +30,8 @@ const AppContextProvider = (props: Props) => {
     const [currentGame, setCurrentGame] = useState<Result>({} as Result);
     const [currentGameDetailed, setCurrentGameDetailed] = useState<GameDetails | null>(null);
 
-    const [currentComment, setCurrentComment] = useState<Comment>({} as Comment);
-    const [currentPost, setCurrentPost] = useState<PostXPTrade>({} as PostXPTrade);
+    const [currentComment, setCurrentComment] = useState<any>({} as any);
+    const [currentPost, setCurrentPost] = useState<any>({} as any);
 
     const contextValues: AppContextType  = {
         username,

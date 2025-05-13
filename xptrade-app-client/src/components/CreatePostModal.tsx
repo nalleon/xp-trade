@@ -66,33 +66,34 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
                 ? gameDetailed.developers.map((d) => ({ name: d.name }))
                 : gameDetailed.publishers?.length > 0
                     ? gameDetailed.publishers.map((p) => ({ name: p.name }))
-                    : [{ name: "TBA" }];
+                    : [];
 
         const publishers =
             gameDetailed.publishers?.length > 0
                 ? gameDetailed.publishers.map((p) => ({ name: p.name }))
                 : gameDetailed.developers?.length > 0
                     ? gameDetailed.developers.map((d) => ({ name: d.name }))
-                    : [{ name: "TBA" }];
+                    : [];
 
         const genres =
             gameDetailed.genres?.length > 0
                 ? gameDetailed.genres.map((g) => ({ name: g.name }))
                 : gameDetailed.tags?.length > 0
                     ? gameDetailed.tags.map((tag) => ({ name: tag.name }))
-                    : [{ name: "TBA" }];
+                    : [];
 
         const inputXPTrade = {
             game: {
                 title: gameDetailed.name,
                 coverArt: gameDetailed.background_image,
+                slug: gameDetailed.slug,
                 developerInputDTOSet: developers,
                 genreInputDTOSet: genres,
                 platformInputDTOSet: gameDetailed.platforms?.length > 0
                     ? gameDetailed.platforms.map((p) => ({
                         name: p.platform.name,
                     }))
-                    : [{ name: "TBA" }],
+                    : [],
                 publisherInputDTOSet: publishers,
                 regionInputDTOSet: REGIONS.map((region) => ({
                     name: region,

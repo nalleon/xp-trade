@@ -78,10 +78,11 @@ const GameScreen = (props: Props) => {
       return;
     }
 
-    const gameXPTrade: XPTradeInputGame = {
+    const gameXPTrade = {
       game: {
         title: game.name,
         coverArt: game.background_image,
+        slug: game.slug,
         developerInputDTOSet: game.developers.map((d) => ({
           name: d.name,
         })),
@@ -119,33 +120,34 @@ const GameScreen = (props: Props) => {
         ? game.developers.map((d) => ({ name: d.name }))
         : game.publishers?.length > 0
           ? game.publishers.map((p) => ({ name: p.name }))
-          : [{ name: "TBA" }];
+          : [];
 
     const publishers =
       game.publishers?.length > 0
         ? game.publishers.map((p) => ({ name: p.name }))
         : game.developers?.length > 0
           ? game.developers.map((d) => ({ name: d.name }))
-          : [{ name: "TBA" }];
+          : [];
 
     const genres =
       game.genres?.length > 0
         ? game.genres.map((g) => ({ name: g.name }))
         : game.tags?.length > 0
           ? game.tags.map((tag) => ({ name: tag.name }))
-          : [{ name: "TBA" }];
+          : [];
 
-    const inputXPTrade: XPTradeInputGame = {
+    const inputXPTrade = {
       game: {
         title: game.name,
         coverArt: game.background_image,
+        slug: game.slug,
         developerInputDTOSet: developers,
         genreInputDTOSet: genres,
         platformInputDTOSet: game.platforms?.length > 0
           ? game.platforms.map((p) => ({
             name: p.platform.name,
           }))
-          : [{ name: "TBA" }],
+          : [],
         publisherInputDTOSet: publishers,
         regionInputDTOSet: REGIONS.map((region) => ({
           name: region,
