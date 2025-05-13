@@ -55,11 +55,13 @@ INSERT INTO `users` (
 
 CREATE TABLE `games` (
     id INTEGER AUTO_INCREMENT NOT NULL,
-    title CHAR(100) UNIQUE NOT NULL,
+    title CHAR(100) NOT NULL,
     cover_art CHAR(255) NULL,
+    slug CHAR(100) NOT NULL,
     CONSTRAINT `pk_games` PRIMARY KEY (id),
-    UNIQUE KEY `uq_games_title` (title)
+    UNIQUE KEY `uq_games_title_slug` (title, slug)
 );
+
 
 CREATE TABLE `platforms` (
     id INTEGER AUTO_INCREMENT NOT NULL,
