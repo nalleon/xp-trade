@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * @author Nabil Leon Alvarez @nalleon
@@ -20,6 +22,7 @@ import java.util.Set;
 @Service
 public class GameEntityService implements IGameRepository {
 
+    public static final String MISSING_VALUE = "TBA";
     /**
      * Properties
      */
@@ -93,7 +96,14 @@ public class GameEntityService implements IGameRepository {
         if(game == null){
             return null;
         }
-        Set<RegionEntity> regions = checkIfRegionsExists(game.getRegionSet());
+
+        Set<RegionEntity> regions = checkIfItemsExist(
+                game.getRegionSet(),
+                Region::getName,
+                name -> regionRepository.findByName(name),
+                RegionEntity::new,
+                regionRepository::save
+        );
 
         if (regions == null){
             return null;
@@ -126,14 +136,39 @@ public class GameEntityService implements IGameRepository {
         }
 
 
-        Set<PlatformEntity> platforms = checkIfPlatformExists(game.getPlatformSet());
-        Set<DeveloperEntity> developers = checkIfDevelopersExists(game.getDeveloperSet());
-        Set<PublisherEntity> publishers = checkIfPublishersExists(game.getPublisherSet());
-        Set<GenreEntity> genres = checkIfGenresExists(game.getGenreSet());
+        Set<DeveloperEntity> developers = checkIfItemsExist(
+                game.getDeveloperSet(),
+                Developer::getName,
+                name -> developerRepository.findByName(name),
+                DeveloperEntity::new,
+                developerRepository::save
+        );
 
-        if (platforms == null || developers == null || publishers == null || genres == null){
-            return null;
-        }
+        Set<GenreEntity> genres = checkIfItemsExist(
+                game.getGenreSet(),
+                Genre::getName,
+                name -> genreRepository.findByName(name),
+                GenreEntity::new,
+                genreRepository::save
+        );
+
+        Set<PlatformEntity> platforms = checkIfItemsExist(
+                game.getPlatformSet(),
+                Platform::getName,
+                name -> platformRepository.findByName(name),
+                PlatformEntity::new,
+                platformRepository::save
+        );
+
+        Set<PublisherEntity> publishers = checkIfItemsExist(
+                game.getPublisherSet(),
+                Publisher::getName,
+                name -> publisherRepository.findByName(name),
+                PublisherEntity::new,
+                publisherRepository::save
+        );
+
+
         try {
 
             GameEntity entity = IGameEntityMapper.INSTANCE.toEntity(game);
@@ -151,112 +186,44 @@ public class GameEntityService implements IGameRepository {
         }
     }
 
-    public Set<DeveloperEntity> checkIfDevelopersExists(Set<Developer> domains){
-        if(domains.isEmpty()){
-            return null;
-        }
-    
-        Set<DeveloperEntity> results = new HashSet<>();
-        
-        for (Developer domain : domains){
-            DeveloperEntity item = developerRepository.findByName(domain.getName()).orElse(null);
-            
-            if(item == null){
-                item = new DeveloperEntity(domain.getName());
-                item = developerRepository.save(item);
-            }
-            
-            results.add(item);
-        }
-        
-        return results;
-    }
 
+    public <D, E> Set<E> checkIfItemsExist(
+            Set<D> domains,
+            Function<D, String> getNameFunc,
+            Function<String, Optional<E>> findByNameFunc,
+            Function<String, E> createEntityFunc,
+            Function<E, E> saveFunc) {
 
-    public Set<PublisherEntity> checkIfPublishersExists(Set<Publisher> domains){
-        if(domains.isEmpty()){
-            return null;
-        }
+        Set<E> results = new HashSet<>();
 
-        Set<PublisherEntity> results = new HashSet<>();
+        if (domains == null || domains.isEmpty()) {
+            E tba = findByNameFunc.apply(MISSING_VALUE).orElse(null);
 
-        for (Publisher domain : domains){
-            PublisherEntity item = publisherRepository.findByName(domain.getName()).orElse(null);
-
-            if(item == null){
-                item = new PublisherEntity(domain.getName());
-                item = publisherRepository.save(item);
+            if (tba == null) {
+                tba = createEntityFunc.apply(MISSING_VALUE);
+                tba = saveFunc.apply(tba);
             }
 
-            results.add(item);
+            results.add(tba);
+            return results;
+        }
+
+        for (D domain : domains) {
+            String name = getNameFunc.apply(domain);
+            E entity = findByNameFunc.apply(name).orElse(null);
+
+            if (entity == null) {
+                entity = createEntityFunc.apply(name);
+                entity = saveFunc.apply(entity);
+            }
+
+            results.add(entity);
         }
 
         return results;
     }
 
-    public Set<GenreEntity> checkIfGenresExists(Set<Genre> domains){
-        if(domains.isEmpty()){
-            return null;
-        }
 
-        Set<GenreEntity> results = new HashSet<>();
-
-        for (Genre domain : domains){
-            GenreEntity item = genreRepository.findByName(domain.getName()).orElse(null);
-
-            if(item == null){
-                item = new GenreEntity(domain.getName());
-                item = genreRepository.save(item);
-            }
-
-            results.add(item);
-        }
-
-        return results;
-    }
-
-    public Set<RegionEntity> checkIfRegionsExists(Set<Region> domains){
-        if(domains.isEmpty()){
-            return null;
-        }
-
-        Set<RegionEntity> results = new HashSet<>();
-
-        for (Region domain : domains){
-            RegionEntity item = regionRepository.findByName(domain.getName()).orElse(null);
-
-            if(item == null){
-                item = new RegionEntity(domain.getName());
-                item = regionRepository.save(item);
-            }
-
-            results.add(item);
-        }
-
-        return results;
-    }
-
-    public Set<PlatformEntity> checkIfPlatformExists(Set<Platform> domains){
-        if(domains.isEmpty()){
-            return null;
-        }
-
-        Set<PlatformEntity> results = new HashSet<>();
-
-        for (Platform domain : domains){
-            PlatformEntity item = platformRepository.findByName(domain.getName()).orElse(null);
-
-            if(item == null){
-                item = new PlatformEntity(domain.getName());
-                item = platformRepository.save(item);
-            }
-
-            results.add(item);
-        }
-
-        return results;
-    }
-    
     @Override
     public List<Game> findAll() {
         List<GameEntity> listEntities = repository.findAll();
@@ -360,15 +327,46 @@ public class GameEntityService implements IGameRepository {
 
         try {
 
-            Set<RegionEntity> regions = checkIfRegionsExists(game.getRegionSet());
-            Set<PlatformEntity> platforms = checkIfPlatformExists(game.getPlatformSet());
-            Set<DeveloperEntity> developers = checkIfDevelopersExists(game.getDeveloperSet());
-            Set<PublisherEntity> publishers = checkIfPublishersExists(game.getPublisherSet());
-            Set<GenreEntity> genres = checkIfGenresExists(game.getGenreSet());
+            Set<RegionEntity> regions = checkIfItemsExist(
+                    game.getRegionSet(),
+                    Region::getName,
+                    name -> regionRepository.findByName(name),
+                    RegionEntity::new,
+                    regionRepository::save
+            );
 
-            if (regions == null || platforms == null || developers == null || publishers == null || genres == null){
-                return null;
-            }
+            Set<DeveloperEntity> developers = checkIfItemsExist(
+                    game.getDeveloperSet(),
+                    Developer::getName,
+                    name -> developerRepository.findByName(name),
+                    DeveloperEntity::new,
+                    developerRepository::save
+            );
+
+            Set<GenreEntity> genres = checkIfItemsExist(
+                    game.getGenreSet(),
+                    Genre::getName,
+                    name -> genreRepository.findByName(name),
+                    GenreEntity::new,
+                    genreRepository::save
+            );
+
+            Set<PlatformEntity> platforms = checkIfItemsExist(
+                    game.getPlatformSet(),
+                    Platform::getName,
+                    name -> platformRepository.findByName(name),
+                    PlatformEntity::new,
+                    platformRepository::save
+            );
+
+            Set<PublisherEntity> publishers = checkIfItemsExist(
+                    game.getPublisherSet(),
+                    Publisher::getName,
+                    name -> publisherRepository.findByName(name),
+                    PublisherEntity::new,
+                    publisherRepository::save
+            );
+
 
             GameEntity entity = IGameEntityMapper.INSTANCE.toEntity(game);
             dbItem.setTitle(entity.getTitle());
