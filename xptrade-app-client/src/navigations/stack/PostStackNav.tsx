@@ -1,0 +1,43 @@
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from '../../screens/LoginScreen';
+import RegisterScreen from '../../screens/RegisterScreen';
+import HomeScreen from '../../screens/HomeScreen';
+import SearchScreen from '../../screens/SearchScreen';
+import PostScreen from '../../screens/PostScreen';
+import CommentScreen from '../../screens/CommentScreen';
+import NotificationScreen from '../../screens/NotificationScreen';
+import GameScreen from '../../screens/GameScreen';
+import ProfileScreen from '../../screens/ProfileScreen';
+
+type Props = {}
+
+
+export type HomeStackParamList = {
+    HomeScreen: undefined,
+    PostScreen: undefined,
+    CommentScreen: undefined,
+    ProfileScreen: undefined,
+    GameScreen: undefined
+};
+
+const Stack = createNativeStackNavigator<HomeStackParamList>();
+
+const HomeStackNav = (props: Props) => {
+    return (
+        <Stack.Navigator id={undefined}
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
+            <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <Stack.Screen name="PostScreen" component={PostScreen} />
+            <Stack.Screen name="CommentScreen" component={CommentScreen} />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Stack.Screen name="GameScreen" component={GameScreen} />
+        </Stack.Navigator>
+    )
+}
+
+export default HomeStackNav

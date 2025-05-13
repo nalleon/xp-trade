@@ -40,6 +40,7 @@ public class IGameInputDTOMapperTest extends MapperInputDTOHelper {
 
         Assertions.assertEquals(gameInputDTO.title(), dtoMapper.title(), MESSAGE_ERROR);
         Assertions.assertEquals(gameInputDTO.coverArt(), dtoMapper.coverArt(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameInputDTO.slug(), dtoMapper.slug(), MESSAGE_ERROR);
         Assertions.assertEquals(gameInputDTO.developerInputDTOSet(), dtoMapper.developerInputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameInputDTO.genreInputDTOSet(), dtoMapper.genreInputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameInputDTO.platformInputDTOSet(), dtoMapper.platformInputDTOSet(), MESSAGE_ERROR);
@@ -72,13 +73,14 @@ public class IGameInputDTOMapperTest extends MapperInputDTOHelper {
         Assertions.assertEquals(gameDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getTitle(), domainMapper.getTitle(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getCoverArt(), domainMapper.getCoverArt(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameDomain.getSlug(), domainMapper.getSlug(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getDeveloperSet(), domainMapper.getDeveloperSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getGenreSet(), domainMapper.getGenreSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getPlatformSet(), domainMapper.getPlatformSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getPublisherSet(), domainMapper.getPublisherSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getRegionSet(), domainMapper.getRegionSet(), MESSAGE_ERROR);
 
-        gameInputDTO = new GameInputDTO(TITLE, COVER_ART, null, null, null,null,null);
+        gameInputDTO = new GameInputDTO(TITLE, COVER_ART, SLUG, null, null, null,null,null);
 
         domainMapper = IGameInputDTOMapper.INSTANCE.toDomain(gameInputDTO);
         Assertions.assertNull(domainMapper.getRegionSet(), MESSAGE_ERROR);

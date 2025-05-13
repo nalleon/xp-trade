@@ -121,13 +121,13 @@ public class GameServiceTest extends TestUtilities {
         Set<Platform> platformSet = new HashSet<>();
         Set<Publisher> publisherSet = new HashSet<>();
         Set<Region> regionSet = new HashSet<>();
-        Assertions.assertNotNull(service.add(TITLE, COVER_ART, developerSet,
+        Assertions.assertNotNull(service.add(TITLE, COVER_ART, SLUG, developerSet,
                 genreSet, platformSet, publisherSet, regionSet), MESSAGE_ERROR);
     }
 
     @Test
     void addNullTest() {
-        Assertions.assertNull(service.add(null, null, null, null, null,
+        Assertions.assertNull(service.add(null, null, null, null, null, null,
                 null, null), MESSAGE_ERROR);
     }
 
@@ -139,7 +139,7 @@ public class GameServiceTest extends TestUtilities {
         Set<Platform> platformSet = new HashSet<>();
         Set<Publisher> publisherSet = new HashSet<>();
         Set<Region> regionSet = new HashSet<>();
-        Assertions.assertNull(service.update(1, TITLE, COVER_ART, developerSet,
+        Assertions.assertNull(service.update(1, TITLE, COVER_ART, SLUG, developerSet,
                 genreSet, platformSet, publisherSet, regionSet), MESSAGE_ERROR);
     }
     @Test
@@ -150,7 +150,7 @@ public class GameServiceTest extends TestUtilities {
         Set<Platform> platformSet = new HashSet<>();
         Set<Publisher> publisherSet = new HashSet<>();
         Set<Region> regionSet = new HashSet<>();
-        Assertions.assertNotNull(service.update(1,TITLE, COVER_ART, developerSet,
+        Assertions.assertNotNull(service.update(1,TITLE, COVER_ART, SLUG, developerSet,
                 genreSet, platformSet, publisherSet, regionSet), MESSAGE_ERROR);
     }
 
@@ -162,7 +162,7 @@ public class GameServiceTest extends TestUtilities {
 
     @Test
     void updateNullTest() throws Exception {
-        Assertions.assertNull(service.update(0, null, null, null, null, null,
+        Assertions.assertNull(service.update(0, null, null, null, null, null, null,
                 null, null), MESSAGE_ERROR);
     }
 

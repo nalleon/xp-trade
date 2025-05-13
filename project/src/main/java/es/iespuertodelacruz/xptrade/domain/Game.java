@@ -22,6 +22,8 @@ public class Game {
 
     private String coverArt;
 
+    private String slug;
+
     private Set<Developer> developerSet;
 
     private Set<Genre> genreSet;
@@ -46,29 +48,32 @@ public class Game {
         this.id = id;
     }
 
+
     /**
      * Constructor of the class
-     * @param coverArt of the game
+     * @param title of the game
      */
-    public Game(String coverArt) {
-        this.coverArt = coverArt;
+    public Game(String title) {
+        this.title = title;
     }
 
     /**
      * Constructor of the class
      * @param title of the game
      * @param coverArt of the game
+     * @param slug of the game
      * @param developerSet of the game
      * @param genreSet of the game
      * @param platformSet of the game
      * @param publisherSet of the game
      * @param regionSet of the game
      */
-    public Game(String title, String coverArt, Set<Developer> developerSet, Set<Genre> genreSet,
-                Set<Platform> platformSet, Set<Publisher> publisherSet,
-                Set<Region> regionSet) {
+    public Game(String title, String coverArt, String slug, Set<Developer> developerSet,
+                Set<Genre> genreSet, Set<Platform> platformSet, Set<Publisher> publisherSet, Set<Region> regionSet) {
+        this.id = id;
         this.title = title;
         this.coverArt = coverArt;
+        this.slug = slug;
         this.developerSet = developerSet;
         this.genreSet = genreSet;
         this.platformSet = platformSet;
@@ -144,12 +149,21 @@ public class Game {
         this.regionSet = regionSet;
     }
 
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
     @Override
     public String toString() {
         return "Game{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", coverArt='" + coverArt + '\'' +
+                ", slug='" + slug + '\'' +
                 ", developerSet=" + developerSet +
                 ", genreSet=" + genreSet +
                 ", platformSet=" + platformSet +

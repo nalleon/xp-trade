@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class PostInputDTOTest extends TestUtilities {
     PostInputDTO item;
-    GameOutputDTO game;
+    GameInputDTO game;
     UserDTO user;
     GenreOutputDTO genre;
     RegionOutputDTO region;
@@ -40,7 +40,7 @@ public class PostInputDTOTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        game = new GameOutputDTO(ID, TITLE, COVER_ART, developerSet, genreSet, platformSet, publisherSet, regionSet);
+        game = new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
         user =new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, ROLE_NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE);
         item = new PostInputDTO(game, user, CONTENT, PICTURE);
     }

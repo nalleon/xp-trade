@@ -66,11 +66,11 @@ public class Platform {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Platform platform = (Platform) o;
-        return id == platform.id;
+        return Objects.equals(name, platform.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(name);
     }
 }

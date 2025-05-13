@@ -39,6 +39,7 @@ public class IGameEntityMapperTest extends MapperHelper {
 
         Assertions.assertEquals(gameEntity.getId(), entityMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(gameEntity.getTitle(), entityMapper.getTitle(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameEntity.getSlug(), entityMapper.getSlug(), MESSAGE_ERROR);
         Assertions.assertEquals(gameEntity.getCoverArt(), entityMapper.getCoverArt(), MESSAGE_ERROR);
         Assertions.assertEquals(gameEntity.getDeveloperEntitySet(), entityMapper.getDeveloperEntitySet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameEntity.getGenreEntitySet(), entityMapper.getGenreEntitySet(), MESSAGE_ERROR);
@@ -72,6 +73,7 @@ public class IGameEntityMapperTest extends MapperHelper {
         Assertions.assertEquals(gameDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getTitle(), domainMapper.getTitle(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getCoverArt(), domainMapper.getCoverArt(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameDomain.getSlug(), domainMapper.getSlug(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getDeveloperSet(), domainMapper.getDeveloperSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getGenreSet(), domainMapper.getGenreSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getPlatformSet(), domainMapper.getPlatformSet(), MESSAGE_ERROR);

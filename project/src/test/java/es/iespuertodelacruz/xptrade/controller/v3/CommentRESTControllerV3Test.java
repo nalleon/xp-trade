@@ -144,7 +144,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     void addTest() {
         when(serviceMock.add(any(Post.class), any(User.class), any(String.class))).thenReturn(new Comment());
         CommentInputDTO aux = new CommentInputDTO(
-                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
                         new HashSet<>(), new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -169,7 +169,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void addPostNullTest() {
         CommentInputDTO aux = new CommentInputDTO(
-                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
                         new HashSet<>(), new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -186,7 +186,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void addUserNullTest() {
         CommentInputDTO aux = new CommentInputDTO(
-                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
                         new HashSet<>(), new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -205,7 +205,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void addThrowsExceptionTest() {
         CommentInputDTO aux = new CommentInputDTO(
-                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
                         new HashSet<>(), new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -249,7 +249,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateTest() {
         CommentInputDTO aux = new CommentInputDTO(
-                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
                         new HashSet<>(), new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -273,7 +273,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateNotFoundTest() {
         CommentInputDTO aux = new CommentInputDTO(
-                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
                         new HashSet<>(), new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -295,7 +295,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateGameNullTest() {
         CommentInputDTO aux = new CommentInputDTO(
-                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
                         new HashSet<>(), new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -313,7 +313,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     void updateUserNullTest() {
 
         CommentInputDTO aux = new CommentInputDTO(
-                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
                         new HashSet<>(), new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -332,7 +332,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateIdNullTest() {
         CommentInputDTO aux = new CommentInputDTO(
-                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
                         new HashSet<>(), new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -352,7 +352,7 @@ public class CommentRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateExceptionTest() throws Exception {
         CommentInputDTO aux = new CommentInputDTO(
-                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,
+                new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
                         new HashSet<>(), new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,

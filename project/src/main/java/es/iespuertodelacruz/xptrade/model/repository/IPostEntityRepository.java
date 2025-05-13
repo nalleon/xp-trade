@@ -18,22 +18,31 @@ public interface IPostEntityRepository extends JpaRepository<PostEntity, Integer
 
     @Modifying
     @Query(
-            value="DELETE FROM comments AS r WHERE r.id=:id",
+            value="DELETE FROM posts AS r WHERE r.id=:id",
             nativeQuery=true
     )
     int deleteEntityById(@Param("id") Integer id);
 
 
     @Query(
-            value="SELECT * FROM comments WHERE user_id =:user_id",
+            value=
+                    "SELECT * FROM posts " +
+                    "ORDER BY creation_date DESC",
+            nativeQuery=true
+    )
+    List<PostEntity> findAllLatest();
+
+
+    @Query(
+            value="SELECT * FROM posts WHERE user_id =:user_id",
             nativeQuery=true
     )
     List<PostEntity> findAllByUser(@Param("user_id") int user_id);
 
 
     @Query(
-            value="SELECT * FROM comments WHERE post_id =:postId",
+            value="SELECT * FROM posts WHERE game_id =:postId",
             nativeQuery=true
     )
-    List<PostEntity> findAllByGame(@Param("post_id") int post_id);
+    List<PostEntity> findAllByGame(@Param("game_id") int game_id);
 }

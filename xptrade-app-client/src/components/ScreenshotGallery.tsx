@@ -38,13 +38,11 @@ const ScreenshotGallery = ({ screenshots }) => {
   };
 
   const handleImageLoad = () => {
-    setLoading(false); 
+    setLoading(false);
   };
 
   return (
-    <View className="mb-8">
-      <Text className="text-[#F6F7F7] font-semibold mb-2">Otras imágenes:</Text>
-
+    <View className="mb-8 mt-4">
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {screenshots.map((screenshot, index) => (
           <TouchableOpacity
@@ -80,19 +78,19 @@ const ScreenshotGallery = ({ screenshots }) => {
                 {loading && (
                   <ActivityIndicator size="large" color="#fff" style={{ position: 'absolute' }} />
                 )}
-                    <ImageZoom
-                        key={index}
-                        minScale={1}
-                        maxScale={200}
-                        style={{ width, height }}
-                        doubleTapScale={90}
-                        isPinchEnabled={true}
-                        isPanEnabled={true}
-                        isDoubleTapEnabled={true}
-                        onLoad={handleImageLoad}
-                        resizeMode="contain"
-                        source={{ uri: item.image }}
-                    />
+                <ImageZoom
+                  key={index}
+                  minScale={1}
+                  maxScale={200}
+                  style={{ width, height }}
+                  doubleTapScale={90}
+                  isPinchEnabled={true}
+                  isPanEnabled={true}
+                  isDoubleTapEnabled={true}
+                  onLoad={handleImageLoad}
+                  resizeMode="contain"
+                  source={{ uri: item.image }}
+                />
               </View>
             )}
           />

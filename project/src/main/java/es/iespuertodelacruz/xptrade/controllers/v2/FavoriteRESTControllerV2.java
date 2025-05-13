@@ -129,8 +129,8 @@ public class FavoriteRESTControllerV2 {
             FavoriteOutputDTO dto = IFavoriteOutputDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<FavoriteOutputDTO> response =
-                    new CustomApiResponse<>(302, "Favorite found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Favorite found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
         CustomApiResponse<FavoriteOutputDTO> errorResponse = new CustomApiResponse<>(404, "Favorite NOT found", null);
@@ -138,7 +138,21 @@ public class FavoriteRESTControllerV2 {
     }
 
 
+    @GetMapping("/users/{username}/games/{title}")
+    public ResponseEntity<?> checkIfExists(@PathVariable String username, @PathVariable String title) {
 
+        Favorite aux = service.checkIfExists(new User(username), new Game(title));
+        if (aux != null){
+            FavoriteOutputDTO dto = IFavoriteOutputDTOMapper.INSTANCE.toDTO(aux);
+
+            CustomApiResponse<FavoriteOutputDTO> response =
+                    new CustomApiResponse<>(200, "Favorite found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+
+        CustomApiResponse<FavoriteOutputDTO> errorResponse = new CustomApiResponse<>(204, "Favorite NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
+    }
 
     @PostMapping
     public ResponseEntity<CustomApiResponse<?>> add(@RequestBody FavoriteInputDTO dto) {
@@ -147,15 +161,15 @@ public class FavoriteRESTControllerV2 {
                     .body(new CustomApiResponse<>(400, "Item cannot be null", null));
         }
 
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("Incoming DTO: " + dto);
+
         try {
             Favorite aux = IFavoriteInputDTOMapper.INSTANCE.toDomain(dto);
 
-            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(),
+            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(), aux.getGame().getSlug(),
                     aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
                     aux.getGame().getPublisherSet(), aux.getGame().getRegionSet());
 
-            System.out.println("=============== GAME" + gameDb);
             if(gameDb == null){
                 return ResponseEntity.badRequest()
                         .body(new CustomApiResponse<>(400, "Item cannot be null", null));
@@ -163,16 +177,19 @@ public class FavoriteRESTControllerV2 {
 
             User userDb = userService.findByUsername(aux.getUser().getUsername());
 
-            System.out.println("=============== USER" + userDb);
+            System.out.println("USER: " + userDb);
 
             if(userDb == null){
                 return ResponseEntity.badRequest()
                         .body(new CustomApiResponse<>(400, "Item cannot be null", null));
             }
 
+
+
             Favorite dbItem = service.add(gameDb, userDb);
 
-            System.out.println("=============== FAVORITE" + dbItem);
+            System.out.println("fav " + dbItem);
+
 
             FavoriteOutputDTO result = IFavoriteOutputDTOMapper.INSTANCE.toDTO(dbItem);
 
@@ -205,7 +222,7 @@ public class FavoriteRESTControllerV2 {
 
             Favorite aux = IFavoriteInputDTOMapper.INSTANCE.toDomain(dto);
 
-            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(),
+            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(), aux.getGame().getSlug(),
                     aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
                     aux.getGame().getPublisherSet(), aux.getGame().getRegionSet());
 

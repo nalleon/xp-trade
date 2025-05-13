@@ -57,7 +57,7 @@ public class Publisher {
     public String toString() {
         return "Publisher{" +
                 "id=" + id +
-                ", username='" + name + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 
@@ -65,11 +65,11 @@ public class Publisher {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Publisher publisher = (Publisher) o;
-        return id == publisher.id;
+        return Objects.equals(name, publisher.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(name);
     }
 }

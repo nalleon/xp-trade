@@ -63,7 +63,7 @@ public class FavoriteEntityServiceTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        game = new Game(TITLE, COVER_ART, developerSet, genreSet, platformSet, publisherSet, regionSet);
+        game = new Game(TITLE, COVER_ART,SLUG,  developerSet, genreSet, platformSet, publisherSet, regionSet);
         game.setId(ID);
         user = new User(ID);
         user.setUsername(NAME);
@@ -107,7 +107,15 @@ public class FavoriteEntityServiceTest extends TestUtilities {
         when(repositoryMock.findById(1)).thenReturn(Optional.of(new FavoriteEntity()));
         Assertions.assertNotNull(service.findById(1), MESSAGE_ERROR);
     }
-
+    @Test
+    void checkIfExistsTest() {
+        when(repositoryMock.checkIfInFavorite(anyString(), anyString())).thenReturn(Optional.of(new FavoriteEntity()));
+        Assertions.assertNotNull(service.checkIfExists(user, game), MESSAGE_ERROR);
+    }
+    @Test
+    void checkIfExistsNullTest() {
+        Assertions.assertNull(service.checkIfExists(user, game), MESSAGE_ERROR);
+    }
 
     @Test
     void getByNameTest() {

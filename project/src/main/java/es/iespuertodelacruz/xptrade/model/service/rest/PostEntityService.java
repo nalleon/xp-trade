@@ -60,6 +60,13 @@ public class PostEntityService  implements IGenericSocialRepository<Post, Intege
     }
 
     @Override
+    public List<Post>  findAllLatest() {
+        List<PostEntity> listEntities = repository.findAllLatest();
+        return IPostEntityMapper.INSTANCE.toDomainList(listEntities);
+    }
+
+
+    @Override
     public Post findById(Integer id) {
         PostEntity entityFound = repository.findById(id).orElse(null);
 
@@ -91,6 +98,7 @@ public class PostEntityService  implements IGenericSocialRepository<Post, Intege
     @Transactional
     public boolean delete(Integer id) {
         int quantity = repository.deleteEntityById(id);
+        System.out.println(quantity);
         return quantity > 0;
     }
 

@@ -57,6 +57,11 @@ public class PostService implements IPostService {
     }
 
     @Override
+    public List<Post> findAllLatest() {
+        return repository.findAllLatest();
+    }
+
+    @Override
     public boolean delete(Integer id) {
         return repository.delete(id);
     }

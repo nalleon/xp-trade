@@ -56,7 +56,7 @@ public class Genre {
     public String toString() {
         return "Genre{" +
                 "id=" + id +
-                ", username='" + name + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 
@@ -64,11 +64,11 @@ public class Genre {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Genre genre = (Genre) o;
-        return id == genre.id;
+        return Objects.equals(name, genre.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(name);
     }
 }

@@ -55,11 +55,13 @@ INSERT INTO `users` (
 
 CREATE TABLE `games` (
     id INTEGER AUTO_INCREMENT NOT NULL,
-    title CHAR(100) UNIQUE NOT NULL,
+    title CHAR(100) NOT NULL,
     cover_art CHAR(255) NULL,
+    slug CHAR(100) NOT NULL,
     CONSTRAINT `pk_games` PRIMARY KEY (id),
-    UNIQUE KEY `uq_games_title` (title)
+    UNIQUE KEY `uq_games_title_slug` (title, slug)
 );
+
 
 CREATE TABLE `platforms` (
     id INTEGER AUTO_INCREMENT NOT NULL,
@@ -164,7 +166,8 @@ CREATE TABLE `collections` (
     user_id INTEGER NOT NULL,
     CONSTRAINT `pk_collections` PRIMARY KEY (id),
     CONSTRAINT `fk_collections1` FOREIGN KEY (game_id) REFERENCES games(id),
-    CONSTRAINT `fk_collections2` FOREIGN KEY (user_id) REFERENCES users(id)
+    CONSTRAINT `fk_collections2` FOREIGN KEY (user_id) REFERENCES users(id),
+    UNIQUE KEY `uq_collections` (game_id, user_id)
 );
 
 CREATE TABLE `favorites` (
@@ -173,7 +176,8 @@ CREATE TABLE `favorites` (
     user_id INTEGER NOT NULL,
     CONSTRAINT `pk_favorites` PRIMARY KEY (id),
     CONSTRAINT `fk_favorites` FOREIGN KEY (game_id) REFERENCES games(id),
-    CONSTRAINT `fk_favorites2` FOREIGN KEY (user_id) REFERENCES users(id)
+    CONSTRAINT `fk_favorites2` FOREIGN KEY (user_id) REFERENCES users(id),
+    UNIQUE KEY `uq_favorites` (game_id, user_id)
 );
 
 CREATE TABLE `comments` (

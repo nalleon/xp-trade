@@ -176,14 +176,14 @@ public class MapperInputDTOHelper extends TestUtilities {
         platformInputDTOList = new ArrayList<>();
         platformInputDTOList.add(platformInputDTO);
 
-        gameOutputDTO = new GameOutputDTO(ID,TITLE, COVER_ART,new HashSet<>(Collections.singletonList(new DeveloperOutputDTO(ID,NAME))),
+        gameOutputDTO = new GameOutputDTO(ID,TITLE, COVER_ART, SLUG, new HashSet<>(Collections.singletonList(new DeveloperOutputDTO(ID,NAME))),
                     new HashSet<>(Collections.singletonList( new GenreOutputDTO(ID, NAME))),
                     new HashSet<>(Collections.singletonList(new PlatformOutputDTO(ID, NAME))),
                     new HashSet<>(Collections.singletonList(new PublisherOutputDTO(ID,NAME))),
                     new HashSet<>(Collections.singletonList(new RegionOutputDTO(ID,NAME)))
                 );
 
-        gameInputDTO = new GameInputDTO(TITLE, COVER_ART,new HashSet<>(Collections.singletonList(developerInputDTO)),
+        gameInputDTO = new GameInputDTO(TITLE, COVER_ART, SLUG, new HashSet<>(Collections.singletonList(developerInputDTO)),
                 new HashSet<>(Collections.singletonList(genreInputDTO)),
                 new HashSet<>(Collections.singletonList(platformInputDTO)),
                 new HashSet<>(Collections.singletonList(publisherInputDTO)),
@@ -193,6 +193,7 @@ public class MapperInputDTOHelper extends TestUtilities {
         gameDomain = new Game();
         gameDomain.setTitle(TITLE);
         gameDomain.setCoverArt(COVER_ART);
+        gameDomain.setSlug(SLUG);
         gameDomain.setPublisherSet(new HashSet<>(Collections.singletonList(publisherDomain)));
         gameDomain.setDeveloperSet(new HashSet<>(Collections.singletonList(developerDomain)));
         gameDomain.setPlatformSet(new HashSet<>(Collections.singletonList(platformDomain)));
@@ -232,7 +233,7 @@ public class MapperInputDTOHelper extends TestUtilities {
         favoriteInputDTOList = new ArrayList<>();
         favoriteInputDTOList.add(favoriteInputDTO);
 
-        postInputDTO = new PostInputDTO(gameOutputDTO, userDTO, CONTENT, PICTURE);
+        postInputDTO = new PostInputDTO(gameInputDTO, userDTO, CONTENT, PICTURE);
 
         postDomain = new Post();
         postDomain.setUser(userDomain);

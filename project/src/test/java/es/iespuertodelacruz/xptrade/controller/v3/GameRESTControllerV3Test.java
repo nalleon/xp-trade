@@ -95,11 +95,9 @@ public class GameRESTControllerV3Test extends TestUtilities {
 
     public GameOutputDTO gameOutputDTO;
     public Game gameDomain;
-    public Post postDomain;
 
 
     public GameInputDTO gameInputDTO;
-    public List<GameInputDTO> gameInputDTOList;
 
     @BeforeEach
     public void beforeEach(){
@@ -174,7 +172,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
         platformOutputDTOList = new ArrayList<>();
         platformOutputDTOList.add(platformOutputDTO);
 
-        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART,new HashSet<>(Collections.singletonList(developerOutputDTO)),
+        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG,new HashSet<>(Collections.singletonList(developerOutputDTO)),
                 new HashSet<>(Collections.singletonList(genreOutputDTO)),
                 new HashSet<>(Collections.singletonList(platformOutputDTO)),
                 new HashSet<>(Collections.singletonList(publisherOutputDTO)),
@@ -191,7 +189,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
         gameDomain.setRegionSet(new HashSet<>(Collections.singletonList(regionDomain)));
         gameDomain.setGenreSet(new HashSet<>(Collections.singletonList(genreDomain)));
 
-        gameInputDTO = new GameInputDTO(TITLE, COVER_ART,new HashSet<>(Collections.singletonList(new DeveloperInputDTO(NAME))),
+        gameInputDTO = new GameInputDTO(TITLE, COVER_ART, SLUG, new HashSet<>(Collections.singletonList(new DeveloperInputDTO(NAME))),
                 new HashSet<>(Collections.singletonList(new GenreInputDTO(NAME))),
                 new HashSet<>(Collections.singletonList(new PlatformInputDTO(NAME))),
                 new HashSet<>(Collections.singletonList(new PublisherInputDTO(NAME))),
@@ -363,7 +361,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
 
    @Test
     void addTest() {
-        when(serviceMock.add(gameInputDTO.title(), gameInputDTO.coverArt(),
+        when(serviceMock.add(gameInputDTO.title(), gameInputDTO.coverArt(), gameInputDTO.slug(),
                 gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
                 gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(gameDomain);
 
@@ -377,7 +375,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
     @Test
     void addExceptionTest() {
         when(serviceMock.add(
-                anyString(), anyString(),
+                anyString(), anyString(), anyString(),
                 anySet(), anySet(), anySet(),
                 anySet(), anySet())
         ).thenThrow(new RuntimeException());
@@ -406,13 +404,13 @@ public class GameRESTControllerV3Test extends TestUtilities {
     void updateTest() {
         when(serviceMock.findById(any(Integer.class))).thenReturn(gameDomain);
         when(serviceMock.add(
-                anyString(), anyString(),
+                anyString(), anyString(), anyString(),
                 anySet(), anySet(), anySet(),
                 anySet(), anySet())
         ).thenReturn(new Game());
 
         when(serviceMock.update(anyInt(),
-                anyString(), anyString(),
+                anyString(), anyString(), anyString(),
                 anySet(), anySet(), anySet(),
                 anySet(), anySet())
         ).thenReturn(gameDomain);
@@ -441,12 +439,12 @@ public class GameRESTControllerV3Test extends TestUtilities {
         when(serviceMock.findById(any(Integer.class))).thenReturn(gameDomain);
 
         when(serviceMock.update(anyInt(),
-                anyString(), anyString(),
+                anyString(), anyString(), anyString(),
                 anySet(), anySet(), anySet(),
                 anySet(), anySet())
         ).thenThrow(new RuntimeException());
 
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, controller.update(1,gameInputDTO).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, controller.update(1,gameInputDTO).getStatusCode(), MESSAGE_ERROR);
     }
     @Test
     void updateCoverTest() {

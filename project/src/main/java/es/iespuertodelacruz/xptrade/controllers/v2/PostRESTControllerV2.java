@@ -72,6 +72,20 @@ public class PostRESTControllerV2 {
         return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
     }
 
+    @GetMapping("/latest")
+    public ResponseEntity<?> getAllLatest() {
+        List<PostOutputDTO> filteredList = IPostOutputDTOMapper.INSTANCE.toDTOList(service.findAllLatest());
+
+        if (filteredList.isEmpty()) {
+            String message = "There are no posts";
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, message, filteredList));
+        }
+
+        String message = "List successfully obtained";
+        return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
+    }
+
     @GetMapping("/games/{title}")
     public ResponseEntity<?> getAllByGame(@PathVariable String title) {
         Game filter = gameService.findByTitle(title);
@@ -146,10 +160,9 @@ public class PostRESTControllerV2 {
         try {
             Post aux = IPostInputDTOMapper.INSTANCE.toDomain(dto);
 
-            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(),
+            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(), aux.getGame().getSlug(),
                     aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
                     aux.getGame().getPublisherSet(), aux.getGame().getRegionSet());
-
 
             if(gameDb == null){
                 return ResponseEntity.badRequest()
@@ -196,7 +209,7 @@ public class PostRESTControllerV2 {
 
             Post aux = IPostInputDTOMapper.INSTANCE.toDomain(dto);
 
-            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(),
+            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(), aux.getGame().getSlug(),
                     aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
                     aux.getGame().getPublisherSet(), aux.getGame().getRegionSet());
 

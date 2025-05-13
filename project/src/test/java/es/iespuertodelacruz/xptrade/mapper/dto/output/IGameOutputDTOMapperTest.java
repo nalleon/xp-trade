@@ -41,6 +41,7 @@ public class IGameOutputDTOMapperTest extends MapperDTOHelper {
         Assertions.assertEquals(gameOutputDTO.id(), dtoMapper.id(), MESSAGE_ERROR);
         Assertions.assertEquals(gameOutputDTO.title(), dtoMapper.title(), MESSAGE_ERROR);
         Assertions.assertEquals(gameOutputDTO.coverArt(), dtoMapper.coverArt(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameOutputDTO.slug(), dtoMapper.slug(), MESSAGE_ERROR);
         Assertions.assertEquals(gameOutputDTO.developerOutputDTOSet(), dtoMapper.developerOutputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameOutputDTO.genreOutputDTOSet(), dtoMapper.genreOutputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameOutputDTO.platformOutputDTOSet(), dtoMapper.platformOutputDTOSet(), MESSAGE_ERROR);
@@ -73,13 +74,14 @@ public class IGameOutputDTOMapperTest extends MapperDTOHelper {
         Assertions.assertEquals(gameDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getTitle(), domainMapper.getTitle(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getCoverArt(), domainMapper.getCoverArt(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameDomain.getSlug(), domainMapper.getSlug(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getDeveloperSet(), domainMapper.getDeveloperSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getGenreSet(), domainMapper.getGenreSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getPlatformSet(), domainMapper.getPlatformSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getPublisherSet(), domainMapper.getPublisherSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getRegionSet(), domainMapper.getRegionSet(), MESSAGE_ERROR);
 
-        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART, null, null, null,null,null);
+        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG, null, null, null,null,null);
 
         domainMapper = IGameOutputDTOMapper.INSTANCE.toDomain(gameOutputDTO);
         Assertions.assertNull(domainMapper.getRegionSet(), MESSAGE_ERROR);

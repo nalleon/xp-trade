@@ -33,6 +33,8 @@ public class PlatformTest extends TestUtilities {
     public void equalsTest(){
         Platform equals = new Platform(ID);
         Platform differentId = new Platform(2);
+        equals.setName(NAME);
+        differentId.setName("diff");
         String str = "str";
         Platform nullObject = null;
 

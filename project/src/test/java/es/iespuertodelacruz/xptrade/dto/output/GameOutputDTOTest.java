@@ -37,7 +37,7 @@ public class GameOutputDTOTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        item = new GameOutputDTO(ID, TITLE, COVER_ART, developerSet, genreSet, platformSet, publisherSet, regionSet);
+        item = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG,developerSet, genreSet, platformSet, publisherSet, regionSet);
     }
 
 

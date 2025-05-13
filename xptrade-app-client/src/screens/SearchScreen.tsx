@@ -7,6 +7,8 @@ import { AppContext } from '../context/AppContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { GameStackParamList } from '../navigations/stack/GameStackNav';
 import PostButton from '../components/PostButton';
+import { Result } from '../utils/TypeUtils';
+import CreatePostModal from '../components/CreatePostModal';
 
 type Props = NativeStackScreenProps<GameStackParamList, 'SearchScreen'>;
 
@@ -14,42 +16,46 @@ const SearchScreen = (props: Props) => {
   const [search, setSearch] = useState<string>("")
   const [games, setGames] = useState<Result[]>([])
 
-  useEffect(() => {
-   
-  }, [])
+  const [showPostModal, setShowPostModal] = useState(false);
 
-  const context = useContext(AppContext);
   
-  const { handleFetch } = UseRAWGApi();
+  const context = useContext(AppContext);
 
-  const getGames = async (search : string) => {
-      const result : Result[] | null = await handleFetch(search);
+  const { handleFetch, handleGameDetailsFetch } = UseRAWGApi();
 
-      if(result!=null){
-        const filteredByTagGames = result.filter(
-          (game) =>            
-            !game.tags.some(
-              (tag) => tag.name.toLowerCase() === 'fangame' || tag.slug.toLowerCase().includes('fangame') || tag.name.toLocaleLowerCase() === 'randomizer' || tag.slug.toLocaleLowerCase() === 'randomizer'
-            )
-        );
-        
-         setGames(filteredByTagGames);
-      }
+  const getGames = async (search: string) => {
+    const result: Result[] | null = await handleFetch(search);
+
+    if (result != null) {
+      const filteredByTagGames = result.filter(
+        (game) =>
+          !game.tags.some(
+            (tag) => tag.name.toLowerCase() === 'fangame' || tag.slug.toLowerCase().includes('fangame') ||
+              tag.name.toLocaleLowerCase() === 'randomizer' || tag.slug.toLocaleLowerCase() === 'randomizer' ||
+              tag.name.toLocaleLowerCase() === 'doujin' || tag.slug.toLocaleLowerCase() === 'doujin' ||
+              tag.name.toLocaleLowerCase() === 'doujin-game' || tag.slug.toLocaleLowerCase() === 'doujin-game'
+          )
+      );
+
+      setGames(filteredByTagGames);
+    }
+  }
+
+  const navigateToGame = async (game: Result) => {
+    if (!game) {
+      return;
     }
 
-  const navigateToGame = async (game : Result) => {
-    if (!game){
-     return;
-    }  
-
     context.setCurrentGame(game);
+    context.setCurrentGameDetailed(await handleGameDetailsFetch(game.slug));
+
     props.navigation.navigate("GameScreen");
 
   }
 
   return (
     <View className="flex-1 bg-[#0F1218] pt-10 px-4">
-      <View className="flex-row items-center bg-[#1E222A] rounded-lg px-3 py-2 self-center w-full max-w-md">
+      <View className="flex-row items-center bg-[#1E222A] rounded-tl-xl rounded-br-xl px-3 py-2 self-center w-full max-w-md">
         <TextInput
           className="flex-1 text-[#F6F7F7] text-base mr-2"
           placeholder="Nombre del juego"
@@ -61,7 +67,7 @@ const SearchScreen = (props: Props) => {
           <Icon name='search-circle' size={38} color={'#556791'} />
         </TouchableOpacity>
       </View>
-      
+
       <FlatList
         data={games}
         keyExtractor={(item) => item.id.toString()}
@@ -72,21 +78,21 @@ const SearchScreen = (props: Props) => {
             onPress={() => navigateToGame(item)}
           >
             {
-              item.background_image  &&
+              item.background_image &&
               <Image
                 source={{ uri: item.background_image }}
                 className="w-14 h-14 rounded-md mr-4"
                 resizeMode="cover"
-              />  
+              />
             }
 
             {
               !item.background_image && item.short_screenshots && item.short_screenshots.length > 0 &&
-               <Image
-               source={{ uri: item.short_screenshots[0].image }}
-               className="w-14 h-14 rounded-md mr-4"
-               resizeMode="cover"
-             />
+              <Image
+                source={{ uri: item.short_screenshots[0].image }}
+                className="w-14 h-14 rounded-md mr-4"
+                resizeMode="cover"
+              />
             }
 
             {
@@ -107,10 +113,15 @@ const SearchScreen = (props: Props) => {
         ListEmptyComponent={() => (
           <View className="items-center justify-center mt-12">
             <Icon name="game-controller-outline" size={78} color="#1E222A" />
-        </View>
+          </View>
         )}
       />
-      <PostButton/>
+
+      <CreatePostModal
+        visible={showPostModal}
+        onClose={() => setShowPostModal(false)}
+      />
+      <PostButton onPress={() => setShowPostModal(true)} />
     </View>
   )
 }

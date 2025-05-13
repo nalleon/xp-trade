@@ -170,7 +170,7 @@ public class MapperDTOHelper extends TestUtilities {
         platformOutputDTOList = new ArrayList<>();
         platformOutputDTOList.add(platformOutputDTO);
 
-        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART,new HashSet<>(Collections.singletonList(developerOutputDTO)),
+        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG, new HashSet<>(Collections.singletonList(developerOutputDTO)),
                     new HashSet<>(Collections.singletonList(genreOutputDTO)),
                     new HashSet<>(Collections.singletonList(platformOutputDTO)),
                     new HashSet<>(Collections.singletonList(publisherOutputDTO)),
@@ -181,6 +181,7 @@ public class MapperDTOHelper extends TestUtilities {
         gameDomain.setId(ID);
         gameDomain.setTitle(TITLE);
         gameDomain.setCoverArt(COVER_ART);
+        gameDomain.setSlug(SLUG);
         gameDomain.setPublisherSet(new HashSet<>(Collections.singletonList(publisherDomain)));
         gameDomain.setDeveloperSet(new HashSet<>(Collections.singletonList(developerDomain)));
         gameDomain.setPlatformSet(new HashSet<>(Collections.singletonList(platformDomain)));

@@ -12,6 +12,8 @@ public interface IPostService {
     List<Post> findByUser (User user);
     List<Post> findByGame (Game game);
     List<Post> findAll();
+    List<Post> findAllLatest();
+
     boolean delete(Integer id);
     Post update(int id, Game game, User user, String content, String picture);
 }

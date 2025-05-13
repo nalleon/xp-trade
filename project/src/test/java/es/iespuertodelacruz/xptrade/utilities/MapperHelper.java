@@ -194,6 +194,7 @@ public class MapperHelper extends TestUtilities {
         gameEntity.setId(ID);
         gameEntity.setTitle(TITLE);
         gameEntity.setCoverArt(COVER_ART);
+        gameEntity.setSlug(SLUG);
         gameEntity.setPublisherEntitySet(new HashSet<>(Collections.singletonList(publisherEntity)));
         gameEntity.setDeveloperEntitySet(new HashSet<>(Collections.singletonList(developerEntity)));
         gameEntity.setPlatformEntitySet(new HashSet<>(Collections.singletonList(platformEntity)));
@@ -204,6 +205,8 @@ public class MapperHelper extends TestUtilities {
         gameDomain.setId(ID);
         gameDomain.setTitle(TITLE);
         gameDomain.setCoverArt(COVER_ART);
+        gameDomain.setSlug(SLUG);
+
         gameDomain.setPublisherSet(new HashSet<>(Collections.singletonList(publisherDomain)));
         gameDomain.setDeveloperSet(new HashSet<>(Collections.singletonList(developerDomain)));
         gameDomain.setPlatformSet(new HashSet<>(Collections.singletonList(platformDomain)));

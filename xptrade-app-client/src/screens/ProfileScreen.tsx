@@ -6,13 +6,29 @@ import { AppContext } from '../context/AppContext';
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
+import { Result } from '../utils/TypeUtils';
+import CreatePostModal from '../components/CreatePostModal';
+import PostButton from '../components/PostButton';
+import UseApi from '../hooks/UseApi';
 
 type Props = NativeStackScreenProps<ProfileStackParamList, 'ProfileScreen'>;
 
 const ProfileScreen = (props: Props) => {
   const [search, setSearch] = useState<string>("")
-
+  
   const context = useContext(AppContext);
+  
+  const [showPostModal, setShowPostModal] = useState(false);
+
+  const {handleGetFavorites, handleGetCollection } = UseApi();
+  const handlePostCreated = (postData: {
+    text: string;
+    image?: string;
+    game: any;
+  }) => {
+    console.log('Nueva publicación creada:', postData);
+  };
+
 
   const navigateToPost = async (post : Result) => {
     if (!post){
@@ -58,7 +74,7 @@ const ProfileScreen = (props: Props) => {
 
       <View className="items-center mb-6">
         <View className="w-24 h-24 rounded-full bg-[#1E222A] mb-2" />
-        <Text className="text-[#F6F7F7] text-lg font-semibold">gatoviotas</Text>
+        <Text className="text-[#F6F7F7] text-lg font-semibold">{context.username}</Text>
         <Text className="text-[#999] text-sm">derecha donde tu izquierda yo</Text>
       </View>
     
@@ -100,6 +116,13 @@ const ProfileScreen = (props: Props) => {
       <TouchableOpacity className="bg-[#66B3B7] px-6 py-2 rounded-lg" onPress={() => navigateCollection}>
         <Text className="text-[#F6F7F7] text-base font-semibold">SHOW COLLECTION</Text>
       </TouchableOpacity>
+      <CreatePostModal
+        visible={showPostModal}
+        onClose={() => setShowPostModal(false)}
+        onPostCreated={handlePostCreated}
+      />
+      <PostButton onPress={() => setShowPostModal(true)} />
+
     </View>
   
   )

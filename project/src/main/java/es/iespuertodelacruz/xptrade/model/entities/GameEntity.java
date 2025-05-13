@@ -29,6 +29,9 @@ public class GameEntity {
     @Column(nullable=false, length=255, name = "cover_art")
     private String coverArt;
 
+    @Column(unique = true, nullable=false, length=100, name = "slug")
+    private String slug;
+
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     @JoinTable(name = "games_developers",
@@ -101,18 +104,19 @@ public class GameEntity {
      * Constructor of the class
      * @param title of the game
      * @param coverArt of the game
+     * @param slug of the game
      * @param developerEntitySet of the game
      * @param genreEntitySet of the game
      * @param platformEntitySet of the game
      * @param publisherEntitySet of the game
      * @param regionEntitySet of the game
      */
-
-    public GameEntity(String title, String coverArt, Set<DeveloperEntity> developerEntitySet,
-                      Set<GenreEntity> genreEntitySet, Set<PlatformEntity> platformEntitySet,
+    public GameEntity(String title, String coverArt, String slug, Set<DeveloperEntity>
+            developerEntitySet, Set<GenreEntity> genreEntitySet, Set<PlatformEntity> platformEntitySet,
                       Set<PublisherEntity> publisherEntitySet, Set<RegionEntity> regionEntitySet) {
         this.title = title;
         this.coverArt = coverArt;
+        this.slug = slug;
         this.developerEntitySet = developerEntitySet;
         this.genreEntitySet = genreEntitySet;
         this.platformEntitySet = platformEntitySet;
@@ -188,17 +192,26 @@ public class GameEntity {
         this.regionEntitySet = regionEntitySet;
     }
 
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
     @Override
     public String toString() {
         return "GameEntity{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", coverArt='" + coverArt + '\'' +
-                ", developerEntitySet=" + developerEntitySet +
-                ", genreEntitySet=" + genreEntitySet +
-                ", platformEntitySet=" + platformEntitySet +
+                "regionEntitySet=" + regionEntitySet +
                 ", publisherEntitySet=" + publisherEntitySet +
-                ", regionEntitySet=" + regionEntitySet +
+                ", platformEntitySet=" + platformEntitySet +
+                ", genreEntitySet=" + genreEntitySet +
+                ", developerEntitySet=" + developerEntitySet +
+                ", slug='" + slug + '\'' +
+                ", coverArt='" + coverArt + '\'' +
+                ", title='" + title + '\'' +
+                ", id=" + id +
                 '}';
     }
 

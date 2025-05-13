@@ -24,7 +24,7 @@ public class GameTest extends MapperHelper {
 
     @Test
     public void getSetTest(){
-        item = new Game(TITLE, COVER_ART, new HashSet<>(developerSet),
+        item = new Game(TITLE, COVER_ART, SLUG, new HashSet<>(developerSet),
                 genreSet, platformSet, publisherSet, regionSet);
 
         item.setId(ID);
@@ -42,7 +42,7 @@ public class GameTest extends MapperHelper {
 
     @Test
     public void toStringTest(){
-        item = new Game(TITLE, COVER_ART, new HashSet<>(developerSet),
+        item = new Game(TITLE, COVER_ART,SLUG, new HashSet<>(developerSet),
                 genreSet, platformSet, publisherSet, regionSet);
         item.setId(ID);
         Assertions.assertTrue(item.toString().contains(String.valueOf(ID)), MESSAGE_ERROR);
@@ -53,6 +53,7 @@ public class GameTest extends MapperHelper {
         Assertions.assertTrue(item.toString().contains(regionSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(developerSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(publisherSet.toString()), MESSAGE_ERROR);
+        Assertions.assertTrue(item.toString().contains(SLUG), MESSAGE_ERROR);
 
     }
 

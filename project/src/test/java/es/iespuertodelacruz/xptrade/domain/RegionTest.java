@@ -33,6 +33,8 @@ public class RegionTest extends TestUtilities {
     public void equalsTest(){
         Region equals = new Region(ID);
         Region differentId = new Region(2);
+        equals.setName(NAME);
+        differentId.setName("diff");
         String str = "str";
         Region nullObject = null;
 

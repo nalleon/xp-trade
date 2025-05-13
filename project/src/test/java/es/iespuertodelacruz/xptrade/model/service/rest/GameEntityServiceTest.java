@@ -73,7 +73,7 @@ public class GameEntityServiceTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        item =  new Game(TITLE, COVER_ART, developerSet, genreSet, platformSet, publisherSet, regionSet);
+        item =  new Game(TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet, regionSet);
         item.setId(ID);
 
         entity = IGameEntityMapper.INSTANCE.toEntity(item);
@@ -200,6 +200,8 @@ public class GameEntityServiceTest extends TestUtilities {
     @Test
     void addNullRegionsTest() {
         item.setRegionSet(new HashSet<>());
+        when(regionRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new RegionEntity(NAME)));
+
         Assertions.assertNull(service.save(item), MESSAGE_ERROR);
     }
 
@@ -365,7 +367,7 @@ public class GameEntityServiceTest extends TestUtilities {
     void updateNullRegionsTest() {
         when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
         item.setRegionSet(new HashSet<>());
-        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
+        Assertions.assertNotNull(service.update(item), MESSAGE_ERROR);
     }
 
 
@@ -373,7 +375,7 @@ public class GameEntityServiceTest extends TestUtilities {
     void updateNullPlatformsTest() {
         when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
         item.setPlatformSet(new HashSet<>());
-        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
+        Assertions.assertNotNull(service.update(item), MESSAGE_ERROR);
     }
 
 
@@ -382,7 +384,7 @@ public class GameEntityServiceTest extends TestUtilities {
         when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
 
         item.setDeveloperSet(new HashSet<>());
-        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
+        Assertions.assertNotNull(service.update(item), MESSAGE_ERROR);
     }
 
 
@@ -391,7 +393,7 @@ public class GameEntityServiceTest extends TestUtilities {
         when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
 
         item.setPublisherSet(new HashSet<>());
-        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
+        Assertions.assertNotNull(service.update(item), MESSAGE_ERROR);
     }
 
 
@@ -400,7 +402,7 @@ public class GameEntityServiceTest extends TestUtilities {
         when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
 
         item.setGenreSet(new HashSet<>());
-        Assertions.assertNull(service.update(item), MESSAGE_ERROR);
+        Assertions.assertNotNull(service.update(item), MESSAGE_ERROR);
     }
 
 

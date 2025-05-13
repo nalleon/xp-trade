@@ -61,7 +61,7 @@ public class PostEntityServiceTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        game = new Game(TITLE, COVER_ART, developerSet, genreSet, platformSet, publisherSet, regionSet);
+        game = new Game(TITLE, COVER_ART,SLUG,  developerSet, genreSet, platformSet, publisherSet, regionSet);
         game.setId(ID);
         user = new User(ID);
         user.setUsername(NAME);
@@ -81,6 +81,14 @@ public class PostEntityServiceTest extends TestUtilities {
         list.add(new PostEntity());
         when(repositoryMock.findAll()).thenReturn(list);
         Assertions.assertNotNull(service.findAll(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void getAllLatestTest() {
+        List<PostEntity> list = new ArrayList<>();
+        list.add(new PostEntity());
+        when(repositoryMock.findAllLatest()).thenReturn(list);
+        Assertions.assertNotNull(service.findAllLatest(), MESSAGE_ERROR);
     }
 
     @Test
