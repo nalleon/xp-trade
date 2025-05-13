@@ -154,11 +154,11 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void addTest() {
         when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(new Favorite());
-        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(), anyString(),anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         FavoriteInputDTO aux = new FavoriteInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                new GameInputDTO(TITLE, COVER_ART, SLUG, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
                         new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
 
@@ -172,10 +172,10 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void addGameNullTest() {
-        FavoriteInputDTO aux = new FavoriteInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+        FavoriteInputDTO aux = new FavoriteInputDTO(new GameInputDTO(TITLE, COVER_ART,SLUG, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
                 new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
-        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
+        when(serviceGameMock.add(anyString(), anyString(), anyString(),anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(aux).getStatusCode(), MESSAGE_ERROR);    }
 
@@ -183,10 +183,10 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void addUserNullTest() {
         FavoriteInputDTO aux = new FavoriteInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                new GameInputDTO(TITLE, COVER_ART, SLUG, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
                         new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
-        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(), anyString(),anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(aux).getStatusCode(), MESSAGE_ERROR);
@@ -197,10 +197,10 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void addThrowsExceptionTest() {
         FavoriteInputDTO aux = new FavoriteInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
                         new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
-        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(), anyString(),anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         when(serviceMock.add(any(Game.class), any(User.class))).thenThrow(new RuntimeException());
@@ -238,10 +238,10 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateTest() {
         FavoriteInputDTO aux = new FavoriteInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                new GameInputDTO(TITLE, COVER_ART,SLUG, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
                         new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
-        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(), anyString(),anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         when(serviceMock.findById(anyInt())).thenReturn(new Favorite());
@@ -256,7 +256,7 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateNotFoundTest() {
         FavoriteInputDTO aux = new FavoriteInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
                         new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
 
@@ -274,11 +274,11 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void updateGameNullTest() {
-        FavoriteInputDTO aux = new FavoriteInputDTO(new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+        FavoriteInputDTO aux = new FavoriteInputDTO(new GameInputDTO(TITLE, COVER_ART,SLUG, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
                 new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceMock.findById(anyInt())).thenReturn(new Favorite());
-        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
+        when(serviceGameMock.add(anyString(), anyString(), anyString(),anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.update(ID, aux).getStatusCode(), MESSAGE_ERROR);    }
 
@@ -286,11 +286,11 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateUserNullTest() {
         FavoriteInputDTO aux = new FavoriteInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                new GameInputDTO(TITLE, COVER_ART,SLUG, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
                         new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceMock.findById(anyInt())).thenReturn(new Favorite());
-        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(), anyString(),anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.update(ID,aux).getStatusCode(), MESSAGE_ERROR);
@@ -299,11 +299,11 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateIdNullTest() {
         FavoriteInputDTO aux = new FavoriteInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
                         new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceMock.findById(anyInt())).thenReturn(new Favorite());
-        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(), anyString(),anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
         when(serviceMock.update(anyInt(), any(Game.class), any(User.class))).thenReturn(null);
 
@@ -313,11 +313,11 @@ public class FavoriteRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateExceptionTest() throws Exception {
         FavoriteInputDTO aux = new FavoriteInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
+                new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(),
                         new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
 
-        when(serviceGameMock.add(anyString(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(), anyString(),anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         when(serviceMock.findById(any(Integer.class))).thenReturn(new Favorite());

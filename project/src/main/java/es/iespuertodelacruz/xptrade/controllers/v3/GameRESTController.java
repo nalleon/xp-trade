@@ -278,7 +278,7 @@ public class GameRESTController {
 
             Game aux = IGameInputDTOMapper.INSTANCE.toDomain(dto);
             
-            Game dbItem = service.add(aux.getTitle(), aux.getCoverArt(), 
+            Game dbItem = service.add(aux.getTitle(), aux.getCoverArt(), aux.getSlug(),
                     aux.getDeveloperSet(), aux.getGenreSet(), aux.getPlatformSet(),
                     aux.getPublisherSet(), aux.getRegionSet());
 
@@ -316,6 +316,7 @@ public class GameRESTController {
 
             dbItem.setTitle(aux.getTitle());
             dbItem.setCoverArt(aux.getCoverArt());
+            dbItem.setSlug(aux.getSlug());
             dbItem.setPublisherSet(aux.getPublisherSet());
             dbItem.setDeveloperSet(aux.getDeveloperSet());
             dbItem.setRegionSet(aux.getRegionSet());
@@ -323,7 +324,7 @@ public class GameRESTController {
             dbItem.setGenreSet(aux.getGenreSet());
 
 
-            Game updatedDbItem = service.update(dbItem.getId(), dbItem.getTitle(), dbItem.getCoverArt(),
+            Game updatedDbItem = service.update(dbItem.getId(), dbItem.getTitle(), dbItem.getCoverArt(), dbItem.getSlug(),
                     dbItem.getDeveloperSet(), dbItem.getGenreSet(), dbItem.getPlatformSet(), dbItem.getPublisherSet(), 
                     dbItem.getRegionSet());
 
@@ -332,8 +333,8 @@ public class GameRESTController {
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to update", null));
         }
     }
     @DeleteMapping("/{id}")

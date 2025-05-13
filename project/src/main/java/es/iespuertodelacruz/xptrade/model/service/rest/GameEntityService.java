@@ -371,6 +371,7 @@ public class GameEntityService implements IGameRepository {
             GameEntity entity = IGameEntityMapper.INSTANCE.toEntity(game);
             dbItem.setTitle(entity.getTitle());
             dbItem.setCoverArt(entity.getCoverArt());
+            dbItem.setSlug(entity.getSlug());
             dbItem.setDeveloperEntitySet(developers);
             dbItem.setGenreEntitySet(genres);
             dbItem.setPlatformEntitySet(platforms);

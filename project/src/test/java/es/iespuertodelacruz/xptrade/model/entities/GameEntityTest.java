@@ -44,7 +44,7 @@ public class GameEntityTest extends TestUtilities {
         platformSet = new HashSet<>(Collections.singletonList(platform));
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
-        item = new GameEntity(TITLE, COVER_ART, developerSet, genreSet, platformSet, publisherSet, regionSet);
+        item = new GameEntity(TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet, regionSet);
         item.setId(ID);
     }
 
@@ -64,12 +64,13 @@ public class GameEntityTest extends TestUtilities {
 
     @Test
     public void toStringTest(){
-        item = new GameEntity(TITLE, COVER_ART, new HashSet<>(developerSet),
+        item = new GameEntity(TITLE, COVER_ART, SLUG, new HashSet<>(developerSet),
                 genreSet, platformSet, publisherSet, regionSet);
         item.setId(ID);
         Assertions.assertTrue(item.toString().contains(String.valueOf(ID)), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(TITLE), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(COVER_ART), MESSAGE_ERROR);
+        Assertions.assertTrue(item.toString().contains(SLUG), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(genreSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(platformSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(regionSet.toString()), MESSAGE_ERROR);
