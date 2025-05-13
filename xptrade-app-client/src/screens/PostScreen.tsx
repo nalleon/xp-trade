@@ -19,11 +19,12 @@ import CommentButton from '../components/CommentButton';
 import CreatePostModal from '../components/CreatePostModal';
 import CreateCommentModal from '../components/CreateCommentModal';
 import UseApi from '../hooks/UseApi';
+import { Alert } from 'react-native'; // para mostrar un menú de ejemplo
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'PostScreen'>;
 
 const PostScreen = ({ navigation }: Props) => {
-  const { currentPost } = useContext(AppContext);
+  const { currentPost, username } = useContext(AppContext);
   const [comments, setComments] = useState([]);
   const [showPostModal, setShowPostModal] = useState(false);
   const { handleGetPostsComments } = UseApi();
@@ -60,33 +61,64 @@ const PostScreen = ({ navigation }: Props) => {
       hour12: false,
     }).replace(',', '');
   };
-  const renderComment = ({ item }) => (
-    <View className="bg-[#1E222A] rounded-tr-xl rounded-bl-xl px-4 py-3 mt-2 mx-4">
-      <View className="flex-row items-start">
-        <Image
-          source={
-            item.user.profilePicture
-              ? { uri: item.user.profilePicture }
-              : require('../resources/xp-trade.png')
-          }
-          className="w-8 h-8 rounded-full mr-3 mt-1"
-        />
-        <View className="flex-1">
-          <View className="flex-row items-center justify-between">
+
+const renderComment = ({ item }) => {
+  const isOwner = item.user.username === username;
+
+  const handleOptions = () => {
+    Alert.alert(
+      'Opciones del comentario',
+      '',
+      [
+        { text: 'Editar', onPress: () => console.log('Editar comentario') },
+        { text: 'Eliminar', onPress: () => console.log('Eliminar comentario'), style: 'destructive' },
+        { text: 'Cancelar', style: 'cancel' },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  return (
+    <View className="bg-[#1E222A] rounded-tl-xl rounded-br-xl px-4 py-3 mt-2 mx-4">
+      <View className="flex-row items-start justify-between">
+        <View className="flex-row">
+          <Image
+            source={
+              item.user.profilePicture
+                ? { uri: item.user.profilePicture }
+                : require('../resources/xp-trade.png')
+            }
+            className="w-8 h-8 rounded-full mr-3 mt-1"
+          />
+          <View>
             <Text className="text-[#F6F7F7] font-semibold text-sm">
               @{item.user.username}
             </Text>
-            <Text className="text-xs text-[#8899A6] ml-auto">
-              {formatDate(item.creationDate)}
+            <Text className="text-[#D1D5DB] text-sm mt-1">
+              {item.content}
             </Text>
           </View>
-          <Text className="text-[#D1D5DB] text-sm mt-1">
-            {item.content}
-          </Text>
         </View>
+
+        {isOwner && (
+          <TouchableOpacity onPress={handleOptions}>
+            <Icon
+              name="ellipsis-vertical-outline"
+              size={18}
+              color="#F6F7F7"
+            />
+          </TouchableOpacity>
+        )}
+      </View>
+
+      <View className="flex-row items-end mt-2">
+        <Text className="text-xs text-[#8899A6] ml-auto">
+          {formatDate(item.creationDate)}
+        </Text>
       </View>
     </View>
   );
+};
 
 
 

@@ -42,6 +42,8 @@ const UseApi = () => {
                 context.setUsername(username);
                 context.setToken(response.data)
 
+                console.log(context.username);
+
                 return "success";
             }
         } catch (error) {
