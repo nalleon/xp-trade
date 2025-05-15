@@ -94,7 +94,7 @@ function HomeScreen({ navigation }: Props) {
 
                 <Text
                   className="text-[#F6F7F7] mb-2"
-                  numberOfLines={item.content.length > maxCharactersForFiveLines ? 6 : 0}
+                  numberOfLines={item.content.length > maxCharactersForFiveLines ? 5 : 0}
                 >
                   {item.content}
                 </Text>

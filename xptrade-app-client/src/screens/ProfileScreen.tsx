@@ -30,10 +30,6 @@ const ProfileScreen = (props: Props) => {
   const { handleGameDetailsFetch } = UseRAWGApi();
 
   const maxCharactersForTwoLines = 100;
-  const { width } = Dimensions.get('window');
-  const CARD_WIDTH = 128;      // w-32
-  const CARD_SPACING = 16;     // space-x-4
-  const TOTAL_WIDTH = (CARD_WIDTH * 2) + CARD_SPACING; // 272
 
   useEffect(() => {
     fetchUserProfileDetails();
@@ -128,7 +124,9 @@ const ProfileScreen = (props: Props) => {
               <ScrollView
                 ref={scrollRef}
                 horizontal
+                pagingEnabled
                 decelerationRate="fast"
+                snapToInterval={144}
                 snapToAlignment="start"
                 showsHorizontalScrollIndicator={false}
                 onScroll={handleScroll}
@@ -157,7 +155,6 @@ const ProfileScreen = (props: Props) => {
                 ))}
               </ScrollView>
             </View>
-
             {showRightArrow && (
               <TouchableOpacity
                 className="absolute right-0 z-10 h-full justify-center pr-2"
