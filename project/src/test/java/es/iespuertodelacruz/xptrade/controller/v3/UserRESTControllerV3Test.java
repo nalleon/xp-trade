@@ -104,7 +104,7 @@ public class UserRESTControllerV3Test extends TestUtilities {
     @Test
     void getOneNotFoundTest() {
         when(serviceMock.findById(1)).thenReturn(null);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
     }
 
 
@@ -117,7 +117,7 @@ public class UserRESTControllerV3Test extends TestUtilities {
     @Test
     void getOneByNameNotFoundTest() {
         when(serviceMock.findByUsername(anyString())).thenReturn(null);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByUsername("a").getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getByUsername("a").getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -129,7 +129,7 @@ public class UserRESTControllerV3Test extends TestUtilities {
     @Test
     void getOneByEmailNotFoundTest() {
         when(serviceMock.findByEmail(anyString())).thenReturn(null);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByEmail("a").getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getByEmail("a").getStatusCode(), MESSAGE_ERROR);
     }
 
     //@Test
@@ -216,7 +216,7 @@ public class UserRESTControllerV3Test extends TestUtilities {
         when(serviceMock.findById(anyInt())).thenReturn(null);
 
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, new UserUpdateInputDTO(EMAIL, PASSWORD) );
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     //@Test
@@ -245,7 +245,7 @@ public class UserRESTControllerV3Test extends TestUtilities {
                 .thenThrow(new RuntimeException("Database error"));
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, new UserUpdateInputDTO(EMAIL, PASSWORD));
 
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, responseEntity.getStatusCode(), MESSAGE_ERROR);
 
     }
 

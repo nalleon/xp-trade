@@ -233,7 +233,7 @@ public class AuthRESTControllerTest extends TestUtilities {
     void testConfirmationNotFound() {
         when(serviceMock.findByEmail(EMAIL)).thenReturn(null);
         ResponseEntity<?> response = controller.confirmation(EMAIL, VERIFICATION_TOKEN);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test

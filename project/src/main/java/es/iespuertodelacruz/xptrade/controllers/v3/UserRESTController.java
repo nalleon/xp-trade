@@ -196,8 +196,8 @@ public class UserRESTController {
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to update", null));
         }
     }
     @DeleteMapping("/{id}")

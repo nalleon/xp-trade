@@ -207,7 +207,7 @@ public class GameRESTControllerV2Test extends TestUtilities {
     @Test
     void getOneNotFoundTest() {
         when(serviceMock.findById(1)).thenReturn(null);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -219,6 +219,6 @@ public class GameRESTControllerV2Test extends TestUtilities {
     @Test
     void getOneByTitleNotFoundTest() {
         when(serviceMock.findByTitle(anyString())).thenReturn(null);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByTitle(TITLE).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getByTitle(TITLE).getStatusCode(), MESSAGE_ERROR);
     }
 }

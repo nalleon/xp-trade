@@ -140,8 +140,8 @@ public class PostRESTController {
             PostOutputDTO dto = IPostOutputDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<PostOutputDTO> response =
-                    new CustomApiResponse<>(302, "Post found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Post found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
         CustomApiResponse<PostOutputDTO> errorResponse = new CustomApiResponse<>(204, "Post NOT found", null);
@@ -186,8 +186,8 @@ public class PostRESTController {
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while creating item", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while creating item", null));
         }
     }
 
@@ -239,8 +239,8 @@ public class PostRESTController {
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to update", null));
         }
     }
 
@@ -255,8 +255,8 @@ public class PostRESTController {
                     .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "Unable to delete item with id: " + id;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, message, null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, message, null));
         }
     }
 

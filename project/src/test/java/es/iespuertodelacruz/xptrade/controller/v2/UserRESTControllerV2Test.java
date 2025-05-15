@@ -104,7 +104,7 @@ public class UserRESTControllerV2Test extends TestUtilities {
     @Test
     void getOneByNameNotFoundTest() {
         when(serviceMock.findByUsername(anyString())).thenReturn(null);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByUsername("a").getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getByUsername("a").getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -119,7 +119,7 @@ public class UserRESTControllerV2Test extends TestUtilities {
         when(serviceMock.findById(anyInt())).thenReturn(null);
 
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, new UserUpdateInputDTO(EMAIL, PASSWORD) );
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     //@Test
@@ -148,7 +148,7 @@ public class UserRESTControllerV2Test extends TestUtilities {
                 .thenThrow(new RuntimeException("Database error"));
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, new UserUpdateInputDTO(EMAIL, PASSWORD));
 
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, responseEntity.getStatusCode(), MESSAGE_ERROR);
 
     }
 
