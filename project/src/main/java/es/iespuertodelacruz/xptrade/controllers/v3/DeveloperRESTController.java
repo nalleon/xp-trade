@@ -62,8 +62,8 @@ public class DeveloperRESTController {
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<DeveloperOutputDTO> errorResponse = new CustomApiResponse<>(404, "Developer NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<DeveloperOutputDTO> errorResponse = new CustomApiResponse<>(204, "Developer NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -78,8 +78,8 @@ public class DeveloperRESTController {
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<DeveloperOutputDTO> errorResponse = new CustomApiResponse<>(404, "Developer NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<DeveloperOutputDTO> errorResponse = new CustomApiResponse<>(204, "Developer NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -114,8 +114,8 @@ public class DeveloperRESTController {
         Developer dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "Item NOT found", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "Item NOT found", null));
         }
 
         try {

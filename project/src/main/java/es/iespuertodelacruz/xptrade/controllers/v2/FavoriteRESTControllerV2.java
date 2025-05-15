@@ -133,8 +133,8 @@ public class FavoriteRESTControllerV2 {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
-        CustomApiResponse<FavoriteOutputDTO> errorResponse = new CustomApiResponse<>(404, "Favorite NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<FavoriteOutputDTO> errorResponse = new CustomApiResponse<>(204, "Favorite NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -214,8 +214,8 @@ public class FavoriteRESTControllerV2 {
         Favorite dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "User NOT found", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "User NOT found", null));
         }
 
         try {
@@ -242,8 +242,8 @@ public class FavoriteRESTControllerV2 {
             Favorite updatedDbItem = service.update(id, gameDb, userDb);
 
             if(updatedDbItem == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new CustomApiResponse<>(404, "Item does not exists", null));
+                return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                        .body(new CustomApiResponse<>(204, "Item does not exists", null));
             }
 
 

@@ -129,8 +129,8 @@ public class CollectionRESTController {
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<CollectionOutputDTO> errorResponse = new CustomApiResponse<>(404, "Collection NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<CollectionOutputDTO> errorResponse = new CustomApiResponse<>(204, "Collection NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -188,8 +188,8 @@ public class CollectionRESTController {
         Collection dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "User NOT found", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "User NOT found", null));
         }
 
         try {
@@ -216,8 +216,8 @@ public class CollectionRESTController {
             Collection updatedDbItem = service.update(id, gameDb, userDb);
 
             if(updatedDbItem == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new CustomApiResponse<>(404, "Item does not exists", null));
+                return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                        .body(new CustomApiResponse<>(204, "Item does not exists", null));
             }
 
             CollectionOutputDTO result = ICollectionOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);

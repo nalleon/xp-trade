@@ -63,8 +63,8 @@ public class PublisherRESTController {
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<PublisherOutputDTO> errorResponse = new CustomApiResponse<>(404, "Publisher NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<PublisherOutputDTO> errorResponse = new CustomApiResponse<>(204, "Publisher NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -79,8 +79,8 @@ public class PublisherRESTController {
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<PublisherOutputDTO> errorResponse = new CustomApiResponse<>(404, "Publisher NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<PublisherOutputDTO> errorResponse = new CustomApiResponse<>(204, "Publisher NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -115,8 +115,8 @@ public class PublisherRESTController {
         Publisher dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "Item NOT found", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "Item NOT found", null));
         }
 
         try {

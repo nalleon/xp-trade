@@ -61,8 +61,8 @@ public class RegionRESTController {
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<RegionOutputDTO> errorResponse = new CustomApiResponse<>(404, "Region NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<RegionOutputDTO> errorResponse = new CustomApiResponse<>(204, "Region NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -77,8 +77,8 @@ public class RegionRESTController {
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<RegionOutputDTO> errorResponse = new CustomApiResponse<>(404, "Region NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<RegionOutputDTO> errorResponse = new CustomApiResponse<>(204, "Region NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -113,8 +113,8 @@ public class RegionRESTController {
         Region dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "Item NOT found", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "Item NOT found", null));
         }
 
         try {

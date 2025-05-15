@@ -60,8 +60,8 @@ public class GenreRESTController {
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<GenreOutputDTO> errorResponse = new CustomApiResponse<>(404, "Genre NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<GenreOutputDTO> errorResponse = new CustomApiResponse<>(204, "Genre NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -77,8 +77,8 @@ public class GenreRESTController {
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<GenreOutputDTO> errorResponse = new CustomApiResponse<>(404, "Genre NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<GenreOutputDTO> errorResponse = new CustomApiResponse<>(204, "Genre NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -113,8 +113,8 @@ public class GenreRESTController {
         Genre dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "Item NOT found", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "Item NOT found", null));
         }
 
         try {

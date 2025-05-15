@@ -129,8 +129,8 @@ public class CommentRESTController {
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<CommentOutputDTO> errorResponse = new CustomApiResponse<>(404, "Comment NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<CommentOutputDTO> errorResponse = new CustomApiResponse<>(204, "Comment NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -183,8 +183,8 @@ public class CommentRESTController {
         Comment dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "Comment NOT found", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "Comment NOT found", null));
         }
 
         try {
@@ -210,8 +210,8 @@ public class CommentRESTController {
             CommentOutputDTO result = ICommentOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             if(result == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new CustomApiResponse<>(404, "Item does not exists", null));
+                return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                        .body(new CustomApiResponse<>(204, "Item does not exists", null));
             }
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));

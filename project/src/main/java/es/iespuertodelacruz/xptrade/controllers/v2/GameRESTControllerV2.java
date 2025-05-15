@@ -227,8 +227,8 @@ public class GameRESTControllerV2 {
             return ResponseEntity.ok(response);
         }
 
-        CustomApiResponse<GameOutputDTO> errorResponse = new CustomApiResponse<>(404, "Game NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<GameOutputDTO> errorResponse = new CustomApiResponse<>(204, "Game NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
     @GetMapping("/titles/{title}")
@@ -241,7 +241,7 @@ public class GameRESTControllerV2 {
             return ResponseEntity.ok(response);
         }
 
-        CustomApiResponse<GameOutputDTO> errorResponse = new CustomApiResponse<>(404, "Game NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<GameOutputDTO> errorResponse = new CustomApiResponse<>(204, "Game NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 }

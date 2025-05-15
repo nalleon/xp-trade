@@ -62,8 +62,8 @@ public class RoleRESTController {
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<RoleOutputDTO> errorResponse = new CustomApiResponse<>(404, "Role NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<RoleOutputDTO> errorResponse = new CustomApiResponse<>(204, "Role NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -78,8 +78,8 @@ public class RoleRESTController {
             return ResponseEntity.status(HttpStatus.FOUND).body(response);
         }
 
-        CustomApiResponse<RoleOutputDTO> errorResponse = new CustomApiResponse<>(404, "Role NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<RoleOutputDTO> errorResponse = new CustomApiResponse<>(204, "Role NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -117,10 +117,10 @@ public class RoleRESTController {
         Role dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
                     .body(
                             new CustomApiResponse<>(
-                                    404, "Item NOT found", null));
+                                    204, "Item NOT found", null));
         }
 
         try {
@@ -144,8 +144,8 @@ public class RoleRESTController {
         Role dbItem = service.findById(id);
 
         if(dbItem == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new CustomApiResponse<>(404, "NOT FOUND", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
+                    new CustomApiResponse<>(204, "NOT FOUND", null));
         }
 
         if(dbItem.getName().equals(ADMIN)){

@@ -125,12 +125,12 @@ public class CollectionRESTControllerV2 {
             CollectionOutputDTO dto = ICollectionOutputDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<CollectionOutputDTO> response =
-                    new CustomApiResponse<>(302, "Collection found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Collection OK", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
-        CustomApiResponse<CollectionOutputDTO> errorResponse = new CustomApiResponse<>(404, "Collection NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<CollectionOutputDTO> errorResponse = new CustomApiResponse<>(204, "Collection NOT OK", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -169,8 +169,8 @@ public class CollectionRESTControllerV2 {
                     .body(new CustomApiResponse<>(201, "Item created successfully", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while trying to add item", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to add item", null));
         }
     }
 
@@ -186,8 +186,8 @@ public class CollectionRESTControllerV2 {
         Collection dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "User NOT found", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "", null));
         }
 
         try {
@@ -214,8 +214,8 @@ public class CollectionRESTControllerV2 {
             Collection updatedDbItem = service.update(id, gameDb, userDb);
 
             if(updatedDbItem == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new CustomApiResponse<>(404, "Item does not exists", null));
+                return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                        .body(new CustomApiResponse<>(204, "Item does not exists", null));
             }
 
 
@@ -224,8 +224,8 @@ public class CollectionRESTControllerV2 {
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to update", null));
         }
     }
 
