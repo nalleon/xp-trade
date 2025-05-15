@@ -2,9 +2,9 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CollectionScreen from '../../screens/CollectionScreen';
-import FavoriteScreen from '../../screens/FavoriteScreen';
 import ProfileScreen from '../../screens/ProfileScreen'
 import GameScreen from '../../screens/GameScreen';
+import PostScreen from '../../screens/PostScreen';
 
 type Props = {}
 
@@ -12,7 +12,7 @@ type Props = {}
 export type ProfileStackParamList = {
     ProfileScreen: undefined,
     CollectionScreen: undefined,
-    FavoriteScreen: undefined,
+    PostScreen: undefined,
     GameScreen: undefined
 };
 
@@ -26,7 +26,7 @@ const ProfileStackNav = (props: Props) => {
             }}
         >
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-            <Stack.Screen name="FavoriteScreen" component={FavoriteScreen} />
+            <Stack.Screen name="PostScreen" component={PostScreen} />
             <Stack.Screen name="CollectionScreen" component={CollectionScreen} />
             <Stack.Screen name="GameScreen" component={GameScreen} />
         </Stack.Navigator>

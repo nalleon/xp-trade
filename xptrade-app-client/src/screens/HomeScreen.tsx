@@ -14,6 +14,7 @@ type Props = NativeStackScreenProps<HomeStackParamList, 'HomeScreen'>;
 function HomeScreen({ navigation }: Props) {
   const [posts, setPosts] = useState([]);
   const [showPostModal, setShowPostModal] = useState(false);
+  const maxCharactersForFiveLines = 100;
 
   const { handleGetPosts } = UseApi();
   const context = useContext(AppContext);
@@ -63,9 +64,7 @@ function HomeScreen({ navigation }: Props) {
         data={posts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => {
-          const contentLength = item.content.length;
 
-          const maxCharactersForFiveLines = 100;
 
           return (
             <TouchableOpacity onPress={() => navigateToPostDetails(item)}>
@@ -95,14 +94,14 @@ function HomeScreen({ navigation }: Props) {
 
                 <Text
                   className="text-[#F6F7F7] mb-2"
-                  numberOfLines={contentLength > maxCharactersForFiveLines ? 6 : 0}
+                  numberOfLines={item.content.length > maxCharactersForFiveLines ? 5 : 0}
                 >
                   {item.content}
                 </Text>
 
-                {contentLength > maxCharactersForFiveLines && (
+                {item.content.length > maxCharactersForFiveLines && (
                   <TouchableOpacity onPress={() => navigateToPostDetails(item)}>
-                    <Text className="text-xs text-blue-400">Ver más</Text>
+                    <Text className="text-xs text-[#66B3B7]">Ver más</Text>
                   </TouchableOpacity>
                 )}
 
