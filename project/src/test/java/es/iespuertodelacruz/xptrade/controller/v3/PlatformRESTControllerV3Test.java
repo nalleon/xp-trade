@@ -69,7 +69,7 @@ public class PlatformRESTControllerV3Test extends TestUtilities {
     @Test
     void getOneNotFoundTest() {
         when(serviceMock.findById(1)).thenReturn(null);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class PlatformRESTControllerV3Test extends TestUtilities {
     @Test
     void getOneByNameNotFoundTest() {
         when(serviceMock.findByName(anyString())).thenReturn(null);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByName("A").getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getByName("A").getStatusCode(), MESSAGE_ERROR);
     }
     @Test
     void addTest() {
@@ -103,7 +103,7 @@ public class PlatformRESTControllerV3Test extends TestUtilities {
 
         controller.setService(serviceMockException);
 
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, controller.add(dto).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, controller.add(dto).getStatusCode(), MESSAGE_ERROR);
     }
 
 
@@ -124,7 +124,7 @@ public class PlatformRESTControllerV3Test extends TestUtilities {
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.delete(any(Integer.class))).thenReturn(false);
         ResponseEntity responseEntity = controller.delete(1);
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED,
                 responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -145,7 +145,7 @@ public class PlatformRESTControllerV3Test extends TestUtilities {
         Platform aux = new Platform(1);
         when(serviceMock.add(any(String.class))).thenReturn(new Platform());
         ResponseEntity responseEntity = controller.update(1, new PlatformInputDTO("ADMIN"));
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -163,7 +163,7 @@ public class PlatformRESTControllerV3Test extends TestUtilities {
 
         when(serviceMock.update(anyInt(), anyString())).thenThrow(new RuntimeException("Database error"));
         ResponseEntity responseEntity = controller.update(1,new PlatformInputDTO("ADMIN"));
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
 }

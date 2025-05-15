@@ -57,12 +57,12 @@ public class RegionRESTController {
             RegionOutputDTO dto =  new RegionOutputDTO(aux.getId(), aux.getName());
 
             CustomApiResponse<RegionOutputDTO> response =
-                    new CustomApiResponse<>(302, "Region found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Region found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
-        CustomApiResponse<RegionOutputDTO> errorResponse = new CustomApiResponse<>(404, "Region NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<RegionOutputDTO> errorResponse = new CustomApiResponse<>(204, "Region NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -73,12 +73,12 @@ public class RegionRESTController {
             RegionOutputDTO dto = IRegionOutputDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<RegionOutputDTO> response =
-                    new CustomApiResponse<>(202, "Region found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Region found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
-        CustomApiResponse<RegionOutputDTO> errorResponse = new CustomApiResponse<>(404, "Region NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<RegionOutputDTO> errorResponse = new CustomApiResponse<>(204, "Region NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -96,8 +96,8 @@ public class RegionRESTController {
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el item", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error al intentar registrar el item", null));
         }
     }
 
@@ -113,8 +113,8 @@ public class RegionRESTController {
         Region dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "Item NOT found", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "Item NOT found", null));
         }
 
         try {
@@ -128,7 +128,7 @@ public class RegionRESTController {
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                     .body(new CustomApiResponse<>(500, "Error while trying to update", null));
         }
     }
@@ -143,7 +143,7 @@ public class RegionRESTController {
                     .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "Unable to delete item with id: " + id;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                     .body(new CustomApiResponse<>(500, message, null));
         }
     }

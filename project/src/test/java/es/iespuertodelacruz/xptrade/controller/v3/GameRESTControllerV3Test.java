@@ -344,7 +344,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
     @Test
     void getOneNotFoundTest() {
         when(serviceMock.findById(1)).thenReturn(null);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -356,7 +356,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
     @Test
     void getOneByTitleNotFoundTest() {
         when(serviceMock.findByTitle(anyString())).thenReturn(null);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getByTitle(TITLE).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getByTitle(TITLE).getStatusCode(), MESSAGE_ERROR);
     }
 
    @Test
@@ -380,7 +380,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
                 anySet(), anySet())
         ).thenThrow(new RuntimeException());
 
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, controller.add(gameInputDTO).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, controller.add(gameInputDTO).getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -396,7 +396,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
         when(serviceMock.findById(any(Integer.class))).thenReturn(gameDomain);
         when(serviceMock.delete(any(Integer.class))).thenReturn(false);
         ResponseEntity responseEntity = controller.delete(1);
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED,
                 responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -430,7 +430,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
         when(serviceMock.findById(any(Integer.class))).thenReturn(null);
 
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, gameInputDTO);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -477,7 +477,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
     void updateCoverNotFoundTest() {
         MultipartFile mockFile = mock(MultipartFile.class);
         when(serviceMock.findByTitle(anyString())).thenReturn(null);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.uploadFile(NAME, mockFile).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.uploadFile(NAME, mockFile).getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test

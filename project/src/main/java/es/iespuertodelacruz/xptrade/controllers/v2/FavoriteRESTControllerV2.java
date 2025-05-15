@@ -133,8 +133,8 @@ public class FavoriteRESTControllerV2 {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
-        CustomApiResponse<FavoriteOutputDTO> errorResponse = new CustomApiResponse<>(404, "Favorite NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<FavoriteOutputDTO> errorResponse = new CustomApiResponse<>(204, "Favorite NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -161,8 +161,6 @@ public class FavoriteRESTControllerV2 {
                     .body(new CustomApiResponse<>(400, "Item cannot be null", null));
         }
 
-        System.out.println("Incoming DTO: " + dto);
-
         try {
             Favorite aux = IFavoriteInputDTOMapper.INSTANCE.toDomain(dto);
 
@@ -177,8 +175,6 @@ public class FavoriteRESTControllerV2 {
 
             User userDb = userService.findByUsername(aux.getUser().getUsername());
 
-            System.out.println("USER: " + userDb);
-
             if(userDb == null){
                 return ResponseEntity.badRequest()
                         .body(new CustomApiResponse<>(400, "Item cannot be null", null));
@@ -188,17 +184,14 @@ public class FavoriteRESTControllerV2 {
 
             Favorite dbItem = service.add(gameDb, userDb);
 
-            System.out.println("fav " + dbItem);
-
-
             FavoriteOutputDTO result = IFavoriteOutputDTOMapper.INSTANCE.toDTO(dbItem);
 
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new CustomApiResponse<>(201, "Item created successfully", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while trying to add item", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to add item", null));
         }
     }
 
@@ -214,8 +207,8 @@ public class FavoriteRESTControllerV2 {
         Favorite dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "User NOT found", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "User NOT found", null));
         }
 
         try {
@@ -242,8 +235,8 @@ public class FavoriteRESTControllerV2 {
             Favorite updatedDbItem = service.update(id, gameDb, userDb);
 
             if(updatedDbItem == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new CustomApiResponse<>(404, "Item does not exists", null));
+                return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                        .body(new CustomApiResponse<>(204, "Item does not exists", null));
             }
 
 
@@ -252,8 +245,8 @@ public class FavoriteRESTControllerV2 {
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to update", null));
         }
     }
 
@@ -268,8 +261,8 @@ public class FavoriteRESTControllerV2 {
                     .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "Unable to delete item with id: " + id;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, message, null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, message, null));
         }
     }
 

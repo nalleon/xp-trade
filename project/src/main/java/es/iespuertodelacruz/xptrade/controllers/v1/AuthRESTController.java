@@ -143,7 +143,7 @@ public class AuthRESTController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid token");
             }
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User not found.");
         }
     }
 }
