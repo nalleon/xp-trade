@@ -93,8 +93,8 @@ public class UserRESTController {
             return ResponseEntity.ok(response);
         }
 
-        CustomApiResponse<UserOutputDTO> errorResponse = new CustomApiResponse<>(404, "User NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<UserOutputDTO> errorResponse = new CustomApiResponse<>(204, "User NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
     @GetMapping("username/{username}")
@@ -107,8 +107,8 @@ public class UserRESTController {
             return ResponseEntity.ok(response);
         }
 
-        CustomApiResponse<UserOutputDTO> errorResponse = new CustomApiResponse<>(404, "User NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<UserOutputDTO> errorResponse = new CustomApiResponse<>(204, "User NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
     @GetMapping("email/{email}")
@@ -121,8 +121,8 @@ public class UserRESTController {
             return ResponseEntity.ok(response);
         }
 
-        CustomApiResponse<UserOutputDTO> errorResponse = new CustomApiResponse<>(404, "User NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<UserOutputDTO> errorResponse = new CustomApiResponse<>(204, "User NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -179,8 +179,8 @@ public class UserRESTController {
         User dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "User NOT found", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "User NOT found", null));
         }
 
         try {
@@ -196,8 +196,8 @@ public class UserRESTController {
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to update", null));
         }
     }
     @DeleteMapping("/{id}")

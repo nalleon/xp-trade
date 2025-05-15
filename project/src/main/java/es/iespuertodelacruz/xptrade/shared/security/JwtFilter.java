@@ -68,7 +68,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 final String verified = mapInfoToken.get("verified");
 
-                System.out.println("verified: " + verified);
                 if ("0".equals(verified)) {
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                     response.getWriter().write("Account not verified yet");

@@ -147,7 +147,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
     @Test
     void getOneNotFoundTest() {
         when(serviceMock.findById(1)).thenReturn(null);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getById(1).getStatusCode(), MESSAGE_ERROR);
     }
 
 
@@ -220,7 +220,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
 
         ResponseEntity<CustomApiResponse<?>> response = controller.add(aux);
 
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, response.getStatusCode(), MESSAGE_ERROR);
     }
 
 
@@ -240,7 +240,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.delete(any(Integer.class))).thenReturn(false);
         ResponseEntity<?> responseEntity = controller.delete(1);
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED,
                 responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -273,7 +273,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
                 CONTENT, PICTURE);
 
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -325,7 +325,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
         when(serviceMock.update(anyInt(),any(Game.class), any(User.class), anyString(), anyString())).thenReturn(null);
 
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, controller.update(ID,aux).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.update(ID,aux).getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
@@ -343,7 +343,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
         when(serviceMock.update(anyInt(),any(Game.class), any(User.class), anyString(), anyString())).thenThrow(new RuntimeException());
         
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
 }

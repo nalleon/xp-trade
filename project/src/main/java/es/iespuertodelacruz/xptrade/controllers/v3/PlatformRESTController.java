@@ -57,12 +57,12 @@ public class PlatformRESTController {
             PlatformOutputDTO dto =  IPlatformOutputDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<PlatformOutputDTO> response =
-                    new CustomApiResponse<>(302, "Platform found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Platform found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
-        CustomApiResponse<PlatformOutputDTO> errorResponse = new CustomApiResponse<>(404, "Platform NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<PlatformOutputDTO> errorResponse = new CustomApiResponse<>(204, "Platform NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -73,12 +73,12 @@ public class PlatformRESTController {
             PlatformOutputDTO dto = IPlatformOutputDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<PlatformOutputDTO> response =
-                    new CustomApiResponse<>(202, "Platform found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Platform found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
-        CustomApiResponse<PlatformOutputDTO> errorResponse = new CustomApiResponse<>(404, "Platform NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        CustomApiResponse<PlatformOutputDTO> errorResponse = new CustomApiResponse<>(204, "Platform NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -96,8 +96,8 @@ public class PlatformRESTController {
                     .body(new CustomApiResponse<>(201, "Usuario creado correctamente", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error al intentar registrar el item", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error al intentar registrar el item", null));
         }
     }
 
@@ -113,8 +113,8 @@ public class PlatformRESTController {
         Platform dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, "Item NOT found", null));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "Item NOT found", null));
         }
 
         try {
@@ -128,8 +128,8 @@ public class PlatformRESTController {
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to update", null));
         }
     }
     @DeleteMapping("/{id}")
@@ -143,8 +143,8 @@ public class PlatformRESTController {
                     .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "Unable to delete item with id: " + id;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, message, null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, message, null));
         }
     }
 
