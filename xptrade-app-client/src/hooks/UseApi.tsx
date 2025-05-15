@@ -196,7 +196,7 @@ const UseApi = () => {
                 });
 
             if (response?.data) {
-                return response?.data;
+                return response?.data.data;
             } else {
                 return null;
             }
@@ -425,7 +425,35 @@ const UseApi = () => {
      * @param username of the user
      * @returns the favorites
      */
-    const handleGetPostsComments = async (id : any) => {
+    const handleGetUserPosts = async (username: string) => {
+        if (!username?.trim()) return null;
+
+        try {
+            const response = await axios.get(`${URL_API}/v2/posts/users/${username}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
+            if (response?.data.data) {
+                return response?.data.data;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while fetching favorites", error);
+        }
+    };
+
+    /**
+     * Function to get an user favorite games
+     * @param username of the user
+     * @returns the favorites
+     */
+    const handleGetPostsComments = async (id: any) => {
         try {
             const response = await axios.get(`${URL_API}/v2/comments/posts/${id}`,
                 {
@@ -449,7 +477,7 @@ const UseApi = () => {
 
     return {
         handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite,
-        handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost, handleGetPosts, handleCreateComment, handleGetPostsComments
+        handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost, handleGetPosts, handleGetUserPosts, handleCreateComment, handleGetPostsComments
     }
 
 }
