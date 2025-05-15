@@ -131,7 +131,7 @@ public class CommentRESTControllerV2 {
         }
 
         CustomApiResponse<CommentOutputDTO> errorResponse = new CustomApiResponse<>(204, "Comment NOT found", null);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
 
@@ -167,8 +167,8 @@ public class CommentRESTControllerV2 {
                     .body(new CustomApiResponse<>(201, "Item successfully created", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while creating item", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while creating item", null));
         }
     }
 
@@ -184,7 +184,7 @@ public class CommentRESTControllerV2 {
         Comment dbItem = service.findById(id);
 
         if (dbItem == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
                     .body(new CustomApiResponse<>(204, "Comment NOT found", null));
         }
 
@@ -211,15 +211,15 @@ public class CommentRESTControllerV2 {
             CommentOutputDTO result = ICommentOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
             if(result == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                return ResponseEntity.status(HttpStatus.NO_CONTENT)
                         .body(new CustomApiResponse<>(204, "Item does not exists", null));
             }
 
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to update", null));
         }
     }
 
@@ -234,8 +234,8 @@ public class CommentRESTControllerV2 {
                     .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "Unable to delete item with id: " + id;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, message, null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, message, null));
         }
     }
 
