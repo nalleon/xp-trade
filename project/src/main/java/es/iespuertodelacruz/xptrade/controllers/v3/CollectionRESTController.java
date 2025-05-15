@@ -125,11 +125,11 @@ public class CollectionRESTController {
             CollectionOutputDTO dto = ICollectionOutputDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<CollectionOutputDTO> response =
-                    new CustomApiResponse<>(302, "Collection found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Collection OK", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
-        CustomApiResponse<CollectionOutputDTO> errorResponse = new CustomApiResponse<>(204, "Collection NOT found", null);
+        CustomApiResponse<CollectionOutputDTO> errorResponse = new CustomApiResponse<>(204, "Collection NOT OK", null);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
@@ -170,8 +170,8 @@ public class CollectionRESTController {
                     .body(new CustomApiResponse<>(201, "Item created successfully", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while trying to add item", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to add item", null));
         }
 
     }
@@ -189,7 +189,7 @@ public class CollectionRESTController {
 
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new CustomApiResponse<>(204, "User NOT found", null));
+                    .body(new CustomApiResponse<>(204, "User NOT OK", null));
         }
 
         try {
@@ -225,8 +225,8 @@ public class CollectionRESTController {
             return ResponseEntity.ok(new CustomApiResponse<>(200, "Update successful", result));
 
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, "Error while trying to update", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to update", null));
         }
     }
     @DeleteMapping("/{id}")
@@ -240,8 +240,8 @@ public class CollectionRESTController {
                     .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "Unable to delete item with id: " + id;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, message, null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, message, null));
         }
     }
 
