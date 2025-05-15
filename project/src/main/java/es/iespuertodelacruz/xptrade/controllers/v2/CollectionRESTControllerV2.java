@@ -187,7 +187,7 @@ public class CollectionRESTControllerV2 {
 
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new CustomApiResponse<>(204, "", null));
+                    .body(new CustomApiResponse<>(204, "Item not found", null));
         }
 
         try {
@@ -240,8 +240,8 @@ public class CollectionRESTControllerV2 {
                     .body(new CustomApiResponse<>(204, message, null));
         } else {
             String message = "Unable to delete item with id: " + id;
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CustomApiResponse<>(500, message, null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, message, null));
         }
     }
 
