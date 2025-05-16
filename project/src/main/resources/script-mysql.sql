@@ -87,15 +87,15 @@ CREATE TABLE `regions` (
     UNIQUE KEY `uq_regions_name` (name)
 );
 
-CREATE TABLE `games_regions` (
-    id INTEGER AUTO_INCREMENT NOT NULL,
-    game_id INTEGER NOT NULL,
-    region_id INTEGER NOT NULL,
-    CONSTRAINT `pk_games_regions` PRIMARY KEY (id),
-    CONSTRAINT `fk_games_regions1` FOREIGN KEY (game_id) REFERENCES games(id),
-    CONSTRAINT `fk_games_regions2` FOREIGN KEY (region_id) REFERENCES regions(id),
-    UNIQUE KEY `uq_games_regions` (game_id, region_id)
-);
+--CREATE TABLE `games_regions` (
+--    id INTEGER AUTO_INCREMENT NOT NULL,
+--    game_id INTEGER NOT NULL,
+--    region_id INTEGER NOT NULL,
+--    CONSTRAINT `pk_games_regions` PRIMARY KEY (id),
+--    CONSTRAINT `fk_games_regions1` FOREIGN KEY (game_id) REFERENCES games(id),
+--    CONSTRAINT `fk_games_regions2` FOREIGN KEY (region_id) REFERENCES regions(id),
+--    UNIQUE KEY `uq_games_regions` (game_id, region_id)
+--);
 
 CREATE TABLE `publishers` (
     id INTEGER AUTO_INCREMENT NOT NULL,
@@ -168,6 +168,18 @@ CREATE TABLE `collections` (
     CONSTRAINT `fk_collections1` FOREIGN KEY (game_id) REFERENCES games(id),
     CONSTRAINT `fk_collections2` FOREIGN KEY (user_id) REFERENCES users(id),
     UNIQUE KEY `uq_collections` (game_id, user_id)
+);
+
+CREATE TABLE `games_collections` (
+    id INTEGER AUTO_INCREMENT NOT NULL,
+    game_id INTEGER NOT NULL,
+    collection_id INTEGER NOT NULL,
+    region_id INTEGER NOT NULL,
+    platform_id INTEGER NOT NULL,
+    CONSTRAINT
+    CONSTRAINT
+    CONSTRAINT
+    CONSTRAINT
 );
 
 CREATE TABLE `favorites` (
