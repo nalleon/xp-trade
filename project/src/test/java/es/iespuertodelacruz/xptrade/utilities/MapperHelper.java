@@ -220,7 +220,6 @@ public class MapperHelper extends TestUtilities {
         collectionEntity = new CollectionEntity();
         collectionEntity.setId(ID);
         collectionEntity.setUser(userEntity);
-        collectionEntity.setGameCollection(gameEntity);
 
 
         collectionDomain = new Collection();

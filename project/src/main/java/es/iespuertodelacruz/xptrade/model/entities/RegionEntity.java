@@ -23,7 +23,8 @@ public class RegionEntity {
     @Column(unique = true, nullable=false, length=45, name = "name")
     private String name;
 
-
+    @OneToMany(mappedBy = "region")
+    private Set<GameCollectionEntity> gameCollectionSet;
 
     /**
      * Default constructor of the class

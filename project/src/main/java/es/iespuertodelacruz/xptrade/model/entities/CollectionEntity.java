@@ -3,6 +3,7 @@ package es.iespuertodelacruz.xptrade.model.entities;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Nabil Leon Alvarez @nalleon
@@ -20,9 +21,8 @@ public class CollectionEntity {
     @Column(unique=true, nullable=false)
     private int id;
 
-    @OneToMany()
-    @JoinColumn(nullable=false, name = "game_id")
-    private GameCollectionEntity gameCollection;
+    @OneToMany(mappedBy = "collection")
+    private Set<GameCollectionEntity> gameCollectionSet;
 
     @ManyToOne()
     @JoinColumn(nullable=false, name = "user_id")
@@ -44,12 +44,11 @@ public class CollectionEntity {
 
     /**
      * Constructor of the class
-     * @param gameCollection of the collection
      * @param user of the collection
      */
 
-    public CollectionEntity(GameCollectionEntity gameCollection, UserEntity user) {
-        this.gameCollection = gameCollection;
+    public CollectionEntity(UserEntity user) {
+        this.gameCollectionSet = gameCollectionSet;
         this.user = user;
     }
 
@@ -64,14 +63,6 @@ public class CollectionEntity {
         this.id = id;
     }
 
-    public GameCollectionEntity getGameCollection() {
-        return gameCollection;
-    }
-
-    public void setGameCollection(GameCollectionEntity gameCollection) {
-        this.gameCollection = gameCollection;
-    }
-
     public UserEntity getUser() {
         return user;
     }
@@ -84,7 +75,7 @@ public class CollectionEntity {
     public String toString() {
         return "CollectionEntity{" +
                 "id=" + id +
-                ", game=" + gameCollection +
+                ", game=" + gameCollectionSet +
                 ", user=" + user +
                 '}';
     }

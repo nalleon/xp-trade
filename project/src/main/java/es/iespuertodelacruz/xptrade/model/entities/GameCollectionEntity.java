@@ -36,7 +36,7 @@ public class GameCollectionEntity {
 
     @ManyToOne()
     @JoinColumn(name = "platform_id")
-    private PlatformEntity platformEntity;
+    private PlatformEntity platform;
 
     /**
      * Default constructor
@@ -58,14 +58,14 @@ public class GameCollectionEntity {
      * @param game of GameCollection
      * @param collection of GameCollection
      * @param region of GameCollection
-     * @param platformEntity of GameCollection
+     * @param platform of GameCollection
      */
-    public GameCollectionEntity(int id, GameEntity game, CollectionEntity collection, RegionEntity region, PlatformEntity platformEntity) {
+    public GameCollectionEntity(int id, GameEntity game, CollectionEntity collection, RegionEntity region, PlatformEntity platform) {
         this.id = id;
         this.game = game;
         this.collection = collection;
         this.region = region;
-        this.platformEntity = platformEntity;
+        this.platform = platform;
     }
 
     /**
@@ -104,12 +104,12 @@ public class GameCollectionEntity {
         this.region = region;
     }
 
-    public PlatformEntity getPlatformEntity() {
-        return platformEntity;
+    public PlatformEntity getPlatform() {
+        return platform;
     }
 
-    public void setPlatformEntity(PlatformEntity platformEntity) {
-        this.platformEntity = platformEntity;
+    public void setPlatform(PlatformEntity platform) {
+        this.platform = platform;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class GameCollectionEntity {
                 ", game=" + game +
                 ", collection=" + collection +
                 ", region=" + region +
-                ", platformEntity=" + platformEntity +
+                ", platformEntity=" + platform +
                 '}';
     }
 

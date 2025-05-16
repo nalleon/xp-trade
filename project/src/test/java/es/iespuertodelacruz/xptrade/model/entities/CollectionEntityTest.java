@@ -48,14 +48,12 @@ public class CollectionEntityTest extends TestUtilities {
         user = new UserEntity(ID);
         item = new CollectionEntity();
         item.setId(ID);
-        item.setGameCollection(game);
         item.setUser(user);
     }
     
     @Test
     public void getSetTest(){
         Assertions.assertEquals(ID, item.getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(game, item.getGameCollection(), MESSAGE_ERROR);
         Assertions.assertEquals(user, item.getUser(), MESSAGE_ERROR);
 
     }
@@ -63,13 +61,12 @@ public class CollectionEntityTest extends TestUtilities {
     @Test
     public void toStringTest(){
         Assertions.assertTrue(item.toString().contains(String.valueOf(ID)), MESSAGE_ERROR);
-        Assertions.assertTrue(item.toString().contains(game.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(user.toString()), MESSAGE_ERROR);
     }
 
     @Test
     public void equalsTest(){
-        CollectionEntity equals = new CollectionEntity(game, user);
+        CollectionEntity equals = new CollectionEntity(user);
         equals.setId(ID);
 
         CollectionEntity differentId = new CollectionEntity(2);

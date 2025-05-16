@@ -39,7 +39,6 @@ public class ICollectionEntityMapperTest extends MapperHelper {
 
         Assertions.assertEquals(collectionEntity.getId(), entityMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(collectionEntity.getUser(), entityMapper.getUser(), MESSAGE_ERROR);
-        Assertions.assertEquals(collectionEntity.getGameCollection(), entityMapper.getGameCollection(), MESSAGE_ERROR);
 
         entityMapper = ICollectionEntityMapper.INSTANCE.toEntity(collectionDomain);
 
@@ -54,7 +53,6 @@ public class ICollectionEntityMapperTest extends MapperHelper {
 
         Assertions.assertEquals(collectionDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(collectionDomain.getUser(), domainMapper.getUser(), MESSAGE_ERROR);
-        Assertions.assertEquals(collectionDomain.getGame(), domainMapper.getGame(), MESSAGE_ERROR);
 
         collectionEntity = null;
         domainMapper = ICollectionEntityMapper.INSTANCE.toDomain(collectionEntity);

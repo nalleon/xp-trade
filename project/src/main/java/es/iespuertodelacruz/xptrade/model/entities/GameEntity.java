@@ -67,7 +67,7 @@ public class GameEntity {
     Set<PostEntity> postEntitySet;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    Set<CollectionEntity> collectionEntitySet;
+    Set<GameCollectionEntity> gameCollectionSet;
 
     /**
      * Default constructor of the class

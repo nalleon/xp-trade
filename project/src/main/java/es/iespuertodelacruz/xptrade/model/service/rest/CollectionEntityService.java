@@ -105,7 +105,6 @@ public class CollectionEntityService implements IGenericSocialRepository<Collect
         }
         try {
             CollectionEntity aux = ICollectionEntityMapper.INSTANCE.toEntity(collection);
-            dbItem.setGameCollection(aux.getGameCollection());
             dbItem.setUser(aux.getUser());
             return ICollectionEntityMapper.INSTANCE.toDomain(dbItem);
         } catch (RuntimeException e) {
