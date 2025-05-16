@@ -93,9 +93,7 @@ const PostScreen = ({ navigation }: Props) => {
               <Text className="text-[#F6F7F7] font-semibold text-sm">
                 @{item.user.username}
               </Text>
-              <Text className="text-[#D1D5DB] text-sm mt-1">
-                {item.content}
-              </Text>
+
             </View>
           </View>
 
@@ -109,7 +107,9 @@ const PostScreen = ({ navigation }: Props) => {
             </TouchableOpacity>
           )}
         </View>
-
+        <Text className="text-[#D1D5DB] text-sm mt-1">
+          {item.content}
+        </Text>
         <View className="flex-row items-end mt-2">
           <Text className="text-xs text-[#8899A6] ml-auto">
             {formatDate(item.creationDate)}
