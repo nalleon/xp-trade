@@ -60,14 +60,6 @@ public class GameEntity {
             inverseJoinColumns = { @JoinColumn(name = "publisher_id")})
     Set<PublisherEntity> publisherEntitySet;
 
-
-    @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)
-    @JoinTable(name = "games_regions",
-            joinColumns = { @JoinColumn(name = "game_id") },
-            inverseJoinColumns = { @JoinColumn(name = "region_id")})
-    Set<RegionEntity> regionEntitySet;
-
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<FavoriteEntity> favoriteEntitySet;
 
@@ -109,11 +101,10 @@ public class GameEntity {
      * @param genreEntitySet of the game
      * @param platformEntitySet of the game
      * @param publisherEntitySet of the game
-     * @param regionEntitySet of the game
      */
     public GameEntity(String title, String coverArt, String slug, Set<DeveloperEntity>
             developerEntitySet, Set<GenreEntity> genreEntitySet, Set<PlatformEntity> platformEntitySet,
-                      Set<PublisherEntity> publisherEntitySet, Set<RegionEntity> regionEntitySet) {
+                      Set<PublisherEntity> publisherEntitySet) {
         this.title = title;
         this.coverArt = coverArt;
         this.slug = slug;
@@ -121,7 +112,6 @@ public class GameEntity {
         this.genreEntitySet = genreEntitySet;
         this.platformEntitySet = platformEntitySet;
         this.publisherEntitySet = publisherEntitySet;
-        this.regionEntitySet = regionEntitySet;
     }
 
     /**
@@ -184,14 +174,6 @@ public class GameEntity {
         this.publisherEntitySet = publisherEntitySet;
     }
 
-    public Set<RegionEntity> getRegionEntitySet() {
-        return regionEntitySet;
-    }
-
-    public void setRegionEntitySet(Set<RegionEntity> regionEntitySet) {
-        this.regionEntitySet = regionEntitySet;
-    }
-
     public String getSlug() {
         return slug;
     }
@@ -203,7 +185,6 @@ public class GameEntity {
     @Override
     public String toString() {
         return "GameEntity{" +
-                "regionEntitySet=" + regionEntitySet +
                 ", publisherEntitySet=" + publisherEntitySet +
                 ", platformEntitySet=" + platformEntitySet +
                 ", genreEntitySet=" + genreEntitySet +

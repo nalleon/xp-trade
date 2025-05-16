@@ -198,7 +198,6 @@ public class MapperHelper extends TestUtilities {
         gameEntity.setPublisherEntitySet(new HashSet<>(Collections.singletonList(publisherEntity)));
         gameEntity.setDeveloperEntitySet(new HashSet<>(Collections.singletonList(developerEntity)));
         gameEntity.setPlatformEntitySet(new HashSet<>(Collections.singletonList(platformEntity)));
-        gameEntity.setRegionEntitySet(new HashSet<>(Collections.singletonList(regionEntity)));
         gameEntity.setGenreEntitySet(new HashSet<>(Collections.singletonList(genreEntity)));
 
         gameDomain = new Game();
@@ -210,7 +209,6 @@ public class MapperHelper extends TestUtilities {
         gameDomain.setPublisherSet(new HashSet<>(Collections.singletonList(publisherDomain)));
         gameDomain.setDeveloperSet(new HashSet<>(Collections.singletonList(developerDomain)));
         gameDomain.setPlatformSet(new HashSet<>(Collections.singletonList(platformDomain)));
-        gameDomain.setRegionSet(new HashSet<>(Collections.singletonList(regionDomain)));
         gameDomain.setGenreSet(new HashSet<>(Collections.singletonList(genreDomain)));
 
         gameDomains = new ArrayList<>();

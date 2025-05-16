@@ -61,9 +61,8 @@ public class FavoriteEntityServiceTest extends TestUtilities {
         genreSet = new HashSet<>(Collections.singletonList(genre));
         platformSet = new HashSet<>(Collections.singletonList(platform));
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
-        regionSet = new HashSet<>(Collections.singletonList(region));
 
-        game = new Game(TITLE, COVER_ART,SLUG,  developerSet, genreSet, platformSet, publisherSet, regionSet);
+        game = new Game(TITLE, COVER_ART,SLUG,  developerSet, genreSet, platformSet, publisherSet);
         game.setId(ID);
         user = new User(ID);
         user.setUsername(NAME);

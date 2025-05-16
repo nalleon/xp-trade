@@ -175,8 +175,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
         gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG,new HashSet<>(Collections.singletonList(developerOutputDTO)),
                 new HashSet<>(Collections.singletonList(genreOutputDTO)),
                 new HashSet<>(Collections.singletonList(platformOutputDTO)),
-                new HashSet<>(Collections.singletonList(publisherOutputDTO)),
-                new HashSet<>(Collections.singletonList(regionOutputDTO))
+                new HashSet<>(Collections.singletonList(publisherOutputDTO))
         );
 
         gameDomain = new Game();
@@ -186,14 +185,12 @@ public class GameRESTControllerV3Test extends TestUtilities {
         gameDomain.setPublisherSet(new HashSet<>(Collections.singletonList(publisherDomain)));
         gameDomain.setDeveloperSet(new HashSet<>(Collections.singletonList(developerDomain)));
         gameDomain.setPlatformSet(new HashSet<>(Collections.singletonList(platformDomain)));
-        gameDomain.setRegionSet(new HashSet<>(Collections.singletonList(regionDomain)));
         gameDomain.setGenreSet(new HashSet<>(Collections.singletonList(genreDomain)));
 
         gameInputDTO = new GameInputDTO(TITLE, COVER_ART, SLUG, new HashSet<>(Collections.singletonList(new DeveloperInputDTO(NAME))),
                 new HashSet<>(Collections.singletonList(new GenreInputDTO(NAME))),
                 new HashSet<>(Collections.singletonList(new PlatformInputDTO(NAME))),
-                new HashSet<>(Collections.singletonList(new PublisherInputDTO(NAME))),
-                new HashSet<>(Collections.singletonList(new RegionInputDTO(NAME)))
+                new HashSet<>(Collections.singletonList(new PublisherInputDTO(NAME)))
         );
     }
     @Test
@@ -363,7 +360,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
     void addTest() {
         when(serviceMock.add(gameInputDTO.title(), gameInputDTO.coverArt(), gameInputDTO.slug(),
                 gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
-                gameDomain.getPublisherSet(), gameDomain.getRegionSet())).thenReturn(gameDomain);
+                gameDomain.getPublisherSet())).thenReturn(gameDomain);
 
        Assertions.assertEquals(HttpStatus.CREATED, controller.add(gameInputDTO).getStatusCode(), MESSAGE_ERROR);
     }
@@ -377,7 +374,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
         when(serviceMock.add(
                 anyString(), anyString(), anyString(),
                 anySet(), anySet(), anySet(),
-                anySet(), anySet())
+                anySet())
         ).thenThrow(new RuntimeException());
 
         Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, controller.add(gameInputDTO).getStatusCode(), MESSAGE_ERROR);
@@ -406,13 +403,13 @@ public class GameRESTControllerV3Test extends TestUtilities {
         when(serviceMock.add(
                 anyString(), anyString(), anyString(),
                 anySet(), anySet(), anySet(),
-                anySet(), anySet())
+                anySet())
         ).thenReturn(new Game());
 
         when(serviceMock.update(anyInt(),
                 anyString(), anyString(), anyString(),
                 anySet(), anySet(), anySet(),
-                anySet(), anySet())
+                anySet())
         ).thenReturn(gameDomain);
 
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, gameInputDTO);
@@ -441,7 +438,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
         when(serviceMock.update(anyInt(),
                 anyString(), anyString(), anyString(),
                 anySet(), anySet(), anySet(),
-                anySet(), anySet())
+                anySet())
         ).thenThrow(new RuntimeException());
 
         Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, controller.update(1,gameInputDTO).getStatusCode(), MESSAGE_ERROR);

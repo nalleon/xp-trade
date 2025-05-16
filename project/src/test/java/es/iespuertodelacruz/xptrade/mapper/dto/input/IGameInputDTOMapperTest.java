@@ -45,17 +45,14 @@ public class IGameInputDTOMapperTest extends MapperInputDTOHelper {
         Assertions.assertEquals(gameInputDTO.genreInputDTOSet(), dtoMapper.genreInputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameInputDTO.platformInputDTOSet(), dtoMapper.platformInputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameInputDTO.publisherInputDTOSet(), dtoMapper.publisherInputDTOSet(), MESSAGE_ERROR);
-        Assertions.assertEquals(gameInputDTO.regionInputDTOSet(), dtoMapper.regionInputDTOSet(), MESSAGE_ERROR);
 
 
         gameDomain.setGenreSet(null);
-        gameDomain.setRegionSet(null);
         gameDomain.setPlatformSet(null);
         gameDomain.setDeveloperSet(null);
         gameDomain.setPublisherSet(null);
 
         dtoMapper = IGameInputDTOMapper.INSTANCE.toDTO(gameDomain);
-        Assertions.assertNull(dtoMapper.regionInputDTOSet(), MESSAGE_ERROR);
         Assertions.assertNull(dtoMapper.publisherInputDTOSet(), MESSAGE_ERROR);
         Assertions.assertNull(dtoMapper.platformInputDTOSet(), MESSAGE_ERROR);
         Assertions.assertNull(dtoMapper.developerInputDTOSet(), MESSAGE_ERROR);
@@ -78,12 +75,10 @@ public class IGameInputDTOMapperTest extends MapperInputDTOHelper {
         Assertions.assertEquals(gameDomain.getGenreSet(), domainMapper.getGenreSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getPlatformSet(), domainMapper.getPlatformSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getPublisherSet(), domainMapper.getPublisherSet(), MESSAGE_ERROR);
-        Assertions.assertEquals(gameDomain.getRegionSet(), domainMapper.getRegionSet(), MESSAGE_ERROR);
 
-        gameInputDTO = new GameInputDTO(TITLE, COVER_ART, SLUG, null, null, null,null,null);
+        gameInputDTO = new GameInputDTO(TITLE, COVER_ART, SLUG, null,  null,null,null);
 
         domainMapper = IGameInputDTOMapper.INSTANCE.toDomain(gameInputDTO);
-        Assertions.assertNull(domainMapper.getRegionSet(), MESSAGE_ERROR);
         Assertions.assertNull(domainMapper.getPlatformSet(), MESSAGE_ERROR);
         Assertions.assertNull(domainMapper.getDeveloperSet(), MESSAGE_ERROR);
         Assertions.assertNull(domainMapper.getPublisherSet(), MESSAGE_ERROR);

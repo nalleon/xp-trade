@@ -8,8 +8,7 @@ import java.util.Set;
 
 public interface IGameService {
     Game add(String title, String coverArt, String slug, Set<Developer> developerSet, Set<Genre> genreSet,
-             Set<Platform> platformSet, Set<Publisher> publisherSet,
-             Set<Region> regionSet);
+             Set<Platform> platformSet, Set<Publisher> publisherSet);
 
     Game findById(Integer id);
     Game findByTitle(String title);
@@ -22,8 +21,7 @@ public interface IGameService {
 
     boolean delete(Integer id);
     Game update(int id, String title, String coverArt, String slug, Set<Developer> developerSet, Set<Genre> genreSet,
-                Set<Platform> platformSet, Set<Publisher> publisherSet,
-                Set<Region> regionSet);
+                Set<Platform> platformSet, Set<Publisher> publisherSet);
 
     Game updateCoverArt(int id, String coverArt);
 }

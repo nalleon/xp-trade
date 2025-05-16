@@ -120,15 +120,14 @@ public class GameServiceTest extends TestUtilities {
         Set<Genre> genreSet = new HashSet<>();
         Set<Platform> platformSet = new HashSet<>();
         Set<Publisher> publisherSet = new HashSet<>();
-        Set<Region> regionSet = new HashSet<>();
         Assertions.assertNotNull(service.add(TITLE, COVER_ART, SLUG, developerSet,
-                genreSet, platformSet, publisherSet, regionSet), MESSAGE_ERROR);
+                genreSet, platformSet, publisherSet), MESSAGE_ERROR);
     }
 
     @Test
     void addNullTest() {
         Assertions.assertNull(service.add(null, null, null, null, null, null,
-                null, null), MESSAGE_ERROR);
+                null), MESSAGE_ERROR);
     }
 
     @Test
@@ -138,9 +137,8 @@ public class GameServiceTest extends TestUtilities {
         Set<Genre> genreSet = new HashSet<>();
         Set<Platform> platformSet = new HashSet<>();
         Set<Publisher> publisherSet = new HashSet<>();
-        Set<Region> regionSet = new HashSet<>();
         Assertions.assertNull(service.update(1, TITLE, COVER_ART, SLUG, developerSet,
-                genreSet, platformSet, publisherSet, regionSet), MESSAGE_ERROR);
+                genreSet, platformSet, publisherSet), MESSAGE_ERROR);
     }
     @Test
     void updateTest() throws Exception {
@@ -149,9 +147,8 @@ public class GameServiceTest extends TestUtilities {
         Set<Genre> genreSet = new HashSet<>();
         Set<Platform> platformSet = new HashSet<>();
         Set<Publisher> publisherSet = new HashSet<>();
-        Set<Region> regionSet = new HashSet<>();
         Assertions.assertNotNull(service.update(1,TITLE, COVER_ART, SLUG, developerSet,
-                genreSet, platformSet, publisherSet, regionSet), MESSAGE_ERROR);
+                genreSet, platformSet, publisherSet), MESSAGE_ERROR);
     }
 
     @Test
@@ -163,7 +160,7 @@ public class GameServiceTest extends TestUtilities {
     @Test
     void updateNullTest() throws Exception {
         Assertions.assertNull(service.update(0, null, null, null, null, null, null,
-                null, null), MESSAGE_ERROR);
+                null), MESSAGE_ERROR);
     }
 
 

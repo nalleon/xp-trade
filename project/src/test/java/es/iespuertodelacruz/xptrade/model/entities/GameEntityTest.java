@@ -44,7 +44,7 @@ public class GameEntityTest extends TestUtilities {
         platformSet = new HashSet<>(Collections.singletonList(platform));
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
-        item = new GameEntity(TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet, regionSet);
+        item = new GameEntity(TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet);
         item.setId(ID);
     }
 
@@ -58,14 +58,12 @@ public class GameEntityTest extends TestUtilities {
         Assertions.assertEquals(genreSet, item.getGenreEntitySet(), MESSAGE_ERROR);
         Assertions.assertEquals(platformSet, item.getPlatformEntitySet(), MESSAGE_ERROR);
         Assertions.assertEquals(publisherSet, item.getPublisherEntitySet(), MESSAGE_ERROR);
-        Assertions.assertEquals(regionSet, item.getRegionEntitySet(), MESSAGE_ERROR);
-
     }
 
     @Test
     public void toStringTest(){
         item = new GameEntity(TITLE, COVER_ART, SLUG, new HashSet<>(developerSet),
-                genreSet, platformSet, publisherSet, regionSet);
+                genreSet, platformSet, publisherSet);
         item.setId(ID);
         Assertions.assertTrue(item.toString().contains(String.valueOf(ID)), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(TITLE), MESSAGE_ERROR);
@@ -73,7 +71,6 @@ public class GameEntityTest extends TestUtilities {
         Assertions.assertTrue(item.toString().contains(SLUG), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(genreSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(platformSet.toString()), MESSAGE_ERROR);
-        Assertions.assertTrue(item.toString().contains(regionSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(developerSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(publisherSet.toString()), MESSAGE_ERROR);
 

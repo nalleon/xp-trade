@@ -179,15 +179,13 @@ public class MapperInputDTOHelper extends TestUtilities {
         gameOutputDTO = new GameOutputDTO(ID,TITLE, COVER_ART, SLUG, new HashSet<>(Collections.singletonList(new DeveloperOutputDTO(ID,NAME))),
                     new HashSet<>(Collections.singletonList( new GenreOutputDTO(ID, NAME))),
                     new HashSet<>(Collections.singletonList(new PlatformOutputDTO(ID, NAME))),
-                    new HashSet<>(Collections.singletonList(new PublisherOutputDTO(ID,NAME))),
-                    new HashSet<>(Collections.singletonList(new RegionOutputDTO(ID,NAME)))
+                    new HashSet<>(Collections.singletonList(new PublisherOutputDTO(ID,NAME)))
                 );
 
         gameInputDTO = new GameInputDTO(TITLE, COVER_ART, SLUG, new HashSet<>(Collections.singletonList(developerInputDTO)),
                 new HashSet<>(Collections.singletonList(genreInputDTO)),
                 new HashSet<>(Collections.singletonList(platformInputDTO)),
-                new HashSet<>(Collections.singletonList(publisherInputDTO)),
-                new HashSet<>(Collections.singletonList(regionInputDTO))
+                new HashSet<>(Collections.singletonList(publisherInputDTO))
         );
 
         gameDomain = new Game();
@@ -197,7 +195,6 @@ public class MapperInputDTOHelper extends TestUtilities {
         gameDomain.setPublisherSet(new HashSet<>(Collections.singletonList(publisherDomain)));
         gameDomain.setDeveloperSet(new HashSet<>(Collections.singletonList(developerDomain)));
         gameDomain.setPlatformSet(new HashSet<>(Collections.singletonList(platformDomain)));
-        gameDomain.setRegionSet(new HashSet<>(Collections.singletonList(regionDomain)));
         gameDomain.setGenreSet(new HashSet<>(Collections.singletonList(genreDomain)));
 
         gameDomains = new ArrayList<>();

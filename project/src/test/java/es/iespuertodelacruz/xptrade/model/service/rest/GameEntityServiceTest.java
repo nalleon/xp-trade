@@ -30,8 +30,6 @@ public class GameEntityServiceTest extends TestUtilities {
     IGenreEntityRepository genreRepositoryMock;
     @Mock
     IPlatformEntityRepository platformRepositoryMock;
-    @Mock
-    IRegionEntityRepository regionRepositoryMock;
 
 
 
@@ -73,7 +71,7 @@ public class GameEntityServiceTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        item =  new Game(TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet, regionSet);
+        item =  new Game(TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet);
         item.setId(ID);
 
         entity = IGameEntityMapper.INSTANCE.toEntity(item);
@@ -86,7 +84,6 @@ public class GameEntityServiceTest extends TestUtilities {
         service.setGenreRepository(genreRepositoryMock);
         service.setPlatformRepository(platformRepositoryMock);
         service.setPublisherRepository(publisherRepositoryMock);
-        service.setRegionRepository(regionRepositoryMock);
 
 
 
@@ -197,14 +194,6 @@ public class GameEntityServiceTest extends TestUtilities {
 
         Assertions.assertNotNull(service.save(item), MESSAGE_ERROR);
     }
-    @Test
-    void addNullRegionsTest() {
-        item.setRegionSet(new HashSet<>());
-        when(regionRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new RegionEntity(NAME)));
-
-        Assertions.assertNull(service.save(item), MESSAGE_ERROR);
-    }
-
 
     @Test
     void addNullPlatformsTest() {
@@ -242,75 +231,19 @@ public class GameEntityServiceTest extends TestUtilities {
     }
 
     @Test
-    void addExistingSameRegionsTest() {
-        when(repositoryMock.findByTitle(item.getTitle())).thenReturn(Optional.ofNullable(entity));
-        when(regionRepositoryMock.save(any(RegionEntity.class))).thenReturn(new RegionEntity(ID));
-
-        when(repositoryMock.save(any(GameEntity.class))).thenReturn(new GameEntity());
-        Assertions.assertNotNull(service.save(item), MESSAGE_ERROR);
-    }
-
-
-    @Test
-    void addExistingDiffRegionsTest() {
-        when(repositoryMock.findByTitle(item.getTitle())).thenReturn(Optional.ofNullable(entity));
-
-        item.setRegionSet(new HashSet<>(List.of(new Region("reg1"))));
-        when(repositoryMock.save(any(GameEntity.class))).thenReturn(new GameEntity());
-        when(regionRepositoryMock.save(any(RegionEntity.class))).thenReturn(new RegionEntity());
-        Assertions.assertNotNull(service.save(item), MESSAGE_ERROR);
-    }
-
-    @Test
-    void addExistingAndDiffRegionsTest() {
-        when(repositoryMock.findByTitle(item.getTitle())).thenReturn(Optional.ofNullable(entity));
-
-
-        when(regionRepositoryMock.findByName("reg1")).thenReturn(Optional.empty());
-        when(regionRepositoryMock.findByName("reg2")).thenReturn(Optional.empty());
-        when(repositoryMock.save(any(GameEntity.class))).thenReturn(new GameEntity());
-
-        AtomicInteger callCount = new AtomicInteger(0);
-
-        when(regionRepositoryMock.save(any(RegionEntity.class)))
-                .thenAnswer(invocation -> {
-                    RegionEntity input = invocation.getArgument(0);
-                    int count = callCount.incrementAndGet();
-
-                    if (count == 1) {
-                        return new RegionEntity(1, input.getName());
-                    } else if (count == 2) {
-                        return new RegionEntity(2, input.getName());
-                    } else {
-                        throw new IllegalStateException("save() called more than twice in test");
-                    }
-                });
-
-
-        Region region1 = new Region(NAME);
-        Region region2 = new Region("reg2");
-        region1.setId(ID);
-        region2.setId(2);
-        item.setRegionSet(new HashSet<>(List.of(region1, region2)));
-
-        Assertions.assertNotNull(service.save(item), MESSAGE_ERROR);
-    }
-
-    @Test
     void addNullTest() {
         Assertions.assertNull(service.save(null), MESSAGE_ERROR);
     }
 
     @Test
-    void addExistingExceptionTest() throws Exception {
+    void addExistingTest() throws Exception {
         when(repositoryMock.findByTitle(item.getTitle())).thenReturn(Optional.ofNullable(entity));
-        when(repositoryMock.save(any(GameEntity.class))).thenThrow(new RuntimeException());
-        Assertions.assertThrows(RuntimeException.class, () -> service.save(item), MESSAGE_ERROR);
+        when(repositoryMock.save(any(GameEntity.class))).thenReturn(new GameEntity());
+        Assertions.assertNotNull(service.save(new Game()), MESSAGE_ERROR);
     }
 
     @Test
     void addExceptionTest() throws Exception {
-        when(regionRepositoryMock.save(any(RegionEntity.class))).thenReturn(new RegionEntity());
         when(platformRepositoryMock.save(any(PlatformEntity.class))).thenReturn(new PlatformEntity());
         when(developerRepositoryMock.save(any(DeveloperEntity.class))).thenReturn(new DeveloperEntity());
         when(publisherRepositoryMock.save(any(PublisherEntity.class))).thenReturn(new PublisherEntity());
@@ -321,7 +254,6 @@ public class GameEntityServiceTest extends TestUtilities {
     }
     @Test
     void addWithExistingTest() throws Exception {
-        when(regionRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new RegionEntity()));
         when(platformRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new PlatformEntity()));
         when(developerRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new DeveloperEntity()));
         when(publisherRepositoryMock.findByName(anyString())).thenReturn(Optional.of(new PublisherEntity()));
@@ -361,15 +293,6 @@ public class GameEntityServiceTest extends TestUtilities {
 
         Assertions.assertTrue(thrown.getMessage().contains("Invalid data"), MESSAGE_ERROR);
     }
-
-
-    @Test
-    void updateNullRegionsTest() {
-        when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(new GameEntity()));
-        item.setRegionSet(new HashSet<>());
-        Assertions.assertNotNull(service.update(item), MESSAGE_ERROR);
-    }
-
 
     @Test
     void updateNullPlatformsTest() {

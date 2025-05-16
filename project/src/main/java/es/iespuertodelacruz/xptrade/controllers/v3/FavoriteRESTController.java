@@ -164,7 +164,7 @@ public class FavoriteRESTController {
 
             Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(), aux.getGame().getSlug(),
                     aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
-                    aux.getGame().getPublisherSet(), aux.getGame().getRegionSet());
+                    aux.getGame().getPublisherSet());
 
             if(gameDb == null){
                 return ResponseEntity.badRequest()
@@ -213,7 +213,7 @@ public class FavoriteRESTController {
 
             Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(), aux.getGame().getSlug(),
                     aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
-                    aux.getGame().getPublisherSet(), aux.getGame().getRegionSet());
+                    aux.getGame().getPublisherSet());
             if(gameDb == null){
                 return ResponseEntity.badRequest()
                         .body(new CustomApiResponse<>(400, "Item cannot be null", null));

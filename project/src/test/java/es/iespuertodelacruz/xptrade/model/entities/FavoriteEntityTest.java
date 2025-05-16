@@ -46,7 +46,7 @@ public class FavoriteEntityTest extends MapperHelper {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        game = new GameEntity(TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet, regionSet);
+        game = new GameEntity(TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet);
         game.setId(ID);
         user = new UserEntity(ID);
         item = new FavoriteEntity();

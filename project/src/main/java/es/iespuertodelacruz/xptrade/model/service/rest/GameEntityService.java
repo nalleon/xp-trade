@@ -97,38 +97,10 @@ public class GameEntityService implements IGameRepository {
             return null;
         }
 
-        Set<RegionEntity> regions = checkIfItemsExist(
-                game.getRegionSet(),
-                Region::getName,
-                name -> regionRepository.findByName(name),
-                RegionEntity::new,
-                regionRepository::save
-        );
-
         GameEntity dbItem = repository.findByTitle(game.getTitle()).orElse(null);
 
         if(dbItem != null){
-            if(dbItem.getRegionEntitySet().equals(regions)){
                 return IGameEntityMapper.INSTANCE.toDomain(dbItem);
-            }
-
-            try {
-                Set<RegionEntity> updatedRegions = dbItem.getRegionEntitySet();
-
-                for (RegionEntity region:regions){
-                    if (!dbItem.getRegionEntitySet().contains(region)){
-                        updatedRegions.add(region);
-                    }
-                }
-
-                dbItem.setRegionEntitySet(updatedRegions);
-
-                GameEntity updated = repository.save(dbItem);
-
-                return IGameEntityMapper.INSTANCE.toDomain(updated);
-            } catch (RuntimeException e) {
-                throw new RuntimeException("Invalid region data: " + e);
-            }
         }
 
 
@@ -170,7 +142,6 @@ public class GameEntityService implements IGameRepository {
             GameEntity entity = IGameEntityMapper.INSTANCE.toEntity(game);
             entity.setDeveloperEntitySet(developers);
             entity.setGenreEntitySet(genres);
-            entity.setRegionEntitySet(regions);
             entity.setPlatformEntitySet(platforms);
             entity.setPublisherEntitySet(publishers);
 
@@ -323,14 +294,6 @@ public class GameEntityService implements IGameRepository {
 
         try {
 
-            Set<RegionEntity> regions = checkIfItemsExist(
-                    game.getRegionSet(),
-                    Region::getName,
-                    name -> regionRepository.findByName(name),
-                    RegionEntity::new,
-                    regionRepository::save
-            );
-
             Set<DeveloperEntity> developers = checkIfItemsExist(
                     game.getDeveloperSet(),
                     Developer::getName,
@@ -371,7 +334,6 @@ public class GameEntityService implements IGameRepository {
             dbItem.setDeveloperEntitySet(developers);
             dbItem.setGenreEntitySet(genres);
             dbItem.setPlatformEntitySet(platforms);
-            dbItem.setRegionEntitySet(regions);
             dbItem.setPublisherEntitySet(publishers);
 
             return IGameEntityMapper.INSTANCE.toDomain(dbItem);

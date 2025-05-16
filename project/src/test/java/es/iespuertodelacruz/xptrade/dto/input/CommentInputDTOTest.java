@@ -41,7 +41,7 @@ public class CommentInputDTOTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        game = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet, regionSet);
+        game = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet);
         user =new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, ROLE_NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE);
         post = new PostOutputDTO(ID, game, user, CONTENT, PICTURE, CREATION_DATE);
         item = new CommentInputDTO(post, user, CONTENT);

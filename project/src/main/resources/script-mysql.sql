@@ -166,8 +166,7 @@ CREATE TABLE `collections` (
     user_id INTEGER NOT NULL,
     CONSTRAINT `pk_collections` PRIMARY KEY (id),
     CONSTRAINT `fk_collections1` FOREIGN KEY (game_id) REFERENCES games(id),
-    CONSTRAINT `fk_collections2` FOREIGN KEY (user_id) REFERENCES users(id),
-    UNIQUE KEY `uq_collections` (game_id, user_id)
+    CONSTRAINT `fk_collections2` FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE `games_collections` (
@@ -176,10 +175,11 @@ CREATE TABLE `games_collections` (
     collection_id INTEGER NOT NULL,
     region_id INTEGER NOT NULL,
     platform_id INTEGER NOT NULL,
-    CONSTRAINT
-    CONSTRAINT
-    CONSTRAINT
-    CONSTRAINT
+    CONSTRAINT `pk_games_collections` PRIMARY KEY (id),
+    CONSTRAINT `fk_games_collections1` FOREIGN KEY (game_id) REFERENCES games(id),
+    CONSTRAINT `fk_games_collections2` FOREIGN KEY (collection_id) REFERENCES collections(id),
+    CONSTRAINT `fk_games_collections3` FOREIGN KEY (region_id) REFERENCES regions(id),
+    CONSTRAINT `fk_games_collections4` FOREIGN KEY (platform_id) REFERENCES platforms(id)
 );
 
 CREATE TABLE `favorites` (

@@ -36,22 +36,19 @@ public class GameInputDTOTest extends TestUtilities {
         genreSet = new HashSet<>(Collections.singletonList(genre));
         platformSet = new HashSet<>(Collections.singletonList(platform));
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
-        regionSet = new HashSet<>(Collections.singletonList(region));
 
-        item = new GameInputDTO(TITLE, COVER_ART, SLUG,developerSet, genreSet, platformSet, publisherSet, regionSet);
+        item = new GameInputDTO(TITLE, COVER_ART, SLUG,developerSet, genreSet, platformSet, publisherSet);
     }
 
 
     @Test
     public void getSetTest(){
-       // Assertions.assertEquals(ID, item.id(), MESSAGE_ERROR);
         Assertions.assertEquals(TITLE, item.title(), MESSAGE_ERROR);
         Assertions.assertEquals(COVER_ART, item.coverArt(), MESSAGE_ERROR);
         Assertions.assertEquals(developerSet, item.developerInputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(genreSet, item.genreInputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(platformSet, item.platformInputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(publisherSet, item.publisherInputDTOSet(), MESSAGE_ERROR);
-        Assertions.assertEquals(regionSet, item.regionInputDTOSet(), MESSAGE_ERROR);
     }
 
 }

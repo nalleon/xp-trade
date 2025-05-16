@@ -33,10 +33,10 @@ public class GameService implements IGameService {
     @Override
     public Game add(String title, String coverArt, String slug, Set<Developer> developerSet,
                     Set<Genre> genreSet, Set<Platform> platformSet,
-                    Set<Publisher> publisherSet, Set<Region> regionSet) {
+                    Set<Publisher> publisherSet) {
 
         Game aux = new Game(title, coverArt, slug, developerSet, genreSet, platformSet,
-                publisherSet, regionSet);
+                publisherSet);
         return repository.save(aux);
     }
 
@@ -86,9 +86,9 @@ public class GameService implements IGameService {
     }
 
     @Override
-    public Game update(int id, String title, String slug, String coverArt, Set<Developer> developerSet, Set<Genre> genreSet, Set<Platform> platformSet, Set<Publisher> publisherSet, Set<Region> regionSet) {
+    public Game update(int id, String title, String slug, String coverArt, Set<Developer> developerSet, Set<Genre> genreSet, Set<Platform> platformSet, Set<Publisher> publisherSet) {
         Game aux = new Game(title, coverArt, slug, developerSet, genreSet, platformSet,
-                publisherSet, regionSet);
+                publisherSet);
         aux.setId(id);
         return repository.update(aux);
     }

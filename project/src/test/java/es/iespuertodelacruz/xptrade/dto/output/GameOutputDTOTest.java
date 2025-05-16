@@ -37,7 +37,7 @@ public class GameOutputDTOTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        item = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG,developerSet, genreSet, platformSet, publisherSet, regionSet);
+        item = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG,developerSet, genreSet, platformSet, publisherSet);
     }
 
 
@@ -50,7 +50,6 @@ public class GameOutputDTOTest extends TestUtilities {
         Assertions.assertEquals(genreSet, item.genreOutputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(platformSet, item.platformOutputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(publisherSet, item.publisherOutputDTOSet(), MESSAGE_ERROR);
-        Assertions.assertEquals(regionSet, item.regionOutputDTOSet(), MESSAGE_ERROR);
     }
 
 }

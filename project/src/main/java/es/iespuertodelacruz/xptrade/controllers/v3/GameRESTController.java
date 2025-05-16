@@ -280,7 +280,7 @@ public class GameRESTController {
             
             Game dbItem = service.add(aux.getTitle(), aux.getCoverArt(), aux.getSlug(),
                     aux.getDeveloperSet(), aux.getGenreSet(), aux.getPlatformSet(),
-                    aux.getPublisherSet(), aux.getRegionSet());
+                    aux.getPublisherSet());
 
             GameOutputDTO result = IGameOutputDTOMapper.INSTANCE.toDTO(dbItem);
 
@@ -319,14 +319,12 @@ public class GameRESTController {
             dbItem.setSlug(aux.getSlug());
             dbItem.setPublisherSet(aux.getPublisherSet());
             dbItem.setDeveloperSet(aux.getDeveloperSet());
-            dbItem.setRegionSet(aux.getRegionSet());
             dbItem.setPlatformSet(aux.getPlatformSet());
             dbItem.setGenreSet(aux.getGenreSet());
 
 
             Game updatedDbItem = service.update(dbItem.getId(), dbItem.getTitle(), dbItem.getCoverArt(), dbItem.getSlug(),
-                    dbItem.getDeveloperSet(), dbItem.getGenreSet(), dbItem.getPlatformSet(), dbItem.getPublisherSet(), 
-                    dbItem.getRegionSet());
+                    dbItem.getDeveloperSet(), dbItem.getGenreSet(), dbItem.getPlatformSet(), dbItem.getPublisherSet());
 
             GameOutputDTO result = IGameOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 

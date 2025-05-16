@@ -19,13 +19,11 @@ public class GameTest extends MapperHelper {
 
     Set<Publisher> publisherSet= new HashSet<>(Collections.singletonList(publisherDomain));
 
-    Set<Region> regionSet= new HashSet<>(Collections.singletonList(regionDomain));
-
 
     @Test
     public void getSetTest(){
         item = new Game(TITLE, COVER_ART, SLUG, new HashSet<>(developerSet),
-                genreSet, platformSet, publisherSet, regionSet);
+                genreSet, platformSet, publisherSet);
 
         item.setId(ID);
 
@@ -36,21 +34,19 @@ public class GameTest extends MapperHelper {
         Assertions.assertEquals(genreSet, item.getGenreSet(), MESSAGE_ERROR);
         Assertions.assertEquals(platformSet, item.getPlatformSet(), MESSAGE_ERROR);
         Assertions.assertEquals(publisherSet, item.getPublisherSet(), MESSAGE_ERROR);
-        Assertions.assertEquals(regionSet, item.getRegionSet(), MESSAGE_ERROR);
 
     }
 
     @Test
     public void toStringTest(){
         item = new Game(TITLE, COVER_ART,SLUG, new HashSet<>(developerSet),
-                genreSet, platformSet, publisherSet, regionSet);
+                genreSet, platformSet, publisherSet);
         item.setId(ID);
         Assertions.assertTrue(item.toString().contains(String.valueOf(ID)), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(TITLE), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(COVER_ART), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(genreSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(platformSet.toString()), MESSAGE_ERROR);
-        Assertions.assertTrue(item.toString().contains(regionSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(developerSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(publisherSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(SLUG), MESSAGE_ERROR);

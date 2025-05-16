@@ -40,7 +40,7 @@ public class PostInputDTOTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        game = new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
+        game = new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
         user =new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, ROLE_NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE);
         item = new PostInputDTO(game, user, CONTENT, PICTURE);
     }

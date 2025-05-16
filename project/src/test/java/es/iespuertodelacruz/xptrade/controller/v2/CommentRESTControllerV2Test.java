@@ -140,7 +140,7 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
         CommentInputDTO aux = new CommentInputDTO(
                 new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART, SLUG,
                         new HashSet<>(), new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                         CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -165,7 +165,7 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
         CommentInputDTO aux = new CommentInputDTO(
                 new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART, SLUG,
                         new HashSet<>(), new HashSet<>(),
-                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                                 new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                         CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -182,7 +182,7 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
         CommentInputDTO aux = new CommentInputDTO(
                 new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART, SLUG,
                         new HashSet<>(), new HashSet<>(),
-                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                                 new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                         CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -201,7 +201,7 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
         CommentInputDTO aux = new CommentInputDTO(
                 new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
-                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                                 new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                         CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -245,7 +245,7 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
         CommentInputDTO aux = new CommentInputDTO(
                 new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
-                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                                 new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                         CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -269,7 +269,7 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
         CommentInputDTO aux = new CommentInputDTO(
                 new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
-                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                                 new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                         CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -291,7 +291,7 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
         CommentInputDTO aux = new CommentInputDTO(
                 new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
-                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                                 new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                         CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -309,7 +309,7 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
         CommentInputDTO aux = new CommentInputDTO(
                 new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
-                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                                 new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                         CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -328,7 +328,7 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
         CommentInputDTO aux = new CommentInputDTO(
                 new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
-                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                                 new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                         CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
@@ -348,7 +348,7 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
         CommentInputDTO aux = new CommentInputDTO(
                 new PostOutputDTO(ID, new GameOutputDTO(ID, TITLE, COVER_ART,SLUG,
                         new HashSet<>(), new HashSet<>(),
-                        new HashSet<>(), new HashSet<>(), new HashSet<>()),
+                        new HashSet<>(), new HashSet<>()),
                         new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                                 new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                         CONTENT, PICTURE, CREATION_DATE), new UserDTO(ID, USERNAME, EMAIL, PASSWORD,

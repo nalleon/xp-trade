@@ -32,8 +32,6 @@ public class Game {
 
     private Set<Publisher> publisherSet;
 
-    private Set<Region> regionSet;
-
     /**
      * Default constructor of the class
      */
@@ -66,11 +64,9 @@ public class Game {
      * @param genreSet of the game
      * @param platformSet of the game
      * @param publisherSet of the game
-     * @param regionSet of the game
      */
     public Game(String title, String coverArt, String slug, Set<Developer> developerSet,
-                Set<Genre> genreSet, Set<Platform> platformSet, Set<Publisher> publisherSet, Set<Region> regionSet) {
-        this.id = id;
+                Set<Genre> genreSet, Set<Platform> platformSet, Set<Publisher> publisherSet) {
         this.title = title;
         this.coverArt = coverArt;
         this.slug = slug;
@@ -78,7 +74,6 @@ public class Game {
         this.genreSet = genreSet;
         this.platformSet = platformSet;
         this.publisherSet = publisherSet;
-        this.regionSet = regionSet;
     }
 
     /**
@@ -141,14 +136,6 @@ public class Game {
         this.publisherSet = publisherSet;
     }
 
-    public Set<Region> getRegionSet() {
-        return regionSet;
-    }
-
-    public void setRegionSet(Set<Region> regionSet) {
-        this.regionSet = regionSet;
-    }
-
     public String getSlug() {
         return slug;
     }
@@ -168,7 +155,6 @@ public class Game {
                 ", genreSet=" + genreSet +
                 ", platformSet=" + platformSet +
                 ", publisherSet=" + publisherSet +
-                ", regionSet=" + regionSet +
                 '}';
     }
 
