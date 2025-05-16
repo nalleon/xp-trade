@@ -5,8 +5,6 @@ import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
 import es.iespuertodelacruz.xptrade.mapper.entity.ICollectionEntityMapper;
-import es.iespuertodelacruz.xptrade.mapper.entity.IGameEntityMapper;
-import es.iespuertodelacruz.xptrade.mapper.entity.IUserEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.CollectionEntity;
 import es.iespuertodelacruz.xptrade.model.repository.ICollectionEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +105,7 @@ public class CollectionEntityService implements IGenericSocialRepository<Collect
         }
         try {
             CollectionEntity aux = ICollectionEntityMapper.INSTANCE.toEntity(collection);
-            dbItem.setGame(aux.getGame());
+            dbItem.setGameCollection(aux.getGameCollection());
             dbItem.setUser(aux.getUser());
             return ICollectionEntityMapper.INSTANCE.toDomain(dbItem);
         } catch (RuntimeException e) {

@@ -9,7 +9,7 @@ import java.util.Objects;
  * @author Jose Maximiliano Boada Martin @mackstm
  */
 @Entity
-@Table(name="collections")
+@Table(name ="collections")
 @NamedQuery(name="CollectionEntity.findAll", query="SELECT r FROM CollectionEntity r")
 public class CollectionEntity {
     /**
@@ -20,9 +20,9 @@ public class CollectionEntity {
     @Column(unique=true, nullable=false)
     private int id;
 
-    @ManyToOne()
+    @OneToMany()
     @JoinColumn(nullable=false, name = "game_id")
-    private GameEntity game;
+    private GameCollectionEntity gameCollection;
 
     @ManyToOne()
     @JoinColumn(nullable=false, name = "user_id")
@@ -44,12 +44,12 @@ public class CollectionEntity {
 
     /**
      * Constructor of the class
-     * @param game of the collection
+     * @param gameCollection of the collection
      * @param user of the collection
      */
 
-    public CollectionEntity(GameEntity game, UserEntity user) {
-        this.game = game;
+    public CollectionEntity(GameCollectionEntity gameCollection, UserEntity user) {
+        this.gameCollection = gameCollection;
         this.user = user;
     }
 
@@ -64,12 +64,12 @@ public class CollectionEntity {
         this.id = id;
     }
 
-    public GameEntity getGame() {
-        return game;
+    public GameCollectionEntity getGameCollection() {
+        return gameCollection;
     }
 
-    public void setGame(GameEntity game) {
-        this.game = game;
+    public void setGameCollection(GameCollectionEntity gameCollection) {
+        this.gameCollection = gameCollection;
     }
 
     public UserEntity getUser() {
@@ -84,7 +84,7 @@ public class CollectionEntity {
     public String toString() {
         return "CollectionEntity{" +
                 "id=" + id +
-                ", game=" + game +
+                ", game=" + gameCollection +
                 ", user=" + user +
                 '}';
     }

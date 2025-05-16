@@ -1,7 +1,5 @@
 package es.iespuertodelacruz.xptrade.model.entities;
 
-import es.iespuertodelacruz.xptrade.domain.Collection;
-import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,14 +48,14 @@ public class CollectionEntityTest extends TestUtilities {
         user = new UserEntity(ID);
         item = new CollectionEntity();
         item.setId(ID);
-        item.setGame(game);
+        item.setGameCollection(game);
         item.setUser(user);
     }
     
     @Test
     public void getSetTest(){
         Assertions.assertEquals(ID, item.getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(game, item.getGame(), MESSAGE_ERROR);
+        Assertions.assertEquals(game, item.getGameCollection(), MESSAGE_ERROR);
         Assertions.assertEquals(user, item.getUser(), MESSAGE_ERROR);
 
     }
