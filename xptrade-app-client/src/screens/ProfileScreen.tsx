@@ -111,7 +111,8 @@ const ProfileScreen = (props: Props) => {
       <View className="w-full mb-6">
         {favorites && favorites.length > 0 ? (
           <View className="w-full mb-6 items-center relative">
-            {showRightArrow && (
+
+            {showLeftArrow && (
               <TouchableOpacity
                 className="absolute left-0 z-10 h-full justify-center pl-2"
                 onPress={() => scrollRef.current?.scrollTo({ x: 0, animated: true })}
@@ -167,7 +168,7 @@ const ProfileScreen = (props: Props) => {
 
         ) : (
           <Text className="text-[#8899A6] text-sm text-center mt-2">
-            No favorite games yet.
+            No hay nada de momento
           </Text>
         )}
       </View>

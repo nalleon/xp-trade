@@ -365,6 +365,41 @@ const UseApi = () => {
     };
 
     /**
+    * Function to check if an user has a game in favorites
+    * @param username of the user
+    * @param title of the game
+    * @returns success if exists, null if not
+    */
+    const handleDeletePost = async (username: string, title: string) => {
+        if (!username?.trim() || !title?.trim()) return null;
+
+        const result = await handleCheckIfExistsFavorites(username, title);
+        if (result == null) {
+            return null;
+        }
+
+        try {
+            const response = await axios.delete(`${URL_API}/v2/favorites/${result?.id}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
+            if (response?.status === 204) {
+                return SUCCESS;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while fetching favorites", error);
+        }
+
+    };
+
+    /**
      * Function to create a comment in a post
      * @param inputPostXPTrade json to add
      * @returns 
