@@ -33,7 +33,7 @@ const ProfileScreen = (props: Props) => {
 
   useEffect(() => {
     fetchUserProfileDetails();
-  }, [])
+  })
 
   const fetchUserProfileDetails = async () => {
     setFavorites(await handleGetFavorites(context.username));
@@ -111,7 +111,7 @@ const ProfileScreen = (props: Props) => {
       <View className="w-full mb-6">
         {favorites && favorites.length > 0 ? (
           <View className="w-full mb-6 items-center relative">
-            {showLeftArrow && (
+            {showRightArrow && (
               <TouchableOpacity
                 className="absolute left-0 z-10 h-full justify-center pl-2"
                 onPress={() => scrollRef.current?.scrollTo({ x: 0, animated: true })}
@@ -155,7 +155,7 @@ const ProfileScreen = (props: Props) => {
                 ))}
               </ScrollView>
             </View>
-            {showRightArrow && (
+            {(showRightArrow && favorites.length > 2) && (
               <TouchableOpacity
                 className="absolute right-0 z-10 h-full justify-center pr-2"
                 onPress={() => scrollRef.current?.scrollToEnd({ animated: true })}

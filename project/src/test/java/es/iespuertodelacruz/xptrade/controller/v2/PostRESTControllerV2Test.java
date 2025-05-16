@@ -5,11 +5,9 @@ import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.service.GameService;
 import es.iespuertodelacruz.xptrade.domain.service.PostService;
 import es.iespuertodelacruz.xptrade.domain.service.UserService;
-import es.iespuertodelacruz.xptrade.dto.input.FavoriteInputDTO;
+import es.iespuertodelacruz.xptrade.dto.input.ContentUpdateDTO;
 import es.iespuertodelacruz.xptrade.dto.input.GameInputDTO;
 import es.iespuertodelacruz.xptrade.dto.input.PostInputDTO;
-import es.iespuertodelacruz.xptrade.dto.output.GameOutputDTO;
-import es.iespuertodelacruz.xptrade.dto.output.PostOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
 import es.iespuertodelacruz.xptrade.model.service.rest.PostEntityService;
@@ -246,16 +244,13 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
 
     @Test
     void updateTest() {
-                PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(),
-        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
-                        new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
-                CONTENT, PICTURE);
+        ContentUpdateDTO aux = new ContentUpdateDTO(CONTENT);
+
 
         when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
-        when(serviceMock.findById(anyInt())).thenReturn(new Post());
+        when(serviceMock.findById(any(Integer.class))).thenReturn(new Post(new Game(), new User(), CONTENT, PICTURE));
         when(serviceMock.add(any(Game.class), any(User.class), anyString(), anyString())).thenReturn(new Post());
         when(serviceMock.update(anyInt(), any(Game.class), any(User.class), anyString(), anyString())).thenReturn(new Post());
 
@@ -266,11 +261,8 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
 
     @Test
     void updateNotFoundTest() {
-        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(),
-        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
-                        new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
-                CONTENT, PICTURE);
+        ContentUpdateDTO aux = new ContentUpdateDTO(CONTENT);
+
 
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
         Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode(), MESSAGE_ERROR);
@@ -284,43 +276,32 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
 
     @Test
     void updateGameNullTest() {
-        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(),
-        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
-                        new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
-                CONTENT, PICTURE);
+        ContentUpdateDTO aux = new ContentUpdateDTO(CONTENT);
 
-        when(serviceMock.findById(anyInt())).thenReturn(new Post());
+        when(serviceMock.findById(any(Integer.class))).thenReturn(new Post(new Game(), new User(), CONTENT, PICTURE));
         when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
 
-        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.update(ID, aux).getStatusCode(), MESSAGE_ERROR);    }
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.update(ID, aux).getStatusCode(), MESSAGE_ERROR);    }
 
 
     @Test
     void updateUserNullTest() {
 
-        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(),
-        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
-                        new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
-                CONTENT, PICTURE);
+        ContentUpdateDTO aux = new ContentUpdateDTO(CONTENT);
 
-        when(serviceMock.findById(anyInt())).thenReturn(new Post());
+
+        when(serviceMock.findById(any(Integer.class))).thenReturn(new Post(new Game(), new User(), CONTENT, PICTURE));
         when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(null);
 
-        Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.update(ID,aux).getStatusCode(), MESSAGE_ERROR);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.update(ID,aux).getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
     void updateIdNullTest() {
-        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(),
-        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
-                        new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
-                CONTENT, PICTURE);
+        ContentUpdateDTO aux = new ContentUpdateDTO(CONTENT);
 
-        when(serviceMock.findById(anyInt())).thenReturn(new Post());
+        when(serviceMock.findById(any(Integer.class))).thenReturn(new Post(new Game(), new User(), CONTENT, PICTURE));
         when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
         when(serviceMock.update(anyInt(),any(Game.class), any(User.class), anyString(), anyString())).thenReturn(null);
@@ -330,16 +311,13 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
 
     @Test
     void updateExceptionTest() throws Exception {
-                PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(),
-        new HashSet<>(), new HashSet<>(), new HashSet<>()), 
-                new UserDTO(ID, USERNAME, EMAIL, PASSWORD, 
-                        new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
-                CONTENT, PICTURE);
+        ContentUpdateDTO aux = new ContentUpdateDTO(CONTENT);
+
 
         when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
-        when(serviceMock.findById(any(Integer.class))).thenReturn(new Post());
+        when(serviceMock.findById(any(Integer.class))).thenReturn(new Post(new Game(), new User(), CONTENT, PICTURE));
         when(serviceMock.update(anyInt(),any(Game.class), any(User.class), anyString(), anyString())).thenThrow(new RuntimeException());
         
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
