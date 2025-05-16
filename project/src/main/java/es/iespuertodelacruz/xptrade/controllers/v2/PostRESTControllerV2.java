@@ -147,8 +147,8 @@ public class PostRESTControllerV2 {
             PostOutputDTO dto = IPostOutputDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<PostOutputDTO> response =
-                    new CustomApiResponse<>(302, "Post found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Post found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
         CustomApiResponse<PostOutputDTO> errorResponse = new CustomApiResponse<>(204, "Post NOT found", null);
@@ -211,6 +211,17 @@ public class PostRESTControllerV2 {
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
                     .body(new CustomApiResponse<>(204, "User NOT found", null));
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        String username = userDetails.getUsername();
+        User userDb = userService.findByUsername(username);
+
+        if (userDb.getId() != dbItem.getUser().getId()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new CustomApiResponse<>(401, "Unauthorized", null));
         }
 
         try {

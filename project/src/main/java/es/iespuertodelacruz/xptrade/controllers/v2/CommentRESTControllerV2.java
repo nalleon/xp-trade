@@ -130,8 +130,8 @@ public class CommentRESTControllerV2 {
             CommentOutputDTO dto = ICommentOutputDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<CommentOutputDTO> response =
-                    new CustomApiResponse<>(302, "Comment found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Comment found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
         CustomApiResponse<CommentOutputDTO> errorResponse = new CustomApiResponse<>(204, "Comment NOT found", null);
@@ -190,6 +190,18 @@ public class CommentRESTControllerV2 {
         if (dbItem == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
                     .body(new CustomApiResponse<>(204, "Comment NOT found", null));
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        String username = userDetails.getUsername();
+        User userDb = userService.findByUsername(username);
+
+
+        if (userDb.getId() != dbItem.getUser().getId()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new CustomApiResponse<>(401, "Unauthorized", null));
         }
 
         try {
