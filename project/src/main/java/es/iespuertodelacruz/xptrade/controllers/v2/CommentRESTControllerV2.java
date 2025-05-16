@@ -12,11 +12,14 @@ import es.iespuertodelacruz.xptrade.dto.output.CommentOutputDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.input.ICollectionInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.input.ICommentInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.ICommentOutputDTOMapper;
+import es.iespuertodelacruz.xptrade.shared.security.CustomUserDetails;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -212,6 +215,25 @@ public class CommentRESTControllerV2 {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
+
+        Comment dbItem = service.findById(id);
+
+        if(dbItem == null){
+            ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "Not found", null));
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        String username = userDetails.getUsername();
+        User userDb = userService.findByUsername(username);
+
+
+        if (dbItem != null && userDb.getId() != dbItem.getUser().getId()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new CustomApiResponse<>(401, "Unauthorized", null));
+        }
 
         boolean deleted = service.delete(id);
 
