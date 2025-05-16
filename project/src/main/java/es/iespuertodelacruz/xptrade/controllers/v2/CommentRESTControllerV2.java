@@ -7,6 +7,7 @@ import es.iespuertodelacruz.xptrade.domain.interfaces.service.ICommentService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IPostService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
 import es.iespuertodelacruz.xptrade.dto.input.CommentInputDTO;
+import es.iespuertodelacruz.xptrade.dto.input.ContentUpdateDTO;
 import es.iespuertodelacruz.xptrade.dto.output.CommentOutputDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.input.ICollectionInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.input.ICommentInputDTOMapper;
@@ -175,7 +176,7 @@ public class CommentRESTControllerV2 {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody CommentInputDTO dto) {
+            @RequestBody ContentUpdateDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -190,23 +191,9 @@ public class CommentRESTControllerV2 {
 
         try {
 
-            Comment aux = ICommentInputDTOMapper.INSTANCE.toDomain(dto);
+            dbItem.setContent(dto.content());
 
-            Post postDb = postService.findById(dto.post().id());
-
-            if(postDb == null){
-                return ResponseEntity.badRequest()
-                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
-            }
-
-            User userDb = userService.findByUsername(aux.getUser().getUsername());
-
-            if(userDb == null){
-                return ResponseEntity.badRequest()
-                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
-            }
-
-            Comment updatedDbItem = service.update(aux.getId(), postDb, userDb, aux.getContent());
+            Comment updatedDbItem = service.update(dbItem.getId(), dbItem.getPost(), dbItem.getUser(), dbItem.getContent());
 
             CommentOutputDTO result = ICommentOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
