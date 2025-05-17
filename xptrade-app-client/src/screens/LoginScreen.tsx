@@ -6,6 +6,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import UseApi from '../hooks/UseApi';
 import { SUCCESS } from '../utils/Utils';
+import AuthErrorModal from '../components/auth.modals/AuthErrorModal';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'LoginScreen'>;
 
@@ -13,6 +14,7 @@ const LoginScreen = ({ navigation }: Props) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  const [showErrorModal, setShowErrorModal] = useState(false);
   const { handleLogin } = UseApi();
 
   const login = async () => {
@@ -20,7 +22,7 @@ const LoginScreen = ({ navigation }: Props) => {
     if (result === SUCCESS) {
       navigation.replace('TabNav');
     } else {
-      Alert.alert("Error", "Usuario o contraseña incorrectos");
+      setShowErrorModal(true);
     }
   };
 
@@ -59,6 +61,12 @@ const LoginScreen = ({ navigation }: Props) => {
       <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
         <Text className="text-[#999] text-sm">¿No tienes cuenta? <Text className="text-[#66B3B7]">Regístrate</Text></Text>
       </TouchableOpacity>
+
+      <AuthErrorModal
+        visible={showErrorModal}
+        onClose={()=> setShowErrorModal(false)}
+      />
+        
     </View>
   );
 };

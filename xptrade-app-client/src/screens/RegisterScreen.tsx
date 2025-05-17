@@ -5,6 +5,8 @@ import { AuthStackParamList } from '../navigations/stack/AuthStackNav';
 import { TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import UseApi from '../hooks/UseApi';
+import AuthErrorModal from '../components/auth.modals/AuthErrorModal';
+import AuthOKModal from '../components/auth.modals/AuthOKModal';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'RegisterScreen'>;
 
@@ -13,13 +15,17 @@ const RegisterScreen = ({ navigation }: Props) => {
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
 
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showOKModal, setShowOKModal] = useState(false);
+
   const { handleRegister } = UseApi();
 
   const register = async () => {
     const result = await handleRegister(username, email, password);
     if (result) {
-      Alert.alert("Registro exitoso");
-      navigation.replace('LoginScreen');
+      setShowOKModal(true);
+    } else {
+      setShowErrorModal(true);
     }
   };
 
@@ -68,6 +74,19 @@ const RegisterScreen = ({ navigation }: Props) => {
           ¿Ya tienes una cuenta? <Text className="text-[#66B3B7]">Inicia sesión</Text>
         </Text>
       </TouchableOpacity>
+      <AuthErrorModal
+        visible={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+      />
+      <AuthOKModal
+        visible={showOKModal}
+        onClose={() => {
+          setShowOKModal(false);
+          navigation.replace('LoginScreen');
+
+        }}
+        username={username}
+      />
     </View>
   );
 };
