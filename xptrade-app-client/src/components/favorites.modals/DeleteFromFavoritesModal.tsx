@@ -1,12 +1,12 @@
 import { View, Text, Modal, TouchableOpacity, TextInput, Image, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Result } from '../utils/TypeUtils';
-import UseRAWGApi from '../hooks/UseRAWGApi';
+import { Result } from '../../utils/TypeUtils';
+import UseRAWGApi from '../../hooks/UseRAWGApi';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';
-import { REGIONS, SUCCESS } from '../utils/Utils';
+import { REGIONS, SUCCESS } from '../../utils/Utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import UseApi from '../hooks/UseApi';
+import UseApi from '../../hooks/UseApi';
 
 type Props = {
     visible: boolean;
@@ -14,7 +14,7 @@ type Props = {
     onClose: () => void;
 };
 
-const AddToFavoritesModal = ({ visible, game, onClose }: Props) => {
+const DeleteFromFavoritesModal = ({ visible, game, onClose }: Props) => {
     return (
         <Modal visible={visible} animationType="slide" transparent>
             <View className="flex-1 bg-black/50 justify-center items-center px-4">
@@ -26,7 +26,7 @@ const AddToFavoritesModal = ({ visible, game, onClose }: Props) => {
                     </View>
 
                     <Text className="text-white rounded p-3 h-24">
-                        {game?.name} ha sido añadido a su colección.
+                        <Text className="text-[#F77] font-bold">{game?.name}</Text> ha sido eliminado de sus favoritos.
                     </Text>
                 </View>
             </View>
@@ -34,4 +34,4 @@ const AddToFavoritesModal = ({ visible, game, onClose }: Props) => {
     );
 };
 
-export default AddToFavoritesModal;
+export default DeleteFromFavoritesModal;
