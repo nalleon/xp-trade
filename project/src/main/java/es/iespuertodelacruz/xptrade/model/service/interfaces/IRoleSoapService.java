@@ -6,7 +6,10 @@ import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 
 import java.util.List;
-@WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces")
+@WebService(
+        name = "IRoleSoapService",
+        targetNamespace = "http://interfaces.service.model.xptrade.iespuertodelacruz.es"
+)
 public interface IRoleSoapService {
     @WebMethod
     Role save(@WebParam(name = "role") Role role);

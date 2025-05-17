@@ -58,7 +58,7 @@ public class UserSoapServiceTest extends TestUtilities {
 
     @Test
     void getByIdNameNullTest() {
-        Assertions.assertNull(service.findByUserame(NAME), MESSAGE_ERROR);
+        Assertions.assertNull(service.findByUsername(NAME), MESSAGE_ERROR);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class UserSoapServiceTest extends TestUtilities {
     @Test
     void getByNameTest() {
         when(repositoryMock.findUserByName(NAME)).thenReturn(Optional.of(new UserEntity()));
-        Assertions.assertNotNull(service.findByUserame(NAME), MESSAGE_ERROR);
+        Assertions.assertNotNull(service.findByUsername(NAME), MESSAGE_ERROR);
     }
 
 

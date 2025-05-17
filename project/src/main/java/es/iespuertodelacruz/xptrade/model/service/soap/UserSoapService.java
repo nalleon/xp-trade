@@ -13,7 +13,9 @@ import java.util.List;
  * @author Jose Maximiliano Boada Martin @mackstm
  */
 @Component
-@WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces.IUserSoapService")
+@WebService(
+        serviceName = "UserSoapService",
+        endpointInterface = "es.iespuertodelacruz.xptrade.model.service.interfaces.IUserSoapService")
 public class UserSoapService implements IUserSoapService {
 
     /**
@@ -46,7 +48,7 @@ public class UserSoapService implements IUserSoapService {
     }
 
     @Override
-    public User findByUserame(String username) {
+    public User findByUsername(String username) {
         return service.findByUserame(username);
     }
 

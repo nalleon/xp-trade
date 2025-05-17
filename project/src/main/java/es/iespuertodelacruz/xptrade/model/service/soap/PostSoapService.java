@@ -16,7 +16,9 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
-@WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSocialSoapService")
+@WebService(
+        serviceName = "PostSoapService",
+        endpointInterface = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSocialSoapService")
 @Component
 public class PostSoapService implements IGenericSocialSoapService<Post, Integer, User, Game> {
     /**

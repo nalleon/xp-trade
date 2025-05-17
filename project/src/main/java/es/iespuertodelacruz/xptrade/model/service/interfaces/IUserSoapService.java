@@ -7,8 +7,10 @@ import java.util.List;
 
 import es.iespuertodelacruz.xptrade.domain.User;
 
-import java.util.List;
-@WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces")
+@WebService(
+        name = "IUserSoapService",
+        targetNamespace = "http://interfaces.service.model.xptrade.iespuertodelacruz.es"
+)
 public interface IUserSoapService {
     @WebMethod
     User save(@WebParam(name = "user")User user);
@@ -17,7 +19,7 @@ public interface IUserSoapService {
     @WebMethod
     User findById(@WebParam(name = "id")Integer id);
     @WebMethod
-    User findByUserame(@WebParam(name = "username") String username);
+    User findByUsername(@WebParam(name = "username") String username);
     @WebMethod
     User findByEmail(@WebParam(name = "email") String email);
     @WebMethod
