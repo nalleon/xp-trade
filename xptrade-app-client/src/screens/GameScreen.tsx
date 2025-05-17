@@ -15,8 +15,8 @@ import PlatformModal from '../components/PlatformModal';
 import RegionModal from '../components/RegionModal';
 import { REGIONS, SUCCESS } from '../utils/Utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AddToFavoritesModal from '../components/favorites.modals/AddToFavoritesModal';
-import DeleteFromFavoritesModal from '../components/favorites.modals/DeleteFromFavoritesModal';
+import AddToFavoritesModal from '../components/favorite.modals/AddToFavoritesModal';
+import DeleteFromFavoritesModal from '../components/favorite.modals/DeleteFromFavoritesModal';
 
 type Props = NativeStackScreenProps<GameStackParamList, 'GameScreen'>;
 

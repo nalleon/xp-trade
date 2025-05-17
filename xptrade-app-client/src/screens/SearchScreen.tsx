@@ -6,9 +6,9 @@ import UseRAWGApi from '../hooks/UseRAWGApi';
 import { AppContext } from '../context/AppContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { GameStackParamList } from '../navigations/stack/GameStackNav';
-import PostButton from '../components/PostButton';
+import PostButton from '../components/post.modals/PostButton';
 import { Result } from '../utils/TypeUtils';
-import CreatePostModal from '../components/CreatePostModal';
+import CreatePostModal from '../components/post.modals/CreatePostModal';
 
 type Props = NativeStackScreenProps<GameStackParamList, 'SearchScreen'>;
 

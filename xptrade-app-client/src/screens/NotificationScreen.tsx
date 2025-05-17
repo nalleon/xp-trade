@@ -1,13 +1,13 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useState } from 'react'
-import PostButton from '../components/PostButton'
+import PostButton from '../components/post.modals/PostButton'
 import { FlatList } from 'react-native-gesture-handler'
 import { AppContext } from '../context/AppContext'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { GameStackParamList } from '../navigations/stack/GameStackNav'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NotificationStackParamList } from '../navigations/stack/NotificationStackNav'
-import CreatePostModal from '../components/CreatePostModal'
+import CreatePostModal from '../components/post.modals/CreatePostModal'
 import { Comment } from '../utils/TypeUtils'
 
 type Props = NativeStackScreenProps<NotificationStackParamList, 'NotificationScreen'>;

@@ -1,12 +1,12 @@
 import { View, Text, Modal, TouchableOpacity, TextInput, Image, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Result } from '../utils/TypeUtils';
-import UseRAWGApi from '../hooks/UseRAWGApi';
+import { Result } from '../../utils/TypeUtils';
+import UseRAWGApi from '../../hooks/UseRAWGApi';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';
-import { REGIONS, SUCCESS } from '../utils/Utils';
+import { REGIONS, SUCCESS } from '../../utils/Utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import UseApi from '../hooks/UseApi';
+import UseApi from '../../hooks/UseApi';
 
 type Props = {
     visible: boolean;

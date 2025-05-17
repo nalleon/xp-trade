@@ -1,7 +1,7 @@
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState, useEffect, useContext } from 'react';
-import PostButton from '../components/PostButton';
-import CreatePostModal from '../components/CreatePostModal';
+import PostButton from '../components/post.modals/PostButton';
+import CreatePostModal from '../components/post.modals/CreatePostModal';
 import UseApi from '../hooks/UseApi';
 import { Touchable } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';

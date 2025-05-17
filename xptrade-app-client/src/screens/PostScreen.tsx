@@ -15,13 +15,13 @@ import { HomeStackParamList } from '../navigations/stack/PostStackNav';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppContext } from '../context/AppContext';
 import Icon from 'react-native-vector-icons/Ionicons';
-import CommentButton from '../components/CommentButton';
-import CreatePostModal from '../components/CreatePostModal';
-import CreateCommentModal from '../components/CreateCommentModal';
+import CommentButton from '../components/comment.models/CommentButton';
+import CreatePostModal from '../components/post.modals/CreatePostModal';
+import CreateCommentModal from '../components/comment.models/CreateCommentModal';
 import UseApi from '../hooks/UseApi';
 import { Alert } from 'react-native';
-import UpdatePostModal from '../components/UpdatePostModal';
-import UpdateCommentModal from '../components/UpdateCommentModal';
+import UpdatePostModal from '../components/post.modals/UpdatePostModal';
+import UpdateCommentModal from '../components/comment.models/UpdateCommentModal';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'PostScreen'>;
 

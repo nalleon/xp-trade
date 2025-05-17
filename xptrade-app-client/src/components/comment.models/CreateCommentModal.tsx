@@ -1,37 +1,48 @@
 import { View, Text, Modal, TouchableOpacity, TextInput, Image, FlatList } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Result } from '../utils/TypeUtils';
-import UseRAWGApi from '../hooks/UseRAWGApi';
+import { Result } from '../../utils/TypeUtils';
+import UseRAWGApi from '../../hooks/UseRAWGApi';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';
-import { REGIONS, SUCCESS } from '../utils/Utils';
+import { REGIONS, SUCCESS } from '../../utils/Utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import UseApi from '../hooks/UseApi';
+import UseApi from '../../hooks/UseApi';
+import { AppContext } from '../../context/AppContext';
 
 type Props = {
     visible: boolean;
-    comment: any,
     onClose: () => void;
 };
 
-const UpdateCommentModal = ({ visible, comment, onClose }: Props) => {
-    const [text, setText] = useState<string>("");
-    const { handleUpdateComment } = UseApi();
-    
-    useEffect(() => {
-        setText(comment?.content ?? '');
-    }, [comment]);
+const CreateCommentModal = ({ visible, onClose }: Props) => {
+    const [text, setText] = useState<string>('');
+    const context = useContext(AppContext);
+    const { handleCreateComment } = UseApi();
 
 
     const handleComment = async () => {
         if (!text || text.trim().length == 0) return;
 
-        const result = await handleUpdateComment(comment?.id, text);
+        const usernameXP = await AsyncStorage.getItem('username');
+
+        const inputXPTrade = {
+            post:{
+                ...context.currentPost
+            },
+            user: {
+                username: usernameXP,
+                profilePicture: null
+            },
+            content: text
+        };
+
+
+        const result = await handleCreateComment(inputXPTrade);
 
         if (result == SUCCESS) {
             setText('');
         }
-        
+
         onClose();
     };
 
@@ -43,16 +54,16 @@ const UpdateCommentModal = ({ visible, comment, onClose }: Props) => {
                         <TouchableOpacity onPress={onClose}>
                             <Icon name="close" size={22} color="#F6F7F7" />
                         </TouchableOpacity>
-
                         <TouchableOpacity
                             disabled={text.trim().length === 0}
                             onPress={handleComment}
                             className={`px-3 py-1 rounded-full ${text.trim().length === 0 ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
                         >
                             <Text className={`text-sm font-semibold ${text.trim().length === 0 ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
-                                Editar
+                                Publicar
                             </Text>
                         </TouchableOpacity>
+
                     </View>
 
                     <TextInput
@@ -63,10 +74,11 @@ const UpdateCommentModal = ({ visible, comment, onClose }: Props) => {
                         multiline
                         className="bg-[#2C3038] text-white rounded p-3 h-24 mb-3"
                     />
+ 
                 </View>
             </View>
         </Modal>
     );
 };
 
-export default UpdateCommentModal;
+export default CreateCommentModal;
