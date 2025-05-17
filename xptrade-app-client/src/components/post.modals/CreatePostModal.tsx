@@ -189,7 +189,7 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
 
                                         {!item.background_image && (!item.short_screenshots || item.short_screenshots.length === 0) && (
                                             <Image
-                                                source={require('../resources/xp-trade.png')}
+                                                source={require('../../resources/xp-trade.png')}
                                                 className="w-5 h-5 rounded-md mr-4"
                                                 resizeMode="cover"
                                             />
@@ -225,7 +225,7 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
 
                             {!selectedGame.background_image && (!selectedGame.short_screenshots || selectedGame.short_screenshots.length === 0) && (
                                 <Image
-                                    source={require('../resources/xp-trade.png')}
+                                    source={require('../../resources/xp-trade.png')}
                                     className="w-5 h-5 rounded-md mr-4"
                                     resizeMode="cover"
                                 />
