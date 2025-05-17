@@ -1,12 +1,12 @@
 import { View, Text, Modal, TouchableOpacity, TextInput, Image, FlatList } from 'react-native';
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Result } from '../utils/TypeUtils';
-import UseRAWGApi from '../hooks/UseRAWGApi';
+import { Result } from '../../utils/TypeUtils';
+import UseRAWGApi from '../../hooks/UseRAWGApi';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';
-import { REGIONS, SUCCESS } from '../utils/Utils';
+import { REGIONS, SUCCESS } from '../../utils/Utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import UseApi from '../hooks/UseApi';
+import UseApi from '../../hooks/UseApi';
 
 type Props = {
     visible: boolean;
@@ -20,6 +20,7 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
     const [games, setGames] = useState<Result[]>([]);
     const [selectedGame, setSelectedGame] = useState<Result | null>(null);
     const [image, setImage] = useState<Asset>();
+    const CHARACTER_LIMIT = 250;
 
     const { handleFetch, handleGameDetailsFetch } = UseRAWGApi();
     const { handleCreatePost } = UseApi();
@@ -131,11 +132,11 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            disabled={text.trim().length === 0 || !selectedGame}
+                            disabled={text.trim().length === 0 || !selectedGame || text.length > CHARACTER_LIMIT}
                             onPress={handlePost}
-                            className={`px-3 py-1 rounded-full ${text.trim().length === 0 || !selectedGame ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
+                            className={`px-3 py-1 rounded-full ${text.trim().length === 0 || !selectedGame   || text.length > CHARACTER_LIMIT ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
                         >
-                            <Text className={`text-sm font-semibold ${text.trim().length === 0 || !selectedGame ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
+                            <Text className={`text-sm font-semibold ${text.trim().length === 0 || !selectedGame  || text.length > CHARACTER_LIMIT ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
                                 Publicar
                             </Text>
                         </TouchableOpacity>
@@ -189,7 +190,7 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
 
                                         {!item.background_image && (!item.short_screenshots || item.short_screenshots.length === 0) && (
                                             <Image
-                                                source={require('../resources/xp-trade.png')}
+                                                source={require('../../resources/xp-trade.png')}
                                                 className="w-5 h-5 rounded-md mr-4"
                                                 resizeMode="cover"
                                             />
@@ -225,7 +226,7 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
 
                             {!selectedGame.background_image && (!selectedGame.short_screenshots || selectedGame.short_screenshots.length === 0) && (
                                 <Image
-                                    source={require('../resources/xp-trade.png')}
+                                    source={require('../../resources/xp-trade.png')}
                                     className="w-5 h-5 rounded-md mr-4"
                                     resizeMode="cover"
                                 />
@@ -249,6 +250,13 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
                         multiline
                         className="bg-[#2C3038] text-white rounded p-3 h-24 mb-3"
                     />
+
+                    <View className="flex-row justify-end mb-3">
+                        <Text className={`text-xs ${text.length > CHARACTER_LIMIT ? 'text-red-400' : 'text-gray-400'}`}>
+                            {CHARACTER_LIMIT - text.length}
+                        </Text>
+                    </View>
+
                     {image?.uri && (
                         <View className="relative mb-2 w-full items-end">
                             <Image

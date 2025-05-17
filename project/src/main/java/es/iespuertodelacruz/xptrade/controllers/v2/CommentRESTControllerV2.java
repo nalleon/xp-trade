@@ -7,15 +7,19 @@ import es.iespuertodelacruz.xptrade.domain.interfaces.service.ICommentService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IPostService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
 import es.iespuertodelacruz.xptrade.dto.input.CommentInputDTO;
+import es.iespuertodelacruz.xptrade.dto.input.ContentUpdateDTO;
 import es.iespuertodelacruz.xptrade.dto.output.CommentOutputDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.input.ICollectionInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.input.ICommentInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.ICommentOutputDTOMapper;
+import es.iespuertodelacruz.xptrade.shared.security.CustomUserDetails;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -126,8 +130,8 @@ public class CommentRESTControllerV2 {
             CommentOutputDTO dto = ICommentOutputDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<CommentOutputDTO> response =
-                    new CustomApiResponse<>(302, "Comment found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Comment found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
         CustomApiResponse<CommentOutputDTO> errorResponse = new CustomApiResponse<>(204, "Comment NOT found", null);
@@ -175,7 +179,7 @@ public class CommentRESTControllerV2 {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody CommentInputDTO dto) {
+            @RequestBody ContentUpdateDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -188,25 +192,23 @@ public class CommentRESTControllerV2 {
                     .body(new CustomApiResponse<>(204, "Comment NOT found", null));
         }
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        String username = userDetails.getUsername();
+        User userDb = userService.findByUsername(username);
+
+
+        if (userDb.getId() != dbItem.getUser().getId()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new CustomApiResponse<>(401, "Unauthorized", null));
+        }
+
         try {
 
-            Comment aux = ICommentInputDTOMapper.INSTANCE.toDomain(dto);
+            dbItem.setContent(dto.content());
 
-            Post postDb = postService.findById(dto.post().id());
-
-            if(postDb == null){
-                return ResponseEntity.badRequest()
-                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
-            }
-
-            User userDb = userService.findByUsername(aux.getUser().getUsername());
-
-            if(userDb == null){
-                return ResponseEntity.badRequest()
-                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
-            }
-
-            Comment updatedDbItem = service.update(aux.getId(), postDb, userDb, aux.getContent());
+            Comment updatedDbItem = service.update(dbItem.getId(), dbItem.getPost(), dbItem.getUser(), dbItem.getContent());
 
             CommentOutputDTO result = ICommentOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
 
@@ -225,6 +227,25 @@ public class CommentRESTControllerV2 {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
+
+        Comment dbItem = service.findById(id);
+
+        if(dbItem == null){
+            ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "Not found", null));
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        String username = userDetails.getUsername();
+        User userDb = userService.findByUsername(username);
+
+
+        if (dbItem != null && userDb.getId() != dbItem.getUser().getId()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new CustomApiResponse<>(401, "Unauthorized", null));
+        }
 
         boolean deleted = service.delete(id);
 

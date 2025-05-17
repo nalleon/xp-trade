@@ -15,19 +15,29 @@ import { HomeStackParamList } from '../navigations/stack/PostStackNav';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppContext } from '../context/AppContext';
 import Icon from 'react-native-vector-icons/Ionicons';
-import CommentButton from '../components/CommentButton';
-import CreatePostModal from '../components/CreatePostModal';
-import CreateCommentModal from '../components/CreateCommentModal';
+import CommentButton from '../components/comment.models/CommentButton';
+import CreatePostModal from '../components/post.modals/CreatePostModal';
+import CreateCommentModal from '../components/comment.models/CreateCommentModal';
 import UseApi from '../hooks/UseApi';
 import { Alert } from 'react-native';
+import UpdatePostModal from '../components/post.modals/UpdatePostModal';
+import UpdateCommentModal from '../components/comment.models/UpdateCommentModal';
+import PostOptionsModal from '../components/post.modals/PostOptionsModal';
+import { SUCCESS } from '../utils/Utils';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'PostScreen'>;
 
 const PostScreen = ({ navigation }: Props) => {
-  const { currentPost, username } = useContext(AppContext);
+  const { setCurrentPost, currentPost, currentComment, setCurrentComment, username } = useContext(AppContext);
   const [comments, setComments] = useState([]);
-  const [showPostModal, setShowPostModal] = useState(false);
-  const { handleGetPostsComments } = UseApi();
+  const [showCommentPostModal, setShowCommentPostModal] = useState(false);
+  const [showPostUpdateModal, setShowPostUpdateModal] = useState(false);
+  const [showCommentUpdateModal, setShowCommentUpdateModal] = useState(false);
+
+  const [showCommentOptionsModal, setShowCommentOptionsModal] = useState(false);
+  const [showPostOptionsModal, setShowPostOptionsModal] = useState(false);
+
+  const { handleGetPostsComments, handleDeletePost, handleDeleteComment, handleGetPostById } = UseApi();
 
   const isOwner = currentPost.user.username === username;
 
@@ -48,18 +58,53 @@ const PostScreen = ({ navigation }: Props) => {
     }
   }
 
-  const handleOptions = () => {
-    Alert.alert(
-      '',
-      '',
-      [
-        { text: 'Editar', onPress: () => console.log('test edit') },
-        { text: 'Eliminar', onPress: () => console.log('test delete'), style: 'destructive' },
-        { text: 'Cancelar', style: 'cancel' },
-      ],
-      { cancelable: true }
-    );
+
+  const deletePost = async (id: number) => {
+    if (!id) {
+      return;
+    }
+
+    const result = await handleDeletePost(id);
+
+    if (result != null) {
+      navigation.replace("HomeScreen");
+    }
+
   };
+
+  const deleteComment = async (id: number) => {
+    if (!id) {
+      return false;
+    }
+
+    const result = await handleDeleteComment(id);
+
+    if (result === SUCCESS) {
+      const updated = await handleGetPostsComments(currentPost.id);
+      
+      if (updated != null) {
+        setComments(updated);
+      } else if (updated == null){
+        setComments([]);
+      }
+
+      return true;
+    }
+
+    return false;
+  };
+
+
+  const handleOptionsPost = () => {
+    setShowPostOptionsModal(true);
+  };
+
+
+  const handleOptionsComment = (comment) => {
+    setCurrentComment(comment);
+    setShowCommentOptionsModal(true);
+  };
+
 
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
@@ -93,14 +138,12 @@ const PostScreen = ({ navigation }: Props) => {
               <Text className="text-[#F6F7F7] font-semibold text-sm">
                 @{item.user.username}
               </Text>
-              <Text className="text-[#D1D5DB] text-sm mt-1">
-                {item.content}
-              </Text>
+
             </View>
           </View>
 
           {isCommentOwner && (
-            <TouchableOpacity onPress={handleOptions}>
+            <TouchableOpacity onPress={() => handleOptionsComment(item)}>
               <Icon
                 name="ellipsis-vertical-outline"
                 size={18}
@@ -108,8 +151,13 @@ const PostScreen = ({ navigation }: Props) => {
               />
             </TouchableOpacity>
           )}
-        </View>
 
+        </View>
+        <View className="h-px bg-[#2C3038] mb-3" />
+
+        <Text className="text-[#D1D5DB] text-sm mt-1">
+          {item.content}
+        </Text>
         <View className="flex-row items-end mt-2">
           <Text className="text-xs text-[#8899A6] ml-auto">
             {formatDate(item.creationDate)}
@@ -119,6 +167,19 @@ const PostScreen = ({ navigation }: Props) => {
     );
   };
 
+
+  const updatePost = async () => {
+    const id = currentPost.id;
+    const updatedPost = await handleGetPostById(id);
+    setCurrentPost(updatedPost);
+    setShowPostUpdateModal(false);
+  }
+
+
+  const updateComment = async () => {
+    getComments();
+    setShowCommentUpdateModal(false);
+  }
 
 
 
@@ -148,7 +209,7 @@ const PostScreen = ({ navigation }: Props) => {
             </View>
 
             {isOwner && (
-              <TouchableOpacity onPress={handleOptions}>
+              <TouchableOpacity onPress={handleOptionsPost}>
                 <Icon
                   name="ellipsis-vertical-outline"
                   size={18}
@@ -201,17 +262,43 @@ const PostScreen = ({ navigation }: Props) => {
         </View>
 
         {comments.map((item) => renderComment({ item }))}
+
       </ScrollView>
 
       <CreateCommentModal
-        visible={showPostModal}
-        onClose={() => setShowPostModal(false)}
+        visible={showCommentPostModal}
+        onClose={() => setShowCommentPostModal(false)}
       />
-      <CommentButton onPress={() => setShowPostModal(true)} />
+
+      <UpdatePostModal
+        visible={showPostUpdateModal}
+        post={currentPost}
+        onClose={() => updatePost()}
+      />
+
+      <UpdateCommentModal
+        visible={showCommentUpdateModal}
+        comment={currentComment}
+        onClose={() => updateComment()}
+      />
+
+      <PostOptionsModal
+        visible={showPostOptionsModal}
+        onClose={() => setShowPostOptionsModal(false)}
+        onEdit={() => setShowPostUpdateModal(true)}
+        onDelete={() => deletePost(currentPost.id)}
+      />
+
+      <PostOptionsModal
+        visible={showCommentOptionsModal}
+        onClose={() => setShowCommentOptionsModal(false)}
+        onEdit={() => setShowCommentUpdateModal(true)}
+        onDelete={async () => await deleteComment(currentComment.id)}
+      />
+
+      <CommentButton onPress={() => setShowCommentPostModal(true)} />
     </KeyboardAvoidingView>
   );
 };
 
 export default PostScreen;
-
-const styles = StyleSheet.create({});

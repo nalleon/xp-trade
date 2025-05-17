@@ -6,18 +6,27 @@ import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IPostService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
+import es.iespuertodelacruz.xptrade.dto.input.ContentUpdateDTO;
 import es.iespuertodelacruz.xptrade.dto.input.PostInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.PostOutputDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.input.IPostInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.IPostOutputDTOMapper;
+import es.iespuertodelacruz.xptrade.shared.security.CustomUserDetails;
+import es.iespuertodelacruz.xptrade.shared.security.JwtService;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static es.iespuertodelacruz.xptrade.shared.security.JwtFilter.authHeader;
+import static es.iespuertodelacruz.xptrade.shared.security.JwtFilter.authHeaderTokenPrefix;
 
 @RestController
 @CrossOrigin
@@ -32,7 +41,6 @@ public class PostRESTControllerV2 {
     private IPostService service;
     private IGameService gameService;
     private IUserService userService;
-
     /**
      * Setters of the post service
      * @param service of the post
@@ -139,8 +147,8 @@ public class PostRESTControllerV2 {
             PostOutputDTO dto = IPostOutputDTOMapper.INSTANCE.toDTO(aux);
 
             CustomApiResponse<PostOutputDTO> response =
-                    new CustomApiResponse<>(302, "Post found", dto);
-            return ResponseEntity.status(HttpStatus.FOUND).body(response);
+                    new CustomApiResponse<>(200, "Post found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
 
         CustomApiResponse<PostOutputDTO> errorResponse = new CustomApiResponse<>(204, "Post NOT found", null);
@@ -192,7 +200,7 @@ public class PostRESTControllerV2 {
     @PutMapping("/{id}")
     public ResponseEntity<CustomApiResponse<?>> update(
             @PathVariable Integer id,
-            @RequestBody PostInputDTO dto) {
+            @RequestBody ContentUpdateDTO dto) {
 
         if (dto == null) {
             return ResponseEntity.badRequest().build();
@@ -205,31 +213,26 @@ public class PostRESTControllerV2 {
                     .body(new CustomApiResponse<>(204, "User NOT found", null));
         }
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        String username = userDetails.getUsername();
+        User userDb = userService.findByUsername(username);
+
+        if (userDb.getId() != dbItem.getUser().getId()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new CustomApiResponse<>(401, "Unauthorized", null));
+        }
+
         try {
 
-            Post aux = IPostInputDTOMapper.INSTANCE.toDomain(dto);
+            dbItem.setContent(dto.content());
 
-            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(), aux.getGame().getSlug(),
-                    aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
-                    aux.getGame().getPublisherSet());
-
-            if(gameDb == null){
-                return ResponseEntity.badRequest()
-                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
-            }
-
-            User userDb = userService.findByUsername(aux.getUser().getUsername());
-
-            if(userDb == null){
-                return ResponseEntity.badRequest()
-                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
-            }
-
-            Post updatedDbItem = service.update(aux.getId(), aux.getGame(), aux.getUser(), aux.getContent(), aux.getPicture());
+            Post updatedDbItem = service.update(dbItem.getId(), dbItem.getGame(), dbItem.getUser(), dbItem.getContent(), dbItem.getPicture());
 
             if(updatedDbItem == null) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                        .body(new CustomApiResponse<>(204, "Item does not exists", null));
+                        .body(new CustomApiResponse<>(204, "Item update failed", null));
             }
 
             PostOutputDTO result = IPostOutputDTOMapper.INSTANCE.toDTO(updatedDbItem);
@@ -244,6 +247,25 @@ public class PostRESTControllerV2 {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
+
+        Post dbItem = service.findById(id);
+
+        if(dbItem == null){
+            ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, "Not found", null));
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        String username = userDetails.getUsername();
+        User userDb = userService.findByUsername(username);
+
+
+        if (dbItem != null && userDb.getId() != dbItem.getUser().getId()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new CustomApiResponse<>(401, "Unauthorized", null));
+        }
 
         boolean deleted = service.delete(id);
 

@@ -7,8 +7,8 @@ import { AppContext } from '../context/AppContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
 import { Result } from '../utils/TypeUtils';
-import CreatePostModal from '../components/CreatePostModal';
-import PostButton from '../components/PostButton';
+import CreatePostModal from '../components/post.modals/CreatePostModal';
+import PostButton from '../components/post.modals/PostButton';
 import UseApi from '../hooks/UseApi';
 import UseRAWGApi from '../hooks/UseRAWGApi';
 
@@ -33,7 +33,7 @@ const ProfileScreen = (props: Props) => {
 
   useEffect(() => {
     fetchUserProfileDetails();
-  }, [])
+  })
 
   const fetchUserProfileDetails = async () => {
     setFavorites(await handleGetFavorites(context.username));
@@ -111,6 +111,7 @@ const ProfileScreen = (props: Props) => {
       <View className="w-full mb-6">
         {favorites && favorites.length > 0 ? (
           <View className="w-full mb-6 items-center relative">
+
             {showLeftArrow && (
               <TouchableOpacity
                 className="absolute left-0 z-10 h-full justify-center pl-2"
@@ -155,7 +156,7 @@ const ProfileScreen = (props: Props) => {
                 ))}
               </ScrollView>
             </View>
-            {showRightArrow && (
+            {(showRightArrow && favorites.length > 2) && (
               <TouchableOpacity
                 className="absolute right-0 z-10 h-full justify-center pr-2"
                 onPress={() => scrollRef.current?.scrollToEnd({ animated: true })}
@@ -167,7 +168,7 @@ const ProfileScreen = (props: Props) => {
 
         ) : (
           <Text className="text-[#8899A6] text-sm text-center mt-2">
-            No favorite games yet.
+            No hay nada de momento
           </Text>
         )}
       </View>
