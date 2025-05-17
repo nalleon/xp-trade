@@ -48,9 +48,9 @@ const UpdatePostModal = ({ visible, post, onClose }: Props) => {
                         <TouchableOpacity
                             disabled={text.trim().length === 0 || text.length > CHARACTER_LIMIT}
                             onPress={handlePost}
-                            className={`px-3 py-1 rounded-full ${text.trim().length === 0 ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
+                            className={`px-3 py-1 rounded-full ${text.trim().length === 0  || text.length > CHARACTER_LIMIT  ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
                         >
-                            <Text className={`text-sm font-semibold ${text.trim().length === 0 ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
+                            <Text className={`text-sm font-semibold ${text.trim().length === 0 || text.length > CHARACTER_LIMIT ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
                                 Editar
                             </Text>
                         </TouchableOpacity>
