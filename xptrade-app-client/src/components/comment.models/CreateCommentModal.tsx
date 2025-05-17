@@ -17,6 +17,7 @@ type Props = {
 const CreateCommentModal = ({ visible, onClose }: Props) => {
     const [text, setText] = useState<string>('');
     const context = useContext(AppContext);
+    const CHARACTER_LIMIT = 250;
     const { handleCreateComment } = UseApi();
 
 
@@ -26,7 +27,7 @@ const CreateCommentModal = ({ visible, onClose }: Props) => {
         const usernameXP = await AsyncStorage.getItem('username');
 
         const inputXPTrade = {
-            post:{
+            post: {
                 ...context.currentPost
             },
             user: {
@@ -55,11 +56,11 @@ const CreateCommentModal = ({ visible, onClose }: Props) => {
                             <Icon name="close" size={22} color="#F6F7F7" />
                         </TouchableOpacity>
                         <TouchableOpacity
-                            disabled={text.trim().length === 0}
+                            disabled={text.trim().length === 0 || text.length > CHARACTER_LIMIT}
                             onPress={handleComment}
-                            className={`px-3 py-1 rounded-full ${text.trim().length === 0 ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
+                            className={`px-3 py-1 rounded-full ${text.trim().length === 0 || text.length > CHARACTER_LIMIT ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
                         >
-                            <Text className={`text-sm font-semibold ${text.trim().length === 0 ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
+                            <Text className={`text-sm font-semibold ${text.trim().length === 0 || text.length > CHARACTER_LIMIT  ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
                                 Publicar
                             </Text>
                         </TouchableOpacity>
@@ -74,7 +75,12 @@ const CreateCommentModal = ({ visible, onClose }: Props) => {
                         multiline
                         className="bg-[#2C3038] text-white rounded p-3 h-24 mb-3"
                     />
- 
+
+                    <View className="flex-row justify-end mb-3">
+                        <Text className={`text-xs ${text.length > CHARACTER_LIMIT ? 'text-red-400' : 'text-gray-400'}`}>
+                            {CHARACTER_LIMIT - text.length}
+                        </Text>
+                    </View>
                 </View>
             </View>
         </Modal>

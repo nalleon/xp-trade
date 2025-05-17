@@ -17,7 +17,8 @@ type Props = {
 const UpdatePostModal = ({ visible, post, onClose }: Props) => {
     const [text, setText] = useState<string>(post.content);
     const { handleUpdatePost } = UseApi();
-    
+    const CHARACTER_LIMIT = 250;
+
     useEffect(() => {
         setText(post?.content ?? '');
     }, [post]);
@@ -31,7 +32,7 @@ const UpdatePostModal = ({ visible, post, onClose }: Props) => {
         if (result == SUCCESS) {
             setText('');
         }
-        
+
         onClose();
     };
 
@@ -45,11 +46,11 @@ const UpdatePostModal = ({ visible, post, onClose }: Props) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            disabled={text.trim().length === 0}
+                            disabled={text.trim().length === 0 || text.length > CHARACTER_LIMIT}
                             onPress={handlePost}
-                            className={`px-3 py-1 rounded-full ${text.trim().length === 0 ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
+                            className={`px-3 py-1 rounded-full ${text.trim().length === 0  || text.length > CHARACTER_LIMIT  ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
                         >
-                            <Text className={`text-sm font-semibold ${text.trim().length === 0 ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
+                            <Text className={`text-sm font-semibold ${text.trim().length === 0 || text.length > CHARACTER_LIMIT ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
                                 Editar
                             </Text>
                         </TouchableOpacity>
@@ -78,8 +79,15 @@ const UpdatePostModal = ({ visible, post, onClose }: Props) => {
                         value={text}
                         onChangeText={setText}
                         multiline
-                        className="bg-[#2C3038] text-white rounded p-3 h-24 mb-3"
+                        className={`bg-[#2C3038] text-white rounded p-3 h-24 mb-1 ${text.length > CHARACTER_LIMIT ? 'text-red-400' : 'text-white'}`}
                     />
+
+                    <View className="flex-row justify-end mb-3">
+                        <Text className={`text-xs ${text.length > CHARACTER_LIMIT ? 'text-red-400' : 'text-gray-400'}`}>
+                            {CHARACTER_LIMIT - text.length}
+                        </Text>
+                    </View>
+
                 </View>
             </View>
         </Modal>

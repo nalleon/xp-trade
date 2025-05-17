@@ -22,6 +22,8 @@ import UseApi from '../hooks/UseApi';
 import { Alert } from 'react-native';
 import UpdatePostModal from '../components/post.modals/UpdatePostModal';
 import UpdateCommentModal from '../components/comment.models/UpdateCommentModal';
+import PostOptionsModal from '../components/post.modals/PostOptionsModal';
+import { SUCCESS } from '../utils/Utils';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'PostScreen'>;
 
@@ -31,7 +33,10 @@ const PostScreen = ({ navigation }: Props) => {
   const [showCommentPostModal, setShowCommentPostModal] = useState(false);
   const [showPostUpdateModal, setShowPostUpdateModal] = useState(false);
   const [showCommentUpdateModal, setShowCommentUpdateModal] = useState(false);
-  const [editingComment, setEditingComment] = useState(null);
+
+  const [showCommentOptionsModal, setShowCommentOptionsModal] = useState(false);
+  const [showPostOptionsModal, setShowPostOptionsModal] = useState(false);
+
   const { handleGetPostsComments, handleDeletePost, handleDeleteComment, handleGetPostById } = UseApi();
 
   const isOwner = currentPost.user.username === username;
@@ -54,7 +59,6 @@ const PostScreen = ({ navigation }: Props) => {
   }
 
 
-
   const deletePost = async (id: number) => {
     if (!id) {
       return;
@@ -70,50 +74,37 @@ const PostScreen = ({ navigation }: Props) => {
 
   const deleteComment = async (id: number) => {
     if (!id) {
-      return;
+      return false;
     }
 
     const result = await handleDeleteComment(id);
 
-    if (result != null) {
-      getComments();
+    if (result === SUCCESS) {
+      const updated = await handleGetPostsComments(currentPost.id);
+      
+      if (updated != null) {
+        setComments(updated);
+      } else if (updated == null){
+        setComments([]);
+      }
+
+      return true;
     }
 
+    return false;
   };
 
 
   const handleOptionsPost = () => {
-    Alert.alert(
-      '',
-      '',
-      [
-        { text: 'Editar', onPress: () => setShowPostUpdateModal(true) },
-        { text: 'Eliminar', onPress: () => deletePost(currentPost.id), style: 'destructive' },
-        { text: 'Cancelar', style: 'cancel' },
-      ],
-      { cancelable: true }
-    );
+    setShowPostOptionsModal(true);
   };
-
 
 
   const handleOptionsComment = (comment) => {
-    Alert.alert(
-      '',
-      '',
-      [
-        { text: 'Editar', onPress: () => handleStartEditingComment(comment) },
-        { text: 'Eliminar', onPress: () => deleteComment(comment?.id), style: 'destructive' },
-        { text: 'Cancelar', style: 'cancel' },
-      ],
-      { cancelable: true }
-    );
+    setCurrentComment(comment);
+    setShowCommentOptionsModal(true);
   };
 
-  const handleStartEditingComment = async (comment) =>{
-    setCurrentComment(comment);
-    setShowCommentUpdateModal(true);
-  }
 
   const formatDate = (isoString: string) => {
     const date = new Date(isoString);
@@ -291,11 +282,23 @@ const PostScreen = ({ navigation }: Props) => {
         onClose={() => updateComment()}
       />
 
+      <PostOptionsModal
+        visible={showPostOptionsModal}
+        onClose={() => setShowPostOptionsModal(false)}
+        onEdit={() => setShowPostUpdateModal(true)}
+        onDelete={() => deletePost(currentPost.id)}
+      />
+
+      <PostOptionsModal
+        visible={showCommentOptionsModal}
+        onClose={() => setShowCommentOptionsModal(false)}
+        onEdit={() => setShowCommentUpdateModal(true)}
+        onDelete={async () => await deleteComment(currentComment.id)}
+      />
+
       <CommentButton onPress={() => setShowCommentPostModal(true)} />
     </KeyboardAvoidingView>
   );
 };
 
 export default PostScreen;
-
-const styles = StyleSheet.create({});
