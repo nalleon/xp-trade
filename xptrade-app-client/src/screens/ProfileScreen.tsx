@@ -7,8 +7,8 @@ import { AppContext } from '../context/AppContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
 import { Result } from '../utils/TypeUtils';
-import CreatePostModal from '../components/CreatePostModal';
-import PostButton from '../components/PostButton';
+import CreatePostModal from '../components/post.modals/CreatePostModal';
+import PostButton from '../components/post.modals/PostButton';
 import UseApi from '../hooks/UseApi';
 import UseRAWGApi from '../hooks/UseRAWGApi';
 

@@ -365,21 +365,18 @@ const UseApi = () => {
     };
 
     /**
-    * Function to check if an user has a game in favorites
-    * @param username of the user
-    * @param title of the game
+    * Function to delete a post
+    * @param id of the post
     * @returns success if exists, null if not
     */
-    const handleDeletePost = async (username: string, title: string) => {
-        if (!username?.trim() || !title?.trim()) return null;
-
-        const result = await handleCheckIfExistsFavorites(username, title);
-        if (result == null) {
+    const handleDeletePost = async (id: number) => {
+        if (!id) {
             return null;
         }
 
+
         try {
-            const response = await axios.delete(`${URL_API}/v2/favorites/${result?.id}`,
+            const response = await axios.delete(`${URL_API}/v2/posts/${id}`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -394,9 +391,108 @@ const UseApi = () => {
             }
 
         } catch (error) {
-            console.error("Error while fetching favorites", error);
+            console.error("Error while deleting item", error);
+        }
+    };
+
+    /**
+    * Function to delete a commment
+    * @param id of the comment
+    * @returns success if exists, null if not
+    */
+    const handleDeleteComment = async (id: number) => {
+        if (!id) {
+            return null;
         }
 
+
+        try {
+            const response = await axios.delete(`${URL_API}/v2/comments/${id}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
+            if (response?.status === 204) {
+                return SUCCESS;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while deleting item", error);
+        }
+    };
+
+    /**
+    * Function to update a commment
+    * @param id of the comment
+    * @param CommentButton of the comment
+    * @returns success if exists, null if not
+    */
+    const handleUpdateComment = async (id: number, content: any) => {
+        if (!id || !content.trim()) {
+            return null;
+        }
+
+
+        try {
+            const response = await axios.put(`${URL_API}/v2/comments/${id}`,
+                {
+                    content: content
+                }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + context.token
+                },
+            });
+
+            if (response?.status === 200) {
+                return response.data?.data;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while updating item", error);
+        }
+    };
+
+
+    /**
+    * Function to update a post
+    * @param id of the post
+    * @param content of the post
+    * @returns success if exists, null if not
+    */
+    const handleUpdatePost = async (id: number, content: string) => {
+        if (!id || !content?.trim()) {
+            return null;
+        }
+
+
+        try {
+            const response = await axios.put(`${URL_API}/v2/posts/${id}`,
+                {
+                    content: content
+                }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + context.token
+                },
+            });
+
+            if (response?.status === 200) {
+                return response.data?.data;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while updating item", error);
+        }
     };
 
     /**
@@ -429,6 +525,7 @@ const UseApi = () => {
             }
         }
     };
+
     /**
      * Function to get an user favorite games
      * @param username of the user
@@ -510,9 +607,38 @@ const UseApi = () => {
     };
 
 
+    /**
+     * Function to get a post
+     * @param id of the post
+     * @returns the post
+     */
+    const handleGetPostById = async (id: any) => {
+        try {
+            const response = await axios.get(`${URL_API}/v2/posts/${id}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
+            if (response?.data) {
+                return response?.data?.data;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while fetching posts", error);
+        }
+    };
+
+
     return {
         handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite,
-        handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost, handleGetPosts, handleGetUserPosts, handleCreateComment, handleGetPostsComments
+        handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost, handleGetPosts, handleGetUserPosts,
+        handleCreateComment, handleGetPostsComments, handleDeletePost, handleDeleteComment, handleUpdateComment, 
+        handleUpdatePost, handleGetPostById
     }
 
 }
