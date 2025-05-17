@@ -15,7 +15,8 @@ import PlatformModal from '../components/PlatformModal';
 import RegionModal from '../components/RegionModal';
 import { REGIONS, SUCCESS } from '../utils/Utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FavoriteScreen from './FavoriteScreen';
+import AddToFavoritesModal from '../components/AddToFavoritesModal';
+import DeleteFromFavoritesModal from '../components/DeleteFromFavoritesModal';
 
 type Props = NativeStackScreenProps<GameStackParamList, 'GameScreen'>;
 
@@ -24,6 +25,9 @@ const GameScreen = (props: Props) => {
   const [showDevelopers, setShowDevelopers] = useState(false);
   const [showPlatformModal, setShowPlatformModal] = useState(false);
   const [showRegionModal, setShowRegionModal] = useState(false);
+  const [showAddToFavoritesModal, setShowAddToFavoritesModal] = useState(false);
+  const [showDeleteFromFavoritesModal, setShowDeleteFromFavoritesModal] = useState(false);
+
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [isScrollEnabled, setIsScrollEnabled] = useState(true);
@@ -64,10 +68,10 @@ const GameScreen = (props: Props) => {
     const title = currentGame.name;
 
     const result = await handleDeleteFromFavorites(usernameXP, title);
-    console.log("Resultado de eliminar de favoritos:", result); // Debug
 
     if (result != null) {
       setIsFavorite(!isFavorite);
+      setShowDeleteFromFavoritesModal(true);
     }
   }
 
@@ -163,10 +167,9 @@ const GameScreen = (props: Props) => {
 
     if (result == SUCCESS) {
       setIsFavorite(true);
-      Alert.alert("El juego ha sido añadido a sus favoritos");
-    } else {
-      Alert.alert("Error al tratar de añadir el juego en favoritos");
+      setShowAddToFavoritesModal(true);
     }
+
     setIsScrollEnabled(true);
   };
 
@@ -416,7 +419,16 @@ const GameScreen = (props: Props) => {
           handleRegionSelectionDone()
         }
       />
-
+      <AddToFavoritesModal
+        visible={showAddToFavoritesModal}
+        game={currentGame}
+        onClose={() => setShowAddToFavoritesModal(false)}
+      />
+      <DeleteFromFavoritesModal
+        visible={showDeleteFromFavoritesModal}
+        game={currentGame}
+        onClose={() => setShowDeleteFromFavoritesModal(false)}
+      />
 
     </ScrollView>
   );

@@ -94,12 +94,12 @@ function HomeScreen({ navigation }: Props) {
 
                 <Text
                   className="text-[#F6F7F7] mb-2"
-                  numberOfLines={item.content.length > maxCharactersForFiveLines ? 5 : 0}
+                  numberOfLines={item.content.length >= maxCharactersForFiveLines ? 5 : 0}
                 >
                   {item.content}
                 </Text>
 
-                {item.content.length > maxCharactersForFiveLines && (
+                {item.content.length/2 >= maxCharactersForFiveLines && (
                   <TouchableOpacity onPress={() => navigateToPostDetails(item)}>
                     <Text className="text-xs text-[#66B3B7]">Ver más</Text>
                   </TouchableOpacity>
