@@ -2,6 +2,8 @@ package es.iespuertodelacruz.xptrade.shared.config;
 
 import es.iespuertodelacruz.xptrade.model.service.interfaces.IRoleSoapService;
 import es.iespuertodelacruz.xptrade.model.service.interfaces.IUserSoapService;
+import es.iespuertodelacruz.xptrade.shared.security.CxfAuthInterceptor;
+import es.iespuertodelacruz.xptrade.shared.security.JwtService;
 import jakarta.xml.ws.Endpoint;
 import org.apache.cxf.Bus;
 import org.apache.cxf.jaxws.EndpointImpl;
@@ -27,16 +29,25 @@ public class SoapServiceConfig {
     }
 
     @Bean
-    public Endpoint userEndpoint() {
+    public CxfAuthInterceptor cxfAuthInterceptor(JwtService jwtService) {
+        CxfAuthInterceptor interceptor = new CxfAuthInterceptor();
+        interceptor.setJwtTokenManager(jwtService);
+        return interceptor;
+    }
+
+    @Bean
+    public Endpoint userEndpoint(CxfAuthInterceptor cxfAuthInterceptor) {
         EndpointImpl endpoint = new EndpointImpl(bus, userSoapService);
         endpoint.publish("/users");
+        endpoint.getInInterceptors().add(cxfAuthInterceptor);
         return endpoint;
     }
 
     @Bean
-    public Endpoint roleEndpoint() {
+    public Endpoint roleEndpoint(CxfAuthInterceptor cxfAuthInterceptor) {
         EndpointImpl endpoint = new EndpointImpl(bus, roleSoapService);
         endpoint.publish("/roles");
+        endpoint.getInInterceptors().add(cxfAuthInterceptor);
         return endpoint;
     }
 }

@@ -66,9 +66,4 @@ public class UserSoapService implements IUserSoapService {
     public User update(User user) {
         return service.update(user);
     }
-
-    @Override
-    public User updatePicture(User user) {
-        return service.update(user);
-    }
 }

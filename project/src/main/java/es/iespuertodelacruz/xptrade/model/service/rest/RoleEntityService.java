@@ -100,7 +100,7 @@ public class RoleEntityService implements IRoleRepository {
             return null;
         }
 
-        RoleEntity dbItem = repository.findRoleByName(role.getName()).orElse(null);
+        RoleEntity dbItem = repository.findById(role.getId()).orElse(null);
         if (dbItem == null){
             return null;
         }

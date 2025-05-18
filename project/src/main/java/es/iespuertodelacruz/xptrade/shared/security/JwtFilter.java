@@ -43,7 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 "/swagger-ui/", "/v2/", "/v3/",
                 "/configuration/","/swagger/",
                 "/webjars/", "/websocket/", "/index.html",
-                "/services", "/api/v1/"
+                "/services/", "/api/v1/"
         );
 
         for (String ruta : rutasPermitidas) {

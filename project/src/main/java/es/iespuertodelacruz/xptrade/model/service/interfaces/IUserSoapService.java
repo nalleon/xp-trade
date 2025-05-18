@@ -26,6 +26,4 @@ public interface IUserSoapService {
     boolean delete(@WebParam(name = "id") Integer id);
     @WebMethod
     User update(@WebParam(name = "user")User user);
-    @WebMethod
-    User updatePicture(@WebParam(name = "user") User user);
 }
