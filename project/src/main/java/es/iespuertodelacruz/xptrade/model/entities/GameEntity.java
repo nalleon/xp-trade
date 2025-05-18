@@ -32,33 +32,47 @@ public class GameEntity {
     @Column(unique = true, nullable=false, length=100, name = "slug")
     private String slug;
 
+    @Column(name = "rating")
+    private int rating;
+
+    @Column(length=100, name = "released")
+    private String released;
+
+
+    @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    @JoinTable(name = "games_tags",
+            joinColumns = { @JoinColumn(name = "game_id") },
+            inverseJoinColumns = { @JoinColumn(name = "tag_id")})
+    private Set<DeveloperEntity> developerEntitySet;
+
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     @JoinTable(name = "games_developers",
             joinColumns = { @JoinColumn(name = "game_id") },
             inverseJoinColumns = { @JoinColumn(name = "developers_id")})
-    Set<DeveloperEntity> developerEntitySet;
+    private Set<TagEntity> tagEntitySet;
 
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     @JoinTable(name = "games_genres",
             joinColumns = { @JoinColumn(name = "game_id") },
             inverseJoinColumns = { @JoinColumn(name = "genre_id")})
-    Set<GenreEntity> genreEntitySet;
+    private Set<GenreEntity> genreEntitySet;
 
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     @JoinTable(name = "games_platforms",
             joinColumns = { @JoinColumn(name = "game_id") },
             inverseJoinColumns = { @JoinColumn(name = "platform_id")})
-    Set<PlatformEntity> platformEntitySet;
+    private Set<PlatformEntity> platformEntitySet;
 
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     @JoinTable(name = "games_publishers",
             joinColumns = { @JoinColumn(name = "game_id") },
             inverseJoinColumns = { @JoinColumn(name = "publisher_id")})
-    Set<PublisherEntity> publisherEntitySet;
+    private Set<PublisherEntity> publisherEntitySet;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<FavoriteEntity> favoriteEntitySet;
@@ -113,6 +127,37 @@ public class GameEntity {
         this.platformEntitySet = platformEntitySet;
         this.publisherEntitySet = publisherEntitySet;
     }
+
+    /**
+     * Constructor of the class
+     * @param id of the game
+     * @param title of the game
+     * @param coverArt of the game
+     * @param slug of the game
+     * @param rating of the game
+     * @param released of the game
+     * @param developerEntitySet of the game
+     * @param tagEntitySet of the game
+     * @param genreEntitySet of the game
+     * @param platformEntitySet of the game
+     * @param publisherEntitySet of the game
+     */
+    public GameEntity(int id, String title, String coverArt, String slug, int rating, String released,
+                      Set<DeveloperEntity> developerEntitySet, Set<TagEntity> tagEntitySet, Set<GenreEntity> genreEntitySet,
+                      Set<PlatformEntity> platformEntitySet, Set<PublisherEntity> publisherEntitySet) {
+        this.id = id;
+        this.title = title;
+        this.coverArt = coverArt;
+        this.slug = slug;
+        this.rating = rating;
+        this.released = released;
+        this.developerEntitySet = developerEntitySet;
+        this.tagEntitySet = tagEntitySet;
+        this.genreEntitySet = genreEntitySet;
+        this.platformEntitySet = platformEntitySet;
+        this.publisherEntitySet = publisherEntitySet;
+    }
+
 
     /**
      * Getters and setters
@@ -182,13 +227,41 @@ public class GameEntity {
         this.slug = slug;
     }
 
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getReleased() {
+        return released;
+    }
+
+    public void setReleased(String released) {
+        this.released = released;
+    }
+
+    public Set<TagEntity> getTagEntitySet() {
+        return tagEntitySet;
+    }
+
+    public void setTagEntitySet(Set<TagEntity> tagEntitySet) {
+        this.tagEntitySet = tagEntitySet;
+    }
+
+
     @Override
     public String toString() {
         return "GameEntity{" +
-                ", publisherEntitySet=" + publisherEntitySet +
+                "publisherEntitySet=" + publisherEntitySet +
                 ", platformEntitySet=" + platformEntitySet +
                 ", genreEntitySet=" + genreEntitySet +
+                ", tagEntitySet=" + tagEntitySet +
                 ", developerEntitySet=" + developerEntitySet +
+                ", released='" + released + '\'' +
+                ", rating=" + rating +
                 ", slug='" + slug + '\'' +
                 ", coverArt='" + coverArt + '\'' +
                 ", title='" + title + '\'' +

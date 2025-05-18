@@ -73,6 +73,11 @@ public class MapperDTOHelper extends TestUtilities {
     public List<Comment> commentDomains;
 
 
+    public TagOutputDTO tagOutputDTO;
+    public Tag tagDomain;
+    public List<TagOutputDTO> tagOutputDTOList;
+    public List<Tag> tagDomains;
+
 
     @BeforeEach
     public void beforeEach() {
@@ -170,7 +175,21 @@ public class MapperDTOHelper extends TestUtilities {
         platformOutputDTOList = new ArrayList<>();
         platformOutputDTOList.add(platformOutputDTO);
 
-        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG, new HashSet<>(Collections.singletonList(developerOutputDTO)),
+        tagOutputDTO = new TagOutputDTO(ID, NAME);
+
+        tagDomain = new Tag();
+        tagDomain.setId(ID);
+        tagDomain.setName(NAME);
+
+        tagDomains = new ArrayList<>();
+        tagDomains.add(tagDomain);
+
+        tagOutputDTOList = new ArrayList<>();
+        tagOutputDTOList.add(tagOutputDTO);
+
+        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG, RATING, RELEASED,
+                    new HashSet<>(Collections.singletonList(tagOutputDTO)),
+                    new HashSet<>(Collections.singletonList(developerOutputDTO)),
                     new HashSet<>(Collections.singletonList(genreOutputDTO)),
                     new HashSet<>(Collections.singletonList(platformOutputDTO)),
                     new HashSet<>(Collections.singletonList(publisherOutputDTO))
@@ -185,6 +204,9 @@ public class MapperDTOHelper extends TestUtilities {
         gameDomain.setDeveloperSet(new HashSet<>(Collections.singletonList(developerDomain)));
         gameDomain.setPlatformSet(new HashSet<>(Collections.singletonList(platformDomain)));
         gameDomain.setGenreSet(new HashSet<>(Collections.singletonList(genreDomain)));
+        gameDomain.setTagSet(new HashSet<>(Collections.singletonList(tagDomain)));
+        gameDomain.setRating(RATING);
+        gameDomain.setReleased(RELEASED);
 
         gameDomains = new ArrayList<>();
         gameDomains.add(gameDomain);

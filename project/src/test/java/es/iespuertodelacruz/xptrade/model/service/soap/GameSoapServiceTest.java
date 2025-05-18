@@ -34,6 +34,9 @@ public class GameSoapServiceTest extends TestUtilities {
     IPlatformEntityRepository platformRepositoryMock;
     @Mock
     IRegionEntityRepository regionRepositoryMock;
+    @Mock
+    ITagEntityRepository tagRepositoryMock;
+
 
     @InjectMocks
     GameSoapService service;
@@ -45,6 +48,8 @@ public class GameSoapServiceTest extends TestUtilities {
     Publisher publisher;
     Developer developer;
     Platform platform;
+    Tag tag;
+    Set<Tag> tagSet;
     Set<Developer> developerSet;
     Set<Genre> genreSet;
     Set<Platform> platformSet;
@@ -58,20 +63,21 @@ public class GameSoapServiceTest extends TestUtilities {
         publisher = new Publisher(NAME);
         developer = new Developer(NAME);
         platform = new Platform(NAME);
-
+        tag = new Tag(NAME);
         genre.setId(ID);
         region.setId(ID);
         publisher.setId(ID);
         developer.setId(ID);
         platform.setId(ID);
-
+        tag.setId(ID);
         developerSet = new HashSet<>(Collections.singletonList(developer));
         genreSet = new HashSet<>(Collections.singletonList(genre));
         platformSet = new HashSet<>(Collections.singletonList(platform));
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
+        tagSet = new HashSet<>(Collections.singletonList(tag));
 
-        item =  new Game(TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet);
+        item =  new Game(TITLE, COVER_ART, SLUG, RATING, RELEASED, tagSet, developerSet, genreSet, platformSet, publisherSet);
         item.setId(ID);
 
         MockitoAnnotations.openMocks(this);
@@ -82,6 +88,7 @@ public class GameSoapServiceTest extends TestUtilities {
         serviceMock.setDeveloperRepository(developerRepositoryMock);
         serviceMock.setGenreRepository(genreRepositoryMock);
         serviceMock.setPlatformRepository(platformRepositoryMock);
+        serviceMock.setTagRepository(tagRepositoryMock);
 
         service = new GameSoapService();
         service.setService(serviceMock);

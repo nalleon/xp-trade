@@ -21,11 +21,13 @@ public class CommentInputDTOTest extends TestUtilities {
     PublisherOutputDTO publisher;
     DeveloperOutputDTO developer;
     PlatformOutputDTO platform;
+    TagOutputDTO tag;
     Set<DeveloperOutputDTO> developerSet;
     Set<GenreOutputDTO> genreSet;
     Set<PlatformOutputDTO> platformSet;
     Set<PublisherOutputDTO> publisherSet;
     Set<RegionOutputDTO> regionSet;
+    Set<TagOutputDTO> tagSet;
 
     @BeforeEach
     public void beforeEach() {
@@ -34,14 +36,16 @@ public class CommentInputDTOTest extends TestUtilities {
         publisher = new PublisherOutputDTO(ID, NAME);
         developer = new DeveloperOutputDTO(ID, NAME);
         platform = new PlatformOutputDTO(ID, NAME);
+        tag = new TagOutputDTO(ID, NAME);
 
         developerSet = new HashSet<>(Collections.singletonList(developer));
         genreSet = new HashSet<>(Collections.singletonList(genre));
         platformSet = new HashSet<>(Collections.singletonList(platform));
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
+        tagSet = new HashSet<>(Collections.singletonList(tag));
 
-        game = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet);
+        game = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG, RATING, RELEASED, tagSet, developerSet, genreSet, platformSet, publisherSet);
         user =new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, ROLE_NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE);
         post = new PostOutputDTO(ID, game, user, CONTENT, PICTURE, CREATION_DATE);
         item = new CommentInputDTO(post, user, CONTENT);

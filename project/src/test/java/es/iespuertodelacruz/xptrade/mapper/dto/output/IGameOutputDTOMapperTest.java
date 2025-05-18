@@ -77,13 +77,14 @@ public class IGameOutputDTOMapperTest extends MapperDTOHelper {
         Assertions.assertEquals(gameDomain.getPlatformSet(), domainMapper.getPlatformSet(), MESSAGE_ERROR);
         Assertions.assertEquals(gameDomain.getPublisherSet(), domainMapper.getPublisherSet(), MESSAGE_ERROR);
 
-        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG, null, null,null,null);
+        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG, RATING, RELEASED, null, null, null,null,null);
 
         domainMapper = IGameOutputDTOMapper.INSTANCE.toDomain(gameOutputDTO);
         Assertions.assertNull(domainMapper.getPlatformSet(), MESSAGE_ERROR);
         Assertions.assertNull(domainMapper.getDeveloperSet(), MESSAGE_ERROR);
         Assertions.assertNull(domainMapper.getPublisherSet(), MESSAGE_ERROR);
         Assertions.assertNull(domainMapper.getGenreSet(), MESSAGE_ERROR);
+        Assertions.assertNull(domainMapper.getTagSet(), MESSAGE_ERROR);
 
         gameOutputDTO = null;
         domainMapper = IGameOutputDTOMapper.INSTANCE.toDomain(gameOutputDTO);

@@ -157,14 +157,15 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
 
     @Test
     void addTest() {
-        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,RATING, RELEASED, new HashSet<>(),
+                new HashSet<>(), new HashSet<>(),
                 new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
         when(serviceMock.add(any(Game.class), any(User.class), anyString(), anyString())).thenReturn(new Post());
-        when(serviceGameMock.add(anyString(), anyString(),  anyString(),anySet(),
+        when(serviceGameMock.add(anyString(), anyString(),  anyString(), anyInt(), anyString(), anySet(),anySet(),
                 anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
@@ -179,26 +180,28 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
 
     @Test
     void addGameNullTest() {
-        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(),
+                new HashSet<>(), new HashSet<>(),
                 new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
-        when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
+        when(serviceGameMock.add(anyString(), anyString(),anyString(),  anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(aux).getStatusCode(), MESSAGE_ERROR);    }
 
 
     @Test
     void addUserNullTest() {
-        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,RATING, RELEASED, new HashSet<>(),
+                new HashSet<>(), new HashSet<>(),
                 new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
-        when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(),anyString(),  anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(aux).getStatusCode(), MESSAGE_ERROR);
@@ -208,16 +211,17 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
 
     @Test
     void addThrowsExceptionTest() {
-        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,new HashSet<>(), new HashSet<>(),
+        PostInputDTO aux = new PostInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,RATING, RELEASED, new HashSet<>(),
+                new HashSet<>(), new HashSet<>(),
                 new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD,
                         new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE),
                 CONTENT, PICTURE);
 
-        when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(),anyString(),  anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
-        when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(),anyString(),  anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(entityServiceMock.save(any(Post.class))).thenThrow(new RuntimeException());
 
         controller.setService(serviceMockException);
@@ -254,7 +258,8 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
         ContentUpdateDTO aux = new ContentUpdateDTO(CONTENT);
 
 
-        when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(),anyString(), anyInt(), anyString(), anySet(),
+                anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         when(serviceMock.findById(any(Integer.class))).thenReturn(new Post(new Game(), new User(), CONTENT, PICTURE));
@@ -286,7 +291,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
         ContentUpdateDTO aux = new ContentUpdateDTO(CONTENT);
 
         when(serviceMock.findById(any(Integer.class))).thenReturn(new Post(new Game(), new User(), CONTENT, PICTURE));
-        when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
+        when(serviceGameMock.add(anyString(), anyString(),anyString(), anyInt(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.update(ID, aux).getStatusCode(), MESSAGE_ERROR);    }
 
@@ -298,7 +303,8 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
 
 
         when(serviceMock.findById(any(Integer.class))).thenReturn(new Post(new Game(), new User(), CONTENT, PICTURE));
-        when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(),anyString(), anyInt(), anyString(), anySet(),
+                anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.update(ID,aux).getStatusCode(), MESSAGE_ERROR);
@@ -309,7 +315,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
         ContentUpdateDTO aux = new ContentUpdateDTO(CONTENT);
 
         when(serviceMock.findById(any(Integer.class))).thenReturn(new Post(new Game(), new User(), CONTENT, PICTURE));
-        when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(),anyString(),  anyInt(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
         when(serviceMock.update(anyInt(),any(Game.class), any(User.class), anyString(), anyString())).thenReturn(null);
 
@@ -321,7 +327,7 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
         ContentUpdateDTO aux = new ContentUpdateDTO(CONTENT);
 
 
-        when(serviceGameMock.add(anyString(), anyString(),anyString(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameMock.add(anyString(), anyString(),anyString(),  anyInt(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         when(serviceMock.findById(any(Integer.class))).thenReturn(new Post(new Game(), new User(), CONTENT, PICTURE));

@@ -31,7 +31,7 @@ public class CollectionEntityServiceTest extends TestUtilities {
 
     Game game;
     Genre genre;
-    Region region;
+    Tag tag;
     Publisher publisher;
     Developer developer;
     Platform platform;
@@ -39,18 +39,18 @@ public class CollectionEntityServiceTest extends TestUtilities {
     Set<Genre> genreSet;
     Set<Platform> platformSet;
     Set<Publisher> publisherSet;
-    Set<Region> regionSet;
+    Set<Tag> tagSet;
 
     @BeforeEach
     public void beforeEach() {
         genre = new Genre(NAME);
-        region = new Region(NAME);
+        tag = new Tag(NAME);
         publisher = new Publisher(NAME);
         developer = new Developer(NAME);
         platform = new Platform(NAME);
 
         genre.setId(ID);
-        region.setId(ID);
+        tag.setId(ID);
         publisher.setId(ID);
         developer.setId(ID);
         platform.setId(ID);
@@ -59,8 +59,9 @@ public class CollectionEntityServiceTest extends TestUtilities {
         genreSet = new HashSet<>(Collections.singletonList(genre));
         platformSet = new HashSet<>(Collections.singletonList(platform));
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
+        tagSet = new HashSet<>(Collections.singletonList(tag));
 
-        game = new Game(TITLE, COVER_ART,SLUG,  developerSet, genreSet, platformSet, publisherSet);
+        game = new Game(TITLE, COVER_ART,SLUG,  RATING, RELEASED, tagSet, developerSet, genreSet, platformSet, publisherSet);
         game.setId(ID);
         user = new User(ID);
         user.setUsername(NAME);

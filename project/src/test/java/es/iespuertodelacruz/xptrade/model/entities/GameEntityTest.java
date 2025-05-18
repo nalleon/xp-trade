@@ -1,7 +1,5 @@
 package es.iespuertodelacruz.xptrade.model.entities;
 
-import es.iespuertodelacruz.xptrade.domain.*;
-import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,26 +13,27 @@ public class GameEntityTest extends TestUtilities {
 
     GameEntity item;
     GenreEntity genre;
-    RegionEntity region;
+    TagEntity tag;
     PublisherEntity publisher;
     DeveloperEntity developer;
     PlatformEntity platform;
+
     Set<DeveloperEntity> developerSet;
     Set<GenreEntity> genreSet;
     Set<PlatformEntity> platformSet;
     Set<PublisherEntity> publisherSet;
-    Set<RegionEntity> regionSet;
+    Set<TagEntity> tagSet;
 
     @BeforeEach
     public void beforeEach() {
         genre = new GenreEntity(NAME);
-        region = new RegionEntity(NAME);
+        tag = new TagEntity(NAME);
         publisher = new PublisherEntity(NAME);
         developer = new DeveloperEntity(NAME);
         platform = new PlatformEntity(NAME);
 
         genre.setId(ID);
-        region.setId(ID);
+        tag.setId(ID);
         publisher.setId(ID);
         developer.setId(ID);
         platform.setId(ID);
@@ -43,7 +42,7 @@ public class GameEntityTest extends TestUtilities {
         genreSet = new HashSet<>(Collections.singletonList(genre));
         platformSet = new HashSet<>(Collections.singletonList(platform));
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
-        regionSet = new HashSet<>(Collections.singletonList(region));
+        tagSet = new HashSet<>(Collections.singletonList(tag));
         item = new GameEntity(TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet);
         item.setId(ID);
     }
@@ -62,13 +61,16 @@ public class GameEntityTest extends TestUtilities {
 
     @Test
     public void toStringTest(){
-        item = new GameEntity(TITLE, COVER_ART, SLUG, new HashSet<>(developerSet),
+        item = new GameEntity(ID, TITLE, COVER_ART, SLUG, RATING, RELEASED, developerSet, tagSet,
                 genreSet, platformSet, publisherSet);
         item.setId(ID);
+
         Assertions.assertTrue(item.toString().contains(String.valueOf(ID)), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(TITLE), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(COVER_ART), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(SLUG), MESSAGE_ERROR);
+        Assertions.assertTrue(item.toString().contains(RELEASED), MESSAGE_ERROR);
+        Assertions.assertTrue(item.toString().contains(String.valueOf(RATING)), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(genreSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(platformSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(developerSet.toString()), MESSAGE_ERROR);

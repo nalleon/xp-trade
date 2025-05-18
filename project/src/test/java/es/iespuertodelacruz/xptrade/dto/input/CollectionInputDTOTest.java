@@ -18,7 +18,7 @@ public class CollectionInputDTOTest extends TestUtilities {
 
     @BeforeEach
     public void beforeEach() {
-        game = new GameInputDTO(TITLE, COVER_ART, SLUG, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
+        game = new GameInputDTO(TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
         user =new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, ROLE_NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE);
         item = new CollectionInputDTO(game, user);
 

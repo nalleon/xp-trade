@@ -18,11 +18,12 @@ public class GameTest extends MapperHelper {
     Set<Platform> platformSet= new HashSet<>(Collections.singletonList(platformDomain));
 
     Set<Publisher> publisherSet= new HashSet<>(Collections.singletonList(publisherDomain));
+    Set<Tag> tagSet= new HashSet<>(Collections.singletonList(tagDomain));
 
 
     @Test
     public void getSetTest(){
-        item = new Game(TITLE, COVER_ART, SLUG, new HashSet<>(developerSet),
+        item = new Game(TITLE, COVER_ART, SLUG, RATING, RELEASED, tagSet, developerSet,
                 genreSet, platformSet, publisherSet);
 
         item.setId(ID);
@@ -30,17 +31,21 @@ public class GameTest extends MapperHelper {
         Assertions.assertEquals(ID, item.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(TITLE, item.getTitle(), MESSAGE_ERROR);
         Assertions.assertEquals(COVER_ART, item.getCoverArt(), MESSAGE_ERROR);
+        Assertions.assertEquals(RATING, item.getRating(), MESSAGE_ERROR);
+        Assertions.assertEquals(RELEASED, item.getReleased(), MESSAGE_ERROR);
         Assertions.assertEquals(developerSet, item.getDeveloperSet(), MESSAGE_ERROR);
         Assertions.assertEquals(genreSet, item.getGenreSet(), MESSAGE_ERROR);
         Assertions.assertEquals(platformSet, item.getPlatformSet(), MESSAGE_ERROR);
         Assertions.assertEquals(publisherSet, item.getPublisherSet(), MESSAGE_ERROR);
+        Assertions.assertEquals(tagSet, item.getTagSet(), MESSAGE_ERROR);
 
     }
 
     @Test
     public void toStringTest(){
-        item = new Game(TITLE, COVER_ART,SLUG, new HashSet<>(developerSet),
+        item = new Game(TITLE, COVER_ART,SLUG, RATING, RELEASED, tagSet, developerSet,
                 genreSet, platformSet, publisherSet);
+
         item.setId(ID);
         Assertions.assertTrue(item.toString().contains(String.valueOf(ID)), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(TITLE), MESSAGE_ERROR);
@@ -49,7 +54,10 @@ public class GameTest extends MapperHelper {
         Assertions.assertTrue(item.toString().contains(platformSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(developerSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(publisherSet.toString()), MESSAGE_ERROR);
+        Assertions.assertTrue(item.toString().contains(tagSet.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(SLUG), MESSAGE_ERROR);
+        Assertions.assertTrue(item.toString().contains(RELEASED), MESSAGE_ERROR);
+        Assertions.assertTrue(item.toString().contains(String.valueOf(RATING)), MESSAGE_ERROR);
 
     }
 

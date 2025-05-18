@@ -36,6 +36,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class GameRESTControllerV3Test extends TestUtilities {
+    public static final TagOutputDTO TAG_OUTPUT_DTO = new TagOutputDTO(ID, NAME);
     @Mock
     GameService serviceMock;
 
@@ -172,7 +173,9 @@ public class GameRESTControllerV3Test extends TestUtilities {
         platformOutputDTOList = new ArrayList<>();
         platformOutputDTOList.add(platformOutputDTO);
 
-        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG,new HashSet<>(Collections.singletonList(developerOutputDTO)),
+        gameOutputDTO = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG, RATING, RELEASED,
+                new HashSet<>(Collections.singletonList(TAG_OUTPUT_DTO)),
+                new HashSet<>(Collections.singletonList(developerOutputDTO)),
                 new HashSet<>(Collections.singletonList(genreOutputDTO)),
                 new HashSet<>(Collections.singletonList(platformOutputDTO)),
                 new HashSet<>(Collections.singletonList(publisherOutputDTO))
@@ -182,12 +185,17 @@ public class GameRESTControllerV3Test extends TestUtilities {
         gameDomain.setId(ID);
         gameDomain.setTitle(TITLE);
         gameDomain.setCoverArt(COVER_ART);
+        gameDomain.setReleased(RELEASED);
+        gameDomain.setRating(RATING);
         gameDomain.setPublisherSet(new HashSet<>(Collections.singletonList(publisherDomain)));
         gameDomain.setDeveloperSet(new HashSet<>(Collections.singletonList(developerDomain)));
         gameDomain.setPlatformSet(new HashSet<>(Collections.singletonList(platformDomain)));
         gameDomain.setGenreSet(new HashSet<>(Collections.singletonList(genreDomain)));
+        gameDomain.setTagSet(new HashSet<>());
 
-        gameInputDTO = new GameInputDTO(TITLE, COVER_ART, SLUG, new HashSet<>(Collections.singletonList(new DeveloperInputDTO(NAME))),
+        gameInputDTO = new GameInputDTO(TITLE, COVER_ART, SLUG, RATING, RELEASED,
+                new HashSet<>(Collections.singletonList(new TagInputDTO(NAME))),
+                new HashSet<>(Collections.singletonList(new DeveloperInputDTO(NAME))),
                 new HashSet<>(Collections.singletonList(new GenreInputDTO(NAME))),
                 new HashSet<>(Collections.singletonList(new PlatformInputDTO(NAME))),
                 new HashSet<>(Collections.singletonList(new PublisherInputDTO(NAME)))
@@ -358,7 +366,8 @@ public class GameRESTControllerV3Test extends TestUtilities {
 
    @Test
     void addTest() {
-        when(serviceMock.add(gameInputDTO.title(), gameInputDTO.coverArt(), gameInputDTO.slug(),
+        when(serviceMock.add(gameInputDTO.title(), gameInputDTO.coverArt(), gameInputDTO.slug(),gameInputDTO.rating(),
+                gameDomain.getReleased(), gameDomain.getTagSet(),
                 gameDomain.getDeveloperSet(), gameDomain.getGenreSet(), gameDomain.getPlatformSet(),
                 gameDomain.getPublisherSet())).thenReturn(gameDomain);
 
@@ -373,6 +382,7 @@ public class GameRESTControllerV3Test extends TestUtilities {
     void addExceptionTest() {
         when(serviceMock.add(
                 anyString(), anyString(), anyString(),
+                anyInt(), anyString(), anySet(),
                 anySet(), anySet(), anySet(),
                 anySet())
         ).thenThrow(new RuntimeException());
@@ -402,12 +412,14 @@ public class GameRESTControllerV3Test extends TestUtilities {
         when(serviceMock.findById(any(Integer.class))).thenReturn(gameDomain);
         when(serviceMock.add(
                 anyString(), anyString(), anyString(),
+                anyInt(), anyString(), anySet(),
                 anySet(), anySet(), anySet(),
                 anySet())
         ).thenReturn(new Game());
 
         when(serviceMock.update(anyInt(),
                 anyString(), anyString(), anyString(),
+                anyInt(), anyString(), anySet(),
                 anySet(), anySet(), anySet(),
                 anySet())
         ).thenReturn(gameDomain);
@@ -435,8 +447,10 @@ public class GameRESTControllerV3Test extends TestUtilities {
 
         when(serviceMock.findById(any(Integer.class))).thenReturn(gameDomain);
 
-        when(serviceMock.update(anyInt(),
+        when(serviceMock.update(
+                anyInt(),
                 anyString(), anyString(), anyString(),
+                anyInt(), anyString(), anySet(),
                 anySet(), anySet(), anySet(),
                 anySet())
         ).thenThrow(new RuntimeException());

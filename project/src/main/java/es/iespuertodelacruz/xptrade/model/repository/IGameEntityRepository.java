@@ -120,6 +120,15 @@ public interface IGameEntityRepository  extends JpaRepository<GameEntity, Intege
 
     @Modifying
     @Query(
+            value = "DELETE FROM games_tags AS gp " +
+                    "WHERE gp.game_id=:gameId",
+            nativeQuery = true
+    )
+    int deleteGameTagRelation(@Param("gameId") int gameId);
+
+
+    @Modifying
+    @Query(
             value = "DELETE FROM posts AS gp " +
                     "WHERE gp.game_id=:gameId",
             nativeQuery = true

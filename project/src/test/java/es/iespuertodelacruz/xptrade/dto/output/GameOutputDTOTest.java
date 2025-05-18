@@ -13,7 +13,7 @@ public class GameOutputDTOTest extends TestUtilities {
     GameOutputDTO item;
 
     GenreOutputDTO genre;
-    RegionOutputDTO region;
+    TagOutputDTO tag;
     PublisherOutputDTO publisher;
     DeveloperOutputDTO developer;
     PlatformOutputDTO platform;
@@ -21,12 +21,12 @@ public class GameOutputDTOTest extends TestUtilities {
     Set<GenreOutputDTO> genreSet;
     Set<PlatformOutputDTO> platformSet;
     Set<PublisherOutputDTO> publisherSet;
-    Set<RegionOutputDTO> regionSet;
+    Set<TagOutputDTO> tagSet;
 
     @BeforeEach
     public void beforeEach() {
         genre = new GenreOutputDTO(ID, NAME);
-        region = new RegionOutputDTO(ID, NAME);
+        tag = new TagOutputDTO(ID, NAME);
         publisher = new PublisherOutputDTO(ID, NAME);
         developer = new DeveloperOutputDTO(ID, NAME);
         platform = new PlatformOutputDTO(ID, NAME);
@@ -35,9 +35,9 @@ public class GameOutputDTOTest extends TestUtilities {
         genreSet = new HashSet<>(Collections.singletonList(genre));
         platformSet = new HashSet<>(Collections.singletonList(platform));
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
-        regionSet = new HashSet<>(Collections.singletonList(region));
+        tagSet = new HashSet<>(Collections.singletonList(tag));
 
-        item = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG,developerSet, genreSet, platformSet, publisherSet);
+        item = new GameOutputDTO(ID,TITLE, COVER_ART, SLUG, RATING, RELEASED, tagSet, developerSet, genreSet, platformSet, publisherSet);
     }
 
 
@@ -46,6 +46,9 @@ public class GameOutputDTOTest extends TestUtilities {
         Assertions.assertEquals(ID, item.id(), MESSAGE_ERROR);
         Assertions.assertEquals(TITLE, item.title(), MESSAGE_ERROR);
         Assertions.assertEquals(COVER_ART, item.coverArt(), MESSAGE_ERROR);
+        Assertions.assertEquals(RATING, item.rating(), MESSAGE_ERROR);
+        Assertions.assertEquals(RELEASED, item.released(), MESSAGE_ERROR);
+        Assertions.assertEquals(tagSet, item.tagOutputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(developerSet, item.developerOutputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(genreSet, item.genreOutputDTOSet(), MESSAGE_ERROR);
         Assertions.assertEquals(platformSet, item.platformOutputDTOSet(), MESSAGE_ERROR);

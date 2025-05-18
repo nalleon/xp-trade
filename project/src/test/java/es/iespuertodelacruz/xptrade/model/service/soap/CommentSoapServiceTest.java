@@ -39,11 +39,14 @@ public class CommentSoapServiceTest extends TestUtilities {
     Publisher publisher;
     Developer developer;
     Platform platform;
+    Tag tag;
+    Set<Tag> tagSet;
     Set<Developer> developerSet;
     Set<Genre> genreSet;
     Set<Platform> platformSet;
     Set<Publisher> publisherSet;
     Set<Region> regionSet;
+
 
     @BeforeEach
     public void beforeEach() {
@@ -52,20 +55,21 @@ public class CommentSoapServiceTest extends TestUtilities {
         publisher = new Publisher(NAME);
         developer = new Developer(NAME);
         platform = new Platform(NAME);
-
+        tag = new Tag(NAME);
         genre.setId(ID);
         region.setId(ID);
         publisher.setId(ID);
         developer.setId(ID);
         platform.setId(ID);
-
+        tag.setId(ID);
         developerSet = new HashSet<>(Collections.singletonList(developer));
         genreSet = new HashSet<>(Collections.singletonList(genre));
         platformSet = new HashSet<>(Collections.singletonList(platform));
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
+        tagSet = new HashSet<>(Collections.singletonList(tag));
 
-        game = new Game(TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet);
+        game = new Game(TITLE, COVER_ART, SLUG, RATING, RELEASED, tagSet, developerSet, genreSet, platformSet, publisherSet);
         game.setId(ID);
         user = new User(ID);
         user.setUsername(NAME);

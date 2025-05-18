@@ -1,10 +1,5 @@
 package es.iespuertodelacruz.xptrade.domain;
 
-import es.iespuertodelacruz.xptrade.model.entities.*;
-import jakarta.persistence.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,7 +21,7 @@ public class Game {
     private int rating;
     private String released;
 
-    private Set<Tag> tagsSet;
+    private Set<Tag> tagSet;
     private Set<Developer> developerSet;
 
     private Set<Genre> genreSet;
@@ -79,7 +74,7 @@ public class Game {
         this.slug = slug;
         this.rating = rating;
         this.released = released;
-        this.tagsSet = tagSet;
+        this.tagSet = tagSet;
         this.developerSet = developerSet;
         this.genreSet = genreSet;
         this.platformSet = platformSet;
@@ -170,12 +165,12 @@ public class Game {
         this.released = released;
     }
 
-    public Set<Tag> getTagsSet() {
-        return tagsSet;
+    public Set<Tag> getTagSet() {
+        return tagSet;
     }
 
-    public void setTagsSet(Set<Tag> tagsSet) {
-        this.tagsSet = tagsSet;
+    public void setTagSet(Set<Tag> tagSet) {
+        this.tagSet = tagSet;
     }
 
     @Override
@@ -187,7 +182,7 @@ public class Game {
                 ", slug='" + slug + '\'' +
                 ", rating=" + rating +
                 ", released='" + released + '\'' +
-                ", tagsSet=" + tagsSet +
+                ", tagsSet=" + tagSet +
                 ", developerSet=" + developerSet +
                 ", genreSet=" + genreSet +
                 ", platformSet=" + platformSet +

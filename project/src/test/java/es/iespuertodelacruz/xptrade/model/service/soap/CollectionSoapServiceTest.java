@@ -2,6 +2,7 @@ package es.iespuertodelacruz.xptrade.model.service.soap;
 
 import es.iespuertodelacruz.xptrade.domain.Collection;
 import es.iespuertodelacruz.xptrade.domain.*;
+import es.iespuertodelacruz.xptrade.dto.output.GameOutputDTO;
 import es.iespuertodelacruz.xptrade.model.entities.CollectionEntity;
 import es.iespuertodelacruz.xptrade.model.repository.ICollectionEntityRepository;
 import es.iespuertodelacruz.xptrade.model.service.rest.CollectionEntityService;
@@ -64,7 +65,7 @@ public class CollectionSoapServiceTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        game = new Game(TITLE, COVER_ART,SLUG,  developerSet, genreSet, platformSet, publisherSet);
+        game = new Game(TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
         game.setId(ID);
         user = new User(ID);
         user.setUsername(NAME);

@@ -64,7 +64,7 @@ public class FavoriteSoapServiceTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        game = new Game(TITLE, COVER_ART,SLUG,  developerSet, genreSet, platformSet, publisherSet);
+        game = new Game(TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
         game.setId(ID);
         user = new User(ID);
         user.setUsername(NAME);

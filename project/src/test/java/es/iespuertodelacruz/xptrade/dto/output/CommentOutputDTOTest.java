@@ -1,5 +1,6 @@
 package es.iespuertodelacruz.xptrade.dto.output;
 
+import es.iespuertodelacruz.xptrade.dto.input.GameInputDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
@@ -40,7 +41,7 @@ public class CommentOutputDTOTest extends TestUtilities {
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
         regionSet = new HashSet<>(Collections.singletonList(region));
 
-        game = new GameOutputDTO(ID, TITLE, COVER_ART, SLUG, developerSet, genreSet, platformSet, publisherSet);
+        game = new GameOutputDTO(ID,TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
         user =new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, ROLE_NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE);
         post = new PostOutputDTO(ID, game, user, CONTENT, PICTURE, CREATION_DATE);
         item = new CommentOutputDTO(ID, post, user, CONTENT, CREATION_DATE);

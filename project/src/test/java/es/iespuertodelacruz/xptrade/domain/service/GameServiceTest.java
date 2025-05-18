@@ -120,13 +120,14 @@ public class GameServiceTest extends TestUtilities {
         Set<Genre> genreSet = new HashSet<>();
         Set<Platform> platformSet = new HashSet<>();
         Set<Publisher> publisherSet = new HashSet<>();
-        Assertions.assertNotNull(service.add(TITLE, COVER_ART, SLUG, developerSet,
+        Assertions.assertNotNull(service.add(TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(),developerSet,
                 genreSet, platformSet, publisherSet), MESSAGE_ERROR);
     }
 
     @Test
     void addNullTest() {
-        Assertions.assertNull(service.add(null, null, null, null, null, null,
+        Assertions.assertNull(service.add(null, null, null, 0, null, null,
+                null, null, null,
                 null), MESSAGE_ERROR);
     }
 
@@ -137,7 +138,7 @@ public class GameServiceTest extends TestUtilities {
         Set<Genre> genreSet = new HashSet<>();
         Set<Platform> platformSet = new HashSet<>();
         Set<Publisher> publisherSet = new HashSet<>();
-        Assertions.assertNull(service.update(1, TITLE, COVER_ART, SLUG, developerSet,
+        Assertions.assertNull(service.update(1, TITLE, COVER_ART, SLUG,  RATING, RELEASED, new HashSet<>(),developerSet,
                 genreSet, platformSet, publisherSet), MESSAGE_ERROR);
     }
     @Test
@@ -147,7 +148,7 @@ public class GameServiceTest extends TestUtilities {
         Set<Genre> genreSet = new HashSet<>();
         Set<Platform> platformSet = new HashSet<>();
         Set<Publisher> publisherSet = new HashSet<>();
-        Assertions.assertNotNull(service.update(1,TITLE, COVER_ART, SLUG, developerSet,
+        Assertions.assertNotNull(service.update(1,TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(), developerSet,
                 genreSet, platformSet, publisherSet), MESSAGE_ERROR);
     }
 
@@ -159,7 +160,7 @@ public class GameServiceTest extends TestUtilities {
 
     @Test
     void updateNullTest() throws Exception {
-        Assertions.assertNull(service.update(0, null, null, null, null, null, null,
+        Assertions.assertNull(service.update(0, null, null, null, 0, null,null, null, null, null,
                 null), MESSAGE_ERROR);
     }
 

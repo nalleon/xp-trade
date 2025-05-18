@@ -35,6 +35,8 @@ public class TestUtilities {
     public static final int VERIFIED = 0;
     public static final String NAME = "genericNameTest";
     public static final String TITLE = "titleTest";
+    public static final String RELEASED = "2025-01-01";
+    public static final int RATING = 10;
     public static final String SLUG = "slugTest";
     public static final String COVER_ART = "coverArtTest";
     public static final String CONTENT = "contentTest";

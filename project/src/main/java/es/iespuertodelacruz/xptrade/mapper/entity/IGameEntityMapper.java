@@ -13,19 +13,21 @@ import java.util.List;
  * @author Jose Maximiliano Boada Martin @mackstm
  */
 @Mapper(uses = {IPlatformEntityMapper.class, IDeveloperEntityMapper.class,
-        IPublisherEntityMapper.class, IGenreEntityMapper.class})
+        IPublisherEntityMapper.class, IGenreEntityMapper.class, TagEntity.class})
 public interface IGameEntityMapper {
     IGameEntityMapper INSTANCE = Mappers.getMapper(IGameEntityMapper.class);
     @Mapping(target = "developerSet", source = "developerEntitySet")
     @Mapping(target = "genreSet", source = "genreEntitySet")
     @Mapping(target = "platformSet", source = "platformEntitySet")
     @Mapping(target = "publisherSet", source = "publisherEntitySet")
+    @Mapping(target = "tagSet", source = "tagEntitySet")
     Game toDomain(GameEntity entity);
 
     @Mapping(target = "developerEntitySet", source = "developerSet")
     @Mapping(target = "genreEntitySet", source = "genreSet")
     @Mapping(target = "platformEntitySet", source = "platformSet")
     @Mapping(target = "publisherEntitySet", source = "publisherSet")
+    @Mapping(target = "tagEntitySet", source = "tagSet")
     GameEntity toEntity(Game domain);
     List<Game> toDomainList(List<GameEntity> entities);
     List<GameEntity> toEntityList(List<Game> domains);

@@ -74,6 +74,13 @@ public class MapperHelper extends TestUtilities {
     public List<Comment> commentDomains;
 
 
+    public TagEntity tagEntity;
+    public Tag tagDomain;
+    public List<TagEntity> tagEntities;
+    public List<Tag> tagDomains;
+
+
+
 
     @BeforeEach
     public void beforeEach() {
@@ -190,22 +197,44 @@ public class MapperHelper extends TestUtilities {
         platformEntities = new ArrayList<>();
         platformEntities.add(platformEntity);
 
+
+        tagEntity = new TagEntity();
+        tagEntity.setId(ID);
+        tagEntity.setName(NAME);
+
+        tagDomain = new Tag();
+        tagDomain.setId(ID);
+        tagDomain.setName(NAME);
+
+        tagDomains = new ArrayList<>();
+        tagDomains.add(tagDomain);
+
+        tagEntities = new ArrayList<>();
+        tagEntities.add(tagEntity);
+
         gameEntity = new GameEntity();
         gameEntity.setId(ID);
         gameEntity.setTitle(TITLE);
         gameEntity.setCoverArt(COVER_ART);
         gameEntity.setSlug(SLUG);
+        gameEntity.setReleased(RELEASED);
+        gameEntity.setRating(RATING);
         gameEntity.setPublisherEntitySet(new HashSet<>(Collections.singletonList(publisherEntity)));
         gameEntity.setDeveloperEntitySet(new HashSet<>(Collections.singletonList(developerEntity)));
         gameEntity.setPlatformEntitySet(new HashSet<>(Collections.singletonList(platformEntity)));
         gameEntity.setGenreEntitySet(new HashSet<>(Collections.singletonList(genreEntity)));
+        gameEntity.setTagEntitySet(new HashSet<>(Collections.singletonList(tagEntity)));
+
+
 
         gameDomain = new Game();
         gameDomain.setId(ID);
         gameDomain.setTitle(TITLE);
         gameDomain.setCoverArt(COVER_ART);
         gameDomain.setSlug(SLUG);
-
+        gameDomain.setRating(RATING);
+        gameDomain.setReleased(RELEASED);
+        gameDomain.setTagSet(new HashSet<>(Collections.singletonList(tagDomain)));
         gameDomain.setPublisherSet(new HashSet<>(Collections.singletonList(publisherDomain)));
         gameDomain.setDeveloperSet(new HashSet<>(Collections.singletonList(developerDomain)));
         gameDomain.setPlatformSet(new HashSet<>(Collections.singletonList(platformDomain)));

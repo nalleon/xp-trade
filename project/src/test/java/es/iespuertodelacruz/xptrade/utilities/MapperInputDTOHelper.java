@@ -82,6 +82,10 @@ public class MapperInputDTOHelper extends TestUtilities {
     public List<CommentInputDTO> commentInputDTOList;
     public List<Comment> commentDomains;
 
+    public TagInputDTO tagInputDTO;
+    public Tag tagDomain;
+    public List<TagInputDTO> tagInputDTOList;
+    public List<Tag> tagDomains;
 
     @BeforeEach
     public void beforeEach() {
@@ -127,6 +131,16 @@ public class MapperInputDTOHelper extends TestUtilities {
 
         genreInputDTOList = new ArrayList<>();
         genreInputDTOList.add(genreInputDTO);
+
+
+        tagInputDTO = new TagInputDTO(NAME);
+
+
+        tagDomain = new Tag();
+        tagDomain.setName(NAME);
+
+        tagInputDTOList = new ArrayList<>();
+        tagInputDTOList.add(tagInputDTO);
 
         genreDomains = new ArrayList<>();
         genreDomains.add(genreDomain);
@@ -176,13 +190,18 @@ public class MapperInputDTOHelper extends TestUtilities {
         platformInputDTOList = new ArrayList<>();
         platformInputDTOList.add(platformInputDTO);
 
-        gameOutputDTO = new GameOutputDTO(ID,TITLE, COVER_ART, SLUG, new HashSet<>(Collections.singletonList(new DeveloperOutputDTO(ID,NAME))),
+        gameOutputDTO = new GameOutputDTO(ID,TITLE, COVER_ART, SLUG, RATING, RELEASED,
+                    new HashSet<>(Collections.singletonList(new TagOutputDTO(ID, NAME))),
+                    new HashSet<>(Collections.singletonList(new DeveloperOutputDTO(ID,NAME))),
                     new HashSet<>(Collections.singletonList( new GenreOutputDTO(ID, NAME))),
                     new HashSet<>(Collections.singletonList(new PlatformOutputDTO(ID, NAME))),
                     new HashSet<>(Collections.singletonList(new PublisherOutputDTO(ID,NAME)))
                 );
 
-        gameInputDTO = new GameInputDTO(TITLE, COVER_ART, SLUG, new HashSet<>(Collections.singletonList(developerInputDTO)),
+        gameInputDTO = new GameInputDTO(TITLE, COVER_ART, SLUG,
+                RATING, RELEASED,
+                new HashSet<>(Collections.singletonList(tagInputDTO)),
+                new HashSet<>(Collections.singletonList(developerInputDTO)),
                 new HashSet<>(Collections.singletonList(genreInputDTO)),
                 new HashSet<>(Collections.singletonList(platformInputDTO)),
                 new HashSet<>(Collections.singletonList(publisherInputDTO))
@@ -196,6 +215,9 @@ public class MapperInputDTOHelper extends TestUtilities {
         gameDomain.setDeveloperSet(new HashSet<>(Collections.singletonList(developerDomain)));
         gameDomain.setPlatformSet(new HashSet<>(Collections.singletonList(platformDomain)));
         gameDomain.setGenreSet(new HashSet<>(Collections.singletonList(genreDomain)));
+        gameDomain.setTagSet(new HashSet<>(Collections.singletonList(tagDomain)));
+        gameDomain.setRating(RATING);
+        gameDomain.setReleased(RELEASED);
 
         gameDomains = new ArrayList<>();
         gameDomains.add(gameDomain);

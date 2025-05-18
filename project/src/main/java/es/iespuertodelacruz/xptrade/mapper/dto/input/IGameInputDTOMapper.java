@@ -20,12 +20,14 @@ public interface IGameInputDTOMapper {
     @Mapping(target = "genreSet", source = "genreInputDTOSet")
     @Mapping(target = "platformSet", source = "platformInputDTOSet")
     @Mapping(target = "publisherSet", source = "publisherInputDTOSet")
+    @Mapping(target = "tagSet", source = "tagInputDTOSet")
     Game toDomain(GameInputDTO dto);
 
     @Mapping(target = "developerInputDTOSet", source = "developerSet")
     @Mapping(target = "genreInputDTOSet", source = "genreSet")
     @Mapping(target = "platformInputDTOSet", source = "platformSet")
     @Mapping(target = "publisherInputDTOSet", source = "publisherSet")
+    @Mapping(target = "tagInputDTOSet", source = "tagSet")
     GameInputDTO toDTO(Game domain);
 
     List<Game> toDomainList(List<GameInputDTO> dtos);

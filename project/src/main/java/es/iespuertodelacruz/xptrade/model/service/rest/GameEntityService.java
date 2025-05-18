@@ -32,6 +32,7 @@ public class GameEntityService implements IGameRepository {
     IGenreEntityRepository genreRepository;
     IRegionEntityRepository regionRepository;
     IPlatformEntityRepository platformRepository;
+    ITagEntityRepository tagRepository;
 
     /**
      * Setter for the autowired service
@@ -90,6 +91,15 @@ public class GameEntityService implements IGameRepository {
         this.platformRepository = platformRepository;
     }
 
+    /**
+     * Setter for the autowired service
+     * @param tagRepository of the service
+     */
+    @Autowired
+    public void setTagRepository(ITagEntityRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
+
     @Override
     @Transactional
     public Game save(Game game) {
@@ -136,6 +146,13 @@ public class GameEntityService implements IGameRepository {
                 publisherRepository::save
         );
 
+        Set<TagEntity> tags = checkIfItemsExist(
+                game.getTagSet(),
+                Tag::getName,
+                name -> tagRepository.findByName(name),
+                TagEntity::new,
+                tagRepository::save
+        );
 
         try {
 
@@ -144,6 +161,7 @@ public class GameEntityService implements IGameRepository {
             entity.setGenreEntitySet(genres);
             entity.setPlatformEntitySet(platforms);
             entity.setPublisherEntitySet(publishers);
+            entity.setTagEntitySet(tags);
 
             GameEntity savedEntity = repository.save(entity);
 
@@ -271,6 +289,7 @@ public class GameEntityService implements IGameRepository {
             repository.deleteGamePublisherRelation(id);
             repository.deleteGameRegionRelation(id);
             repository.deleteGameGenreRelation(id);
+            repository.deleteGameTagRelation(id);
             repository.deleteFromPosts(id);
             int quantity = repository.deleteEntityById(id);
             return quantity > 0;
@@ -326,11 +345,22 @@ public class GameEntityService implements IGameRepository {
                     publisherRepository::save
             );
 
+            Set<TagEntity> tags = checkIfItemsExist(
+                    game.getTagSet(),
+                    Tag::getName,
+                    name -> tagRepository.findByName(name),
+                    TagEntity::new,
+                    tagRepository::save
+            );
+
 
             GameEntity entity = IGameEntityMapper.INSTANCE.toEntity(game);
             dbItem.setTitle(entity.getTitle());
             dbItem.setCoverArt(entity.getCoverArt());
             dbItem.setSlug(entity.getSlug());
+            dbItem.setRating(entity.getRating());
+            dbItem.setReleased(entity.getReleased());
+            dbItem.setTagEntitySet(tags);
             dbItem.setDeveloperEntitySet(developers);
             dbItem.setGenreEntitySet(genres);
             dbItem.setPlatformEntitySet(platforms);
