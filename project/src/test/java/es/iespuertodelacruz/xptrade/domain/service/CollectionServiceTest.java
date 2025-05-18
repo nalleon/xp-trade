@@ -3,6 +3,7 @@ package es.iespuertodelacruz.xptrade.domain.service;
 import es.iespuertodelacruz.xptrade.domain.Collection;
 import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.User;
+import es.iespuertodelacruz.xptrade.domain.interfaces.repository.ICollectionRepository;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
 import es.iespuertodelacruz.xptrade.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class CollectionServiceTest extends TestUtilities {
     @Mock
-    IGenericSocialRepository<Collection, Integer, User, Game> repositoryMock;
+    ICollectionRepository repositoryMock;
 
     @InjectMocks
     CollectionService service;
@@ -50,19 +51,6 @@ public class CollectionServiceTest extends TestUtilities {
     void getOneTest() {
         Mockito.when(repositoryMock.findById(1)).thenReturn(new Collection());
         Assertions.assertNotNull(service.findById(1), MESSAGE_ERROR);
-    }
-
-    @Test
-    void getAllByGameNullTest() {
-        Mockito.when(repositoryMock.findAllBySubject(new Game())).thenReturn(null);
-        Assertions.assertNull(service.findByGame(new Game()), MESSAGE_ERROR);
-    }
-
-
-    @Test
-    void getAllByGameTest() {
-        Mockito.when(repositoryMock.findAllBySubject(new Game())).thenReturn(new ArrayList<>());
-        Assertions.assertNotNull(service.findByGame(new Game()), MESSAGE_ERROR);
     }
 
     @Test

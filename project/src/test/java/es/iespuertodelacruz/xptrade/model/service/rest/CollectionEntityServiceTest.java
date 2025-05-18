@@ -94,12 +94,6 @@ public class CollectionEntityServiceTest extends TestUtilities {
     }
 
     @Test
-    void getByIdGameNullTest() {
-        Assertions.assertNull(service.findAllBySubject(null), MESSAGE_ERROR);
-    }
-
-
-    @Test
     void getOneTest() {
         when(repositoryMock.findById(1)).thenReturn(Optional.of(new CollectionEntity()));
         Assertions.assertNotNull(service.findById(1), MESSAGE_ERROR);
@@ -112,14 +106,6 @@ public class CollectionEntityServiceTest extends TestUtilities {
         list.add(new CollectionEntity());
         when(repositoryMock.findAllByUser(user.getId())).thenReturn(list);
         Assertions.assertNotNull(service.findAllByUser(user), MESSAGE_ERROR);
-    }
-
-    @Test
-    void getByGameTest() {
-        List<CollectionEntity> list = new ArrayList<>();
-        list.add(new CollectionEntity());
-        when(repositoryMock.findAllByGame(game.getId())).thenReturn(list);
-        Assertions.assertNotNull(service.findAllBySubject(game), MESSAGE_ERROR);
     }
 
 

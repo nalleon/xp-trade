@@ -3,9 +3,11 @@ package es.iespuertodelacruz.xptrade.model.service.soap;
 import es.iespuertodelacruz.xptrade.domain.Collection;
 import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.User;
+import es.iespuertodelacruz.xptrade.domain.interfaces.repository.ICollectionRepository;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericRepository;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IUserRepository;
+import es.iespuertodelacruz.xptrade.model.service.interfaces.ICollectionSoapService;
 import es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSoapService;
 import es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSocialSoapService;
 import jakarta.jws.WebService;
@@ -20,18 +22,18 @@ import java.util.List;
  */
 @WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSocialSoapService")
 @Component
-public class CollectionSoapService implements IGenericSocialSoapService<Collection, Integer, User, Game> {
+public class CollectionSoapService implements ICollectionSoapService {
     /**
      * Properties
      */
-    private IGenericSocialRepository<Collection, Integer, User, Game> service;
+    private ICollectionRepository service;
 
     /**
      * Setter of the service
      * @param service restfull
      */
     @Autowired
-    public void setService(IGenericSocialRepository<Collection, Integer, User, Game> service) {
+    public void setService(ICollectionRepository service) {
         this.service = service;
     }
 
@@ -53,11 +55,6 @@ public class CollectionSoapService implements IGenericSocialSoapService<Collecti
     @Override
     public List<Collection> findAllByUser(User user) {
         return service.findAllByUser(user);
-    }
-
-    @Override
-    public List<Collection> findAllBySubject(Game game) {
-        return service.findAllBySubject(game);
     }
 
     @Override
