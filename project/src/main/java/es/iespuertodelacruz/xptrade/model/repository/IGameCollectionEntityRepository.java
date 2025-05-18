@@ -14,4 +14,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IGameCollectionEntityRepository extends JpaRepository<GameCollectionEntity, Integer> {
+    @Modifying
+    @Query(
+            value="DELETE FROM collections AS r WHERE r.id=:id",
+            nativeQuery=true
+    )
+    int deleteEntityById(@Param("id") Integer id);
 }
