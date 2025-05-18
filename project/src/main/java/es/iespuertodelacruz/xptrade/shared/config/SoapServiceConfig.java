@@ -5,23 +5,18 @@ import es.iespuertodelacruz.xptrade.model.service.interfaces.IUserSoapService;
 import jakarta.xml.ws.Endpoint;
 import org.apache.cxf.Bus;
 import org.apache.cxf.jaxws.EndpointImpl;
-import org.apache.cxf.transport.servlet.CXFServlet;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Configuration
-public class WebServiceConfig {
+public class SoapServiceConfig {
 
     private final Bus bus;
     private final IUserSoapService userSoapService;
     private final IRoleSoapService roleSoapService;
 
 
-    public WebServiceConfig(
+    public SoapServiceConfig(
             Bus bus,
             IUserSoapService userSoapService,
             IRoleSoapService roleSoapService
