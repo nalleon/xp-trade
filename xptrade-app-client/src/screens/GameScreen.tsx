@@ -117,58 +117,58 @@ const GameScreen = (props: Props) => {
   const addToFavorite = async (game: GameDetails) => {
     if (!game) return;
 
-    const usernameXP = await AsyncStorage.getItem('username');
+    // const usernameXP = await AsyncStorage.getItem('username');
 
-    const developers =
-      game.developers?.length > 0
-        ? game.developers.map((d) => ({ name: d.name }))
-        : game.publishers?.length > 0
-          ? game.publishers.map((p) => ({ name: p.name }))
-          : [];
+    // const developers =
+    //   game.developers?.length > 0
+    //     ? game.developers.map((d) => ({ name: d.name }))
+    //     : game.publishers?.length > 0
+    //       ? game.publishers.map((p) => ({ name: p.name }))
+    //       : [];
 
-    const publishers =
-      game.publishers?.length > 0
-        ? game.publishers.map((p) => ({ name: p.name }))
-        : game.developers?.length > 0
-          ? game.developers.map((d) => ({ name: d.name }))
-          : [];
+    // const publishers =
+    //   game.publishers?.length > 0
+    //     ? game.publishers.map((p) => ({ name: p.name }))
+    //     : game.developers?.length > 0
+    //       ? game.developers.map((d) => ({ name: d.name }))
+    //       : [];
 
-    const genres =
-      game.genres?.length > 0
-        ? game.genres.map((g) => ({ name: g.name }))
-        : game.tags?.length > 0
-          ? game.tags.map((tag) => ({ name: tag.name }))
-          : [];
+    // const genres =
+    //   game.genres?.length > 0
+    //     ? game.genres.map((g) => ({ name: g.name }))
+    //     : game.tags?.length > 0
+    //       ? game.tags.map((tag) => ({ name: tag.name }))
+    //       : [];
 
-    const inputXPTrade = {
-      game: {
-        title: game.name,
-        coverArt: game.background_image,
-        slug: game.slug,
-        developerInputDTOSet: developers,
-        genreInputDTOSet: genres,
-        platformInputDTOSet: game.platforms?.length > 0
-          ? game.platforms.map((p) => ({
-            name: p.platform.name,
-          }))
-          : [],
-        publisherInputDTOSet: publishers,
-        regionInputDTOSet: REGIONS.map((region) => ({
-          name: region,
-        })),
-      },
-      user: {
-        username: usernameXP,
-        profilePicture: '',
-      },
-    };
+    // const inputXPTrade = {
+    //   game: {
+    //     title: game.name,
+    //     coverArt: game.background_image,
+    //     slug: game.slug,
+    //     developerInputDTOSet: developers,
+    //     genreInputDTOSet: genres,
+    //     platformInputDTOSet: game.platforms?.length > 0
+    //       ? game.platforms.map((p) => ({
+    //         name: p.platform.name,
+    //       }))
+    //       : [],
+    //     publisherInputDTOSet: publishers,
+    //     regionInputDTOSet: REGIONS.map((region) => ({
+    //       name: region,
+    //     })),
+    //   },
+    //   user: {
+    //     username: usernameXP,
+    //     profilePicture: '',
+    //   },
+    // };
 
-    const result = await handleAddToFavorite(inputXPTrade);
+    // const result = await handleAddToFavorite(inputXPTrade);
 
-    if (result == SUCCESS) {
-      setIsFavorite(true);
-      setShowAddToFavoritesModal(true);
-    }
+    // if (result == SUCCESS) {
+    //   setIsFavorite(true);
+    //   setShowAddToFavoritesModal(true);
+    // }
 
     setIsScrollEnabled(true);
   };
@@ -244,18 +244,18 @@ const GameScreen = (props: Props) => {
 
       <View className="p-4">
         <Text className="text-[#F6F7F7] text-2xl font-bold mb-2">
-          {currentGame.name}
+          {currentGameDetailed.name}
         </Text>
 
         <View className="flex-row justify-between items-center mb-4">
           <View className="flex-row items-center space-x-6">
             <View className="flex-row items-center space-x-1">
               <Icon name="star" size={16} color="#9D8D6A" />
-              <Text className="text-[#F6F7F7]">{currentGame.rating.toFixed(1)} / 5</Text>
+              <Text className="text-[#F6F7F7]">{currentGameDetailed.rating.toFixed(1)} / 5</Text>
             </View>
             <View className="flex-row items-center space-x-1">
               <Icon name="calendar-outline" size={16} color="#999" />
-              <Text className="text-[#999]">{currentGame.released}</Text>
+              <Text className="text-[#999]">{currentGameDetailed.released}</Text>
             </View>
           </View>
 
@@ -347,7 +347,7 @@ const GameScreen = (props: Props) => {
           </View>
         }
 
-        {(currentGame.genres?.length > 0 || currentGame.tags?.length > 0 || currentGameDetailed.genres?.length > 0) && (
+        {(currentGame.genres?.length > 0 || currentGame?.tags?.length > 0 || currentGameDetailed.genres?.length > 0) && (
           <View className="mb-6">
             <View className="flex-row items-center justify-center my-6">
               <View className="flex-1 h-px bg-[#3A3F4A]" />
@@ -372,10 +372,10 @@ const GameScreen = (props: Props) => {
                 </View>
               ))}
 
-              {currentGame.tags
+              {currentGameDetailed?.tags
                 .filter((tag) => tag.language !== 'rus')
                 .filter((tag) => {
-                  const genres = currentGame.genres.length > 0 ? currentGame.genres : currentGameDetailed.genres;
+                  const genres = currentGameDetailed?.genres?.length > 0 ? currentGameDetailed.genres : currentGameDetailed.genres;
                   return !genres.some((genre) => genre.name.toLowerCase() === tag.name.toLowerCase());
                 })
                 .slice(0, 10)
@@ -397,7 +397,7 @@ const GameScreen = (props: Props) => {
           </View>
         )}
 
-        {currentGame.short_screenshots?.length > 0 && (
+        {currentGame?.short_screenshots?.length > 0 && (
           <ScreenshotGallery screenshots={currentGame.short_screenshots} />
         )}
 

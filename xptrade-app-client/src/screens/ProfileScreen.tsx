@@ -15,16 +15,15 @@ import UseRAWGApi from '../hooks/UseRAWGApi';
 type Props = NativeStackScreenProps<ProfileStackParamList, 'ProfileScreen'>;
 
 const ProfileScreen = (props: Props) => {
-  const [favorites, setFavorites] = useState<any[]>(null);
-  const [collection, setCollection] = useState<any[]>(null);
-  const [posts, setPosts] = useState<any[]>(null);
+  const [favorites, setFavorites] = useState<any[]>([]);
+  const [collection, setCollection] = useState<any[]>([]);
+  const [posts, setPosts] = useState<any[]>([]);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
+
   const scrollRef = useRef<ScrollView>(null);
 
   const context = useContext(AppContext);
-
-  const [showPostModal, setShowPostModal] = useState(false);
 
   const { handleGetFavorites, handleGetUserPosts, handleGetCollection } = UseApi();
   const { handleGameDetailsFetch } = UseRAWGApi();
@@ -54,13 +53,14 @@ const ProfileScreen = (props: Props) => {
 
 
 
+
   const navigateToPost = async (post: any) => {
     if (!post) {
       return;
     }
 
     context.setCurrentPost(post);
-    props.navigation.navigate("PostScreen");
+    props.navigation.navigate("PostScreenProfile");
 
   }
 
@@ -70,20 +70,22 @@ const ProfileScreen = (props: Props) => {
     }
 
     context.setCurrentGame(collection);
-    props.navigation.navigate("CollectionScreen");
+    props.navigation.navigate("CollectionScreenProfile");
 
   }
 
 
-  const navigateToGame = async (game: Result) => {
-    if (!game) {
-      return;
+  const navigateToGame = async (item) => {
+    if (!item) return;
+
+    context.setCurrentGame(item.game);
+
+    const details = await handleGameDetailsFetch(item.game.slug);
+    context.setCurrentGameDetailed(details);
+
+    if (details) {
+      props.navigation.navigate("GameScreenProfile");
     }
-
-    context.setCurrentGame(game);
-    context.setCurrentGameDetailed(await handleGameDetailsFetch(game.slug));
-
-    props.navigation.navigate("GameScreen");
   }
 
 
@@ -102,7 +104,9 @@ const ProfileScreen = (props: Props) => {
   };
 
   return (
-    <View className="flex-1 bg-[#0F1218] pt-10 px-4 items-center">
+    <ScrollView className="flex-1 bg-[#0F1218] pt-10 px-4"
+      contentContainerStyle={{ alignItems: 'center' }}
+    >
 
       <View className="items-center mb-6">
         <View className="w-24 h-24 rounded-full bg-[#1E222A] mb-2" />
@@ -174,60 +178,47 @@ const ProfileScreen = (props: Props) => {
       </View>
 
 
+      <View className="w-full mb-6 items-center relative">
+        <Text className="text-[#F6F7F7] text-base font-bold mb-2">Última publicación</Text>
 
-      <View className="w-full mb-6 items-center">
-        <Text className="text-[#F6F7F7] text-base font-bold mb-2">POSTS</Text>
-
-        {posts && posts.length > 0 ? (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-2">
+        {/* {posts && posts.length > 0 ? (
+          <ScrollView
+            ref={scrollRef}
+            horizontal
+            decelerationRate="fast"
+            snapToInterval={300}
+            snapToAlignment="center"
+            showsHorizontalScrollIndicator={false}
+            onScroll={handleScrollPosts}
+            scrollEventThrottle={16}
+            contentContainerStyle={{ paddingHorizontal: (Dimensions.get('window').width - 240) / 2 }}
+          >
             {posts.map((post, index) => (
-
-              <TouchableOpacity onPress={() => navigateToPost(post)}>
-                <View className="bg-[#1E222A] rounded-xl p-4 mb-4 mx-4 w-80">
+              <TouchableOpacity key={index} onPress={() => navigateToPost(post)}>
+                <View
+                  className="bg-[#1E222A] rounded-xl p-4 w-64 h-40 border border-[#9D8D64]"
+                >
                   <View className="flex-row items-center mb-2">
-                    <Image
-                      source={
-                        post.user.profilePicture
-                          ? { uri: post.user.profilePicture }
-                          : require('../resources/xp-trade.png')
-                      }
-                      className="w-10 h-10 rounded-full mr-3"
-                    />
-                    <View>
-                      <TouchableOpacity>
-                        <Text className="text-[#F6F7F7] font-semibold">@{post.user.username}</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity>
-                        <Text className="text-xs text-[#8899A6]">{post.game.title}</Text>
-                      </TouchableOpacity>
-                    </View>
+                    <Text className="text-xs text-[#8899A6]">{post.game.title}</Text>
                   </View>
 
                   <View className="h-px bg-[#2C3038] mb-6" />
 
                   <Text
                     className="text-[#F6F7F7] mb-2"
-                    numberOfLines={post.content.length > maxCharactersForTwoLines ? 2 : 0}
+                    numberOfLines={post.content && post.content.length > maxCharactersForTwoLines ? 2 : 0}
                   >
                     {post.content}
                   </Text>
 
-                  {post.content.length > maxCharactersForTwoLines && (
-                    <TouchableOpacity onPress={() => navigateToPost(post)}>
-                      <Text className="text-xs text-[#66B3B7]">Ver más</Text>
-                    </TouchableOpacity>
-                  )}
-
-                  {post.picture && (
-                    <Image
-                      source={{ uri: post.picture }}
-                      className="w-full h-48 rounded-md mb-2"
-                      resizeMode="cover"
-                    />
+                  {post.content && post.content.length >= maxCharactersForTwoLines && (
+                    <Text className="text-xs text-[#66B3B7]">Ver más</Text>
                   )}
 
                   <View className="flex-row items-end mt-2">
-                    <Text className="text-xs text-[#8899A6] ml-auto">{formatDate(post.creationDate)}</Text>
+                    <Text className="text-xs text-[#8899A6] ml-auto ">
+                      {formatDate(post.creationDate)}
+                    </Text>
                   </View>
                 </View>
               </TouchableOpacity>
@@ -237,20 +228,16 @@ const ProfileScreen = (props: Props) => {
           <Text className="text-[#8899A6] text-sm text-center mt-2">
             No hay posts
           </Text>
-        )}
+        )} */}
       </View>
+
 
 
       <TouchableOpacity className="bg-[#66B3B7] px-6 py-2 rounded-lg" onPress={() => navigateCollection}>
         <Text className="text-[#F6F7F7] text-base font-semibold">COLECCION</Text>
       </TouchableOpacity>
-      <CreatePostModal
-        visible={showPostModal}
-        onClose={() => setShowPostModal(false)}
-      />
-      <PostButton onPress={() => setShowPostModal(true)} />
 
-    </View>
+    </ScrollView>
 
   )
 }

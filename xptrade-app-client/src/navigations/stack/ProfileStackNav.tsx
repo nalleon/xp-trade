@@ -11,9 +11,9 @@ type Props = {}
 
 export type ProfileStackParamList = {
     ProfileScreen: undefined,
-    CollectionScreen: undefined,
-    PostScreen: undefined,
-    GameScreen: undefined
+    CollectionScreenProfile: undefined,
+    PostScreenProfile: undefined,
+    GameScreenProfile: undefined
 };
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
@@ -26,9 +26,9 @@ const ProfileStackNav = (props: Props) => {
             }}
         >
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-            <Stack.Screen name="PostScreen" component={PostScreen} />
-            <Stack.Screen name="CollectionScreen" component={CollectionScreen} />
-            <Stack.Screen name="GameScreen" component={GameScreen} />
+            <Stack.Screen name="PostScreenProfile" component={PostScreen} />
+            <Stack.Screen name="CollectionScreenProfile" component={CollectionScreen} />
+            <Stack.Screen name="GameScreenProfile" component={GameScreen} />
         </Stack.Navigator>
     )
 }

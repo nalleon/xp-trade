@@ -7,13 +7,22 @@ import ProfileScreen from '../../screens/ProfileScreen';
 import NotificationScreen from '../../screens/NotificationScreen';
 import CollectionScreen from '../../screens/CollectionScreen';
 import SearchScreen from '../../screens/SearchScreen';
-import GameStackNav from '../stack/GameStackNav';
+import GameStackNav, { GameStackParamList } from '../stack/GameStackNav';
 import NotificationStackNav from '../stack/NotificationStackNav';
 import CollectionStackNav from '../stack/CollectionStackNav';
-import HomeStackNav from '../stack/PostStackNav';
+import HomeStackNav, { HomeStackParamList } from '../stack/HomeStackNav';
+import { NavigatorScreenParams } from '@react-navigation/native';
+import ProfileStackNav, { ProfileStackParamList } from '../stack/ProfileStackNav';
 
 type Props = {}
 const Tab = createBottomTabNavigator();
+export type TabParamList = {
+  Home: NavigatorScreenParams<HomeStackParamList>;
+  Search: NavigatorScreenParams<GameStackParamList>;
+  Collection: undefined;
+  Notificaciones: undefined;
+  Profile: NavigatorScreenParams<ProfileStackParamList>;
+};
 
 const TabNav = (props: Props) => {
   const { width, height } = useWindowDimensions();
@@ -100,8 +109,8 @@ const TabNav = (props: Props) => {
       />
 
       <Tab.Screen
-        name="Perfil"
-        component={ProfileScreen}
+        name="Profile"
+        component={ProfileStackNav}
         options={{
           tabBarIcon: ({ focused, color }) => (
             <Icon
