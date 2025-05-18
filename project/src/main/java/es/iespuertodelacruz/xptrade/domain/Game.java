@@ -23,7 +23,10 @@ public class Game {
     private String coverArt;
 
     private String slug;
+    private int rating;
+    private String released;
 
+    private Set<Tag> tagsSet;
     private Set<Developer> developerSet;
 
     private Set<Genre> genreSet;
@@ -60,16 +63,23 @@ public class Game {
      * @param title of the game
      * @param coverArt of the game
      * @param slug of the game
+     * @param rating of the game
+     * @param released of the game
+     * @param tagSet of the game
      * @param developerSet of the game
      * @param genreSet of the game
      * @param platformSet of the game
      * @param publisherSet of the game
      */
-    public Game(String title, String coverArt, String slug, Set<Developer> developerSet,
-                Set<Genre> genreSet, Set<Platform> platformSet, Set<Publisher> publisherSet) {
+    public Game(String title, String coverArt, String slug, int rating, String released, Set<Tag> tagSet,
+                Set<Developer> developerSet, Set<Genre> genreSet, Set<Platform> platformSet,
+                Set<Publisher> publisherSet) {
         this.title = title;
         this.coverArt = coverArt;
         this.slug = slug;
+        this.rating = rating;
+        this.released = released;
+        this.tagsSet = tagSet;
         this.developerSet = developerSet;
         this.genreSet = genreSet;
         this.platformSet = platformSet;
@@ -144,6 +154,30 @@ public class Game {
         this.slug = slug;
     }
 
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getReleased() {
+        return released;
+    }
+
+    public void setReleased(String released) {
+        this.released = released;
+    }
+
+    public Set<Tag> getTagsSet() {
+        return tagsSet;
+    }
+
+    public void setTagsSet(Set<Tag> tagsSet) {
+        this.tagsSet = tagsSet;
+    }
+
     @Override
     public String toString() {
         return "Game{" +
@@ -151,6 +185,9 @@ public class Game {
                 ", title='" + title + '\'' +
                 ", coverArt='" + coverArt + '\'' +
                 ", slug='" + slug + '\'' +
+                ", rating=" + rating +
+                ", released='" + released + '\'' +
+                ", tagsSet=" + tagsSet +
                 ", developerSet=" + developerSet +
                 ", genreSet=" + genreSet +
                 ", platformSet=" + platformSet +
@@ -161,8 +198,8 @@ public class Game {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Game that = (Game) o;
-        return id == that.id;
+        Game game = (Game) o;
+        return id == game.id;
     }
 
     @Override

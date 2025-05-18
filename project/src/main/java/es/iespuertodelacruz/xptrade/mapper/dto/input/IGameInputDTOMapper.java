@@ -13,7 +13,7 @@ import java.util.List;
  * @author Jose Maximiliano Boada Martin @mackstm
  */
 @Mapper(uses = {IPlatformInputDTOMapper.class, IDeveloperInputDTOMapper.class,
-        IPublisherInputDTOMapper.class, IGenreInputDTOMapper.class})
+        IPublisherInputDTOMapper.class, IGenreInputDTOMapper.class, ITagInputDTOMapper.class})
 public interface IGameInputDTOMapper {
     IGameInputDTOMapper INSTANCE = Mappers.getMapper(IGameInputDTOMapper.class);
     @Mapping(target = "developerSet", source = "developerInputDTOSet")
