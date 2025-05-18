@@ -8,6 +8,7 @@ import es.iespuertodelacruz.xptrade.mapper.entity.IGameCollectionEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.CollectionEntity;
 import es.iespuertodelacruz.xptrade.model.entities.GameCollectionEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IGameCollectionEntityRepository;
+import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,6 +61,17 @@ public class GameCollectionEntityService implements IGameCollectionRepository {
             return IGameCollectionEntityMapper.INSTANCE.toDomain(entityFound);
         }
         return null;
+    }
+
+    @Override
+    public List<GameCollection> findAllByCollection(Collection collection) {
+        if (collection == null) {
+            return Collections.emptyList();
+        }
+
+        List<GameCollectionEntity> listEntities = repository.findAllByCollection(collection.getId());
+
+        return IGameCollectionEntityMapper.INSTANCE.toDomainList(listEntities);
     }
 
     @Override

@@ -12,6 +12,8 @@ public interface IGameCollectionRepository {
     List<GameCollection> findAll();
     GameCollection findById(Integer id);
 
+    List<GameCollection> findAllByCollection(Collection collection);
+
     default Collection checkIfExists(User user, Game game) {
         return null;
     }

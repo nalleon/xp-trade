@@ -9,6 +9,7 @@ import es.iespuertodelacruz.xptrade.model.entities.CollectionEntity;
 import es.iespuertodelacruz.xptrade.model.entities.GameCollectionEntity;
 import es.iespuertodelacruz.xptrade.model.repository.ICollectionEntityRepository;
 import es.iespuertodelacruz.xptrade.model.repository.IGameCollectionEntityRepository;
+import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,7 +72,7 @@ public class CollectionEntityService implements ICollectionRepository {
     @Override
     public List<Collection> findAllByUser(User user) {
         if (user == null){
-            return null;
+            return Collections.emptyList();
         }
         List<CollectionEntity> listEntities = repository.findAllByUser(user.getId());
         return ICollectionEntityMapper.INSTANCE.toDomainList(listEntities);
