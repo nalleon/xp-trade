@@ -19,7 +19,7 @@ export type HomeStackParamList = {
     PostScreen: undefined,
     CommentScreen: undefined,
     ProfileScreen: undefined,
-    GameScreen: undefined
+    GameScreenHome: undefined
 };
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
@@ -35,7 +35,7 @@ const HomeStackNav = (props: Props) => {
             <Stack.Screen name="PostScreen" component={PostScreen} />
             <Stack.Screen name="CommentScreen" component={CommentScreen} />
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-            <Stack.Screen name="GameScreen" component={GameScreen} />
+            <Stack.Screen name="GameScreenHome" component={GameScreen} />
         </Stack.Navigator>
     )
 }

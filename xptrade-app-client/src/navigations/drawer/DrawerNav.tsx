@@ -40,7 +40,7 @@ const DrawerNav = (props: Props) => {
       }}
     >
       <Drawer.Screen 
-        name="TabNav" 
+        name="TabNavDrawer" 
         component={TabNav} 
         options={{
           title: 'Home', 

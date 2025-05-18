@@ -5,7 +5,7 @@ import CreatePostModal from '../components/post.modals/CreatePostModal';
 import UseApi from '../hooks/UseApi';
 import { Touchable } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { HomeStackParamList } from '../navigations/stack/PostStackNav';
+import { HomeStackParamList } from '../navigations/stack/HomeStackNav';
 import { AppContext } from '../context/AppContext';
 import { PostXPTrade } from '../utils/TypeUtils';
 

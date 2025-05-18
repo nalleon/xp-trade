@@ -11,7 +11,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
-import { HomeStackParamList } from '../navigations/stack/PostStackNav';
+import { HomeStackParamList } from '../navigations/stack/HomeStackNav';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppContext } from '../context/AppContext';
 import Icon from 'react-native-vector-icons/Ionicons';
