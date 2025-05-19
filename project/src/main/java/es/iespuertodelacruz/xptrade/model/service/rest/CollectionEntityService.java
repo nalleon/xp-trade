@@ -72,7 +72,7 @@ public class CollectionEntityService implements ICollectionRepository {
     @Override
     public List<Collection> findAllByUser(User user) {
         if (user == null){
-            return Collections.emptyList();
+            return null;
         }
         List<CollectionEntity> listEntities = repository.findAllByUser(user.getId());
         return ICollectionEntityMapper.INSTANCE.toDomainList(listEntities);

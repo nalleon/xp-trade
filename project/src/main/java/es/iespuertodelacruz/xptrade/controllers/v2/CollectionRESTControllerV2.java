@@ -123,15 +123,7 @@ public class CollectionRESTControllerV2 {
 
         try {
             Collection aux = ICollectionInputDTOMapper.INSTANCE.toDomain(dto);
-            Game gameDb =  gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(), aux.getGame().getSlug(),
-                    aux.getGame().getRating(), aux.getGame().getReleased(), aux.getGame().getTagSet(),
-                    aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
-                    aux.getGame().getPublisherSet());
 
-            if(gameDb == null){
-                return ResponseEntity.badRequest()
-                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
-            }
 
             User userDb = userService.findByUsername(aux.getUser().getUsername());
 
@@ -140,7 +132,7 @@ public class CollectionRESTControllerV2 {
                         .body(new CustomApiResponse<>(400, "Item cannot be null", null));
             }
 
-            Collection dbItem = service.add(gameDb, userDb);
+            Collection dbItem = service.add(userDb);
 
             CollectionOutputDTO result = ICollectionOutputDTOMapper.INSTANCE.toDTO(dbItem);
 
@@ -173,15 +165,6 @@ public class CollectionRESTControllerV2 {
 
             Collection aux = ICollectionInputDTOMapper.INSTANCE.toDomain(dto);
 
-            Game gameDb =  gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(), aux.getGame().getSlug(),
-                    aux.getGame().getRating(), aux.getGame().getReleased(), aux.getGame().getTagSet(),
-                    aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
-                    aux.getGame().getPublisherSet());
-            if(gameDb == null){
-                return ResponseEntity.badRequest()
-                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
-            }
-
             User userDb = userService.findByUsername(aux.getUser().getUsername());
 
             if(userDb == null){
@@ -190,7 +173,7 @@ public class CollectionRESTControllerV2 {
             }
 
 
-            Collection updatedDbItem = service.update(id, gameDb, userDb);
+            Collection updatedDbItem = service.update(id, userDb);
 
             if(updatedDbItem == null) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT)

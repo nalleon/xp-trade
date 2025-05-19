@@ -73,7 +73,6 @@ public class CollectionSoapServiceTest extends TestUtilities {
         item = new Collection();
         item.setId(ID);
         item.setUser(user);
-        item.setGame(game);
 
         MockitoAnnotations.openMocks(this);
         serviceMock = new CollectionEntityService();

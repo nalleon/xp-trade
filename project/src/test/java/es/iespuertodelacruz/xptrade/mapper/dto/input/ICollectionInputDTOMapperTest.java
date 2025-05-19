@@ -19,7 +19,6 @@ public class ICollectionInputDTOMapperTest extends MapperInputDTOHelper {
         dtoListMapper = ICollectionInputDTOMapper.INSTANCE.toDTOList(collectionDomains);
 
         Assertions.assertNotNull(dtoListMapper, MESSAGE_ERROR);
-        Assertions.assertEquals(collectionInputDTOList.get(0).game().title(), dtoListMapper.get(0).game().title(), MESSAGE_ERROR);
         Assertions.assertEquals(collectionInputDTOList.get(0).user().username(), dtoListMapper.get(0).user().username(), MESSAGE_ERROR);
 
 
@@ -42,7 +41,6 @@ public class ICollectionInputDTOMapperTest extends MapperInputDTOHelper {
         dtoMapper = ICollectionInputDTOMapper.INSTANCE.toDTO(collectionDomain);
 
         Assertions.assertEquals(collectionInputDTO.user().username(), dtoMapper.user().username(), MESSAGE_ERROR);
-        Assertions.assertEquals(collectionInputDTO.game().title(), dtoMapper.game().title(), MESSAGE_ERROR);
 
         dtoMapper = ICollectionInputDTOMapper.INSTANCE.toDTO(collectionDomain);
 
@@ -57,7 +55,6 @@ public class ICollectionInputDTOMapperTest extends MapperInputDTOHelper {
 
         Assertions.assertEquals(collectionDomain.getId(), domainMapper.getId(), MESSAGE_ERROR);
         Assertions.assertEquals(collectionDomain.getUser().getUsername(), domainMapper.getUser().getUsername(), MESSAGE_ERROR);
-        Assertions.assertEquals(collectionDomain.getGame().getTitle(), domainMapper.getGame().getTitle(), MESSAGE_ERROR);
 
         collectionInputDTO = null;
         domainMapper = ICollectionInputDTOMapper.INSTANCE.toDomain(collectionInputDTO);

@@ -69,28 +69,28 @@ public class CollectionServiceTest extends TestUtilities {
     @Test
     void addTest() {
         Mockito.when(repositoryMock.save(Mockito.any(Collection.class))).thenReturn(new Collection());
-        Assertions.assertNotNull(service.add(new Game(), new User()), MESSAGE_ERROR);
+        Assertions.assertNotNull(service.add(new User()), MESSAGE_ERROR);
     }
 
     @Test
     void addNullTest() {
-        Assertions.assertNull(service.add(null, null), MESSAGE_ERROR);
+        Assertions.assertNull(service.add(null), MESSAGE_ERROR);
     }
 
     @Test
     void updateExceptionTest() throws Exception {
         Mockito.when(repositoryMock.findById(1)).thenThrow(new RuntimeException("Database error"));
-        Assertions.assertNull(service.update(1, new Game(), new User()), MESSAGE_ERROR);
+        Assertions.assertNull(service.update(1, new User()), MESSAGE_ERROR);
     }
     @Test
     void updateTest() throws Exception {
         Mockito.when(repositoryMock.update(Mockito.any(Collection.class))).thenReturn(new Collection());
-        Assertions.assertNotNull(service.update(1,new Game(), new User()), MESSAGE_ERROR);
+        Assertions.assertNotNull(service.update(1, new User()), MESSAGE_ERROR);
     }
 
     @Test
     void updateNullTest() throws Exception {
-        Assertions.assertNull(service.update(0, null, null), MESSAGE_ERROR);
+        Assertions.assertNull(service.update(0,  null), MESSAGE_ERROR);
     }
 
     @Test

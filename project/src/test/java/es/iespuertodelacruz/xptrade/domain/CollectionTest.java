@@ -12,26 +12,24 @@ public class CollectionTest extends MapperHelper {
 
     @Test
     public void getSetTest(){
-        item = new Collection(gameDomain, userDomain);
+        item = new Collection(userDomain);
         item.setId(ID);
         Assertions.assertEquals(ID, item.getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(gameDomain, item.getGame(), MESSAGE_ERROR);
         Assertions.assertEquals(userDomain, item.getUser(), MESSAGE_ERROR);
 
     }
 
     @Test
     public void toStringTest(){
-        item = new Collection(gameDomain, userDomain);
+        item = new Collection(userDomain);
         item.setId(ID);
         Assertions.assertTrue(item.toString().contains(String.valueOf(ID)), MESSAGE_ERROR);
-        Assertions.assertTrue(item.toString().contains(gameDomain.toString()), MESSAGE_ERROR);
         Assertions.assertTrue(item.toString().contains(userDomain.toString()), MESSAGE_ERROR);
     }
 
     @Test
     public void equalsTest(){
-        item = new Collection(gameDomain, userDomain);
+        item = new Collection(userDomain);
         item.setId(ID);
         Collection equals = new Collection(ID);
         Collection differentId = new Collection(2);

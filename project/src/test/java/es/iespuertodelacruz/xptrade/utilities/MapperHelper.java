@@ -254,7 +254,6 @@ public class MapperHelper extends TestUtilities {
         collectionDomain = new Collection();
         collectionDomain.setId(ID);
         collectionDomain.setUser(userDomain);
-        collectionDomain.setGame(gameDomain);
 
         collectionDomains = new ArrayList<>();
         collectionDomains.add(collectionDomain);

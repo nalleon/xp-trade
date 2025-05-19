@@ -87,6 +87,11 @@ public class MapperInputDTOHelper extends TestUtilities {
     public List<TagInputDTO> tagInputDTOList;
     public List<Tag> tagDomains;
 
+    public GameCollectionInputDTO gameCollectionInputDTO;
+    public GameCollection gameCollection;
+    public List<GameCollectionInputDTO> gameCollectionInputDTOList;
+    public List<GameCollection> gameCollectionList;
+
     @BeforeEach
     public void beforeEach() {
 
@@ -228,11 +233,14 @@ public class MapperInputDTOHelper extends TestUtilities {
         gameInputDTOList = new ArrayList<>();
         gameInputDTOList.add(gameInputDTO);
 
-        collectionInputDTO = new CollectionInputDTO(gameInputDTO, userDTO);
+        gameCollectionInputDTO = new GameCollectionInputDTO(gameInputDTO, regionInputDTO, platformInputDTO);
+        gameCollectionInputDTOList = new ArrayList<>();
+        gameCollectionInputDTOList.add(gameCollectionInputDTO);
+
+        collectionInputDTO = new CollectionInputDTO(userDTO);
 
         collectionDomain = new Collection();
         collectionDomain.setUser(userDomain);
-        collectionDomain.setGame(gameDomain);
 
         collectionDomains = new ArrayList<>();
         collectionDomains.add(collectionDomain);

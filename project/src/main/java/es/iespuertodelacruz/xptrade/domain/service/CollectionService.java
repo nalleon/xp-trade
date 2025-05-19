@@ -30,8 +30,8 @@ public class CollectionService implements ICollectionService {
     }
 
     @Override
-    public Collection add(Game game, User user) {
-        Collection aux = new Collection(game, user);
+    public Collection add(User user) {
+        Collection aux = new Collection(user);
         return repository.save(aux);
     }
 
@@ -56,8 +56,8 @@ public class CollectionService implements ICollectionService {
     }
 
     @Override
-    public Collection update(int id, Game game, User user) {
-        Collection aux = new Collection(game, user);
+    public Collection update(int id, User user) {
+        Collection aux = new Collection(user);
         aux.setId(id);
         return repository.update(aux);
     }

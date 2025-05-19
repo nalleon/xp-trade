@@ -61,9 +61,9 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void getAllTest() {
         List<Collection> list = new ArrayList<>();
-        list.add(new Collection(new Game(), new User()));
-        list.add(new Collection(new Game(), new User()));
-        list.add(new Collection(new Game(), new User()));
+        list.add(new Collection(new User()));
+        list.add(new Collection(new User()));
+        list.add(new Collection(new User()));
         when(serviceMock.findAll()).thenReturn(list);
         Assertions.assertNotNull(controller.getAll(), MESSAGE_ERROR);
     }
@@ -77,9 +77,9 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void getAllByUserTest() {
         List<Collection> list = new ArrayList<>();
-        list.add(new Collection(new Game(), new User()));
-        list.add(new Collection(new Game(), new User()));
-        list.add(new Collection(new Game(), new User()));
+        list.add(new Collection(new User()));
+        list.add(new Collection(new User()));
+        list.add(new Collection(new User()));
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
         when(serviceMock.findByUser(new User())).thenReturn(list);
         Assertions.assertNotNull(controller.getAllByUser("A"), MESSAGE_ERROR);
@@ -113,12 +113,11 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void addTest() {
-        when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(new Collection());
+        when(serviceMock.add(any(User.class))).thenReturn(new Collection());
         when(serviceGameMock.add(anyString(), anyString(),anyString(), anyInt(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         CollectionInputDTO aux = new CollectionInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
 
         Assertions.assertEquals(HttpStatus.CREATED, controller.add(aux).getStatusCode(), MESSAGE_ERROR);
@@ -131,8 +130,7 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void addGameNullTest() {
-        CollectionInputDTO aux = new CollectionInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG,RATING, RELEASED, new HashSet<>(),
-                new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()),
+        CollectionInputDTO aux = new CollectionInputDTO(
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceGameMock.add(anyString(), anyString(), anyString(), anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(null);
 
@@ -142,7 +140,6 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void addUserNullTest() {
         CollectionInputDTO aux = new CollectionInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, SLUG,RATING, RELEASED, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceGameMock.add(anyString(), anyString(), anyString(), anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(null);
@@ -154,12 +151,11 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void addThrowsExceptionTest() {
         CollectionInputDTO aux = new CollectionInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(),new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceGameMock.add(anyString(), anyString(), anyString(), anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
-        when(serviceMock.add(any(Game.class), any(User.class))).thenThrow(new RuntimeException());
+        when(serviceMock.add(any(User.class))).thenThrow(new RuntimeException());
         when(entityServiceMock.save(any(Collection.class))).thenThrow(new RuntimeException());
 
         controller.setService(serviceMockException);
@@ -171,7 +167,7 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void deleteTest() {
-        Collection aux = new Collection(gameDomain, userDomain);
+        Collection aux = new Collection(userDomain);
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.delete(any(Integer.class))).thenReturn(true);
         ResponseEntity responseEntity = controller.delete(1);
@@ -180,7 +176,7 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
 
     @Test
     void deleteErrorTest() {
-        Collection aux = new Collection(gameDomain, userDomain);
+        Collection aux = new Collection(userDomain);
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.delete(any(Integer.class))).thenReturn(false);
         ResponseEntity responseEntity = controller.delete(1);
@@ -191,14 +187,13 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateTest() {
         CollectionInputDTO aux = new CollectionInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, SLUG,RATING, RELEASED, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceGameMock.add(anyString(), anyString(),anyString(),anyInt(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         when(serviceMock.findById(anyInt())).thenReturn(new Collection());
-        when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(new Collection());
-        when(serviceMock.update(anyInt(), any(Game.class), any(User.class))).thenReturn(new Collection());
+        when(serviceMock.add(any(User.class))).thenReturn(new Collection());
+        when(serviceMock.update(anyInt(), any(User.class))).thenReturn(new Collection());
 
 
         ResponseEntity responseEntity = controller.update(1, aux);
@@ -208,24 +203,23 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateNotFoundTest() {
         CollectionInputDTO aux = new CollectionInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, SLUG,RATING, RELEASED, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
 
-        when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(new Collection());
+        when(serviceMock.add(any(User.class))).thenReturn(new Collection());
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
         Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
     void updateNullTest() {
-        when(serviceMock.add(any(Game.class), any(User.class))).thenReturn(null);
+        when(serviceMock.add(any(User.class))).thenReturn(null);
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, null);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
     @Test
     void updateGameNullTest() {
-        CollectionInputDTO aux = new CollectionInputDTO(new GameInputDTO(TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(),new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()),
+        CollectionInputDTO aux = new CollectionInputDTO(
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceMock.findById(anyInt())).thenReturn(new Collection());
         when(serviceGameMock.add(anyString(), anyString(), anyString(),anyInt(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
@@ -236,7 +230,6 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateUserNullTest() {
         CollectionInputDTO aux = new CollectionInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(),new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceMock.findById(anyInt())).thenReturn(new Collection());
         when(serviceGameMock.add(anyString(), anyString(), anyString(), anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
@@ -248,13 +241,12 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateIdNullTest() {
         CollectionInputDTO aux = new CollectionInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(),new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceMock.findById(anyInt())).thenReturn(new Collection());
         when(serviceGameMock.add(anyString(), anyString(),anyString(), anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
-        when(serviceMock.update(anyInt(), any(Game.class), any(User.class))).thenReturn(null);
+        when(serviceMock.update(anyInt(), any(User.class))).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.update(ID,aux).getStatusCode(), MESSAGE_ERROR);
     }
@@ -263,14 +255,13 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
     @Test
     void updateExceptionTest() throws Exception {
         CollectionInputDTO aux = new CollectionInputDTO(
-                new GameInputDTO(TITLE, COVER_ART, SLUG,RATING, RELEASED, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>()),
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
 
         when(serviceGameMock.add(anyString(), anyString(),anyString(), anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         when(serviceMock.findById(any(Integer.class))).thenReturn(new Collection());
-        when(serviceMock.update(anyInt(),any(Game.class), any(User.class))).thenThrow(new RuntimeException());
+        when(serviceMock.update(anyInt(), any(User.class))).thenThrow(new RuntimeException());
 
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
         Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, responseEntity.getStatusCode(), MESSAGE_ERROR);

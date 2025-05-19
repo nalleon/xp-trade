@@ -78,6 +78,10 @@ public class MapperDTOHelper extends TestUtilities {
     public List<TagOutputDTO> tagOutputDTOList;
     public List<Tag> tagDomains;
 
+    public GameCollectionOutputDTO gameCollectionOutputDTO;
+    public GameCollection gameCollection;
+    public List<GameCollectionOutputDTO> gameCollectionOutputDTOList;
+    public List<GameCollection> gameCollectionList;
 
     @BeforeEach
     public void beforeEach() {
@@ -214,12 +218,15 @@ public class MapperDTOHelper extends TestUtilities {
         gameOutputDTOList = new ArrayList<>();
         gameOutputDTOList.add(gameOutputDTO);
 
-        collectionOutputDTO = new CollectionOutputDTO(ID, gameOutputDTO, userDTO);
+        gameCollectionOutputDTO = new GameCollectionOutputDTO(ID, gameOutputDTO, regionOutputDTO, platformOutputDTO);
+        gameCollectionOutputDTOList = new ArrayList<>();
+        gameCollectionOutputDTOList.add(gameCollectionOutputDTO);
+
+        collectionOutputDTO = new CollectionOutputDTO(ID, gameCollectionOutputDTOList, userDTO);
 
         collectionDomain = new Collection();
         collectionDomain.setId(ID);
         collectionDomain.setUser(userDomain);
-        collectionDomain.setGame(gameDomain);
 
         collectionDomains = new ArrayList<>();
         collectionDomains.add(collectionDomain);

@@ -69,7 +69,6 @@ public class CollectionEntityServiceTest extends TestUtilities {
         item = new Collection();
         item.setId(ID);
         item.setUser(user);
-        item.setGame(game);
 
         MockitoAnnotations.openMocks(this);
         service = new CollectionEntityService();
@@ -155,7 +154,6 @@ public class CollectionEntityServiceTest extends TestUtilities {
     void updateForceExceptionTest() {
         Collection item = new Collection();
         item.setId(1);
-        item.setGame(game);
 
         CollectionEntity dbItemMock = mock(CollectionEntity.class);
         when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(dbItemMock));

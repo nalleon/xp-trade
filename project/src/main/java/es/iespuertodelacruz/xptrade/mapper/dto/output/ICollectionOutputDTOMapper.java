@@ -4,6 +4,7 @@ import es.iespuertodelacruz.xptrade.domain.Collection;
 import es.iespuertodelacruz.xptrade.dto.output.CollectionOutputDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.user.IUserDTOMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public interface ICollectionOutputDTOMapper {
     ICollectionOutputDTOMapper INSTANCE = Mappers.getMapper(ICollectionOutputDTOMapper.class);
     Collection toDomain(CollectionOutputDTO dto);
+    @Mapping(target = "gameCollectionList", ignore = true)
     CollectionOutputDTO toDTO(Collection domain);
     List<Collection> toDomainList(List<CollectionOutputDTO> dtos);
     List<CollectionOutputDTO> toDTOList(List<Collection> domains);

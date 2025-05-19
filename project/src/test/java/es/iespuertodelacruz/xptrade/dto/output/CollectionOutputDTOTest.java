@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class CollectionOutputDTOTest extends TestUtilities {
@@ -23,7 +24,7 @@ public class CollectionOutputDTOTest extends TestUtilities {
     Set<GenreOutputDTO> genreSet;
     Set<PlatformOutputDTO> platformSet;
     Set<PublisherOutputDTO> publisherSet;
-    Set<RegionOutputDTO> regionSet;
+    GameCollectionOutputDTO gameCollection;
 
     @BeforeEach
     public void beforeEach() {
@@ -37,11 +38,11 @@ public class CollectionOutputDTOTest extends TestUtilities {
         genreSet = new HashSet<>(Collections.singletonList(genre));
         platformSet = new HashSet<>(Collections.singletonList(platform));
         publisherSet = new HashSet<>(Collections.singletonList(publisher));
-        regionSet = new HashSet<>(Collections.singletonList(region));
 
         game = new GameOutputDTO(ID,TITLE, COVER_ART, SLUG, RATING, RELEASED, new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>(), new HashSet<>());
+        gameCollection = new GameCollectionOutputDTO(ID, game, region, platform);
         user =new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, ROLE_NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE);
-        item = new CollectionOutputDTO(ID, game, user);
+        item = new CollectionOutputDTO(ID, List.of(gameCollection), user);
 
     }
 
@@ -49,7 +50,6 @@ public class CollectionOutputDTOTest extends TestUtilities {
     @Test
     public void getSetTest(){
         Assertions.assertEquals(ID, item.id(), MESSAGE_ERROR);
-        Assertions.assertEquals(game, item.game(), MESSAGE_ERROR);
         Assertions.assertEquals(user, item.user(), MESSAGE_ERROR);
     }
 }

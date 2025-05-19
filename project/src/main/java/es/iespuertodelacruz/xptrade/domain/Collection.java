@@ -14,8 +14,6 @@ public class Collection {
      */
     private int id;
     
-    private Game game;
-    
     private User user;
 
     /**
@@ -34,12 +32,10 @@ public class Collection {
 
     /**
      * Constructor of the class
-     * @param game of the collection
      * @param user of the collection
      */
 
-    public Collection(Game game, User user) {
-        this.game = game;
+    public Collection(User user) {
         this.user = user;
     }
 
@@ -54,14 +50,6 @@ public class Collection {
         this.id = id;
     }
 
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
     public User getUser() {
         return user;
     }
@@ -74,7 +62,6 @@ public class Collection {
     public String toString() {
         return "Collection{" +
                 "id=" + id +
-                ", game=" + game +
                 ", user=" + user +
                 '}';
     }
