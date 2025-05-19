@@ -102,12 +102,6 @@ public class CollectionSoapServiceTest extends TestUtilities {
     }
 
     @Test
-    void getByIdGameNullTest() {
-        Assertions.assertNull(service.findAllBySubject(null), MESSAGE_ERROR);
-    }
-
-
-    @Test
     void getOneTest() {
         when(repositoryMock.findById(1)).thenReturn(Optional.of(new CollectionEntity()));
         Assertions.assertNotNull(service.findById(1), MESSAGE_ERROR);

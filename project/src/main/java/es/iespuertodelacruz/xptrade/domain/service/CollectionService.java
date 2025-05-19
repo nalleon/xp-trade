@@ -1,6 +1,7 @@
 package es.iespuertodelacruz.xptrade.domain.service;
 
 import es.iespuertodelacruz.xptrade.domain.*;
+import es.iespuertodelacruz.xptrade.domain.interfaces.repository.ICollectionRepository;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.ICollectionService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,14 @@ public class CollectionService implements ICollectionService {
     /**
      * Properties
      */
-    IGenericSocialRepository<Collection, Integer, User, Game> repository;
+    ICollectionRepository repository;
 
     /**
      * Setter for the autowired service
      * @param repository of the service
      */
     @Autowired
-    public void setRepository(IGenericSocialRepository<Collection, Integer, User, Game> repository) {
+    public void setRepository(ICollectionRepository repository) {
         this.repository = repository;
     }
 
@@ -42,11 +43,6 @@ public class CollectionService implements ICollectionService {
     @Override
     public List<Collection> findByUser(User user) {
         return repository.findAllByUser(user);
-    }
-
-    @Override
-    public List<Collection> findByGame(Game game) {
-        return repository.findAllBySubject(game);
     }
 
     @Override

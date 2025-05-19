@@ -42,11 +42,4 @@ public interface ICollectionEntityRepository extends JpaRepository<CollectionEnt
     )
     List<CollectionEntity> findAllByUser(@Param("user_id") int user_id);
 
-
-    @Query(
-            value="SELECT * FROM collections WHERE game_id =:game_id",
-            nativeQuery=true
-    )
-    List<CollectionEntity> findAllByGame(@Param("game_id") int game_id);
-
 }

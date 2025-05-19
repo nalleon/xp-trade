@@ -10,7 +10,6 @@ public interface ICollectionService {
     Collection add(Game game, User user);
     Collection findById(Integer id);
     List<Collection> findByUser (User user);
-    List<Collection> findByGame (Game game);
     List<Collection> findAll();
     boolean delete(Integer id);
     Collection update(int id, Game game, User user);

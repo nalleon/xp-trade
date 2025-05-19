@@ -100,31 +100,6 @@ public class CollectionRESTControllerV3Test extends MapperDTOHelper {
     }
 
     @Test
-    void getAllByGameTest() {
-        List<Collection> list = new ArrayList<>();
-        list.add(new Collection(new Game(), new User()));
-        list.add(new Collection(new Game(), new User()));
-        list.add(new Collection(new Game(), new User()));
-        when(serviceGameMock.findByTitle(anyString())).thenReturn(new Game());
-        when(serviceMock.findByGame(new Game())).thenReturn(list);
-        Assertions.assertNotNull(controller.getAllByGame("A"), MESSAGE_ERROR);
-    }
-
-
-    @Test
-    void getAllByGameNoFilterTest() {
-        when(serviceMock.findByGame(new Game())).thenReturn(null);
-        Assertions.assertNotNull(controller.getAllByGame("A"), MESSAGE_ERROR);
-    }
-
-    @Test
-    void getAllByGameEmptyTest() {
-        when(serviceGameMock.findByTitle(anyString())).thenReturn(new Game());
-        when(serviceMock.findByGame(new Game())).thenReturn(new ArrayList<>());
-        Assertions.assertEquals(HttpStatus.NO_CONTENT, controller.getAllByGame("A").getStatusCode(), MESSAGE_ERROR);
-    }
-
-    @Test
     void getOneTest() {
         when(serviceMock.findById(1)).thenReturn(new Collection(1));
         Assertions.assertNotNull(controller.getById(1), MESSAGE_ERROR);

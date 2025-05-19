@@ -3,10 +3,13 @@ package es.iespuertodelacruz.xptrade.model.service.rest;
 import es.iespuertodelacruz.xptrade.domain.Collection;
 import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGenericSocialRepository;
+import es.iespuertodelacruz.xptrade.domain.interfaces.repository.ICollectionRepository;
 import es.iespuertodelacruz.xptrade.mapper.entity.ICollectionEntityMapper;
 import es.iespuertodelacruz.xptrade.model.entities.CollectionEntity;
+import es.iespuertodelacruz.xptrade.model.entities.GameCollectionEntity;
 import es.iespuertodelacruz.xptrade.model.repository.ICollectionEntityRepository;
+import es.iespuertodelacruz.xptrade.model.repository.IGameCollectionEntityRepository;
+import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +20,7 @@ import java.util.List;
  * @author Jose Maximiliano Boada Martin @mackstm
  */
 @Service
-public class CollectionEntityService implements IGenericSocialRepository<Collection, Integer, User, Game> {
+public class CollectionEntityService implements ICollectionRepository {
 
     /**
      * Properties
@@ -33,7 +36,6 @@ public class CollectionEntityService implements IGenericSocialRepository<Collect
     public void setRepository(ICollectionEntityRepository repository) {
         this.repository = repository;
     }
-
 
     @Override
     @Transactional
@@ -70,18 +72,9 @@ public class CollectionEntityService implements IGenericSocialRepository<Collect
     @Override
     public List<Collection> findAllByUser(User user) {
         if (user == null){
-            return null;
+            return Collections.emptyList();
         }
         List<CollectionEntity> listEntities = repository.findAllByUser(user.getId());
-        return ICollectionEntityMapper.INSTANCE.toDomainList(listEntities);
-    }
-
-    @Override
-    public List<Collection> findAllBySubject(Game game) {
-        if (game == null){
-            return null;
-        }
-        List<CollectionEntity> listEntities = repository.findAllByGame(game.getId());
         return ICollectionEntityMapper.INSTANCE.toDomainList(listEntities);
     }
 

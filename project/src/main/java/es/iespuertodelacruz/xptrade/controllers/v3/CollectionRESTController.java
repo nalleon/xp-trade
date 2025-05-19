@@ -72,28 +72,6 @@ public class CollectionRESTController {
         return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
     }
 
-    @GetMapping("/games/{title}")
-    public ResponseEntity<?> getAllByGame(@PathVariable String title) {
-        Game filter = gameService.findByTitle(title);
-
-        if(filter == null){
-            String message = "Filter do NOT exists";
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new CustomApiResponse<>(204, message, null));
-        }
-
-        List<CollectionOutputDTO> filteredList = ICollectionOutputDTOMapper.INSTANCE.toDTOList(service.findByGame(filter));
-
-        if (filteredList.isEmpty()) {
-            String message = "There are no collections";
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new CustomApiResponse<>(204, message, filteredList));
-        }
-
-        String message = "List successfully obtained";
-        return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
-    }
-
     @GetMapping("/users/{username}")
     public ResponseEntity<?> getAllByUser(@PathVariable String username) {
         User filter = userService.findByUsername(username);
