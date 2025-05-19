@@ -8,6 +8,7 @@ import es.iespuertodelacruz.xptrade.model.entities.GameCollectionEntity;
 import es.iespuertodelacruz.xptrade.model.repository.IGameCollectionEntityRepository;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
-
+@Service
 public class GameCollectionEntityService implements IGameCollectionRepository {
 
     /**

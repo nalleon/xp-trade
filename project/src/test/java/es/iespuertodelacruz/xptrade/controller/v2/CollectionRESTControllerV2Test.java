@@ -1,20 +1,13 @@
 package es.iespuertodelacruz.xptrade.controller.v2;
 
 import es.iespuertodelacruz.xptrade.controllers.v2.CollectionRESTControllerV2;
-import es.iespuertodelacruz.xptrade.domain.Collection;
-import es.iespuertodelacruz.xptrade.domain.Game;
-import es.iespuertodelacruz.xptrade.domain.Genre;
-import es.iespuertodelacruz.xptrade.domain.User;
+import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.service.CollectionService;
-import es.iespuertodelacruz.xptrade.domain.service.GameService;
+import es.iespuertodelacruz.xptrade.domain.service.GameCollectionService;
 import es.iespuertodelacruz.xptrade.domain.service.UserService;
 import es.iespuertodelacruz.xptrade.dto.input.CollectionInputDTO;
-import es.iespuertodelacruz.xptrade.dto.input.GameInputDTO;
-import es.iespuertodelacruz.xptrade.dto.output.CollectionOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
-import es.iespuertodelacruz.xptrade.mapper.dto.output.ICollectionOutputDTOMapper;
-import es.iespuertodelacruz.xptrade.model.entities.GenreEntity;
 import es.iespuertodelacruz.xptrade.model.service.rest.CollectionEntityService;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
@@ -28,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
@@ -40,7 +32,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
     @Mock
     UserService serviceUserMock;
     @Mock
-    GameService serviceGameMock;
+    GameCollectionService serviceGameCollectionMock;
     @Mock
     CollectionEntityService entityServiceMock;
 
@@ -58,7 +50,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         MockitoAnnotations.openMocks(this);
         serviceMock.setRepository(entityServiceMock);
         controller.setService(serviceMock);
-        controller.setGameService(serviceGameMock);
+        controller.setGameCollectionService(serviceGameCollectionMock);
         controller.setUserService(serviceUserMock);
         serviceMockException.setRepository(entityServiceMock);
 
@@ -121,7 +113,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
     @Test
     void addTest() {
         when(serviceMock.add(any(User.class))).thenReturn(new Collection());
-        when(serviceGameMock.add(anyString(), anyString(), anyString(), anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameCollectionMock.add(new Game(), new Collection(), new Region(), new Platform())).thenReturn(new GameCollection());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         CollectionInputDTO aux = new CollectionInputDTO(
@@ -140,7 +132,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         CollectionInputDTO aux = new CollectionInputDTO(
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
 
-        when(serviceGameMock.add(anyString(), anyString(), anyString(),anyInt(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
+        when(serviceGameCollectionMock.add(new Game(), new Collection(), new Region(), new Platform())).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(aux).getStatusCode(), MESSAGE_ERROR);    }
 
@@ -149,7 +141,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
     void addUserNullTest() {
         CollectionInputDTO aux = new CollectionInputDTO(
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
-        when(serviceGameMock.add(anyString(), anyString(), anyString(),anyInt(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameCollectionMock.add(new Game(), new Collection(), new Region(), new Platform())).thenReturn(new GameCollection());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.add(aux).getStatusCode(), MESSAGE_ERROR);
@@ -161,7 +153,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
     void addThrowsExceptionTest() {
         CollectionInputDTO aux = new CollectionInputDTO(
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
-        when(serviceGameMock.add(anyString(), anyString(), anyString(), anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameCollectionMock.add(new Game(), new Collection(), new Region(), new Platform())).thenReturn(new GameCollection());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         when(serviceMock.add(any(User.class))).thenThrow(new RuntimeException());
@@ -198,7 +190,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
     void updateTest() {
         CollectionInputDTO aux = new CollectionInputDTO(
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
-        when(serviceGameMock.add(anyString(), anyString(), anyString(), anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameCollectionMock.add(new Game(), new Collection(), new Region(), new Platform())).thenReturn(new GameCollection());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         when(serviceMock.findById(anyInt())).thenReturn(new Collection());
@@ -232,7 +224,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         CollectionInputDTO aux = new CollectionInputDTO(
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceMock.findById(anyInt())).thenReturn(new Collection());
-        when(serviceGameMock.add(anyString(), anyString(), anyString(), anyInt(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(null);
+        when(serviceGameCollectionMock.add(new Game(), new Collection(), new Region(), new Platform())).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.update(ID, aux).getStatusCode(), MESSAGE_ERROR);    }
 
@@ -242,7 +234,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         CollectionInputDTO aux = new CollectionInputDTO(
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceMock.findById(anyInt())).thenReturn(new Collection());
-        when(serviceGameMock.add(anyString(), anyString(), anyString(), anyInt(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameCollectionMock.add(new Game(), new Collection(), new Region(), new Platform())).thenReturn(new GameCollection());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, controller.update(ID,aux).getStatusCode(), MESSAGE_ERROR);
@@ -253,7 +245,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         CollectionInputDTO aux = new CollectionInputDTO(
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
         when(serviceMock.findById(anyInt())).thenReturn(new Collection());
-        when(serviceGameMock.add(anyString(), anyString(), anyString(), anyInt(), anyString(), anySet(),anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameCollectionMock.add(new Game(), new Collection(), new Region(), new Platform())).thenReturn(new GameCollection());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
         when(serviceMock.update(anyInt(), any(User.class))).thenReturn(null);
 
@@ -265,7 +257,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         CollectionInputDTO aux = new CollectionInputDTO(
                 new UserDTO(ID, USERNAME, EMAIL, PASSWORD, new RoleOutputDTO(ID, NAME), VERIFIED, VERIFICATION_TOKEN, CREATION_DATE, PROFILE_PICTURE));
 
-        when(serviceGameMock.add(anyString(), anyString(), anyString(),anyInt(), anyString(), anySet(), anySet(), anySet(), anySet(), anySet())).thenReturn(new Game());
+        when(serviceGameCollectionMock.add(new Game(), new Collection(), new Region(), new Platform())).thenReturn(new GameCollection());
         when(serviceUserMock.findByUsername(anyString())).thenReturn(new User());
 
         when(serviceMock.findById(any(Integer.class))).thenReturn(new Collection());

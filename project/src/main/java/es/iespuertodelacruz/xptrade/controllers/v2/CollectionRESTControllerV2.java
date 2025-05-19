@@ -4,6 +4,7 @@ import es.iespuertodelacruz.xptrade.domain.Collection;
 import es.iespuertodelacruz.xptrade.domain.Game;
 import es.iespuertodelacruz.xptrade.domain.User;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.ICollectionService;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameCollectionService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameService;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
 import es.iespuertodelacruz.xptrade.dto.input.CollectionInputDTO;
@@ -30,7 +31,7 @@ public class CollectionRESTControllerV2 {
      * Properties
      */
     private ICollectionService service;
-    private IGameService gameService;
+    private IGameCollectionService gameCollectionService;
     private IUserService userService;
 
     /**
@@ -41,14 +42,16 @@ public class CollectionRESTControllerV2 {
     public void setService(ICollectionService service) {
         this.service = service;
     }
+
     /**
      * Setters of the collection service
-     * @param gameService of the collection
+     * @param gameCollectionService of the collection
      */
     @Autowired
-    public void setGameService(IGameService gameService) {
-        this.gameService = gameService;
+    public void setGameCollectionService(IGameCollectionService gameCollectionService) {
+        this.gameCollectionService = gameCollectionService;
     }
+
     /**
      * Setters of the collection service
      * @param userService of the collection

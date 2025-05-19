@@ -4,9 +4,15 @@ import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.interfaces.repository.IGameCollectionRepository;
 import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameCollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author Nabil Leon Alvarez @nalleon
+ * @author Jose Maximiliano Boada Martin @mackstm
+ */
+@Service
 public class GameCollectionService implements IGameCollectionService {
 
     /**
