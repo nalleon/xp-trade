@@ -32,7 +32,7 @@ const ProfileScreen = (props: Props) => {
 
   useEffect(() => {
     fetchUserProfileDetails();
-  })
+  }, [])
 
   const fetchUserProfileDetails = async () => {
     setFavorites(await handleGetFavorites(context.username));

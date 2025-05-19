@@ -38,19 +38,18 @@ public class GameEntity {
     @Column(length=100, name = "released")
     private String released;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    @JoinTable(name = "games_developers",
+            joinColumns = { @JoinColumn(name = "game_id") },
+            inverseJoinColumns = { @JoinColumn(name = "developers_id")})
+    private Set<DeveloperEntity> developerEntitySet;
 
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     @JoinTable(name = "games_tags",
             joinColumns = { @JoinColumn(name = "game_id") },
             inverseJoinColumns = { @JoinColumn(name = "tag_id")})
-    private Set<DeveloperEntity> developerEntitySet;
-
-    @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    @Fetch(FetchMode.SELECT)
-    @JoinTable(name = "games_developers",
-            joinColumns = { @JoinColumn(name = "game_id") },
-            inverseJoinColumns = { @JoinColumn(name = "developers_id")})
     private Set<TagEntity> tagEntitySet;
 
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)

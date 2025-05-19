@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import AuthStackNav from '../stack/AuthStackNav';
 import SettingsStackNav from '../stack/SettingsStackNav';
@@ -8,12 +8,23 @@ import HomeScreen from '../../screens/HomeScreen';
 import TabNav from '../tab/TabNav';
 import LogoutScreen from '../../screens/LogoutScreen';
 import Icon from 'react-native-vector-icons/Ionicons'; // Para los iconos
+import { AppContext } from '../../context/AppContext';
 
 type Props = {}
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNav = (props: Props) => {
+
+  // const context = useContext(AppContext);
+
+  //  function handleLogout() {
+  //   context.removeToken();
+  //   navigation.reset({
+  //     routes: [{name: 'LoginScreen'}]
+  //   })
+  // }
+
   return (
     <Drawer.Navigator 
     id={undefined}
@@ -56,16 +67,6 @@ const DrawerNav = (props: Props) => {
           title: 'Perfil', 
           drawerIcon: ({ color }) => (
             <Icon name="person-circle" size={20} color={color} />
-          ),
-        }} 
-      />
-      <Drawer.Screen 
-        name="SettingsStackNav" 
-        component={SettingsStackNav} 
-        options={{
-          title: 'Ajustes', 
-          drawerIcon: ({ color }) => (
-            <Icon name="settings" size={20} color={color} />
           ),
         }} 
       />

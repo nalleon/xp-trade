@@ -58,10 +58,26 @@ CREATE TABLE `games` (
     title CHAR(100) NOT NULL,
     cover_art CHAR(255) NULL,
     slug CHAR(100) NOT NULL,
+    rating INTEGER NULL,
+    released CHAR(100) NULL,
     CONSTRAINT `pk_games` PRIMARY KEY (id),
     UNIQUE KEY `uq_games_title_slug` (title, slug)
 );
 
+CREATE TABLE `tags` (
+    id INTEGER AUTO_INCREMENT NOT NULL,
+    name CHAR(100) NOT NULL,
+    CONSTRAINT `pk_tags` PRIMARY KEY (id)
+);
+
+CREATE TABLE `games_tags` (
+    id INTEGER AUTO_INCREMENT NOT NULL,
+    game_id INTEGER NOT NULL,
+    tag_id INTEGER NOT NULL,
+    CONSTRAINT `pk_games_tags` PRIMARY KEY (id),
+    CONSTRAINT `fk_games_tags_games` FOREIGN KEY (game_id) REFERENCES games(id),
+    CONSTRAINT `fk_games_tags_tags` FOREIGN KEY (tag_id) REFERENCES tags(id)
+);
 
 CREATE TABLE `platforms` (
     id INTEGER AUTO_INCREMENT NOT NULL,

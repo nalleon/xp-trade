@@ -117,58 +117,58 @@ const GameScreen = (props: Props) => {
   const addToFavorite = async (game: GameDetails) => {
     if (!game) return;
 
-    // const usernameXP = await AsyncStorage.getItem('username');
+    const usernameXP = await AsyncStorage.getItem('username');
 
-    // const developers =
-    //   game.developers?.length > 0
-    //     ? game.developers.map((d) => ({ name: d.name }))
-    //     : game.publishers?.length > 0
-    //       ? game.publishers.map((p) => ({ name: p.name }))
-    //       : [];
+    const developers =
+      game.developers?.length > 0
+        ? game.developers.map((d) => ({ name: d.name }))
+        : game.publishers?.length > 0
+          ? game.publishers.map((p) => ({ name: p.name }))
+          : [];
 
-    // const publishers =
-    //   game.publishers?.length > 0
-    //     ? game.publishers.map((p) => ({ name: p.name }))
-    //     : game.developers?.length > 0
-    //       ? game.developers.map((d) => ({ name: d.name }))
-    //       : [];
+    const publishers =
+      game.publishers?.length > 0
+        ? game.publishers.map((p) => ({ name: p.name }))
+        : game.developers?.length > 0
+          ? game.developers.map((d) => ({ name: d.name }))
+          : [];
 
-    // const genres =
-    //   game.genres?.length > 0
-    //     ? game.genres.map((g) => ({ name: g.name }))
-    //     : game.tags?.length > 0
-    //       ? game.tags.map((tag) => ({ name: tag.name }))
-    //       : [];
+    const genres =
+      game.genres?.length > 0
+        ? game.genres.map((g) => ({ name: g.name }))
+        : game.tags?.length > 0
+          ? game.tags.map((tag) => ({ name: tag.name }))
+          : [];
 
-    // const inputXPTrade = {
-    //   game: {
-    //     title: game.name,
-    //     coverArt: game.background_image,
-    //     slug: game.slug,
-    //     developerInputDTOSet: developers,
-    //     genreInputDTOSet: genres,
-    //     platformInputDTOSet: game.platforms?.length > 0
-    //       ? game.platforms.map((p) => ({
-    //         name: p.platform.name,
-    //       }))
-    //       : [],
-    //     publisherInputDTOSet: publishers,
-    //     regionInputDTOSet: REGIONS.map((region) => ({
-    //       name: region,
-    //     })),
-    //   },
-    //   user: {
-    //     username: usernameXP,
-    //     profilePicture: '',
-    //   },
-    // };
+    const inputXPTrade = {
+      game: {
+        title: game.name,
+        coverArt: game.background_image,
+        slug: game.slug,
+        developerInputDTOSet: developers,
+        genreInputDTOSet: genres,
+        platformInputDTOSet: game.platforms?.length > 0
+          ? game.platforms.map((p) => ({
+            name: p.platform.name,
+          }))
+          : [],
+        publisherInputDTOSet: publishers,
+        regionInputDTOSet: REGIONS.map((region) => ({
+          name: region,
+        })),
+      },
+      user: {
+        username: usernameXP,
+        profilePicture: '',
+      },
+    };
 
-    // const result = await handleAddToFavorite(inputXPTrade);
+    const result = await handleAddToFavorite(inputXPTrade);
 
-    // if (result == SUCCESS) {
-    //   setIsFavorite(true);
-    //   setShowAddToFavoritesModal(true);
-    // }
+    if (result == SUCCESS) {
+      setIsFavorite(true);
+      setShowAddToFavoritesModal(true);
+    }
 
     setIsScrollEnabled(true);
   };

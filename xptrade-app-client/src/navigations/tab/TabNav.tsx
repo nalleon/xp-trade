@@ -20,7 +20,6 @@ export type TabParamList = {
   Home: NavigatorScreenParams<HomeStackParamList>;
   Search: NavigatorScreenParams<GameStackParamList>;
   Collection: undefined;
-  Notificaciones: undefined;
   Profile: NavigatorScreenParams<ProfileStackParamList>;
 };
 
@@ -87,20 +86,6 @@ const TabNav = (props: Props) => {
           tabBarIcon: ({ focused, color }) => (
             <Icon
               name={focused ? 'game-controller' : 'game-controller-outline'}
-              size={24}
-              color={color}
-            />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Notificaciones"
-        component={NotificationStackNav}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <Icon
-              name={focused ? 'notifications' : 'notifications-outline'}
               size={24}
               color={color}
             />
