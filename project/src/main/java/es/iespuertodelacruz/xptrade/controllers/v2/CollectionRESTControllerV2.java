@@ -1,18 +1,19 @@
 package es.iespuertodelacruz.xptrade.controllers.v2;
 
-import es.iespuertodelacruz.xptrade.domain.Collection;
-import es.iespuertodelacruz.xptrade.domain.Game;
-import es.iespuertodelacruz.xptrade.domain.User;
-import es.iespuertodelacruz.xptrade.domain.interfaces.service.ICollectionService;
-import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameCollectionService;
-import es.iespuertodelacruz.xptrade.domain.interfaces.service.IGameService;
-import es.iespuertodelacruz.xptrade.domain.interfaces.service.IUserService;
+import es.iespuertodelacruz.xptrade.domain.*;
+import es.iespuertodelacruz.xptrade.domain.interfaces.service.*;
 import es.iespuertodelacruz.xptrade.dto.input.CollectionInputDTO;
+import es.iespuertodelacruz.xptrade.dto.input.GameCollectionInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.CollectionOutputDTO;
+import es.iespuertodelacruz.xptrade.dto.output.GameCollectionOutputDTO;
 import es.iespuertodelacruz.xptrade.mapper.dto.input.ICollectionInputDTOMapper;
+import es.iespuertodelacruz.xptrade.mapper.dto.input.IGameCollectionInputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.ICollectionOutputDTOMapper;
+import es.iespuertodelacruz.xptrade.mapper.dto.output.IGameCollectionOutputDTOMapper;
+import es.iespuertodelacruz.xptrade.mapper.dto.user.IUserDTOMapper;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.hibernate.annotations.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,10 @@ public class CollectionRESTControllerV2 {
      */
     private ICollectionService service;
     private IGameCollectionService gameCollectionService;
+    private IGameService gameService;
     private IUserService userService;
+    private IGenericService<Platform, Integer, String> platformService;
+    private IGenericService<Region, Integer, String> regionService;
 
     /**
      * Setters of the collection service
@@ -54,11 +58,38 @@ public class CollectionRESTControllerV2 {
 
     /**
      * Setters of the collection service
+     * @param gameService of the collection
+     */
+    @Autowired
+    public void setGameService(IGameService gameService) {
+        this.gameService = gameService;
+    }
+
+    /**
+     * Setters of the collection service
      * @param userService of the collection
      */
     @Autowired
     public void setUserService(IUserService userService) {
         this.userService = userService;
+    }
+
+    /**
+     * Setters of the collection service
+     * @param platformService of the collection
+     */
+    @Autowired
+    public void setPlatformService(IGenericService<Platform, Integer, String> platformService) {
+        this.platformService = platformService;
+    }
+
+    /**
+     * Setters of the collection service
+     * @param regionService of the collection
+     */
+    @Autowired
+    public void setRegionService(IGenericService<Region, Integer, String> regionService) {
+        this.regionService = regionService;
     }
 
     @GetMapping
@@ -75,26 +106,36 @@ public class CollectionRESTControllerV2 {
         return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
     }
 
+    /**
+     * Endpoint to get all collections of a user
+     * @param username the username of the user
+     * @return a list of collections
+     */
     @GetMapping("/users/{username}")
     public ResponseEntity<?> getAllByUser(@PathVariable String username) {
         User filter = userService.findByUsername(username);
 
         if(filter == null){
-            String message = "Filter do NOT exists";
+            String message = "Filter does NOT exist";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
                     .body(new CustomApiResponse<>(204, message, null));
         }
 
-        List<CollectionOutputDTO> filteredList = ICollectionOutputDTOMapper.INSTANCE.toDTOList(service.findByUser(filter));
+        Collection collectionDb = service.add(filter);
 
-        if (filteredList.isEmpty()) {
+        if (collectionDb == null) {
             String message = "There are no collections";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new CustomApiResponse<>(204, message, filteredList));
+                    .body(new CustomApiResponse<>(204, message, collectionDb));
         }
 
-        String message = "List successfully obtained";
-        return ResponseEntity.ok(new CustomApiResponse<>(200, message, filteredList));
+        List<GameCollectionOutputDTO> gameCollectionList = IGameCollectionOutputDTOMapper.INSTANCE.toDTOList(gameCollectionService.findByCollection(collectionDb));
+
+        CollectionOutputDTO collectionOutputDTO = new CollectionOutputDTO(collectionDb.getId(),
+                gameCollectionList, IUserDTOMapper.INSTANCE.toDTO(filter));
+
+        String message = "Collection successfully obtained";
+        return ResponseEntity.ok(new CustomApiResponse<>(200, message, collectionOutputDTO));
     }
 
 
@@ -210,4 +251,92 @@ public class CollectionRESTControllerV2 {
         }
     }
 
+    @PostMapping("/{username}")
+    public ResponseEntity<?> addGameToCollection(@RequestBody GameCollectionInputDTO dto, @PathVariable String username) {
+
+        if (dto == null) {
+            return ResponseEntity.badRequest()
+                    .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+        }
+
+        try {
+            GameCollection aux = IGameCollectionInputDTOMapper.INSTANCE.toDomain(dto);
+
+
+            Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(), aux.getGame().getSlug(),
+                    aux.getGame().getRating(), aux.getGame().getReleased(), aux.getGame().getTagSet(),
+                    aux.getGame().getDeveloperSet(), aux.getGame().getGenreSet(), aux.getGame().getPlatformSet(),
+                    aux.getGame().getPublisherSet());
+
+            if(gameDb == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "Item cannot be null", null));
+            }
+
+            User filter = userService.findByUsername(username);
+
+            if(filter == null){
+                return ResponseEntity.badRequest()
+                        .body(new CustomApiResponse<>(400, "User does not exist", null));
+            }
+
+            Collection collectionDb = service.add(filter);
+
+            if (collectionDb == null) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                        .body(new CustomApiResponse<>(204, "Collection cannot be null", null));
+            }
+
+            GameCollection gameCollection = gameCollectionService.add(gameDb, collectionDb,
+                    saveOrGetRegion(aux.getRegion().getName()), saveOrGetPlatform(aux.getPlatform().getName()));
+
+            if (gameCollection == null) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                        .body(new CustomApiResponse<>(204, "GameCollection cannot be null", null));
+            }
+
+            GameCollectionOutputDTO result = IGameCollectionOutputDTOMapper.INSTANCE.toDTO(gameCollection);
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new CustomApiResponse<>(201, "Item created successfully", result));
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, "Error while trying to add item", null));
+        }
+    }
+
+    @DeleteMapping("/games/{id}")
+    public ResponseEntity<?> deleteGameFromCollection(@PathVariable Integer id) {
+        boolean deleted = gameCollectionService.delete(id);
+        if (deleted) {
+            String message = "Item deleted correctly";
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(new CustomApiResponse<>(204, message, null));
+        } else {
+            String message = "Unable to delete item with id: " + id;
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new CustomApiResponse<>(417, message, null));
+        }
+    }
+
+    public Platform saveOrGetPlatform(String name) {
+        Platform platform = platformService.findByName(name);
+
+        if (platform == null) {
+            platform = platformService.add(name);
+        }
+
+        return platform;
+    }
+
+    public Region saveOrGetRegion(String name) {
+        Region region = regionService.findByName(name);
+
+        if (region == null) {
+            region = regionService.add(name);
+        }
+
+        return region;
+    }
 }

@@ -23,7 +23,7 @@ public class RegionEntity {
     @Column(unique = true, nullable=false, length=45, name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "region")
+    @OneToMany(mappedBy = "region", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<GameCollectionEntity> gameCollectionSet;
 
     /**

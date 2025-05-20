@@ -168,10 +168,8 @@ CREATE TABLE `posts` (
 
 CREATE TABLE `collections` (
     id INTEGER AUTO_INCREMENT NOT NULL,
-    game_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     CONSTRAINT `pk_collections` PRIMARY KEY (id),
-    CONSTRAINT `fk_collections1` FOREIGN KEY (game_id) REFERENCES games(id),
     CONSTRAINT `fk_collections2` FOREIGN KEY (user_id) REFERENCES users(id)
 );
 

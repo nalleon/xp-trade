@@ -26,7 +26,7 @@ public class PlatformEntity {
     @ManyToMany(mappedBy = "platformEntitySet", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     Set<GameEntity> games;
 
-    @OneToMany(mappedBy = "platform")
+    @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<GameCollectionEntity> gameCollectionSet;
 
     /**

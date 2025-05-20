@@ -4,6 +4,7 @@ import es.iespuertodelacruz.xptrade.controllers.v2.CollectionRESTControllerV2;
 import es.iespuertodelacruz.xptrade.domain.*;
 import es.iespuertodelacruz.xptrade.domain.service.CollectionService;
 import es.iespuertodelacruz.xptrade.domain.service.GameCollectionService;
+import es.iespuertodelacruz.xptrade.domain.service.GameService;
 import es.iespuertodelacruz.xptrade.domain.service.UserService;
 import es.iespuertodelacruz.xptrade.dto.input.CollectionInputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
@@ -34,6 +35,8 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
     @Mock
     GameCollectionService serviceGameCollectionMock;
     @Mock
+    GameService serviceGameMock;
+    @Mock
     CollectionEntityService entityServiceMock;
 
     @InjectMocks
@@ -51,6 +54,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         serviceMock.setRepository(entityServiceMock);
         controller.setService(serviceMock);
         controller.setGameCollectionService(serviceGameCollectionMock);
+        controller.setGameService(serviceGameMock);
         controller.setUserService(serviceUserMock);
         serviceMockException.setRepository(entityServiceMock);
 

@@ -1,12 +1,8 @@
 package es.iespuertodelacruz.xptrade.shared.config;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
@@ -38,7 +34,7 @@ public class DatabaseConfig {
         return dataSource;
     }
 
-    @Bean
+   /* @Bean
     public MongoClient mongoClientProd(){
         return MongoClients.create("mongodb://root:1q2w3e4r@localhost:27017");
     }
@@ -47,5 +43,5 @@ public class DatabaseConfig {
     @Bean(name = "mongoTemplate")
     public MongoTemplate mongoTemplateProd(){
         return new MongoTemplate(new SimpleMongoClientDatabaseFactory(mongoClientProd(), "xptrade"));
-    }
+    }*/
 }

@@ -28,15 +28,6 @@ public interface ICollectionEntityRepository extends JpaRepository<CollectionEnt
 
 
     @Query(
-            value =
-                    "SELECT * FROM collections AS c " +
-                            "INNER JOIN games AS g ON g.id = c.game_id " +
-                            "WHERE c.user_id = :user_id AND g.title = :title",
-            nativeQuery = true
-    )
-    Optional<FavoriteEntity> checkIfInCollection(@Param("user_id") int userId, @Param("title") String title);
-
-    @Query(
             value="SELECT * FROM collections WHERE user_id =:user_id",
             nativeQuery=true
     )

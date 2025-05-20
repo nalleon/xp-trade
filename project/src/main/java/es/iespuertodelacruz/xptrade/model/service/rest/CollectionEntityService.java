@@ -44,6 +44,12 @@ public class CollectionEntityService implements ICollectionRepository {
             return null;
         }
 
+        List<CollectionEntity> aux = repository.findAllByUser(collection.getUser().getId());
+
+        if (!aux.isEmpty()) {
+            return ICollectionEntityMapper.INSTANCE.toDomain(aux.get(0));
+        }
+
         try {
             CollectionEntity entity = ICollectionEntityMapper.INSTANCE.toEntity(collection);
             CollectionEntity savedEntity = repository.save(entity);
