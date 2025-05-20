@@ -1,5 +1,6 @@
 package es.iespuertodelacruz.xptrade.shared.config;
 
+import es.iespuertodelacruz.xptrade.model.service.interfaces.IGameSoapService;
 import es.iespuertodelacruz.xptrade.model.service.interfaces.IRoleSoapService;
 import es.iespuertodelacruz.xptrade.model.service.interfaces.IUserSoapService;
 import es.iespuertodelacruz.xptrade.shared.security.CxfAuthInterceptor;
@@ -16,16 +17,14 @@ public class SoapServiceConfig {
     private final Bus bus;
     private final IUserSoapService userSoapService;
     private final IRoleSoapService roleSoapService;
+    private final IGameSoapService gameSoapService;
 
 
-    public SoapServiceConfig(
-            Bus bus,
-            IUserSoapService userSoapService,
-            IRoleSoapService roleSoapService
-    ) {
+    public SoapServiceConfig(Bus bus, IUserSoapService userSoapService, IRoleSoapService roleSoapService, IGameSoapService gameSoapService) {
         this.bus = bus;
         this.userSoapService = userSoapService;
         this.roleSoapService = roleSoapService;
+        this.gameSoapService = gameSoapService;
     }
 
     @Bean
@@ -47,6 +46,15 @@ public class SoapServiceConfig {
     public Endpoint roleEndpoint(CxfAuthInterceptor cxfAuthInterceptor) {
         EndpointImpl endpoint = new EndpointImpl(bus, roleSoapService);
         endpoint.publish("/roles");
+        endpoint.getInInterceptors().add(cxfAuthInterceptor);
+        return endpoint;
+    }
+
+
+    @Bean
+    public Endpoint gameEndpoint(CxfAuthInterceptor cxfAuthInterceptor) {
+        EndpointImpl endpoint = new EndpointImpl(bus, gameSoapService);
+        endpoint.publish("/games");
         endpoint.getInInterceptors().add(cxfAuthInterceptor);
         return endpoint;
     }
