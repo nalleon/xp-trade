@@ -41,7 +41,6 @@ const DrawerNav = (props: Props) => {
           fontWeight: '600',
         },
       }}
-      drawerContent={(props) => <CustomDrawerContent {...props}/>}
     >
       <Drawer.Screen 
         name="TabNavDrawer" 
