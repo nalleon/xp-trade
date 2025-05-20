@@ -15,6 +15,7 @@ import es.iespuertodelacruz.xptrade.shared.security.CustomUserDetails;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -337,4 +339,8 @@ public class PostRESTControllerV2Test extends MapperDTOHelper {
         Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
+    @AfterEach
+    public void cleanUpSecurityContext() {
+        SecurityContextHolder.clearContext();
+    }
 }

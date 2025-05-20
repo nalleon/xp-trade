@@ -12,6 +12,7 @@ import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
 import es.iespuertodelacruz.xptrade.model.service.rest.CollectionEntityService;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,7 +178,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         Collection aux = new Collection(userDomain);
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.delete(any(Integer.class))).thenReturn(true);
-        ResponseEntity responseEntity = controller.delete(1);
+        ResponseEntity<?> responseEntity = controller.delete(1);
         Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
@@ -185,7 +187,7 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
         Collection aux = new Collection(userDomain);
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.delete(any(Integer.class))).thenReturn(false);
-        ResponseEntity responseEntity = controller.delete(1);
+        ResponseEntity<?> responseEntity = controller.delete(1);
         Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED,
                 responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
@@ -269,6 +271,11 @@ public class CollectionRESTControllerV2Test extends MapperDTOHelper {
 
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
         Assertions.assertEquals(HttpStatus.EXPECTATION_FAILED, responseEntity.getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @AfterEach
+    public void cleanUpSecurityContext() {
+        SecurityContextHolder.clearContext();
     }
 
 

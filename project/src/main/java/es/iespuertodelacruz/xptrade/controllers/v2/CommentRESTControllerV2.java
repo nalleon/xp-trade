@@ -231,7 +231,7 @@ public class CommentRESTControllerV2 {
         Comment dbItem = service.findById(id);
 
         if(dbItem == null){
-            ResponseEntity.status(HttpStatus.NO_CONTENT)
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
                     .body(new CustomApiResponse<>(204, "Not found", null));
         }
 
@@ -242,7 +242,7 @@ public class CommentRESTControllerV2 {
         User userDb = userService.findByUsername(username);
 
 
-        if (dbItem != null && userDb.getId() != dbItem.getUser().getId()) {
+        if (userDb.getId() != dbItem.getUser().getId()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new CustomApiResponse<>(401, "Unauthorized", null));
         }

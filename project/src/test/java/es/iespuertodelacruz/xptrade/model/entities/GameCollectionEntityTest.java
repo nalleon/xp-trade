@@ -1,6 +1,5 @@
 package es.iespuertodelacruz.xptrade.model.entities;
 
-import es.iespuertodelacruz.xptrade.domain.GameCollection;
 import es.iespuertodelacruz.xptrade.utilities.MapperHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -8,50 +7,50 @@ import org.junit.jupiter.api.Test;
 public class GameCollectionEntityTest extends MapperHelper {
 
 
-    GameCollection item;
+    GameCollectionEntity item;
     
     @Test
     public void getSetTest(){
-        item = new GameCollection();
+        item = new GameCollectionEntity();
         item.setId(ID);
-        item.setGame(gameDomain);
-        item.setCollection(collectionDomain);
-        item.setPlatform(platformDomain);
-        item.setRegion(regionDomain);
+        item.setGame(gameEntity);
+        item.setCollection(collectionEntity);
+        item.setPlatform(platformEntity);
+        item.setRegion(regionEntity);
 
         Assertions.assertEquals(ID, item.getId(), MESSAGE_ERROR);
-        Assertions.assertEquals(gameDomain, item.getGame(), MESSAGE_ERROR);
-        Assertions.assertEquals(collectionDomain, item.getCollection(), MESSAGE_ERROR);
-        Assertions.assertEquals(platformDomain, item.getPlatform(), MESSAGE_ERROR);
-        Assertions.assertEquals(regionDomain, item.getRegion(), MESSAGE_ERROR);
+        Assertions.assertEquals(gameEntity, item.getGame(), MESSAGE_ERROR);
+        Assertions.assertEquals(collectionEntity, item.getCollection(), MESSAGE_ERROR);
+        Assertions.assertEquals(platformEntity, item.getPlatform(), MESSAGE_ERROR);
+        Assertions.assertEquals(regionEntity, item.getRegion(), MESSAGE_ERROR);
 
     }
 
     @Test
     public void toStringTest(){
-        item = new GameCollection();
+        item = new GameCollectionEntity();
         item.setId(ID);
-        item.setGame(gameDomain);
-        item.setCollection(collectionDomain);
-        item.setPlatform(platformDomain);
-        item.setRegion(regionDomain);
+        item.setGame(gameEntity);
+        item.setCollection(collectionEntity);
+        item.setPlatform(platformEntity);
+        item.setRegion(regionEntity);
 
         Assertions.assertTrue(item.toString().contains(String.valueOf(ID)), MESSAGE_ERROR);
-        Assertions.assertTrue(item.toString().contains(gameDomain.toString()), MESSAGE_ERROR);
-        Assertions.assertTrue(item.toString().contains(collectionDomain.toString()), MESSAGE_ERROR);
-        Assertions.assertTrue(item.toString().contains(platformDomain.toString()), MESSAGE_ERROR);
-        Assertions.assertTrue(item.toString().contains(regionDomain.toString()), MESSAGE_ERROR);
+        Assertions.assertTrue(item.toString().contains(gameEntity.toString()), MESSAGE_ERROR);
+        Assertions.assertTrue(item.toString().contains(collectionEntity.toString()), MESSAGE_ERROR);
+        Assertions.assertTrue(item.toString().contains(platformEntity.toString()), MESSAGE_ERROR);
+        Assertions.assertTrue(item.toString().contains(regionEntity.toString()), MESSAGE_ERROR);
 
     }
 
     @Test
     public void equalsTest(){
-        item = new GameCollection();
+        item = new GameCollectionEntity();
         item.setId(ID);
-        GameCollection equals = new GameCollection(ID);
-        GameCollection differentId = new GameCollection(2);
+        GameCollectionEntity equals = new GameCollectionEntity(ID);
+        GameCollectionEntity differentId = new GameCollectionEntity(2);
         String str = "str";
-        GameCollection nullObject = null;
+        GameCollectionEntity nullObject = null;
 
         Assertions.assertEquals(item, equals, MESSAGE_ERROR);
         Assertions.assertEquals(item, item, MESSAGE_ERROR);

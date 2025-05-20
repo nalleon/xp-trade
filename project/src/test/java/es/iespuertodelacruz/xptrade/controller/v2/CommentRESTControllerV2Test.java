@@ -11,8 +11,10 @@ import es.iespuertodelacruz.xptrade.dto.output.PostOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.output.RoleOutputDTO;
 import es.iespuertodelacruz.xptrade.dto.user.UserDTO;
 import es.iespuertodelacruz.xptrade.model.service.rest.CommentEntityService;
+import es.iespuertodelacruz.xptrade.shared.security.CustomUserDetails;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import es.iespuertodelacruz.xptrade.utilities.MapperDTOHelper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,12 +23,16 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 public class CommentRESTControllerV2Test extends MapperDTOHelper {
     @Mock
@@ -219,19 +225,96 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
 
 
 
-    //@Test
+    @Test
     void deleteTest() {
-        Comment aux = new Comment(postDomain, userDomain, CONTENT);
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
 
-        when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
-        when(serviceMock.delete(any(Integer.class))).thenReturn(true);
-        ResponseEntity responseEntity = controller.delete(1);
-        Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode(), MESSAGE_ERROR);
+        CustomUserDetails userDetails = mock(CustomUserDetails.class);
+        when(userDetails.getUsername()).thenReturn("testUser");
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        User commentOwner = new User();
+        commentOwner.setId(42);
+        Comment aux = new Comment(postDomain, commentOwner, CONTENT);
+        aux.setId(ID);
+
+        when(serviceMock.findById(ID)).thenReturn(aux);
+
+        User userFromDb = new User();
+        userFromDb.setId(42);
+        when(serviceUserMock.findByUsername("testUser")).thenReturn(userFromDb);
+
+        when(serviceMock.delete(anyInt())).thenReturn(true);
+
+        ResponseEntity<?> responseEntity = controller.delete(ID);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
     }
 
-    // @Test
+    @Test
+    void deleteNotFoundTest() {
+        when(serviceMock.findById(anyInt())).thenReturn(null);
+        when(serviceMock.delete(any(Integer.class))).thenReturn(false);
+        ResponseEntity<?> responseEntity = controller.delete(1);
+        Assertions.assertEquals(HttpStatus.NO_CONTENT,
+                responseEntity.getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @Test
+    void deleteUnauthorizedTest() {
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        CustomUserDetails userDetails = mock(CustomUserDetails.class);
+        when(userDetails.getUsername()).thenReturn("testUser");
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        User commentOwner = new User();
+        commentOwner.setId(42);
+        Comment aux = new Comment(postDomain, commentOwner, CONTENT);
+        aux.setId(ID);
+
+        when(serviceMock.findById(ID)).thenReturn(aux);
+
+        User userFromDb = new User();
+        userFromDb.setId(99);
+        when(serviceUserMock.findByUsername("testUser")).thenReturn(userFromDb);
+
+        when(serviceMock.delete(any(Integer.class))).thenReturn(false);
+        ResponseEntity<?> responseEntity = controller.delete(1);
+        Assertions.assertEquals(HttpStatus.UNAUTHORIZED,
+                responseEntity.getStatusCode(), MESSAGE_ERROR);
+    }
+
+
+    @Test
     void deleteErrorTest() {
-        Comment aux = new Comment(postDomain, userDomain, CONTENT);
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        CustomUserDetails userDetails = mock(CustomUserDetails.class);
+        when(userDetails.getUsername()).thenReturn("testUser");
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        User commentOwner = new User();
+        commentOwner.setId(42);
+        Comment aux = new Comment(postDomain, commentOwner, CONTENT);
+        aux.setId(ID);
+
+        when(serviceMock.findById(ID)).thenReturn(aux);
+
+        User userFromDb = new User();
+        userFromDb.setId(42);
+        when(serviceUserMock.findByUsername("testUser")).thenReturn(userFromDb);
+
         when(serviceMock.findById(any(Integer.class))).thenReturn(aux);
         when(serviceMock.delete(any(Integer.class))).thenReturn(false);
         ResponseEntity responseEntity = controller.delete(1);
@@ -239,8 +322,28 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
                 responseEntity.getStatusCode(), MESSAGE_ERROR);
     }
 
-    // @Test
+    @Test
     void updateTest() {
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        CustomUserDetails userDetails = mock(CustomUserDetails.class);
+        when(userDetails.getUsername()).thenReturn("testUser");
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+
+        User commentOwner = new User();
+        commentOwner.setId(42);
+        Comment domain = new Comment(postDomain, commentOwner, CONTENT);
+        domain.setId(ID);
+        when(serviceMock.findById(anyInt())).thenReturn(domain);
+
+        User userFromDb = new User();
+        userFromDb.setId(42);
+        when(serviceUserMock.findByUsername("testUser")).thenReturn(userFromDb);
+
         ContentUpdateDTO aux = new ContentUpdateDTO(CONTENT);
 
         when(servicePostMock.findById(anyInt())).thenReturn(new Post(new Game(), new User(), PICTURE, CONTENT));
@@ -317,6 +420,11 @@ public class CommentRESTControllerV2Test extends MapperDTOHelper {
 
         ResponseEntity<CustomApiResponse<?>> responseEntity = controller.update(1, aux);
         Assertions.assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode(), MESSAGE_ERROR);
+    }
+
+    @AfterEach
+    public void cleanUpSecurityContext() {
+        SecurityContextHolder.clearContext();
     }
 
 }
