@@ -1,4 +1,4 @@
-export const URL_API = "http://192.168.58.29:8080/api";
+export const URL_API = "http://172.17.0.1:8080/api";
 export const PULLING_INTERVAL = 500;
 // Nabil: 172.17.0.1
 // Maxi: 192.168.1.117, 192.168.58.29
