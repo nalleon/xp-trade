@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { ImageZoom } from '@likashefqet/react-native-image-zoom';
 import ScreenshotGallery from '../components/ScreenshotGallery';
 import UseApi from '../hooks/UseApi';
-import { Result, XPTradeInputGame } from '../utils/TypeUtils';
+import { Result, Screenshot, XPTradeInputGame } from '../utils/TypeUtils';
 import { GameDetails } from '../utils/GameDetailsType';
 import UseRAWGApi from '../hooks/UseRAWGApi';
 import PlatformModal from '../components/PlatformModal';
@@ -32,18 +32,37 @@ const GameScreen = (props: Props) => {
   const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
   const [isScrollEnabled, setIsScrollEnabled] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
-
+  const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
   const { currentGame, currentGameDetailed, username } = useContext(AppContext);
 
   const { handleAddToCollection, handleAddToFavorite, handleCheckIfExistsFavorites, handleDeleteFromFavorites } = UseApi();
+  const { handleGameScreenshots } = UseRAWGApi();
 
   /**
    * UseEffect 
    */
+  
+
   useEffect(() => {
     checkIfIsFavorites();
   }, [isFavorite]);
 
+  useEffect(() => {
+    const getScreenshots = async () =>{
+      const result = await handleGameScreenshots(currentGameDetailed.id);      
+      
+      if(result != null){
+        setScreenshots(result);
+      }
+    }  
+
+    getScreenshots();
+
+  }, [])
+  
+  
+
+  
 
 
   /**
@@ -51,9 +70,11 @@ const GameScreen = (props: Props) => {
      */
   const checkIfIsFavorites = async () => {
     const usernameXP = await AsyncStorage.getItem('username');
-    const title = currentGame.name;
+    const title = currentGameDetailed.name;
 
     const result = await handleCheckIfExistsFavorites(usernameXP, title);
+
+    console.log("====================== IS FAV", result);
 
     if (result != null) {
       setIsFavorite(true);
@@ -65,7 +86,7 @@ const GameScreen = (props: Props) => {
    */
   const deleteFromFavorites = async () => {
     const usernameXP = await AsyncStorage.getItem('username');
-    const title = currentGame.name;
+    const title = currentGameDetailed.name;
 
     const result = await handleDeleteFromFavorites(usernameXP, title);
 
@@ -74,8 +95,6 @@ const GameScreen = (props: Props) => {
       setShowDeleteFromFavoritesModal(true);
     }
   }
-
-
 
   const addToCollection = async (game: GameDetails) => {
     if (!game) {
@@ -136,15 +155,21 @@ const GameScreen = (props: Props) => {
     const genres =
       game.genres?.length > 0
         ? game.genres.map((g) => ({ name: g.name }))
-        : game.tags?.length > 0
-          ? game.tags.map((tag) => ({ name: tag.name }))
           : [];
+
+    const tags = 
+      game.tags?.length > 0
+        ? game.tags.map((tag) => ({ name: tag.name }))
+        : [];
 
     const inputXPTrade = {
       game: {
         title: game.name,
         coverArt: game.background_image,
         slug: game.slug,
+        rating: game.rating,
+        released: game.released,
+        tagInputDTOSet: tags,
         developerInputDTOSet: developers,
         genreInputDTOSet: genres,
         platformInputDTOSet: game.platforms?.length > 0
@@ -215,25 +240,25 @@ const GameScreen = (props: Props) => {
       contentContainerStyle={{ flexGrow: 1 }}
     >
       {
-        currentGame.background_image &&
+        currentGameDetailed?.background_image &&
         <Image
-          source={{ uri: currentGame.background_image }}
+          source={{ uri: currentGameDetailed?.background_image }}
           className="w-full h-60"
           resizeMode="cover"
         />
       }
 
       {
-        !currentGame.background_image && currentGame.short_screenshots && currentGame.short_screenshots.length > 0 &&
+        !currentGameDetailed?.background_image && screenshots && screenshots.length > 0 &&
         <Image
-          source={{ uri: currentGame.short_screenshots[0].image }}
+          source={{ uri: screenshots[0].image }}
           className="w-full h-60"
           resizeMode="cover"
         />
       }
 
       {
-        !currentGame.background_image && (!currentGame.short_screenshots || currentGame.short_screenshots.length === 0) && (
+        !currentGameDetailed?.background_image && (!screenshots || screenshots.length === 0) && (
           <Image
             source={require('../resources/xp-trade.png')}
             className="w-full h-60"
@@ -306,7 +331,7 @@ const GameScreen = (props: Props) => {
             </TouchableOpacity>
             {showDevelopers && (
               <View className="ml-2">
-                {currentGameDetailed.developers.map((dev) => (
+                {currentGameDetailed?.developers.map((dev) => (
                   <Text key={dev.id} className="text-[#ccc] mb-1">
                     {dev.name}
                   </Text>
@@ -328,7 +353,7 @@ const GameScreen = (props: Props) => {
             </TouchableOpacity>
             {showPublishers && (
               <View className="ml-2">
-                {currentGameDetailed.publishers.map((pub) => (
+                {currentGameDetailed?.publishers.map((pub) => (
                   <Text key={pub.id} className="text-[#ccc] mb-1">
                     {pub.name}
                   </Text>
@@ -338,16 +363,16 @@ const GameScreen = (props: Props) => {
           </View>
         </View>
 
-        {currentGame.platforms?.length > 0 &&
+        {currentGameDetailed.platforms?.length > 0 &&
           <View className="mb-1">
             <Text className="text-[#F6F7F7] font-semibold mb-1">Plataformas:</Text>
             <Text className="text-[#ccc]">
-              {currentGame.platforms.map(p => p.platform.name).join(', ')}
+              {currentGameDetailed.platforms.map(p => p.platform.name).join(', ')}
             </Text>
           </View>
         }
 
-        {(currentGame.genres?.length > 0 || currentGame?.tags?.length > 0 || currentGameDetailed.genres?.length > 0) && (
+        {(currentGameDetailed.genres?.length > 0 || currentGameDetailed?.tags?.length > 0 || currentGameDetailed?.genres?.length > 0) && (
           <View className="mb-6">
             <View className="flex-row items-center justify-center my-6">
               <View className="flex-1 h-px bg-[#3A3F4A]" />
@@ -357,7 +382,7 @@ const GameScreen = (props: Props) => {
 
 
             <View className="flex-row flex-wrap justify-between gap-2">
-              {(currentGame.genres.length > 0 ? currentGame.genres : currentGameDetailed.genres)?.map((genre) => (
+              {(currentGameDetailed.genres.length > 0 ? currentGameDetailed?.genres : currentGameDetailed.genres)?.map((genre) => (
                 <View
                   key={`genre-${genre.id}`}
                   className="bg-[#1E222A] px-3 py-1 rounded-full mb-2 flex-grow"
@@ -397,14 +422,14 @@ const GameScreen = (props: Props) => {
           </View>
         )}
 
-        {currentGame?.short_screenshots?.length > 0 && (
-          <ScreenshotGallery screenshots={currentGame.short_screenshots} />
+        {screenshots?.length > 0 && (
+          <ScreenshotGallery screenshots={screenshots} />
         )}
 
       </View>
       <PlatformModal
         showModal={showPlatformModal}
-        platforms={currentGame.platforms}
+        platforms={currentGameDetailed.platforms}
         selectedPlatforms={selectedPlatforms}
         setSelectedPlatforms={setSelectedPlatforms}
         handlePlatformSelectionDone={() =>
@@ -421,12 +446,12 @@ const GameScreen = (props: Props) => {
       />
       <AddToFavoritesModal
         visible={showAddToFavoritesModal}
-        game={currentGame}
+        game={currentGameDetailed}
         onClose={() => setShowAddToFavoritesModal(false)}
       />
       <DeleteFromFavoritesModal
         visible={showDeleteFromFavoritesModal}
-        game={currentGame}
+        game={currentGameDetailed}
         onClose={() => setShowDeleteFromFavoritesModal(false)}
       />
 

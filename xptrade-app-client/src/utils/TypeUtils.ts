@@ -172,6 +172,20 @@ export interface Comment {
   creation_date: Date
 }
 
+ interface ScreenshootArr {
+  count: number;
+  next: null;
+  previous: null;
+  results: Screenshot[];
+}
+
+export interface Screenshot {
+  id: number;
+  image: string;
+  width: number;
+  height: number;
+  is_deleted: boolean;
+}
 
 /**
  * Own types

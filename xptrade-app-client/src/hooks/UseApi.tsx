@@ -259,6 +259,7 @@ const UseApi = () => {
                     },
                 });
 
+                console.log(response);
             if (response?.status === 204) {
                 return SUCCESS;
             } else {

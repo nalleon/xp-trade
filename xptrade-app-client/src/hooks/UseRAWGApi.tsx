@@ -51,6 +51,26 @@ const UseRAWGApi = () => {
       return null;
   };
 
+  const handleGameScreenshots = async (id: number) => {
+    if (!id) return null;
+
+    try {
+
+
+          const response = await axios.get(`${RAWG_API}/${id}/screenshots${RAWG_API_KEY}`, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response?.data) {
+          return response?.data;
+        }
+      } catch (error) {
+          console.error("Error fetching data from the api"); 
+      }
+
+      return null;
+  };
+
   //https://api.rawg.io/api/games/2727/movies?key=1a094ebbcbef4440a46abee88f222abb
 
     const handleGetTrailer = async (search: string) => {
@@ -72,7 +92,7 @@ const UseRAWGApi = () => {
     };
   
     return {
-        handleFetch, handleGetTrailer, handleGameDetailsFetch
+        handleFetch, handleGetTrailer, handleGameDetailsFetch, handleGameScreenshots
     }
 
 }
