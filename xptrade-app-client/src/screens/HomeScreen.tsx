@@ -59,6 +59,12 @@ function HomeScreen({ navigation }: Props) {
     navigation.navigate('PostScreen')
   }
 
+
+  const navigateToUserDetails = async (username) => {
+    context.setOtherUsername(username);
+    navigation.navigate("OtherUserProfileScreen");
+  }
+
   const navigateToGameDetails = async (game) => {
     context.setCurrentGameDetailed(await handleGameDetailsFetch(game.slug));
     navigation.navigate('GameScreenHome');
@@ -98,7 +104,7 @@ function HomeScreen({ navigation }: Props) {
                       className="w-10 h-10 rounded-full mr-3"
                     />
                     <View>
-                      <TouchableOpacity>
+                      <TouchableOpacity onPress={()=> navigateToUserDetails(item.user.username)}>
                         <Text className="text-[#F6F7F7] font-semibold">@{item.user.username}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity onPress={() => navigateToGameDetails(item.game)}>

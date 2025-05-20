@@ -209,6 +209,11 @@ const PostScreen = ({ navigation }: Props) => {
 
   }
 
+
+  const navigateToUserDetails = async (username) => {
+    context.setOtherUsername(username);
+    navigation.navigate("OtherUserProfileScreen");
+  }
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -235,9 +240,15 @@ const PostScreen = ({ navigation }: Props) => {
                 }
                 className="w-10 h-10 mr-3"
               />
-              <View>
-                <Text className="text-[#F6F7F7] font-semibold">@{currentPost.user.username}</Text>
-              </View>
+              {from !== "ProfileStack" ?
+                <TouchableOpacity onPress={() => navigateToUserDetails(currentPost.user.username)}>
+                  <Text className="text-[#F6F7F7] font-semibold">@{currentPost.user.username}</Text>
+                </TouchableOpacity>
+                :
+                <View>
+                  <Text className="text-[#F6F7F7] font-semibold">@{currentPost.user.username}</Text>
+                </View>
+              }
             </View>
 
             {isOwner && (

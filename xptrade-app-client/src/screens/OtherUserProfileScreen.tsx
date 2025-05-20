@@ -1,10 +1,9 @@
-import { Alert, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AppContext } from '../context/AppContext';
 
-import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-picker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
 import { Result } from '../utils/TypeUtils';
@@ -13,22 +12,21 @@ import PostButton from '../components/post.modals/PostButton';
 import UseApi from '../hooks/UseApi';
 import UseRAWGApi from '../hooks/UseRAWGApi';
 import { useFocusEffect } from '@react-navigation/native';
+import { HomeStackParamList } from '../navigations/stack/HomeStackNav';
 
-type Props = NativeStackScreenProps<ProfileStackParamList, 'ProfileScreen'>;
+type Props = NativeStackScreenProps<HomeStackParamList, 'OtherUserProfileScreen'>;
 
-const ProfileScreen = (props: Props) => {
+const OtherUserProfileScreen = (props: Props) => {
   const [favorites, setFavorites] = useState<any[]>([]);
-  const [collection, setCollection] = useState<any[]>([]);
   const [post, setPost] = useState<any>();
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
-  const [image, setImage] = useState<string>();
 
   const scrollRef = useRef<ScrollView>(null);
 
   const context = useContext(AppContext);
 
-  const { handleGetFavorites, handleGetUserLatestPost, handleGetCollection, uploadPfp, getUserPfp } = UseApi();
+  const { handleGetFavorites, handleGetUserLatestPost, handleGetCollection } = UseApi();
   const { handleGameDetailsFetch } = UseRAWGApi();
 
   const maxCharactersForTwoLines = 100;
@@ -40,9 +38,8 @@ const ProfileScreen = (props: Props) => {
 );
 
   const fetchUserProfileDetails = async () => {
-    setFavorites(await handleGetFavorites(context.username));
-    setCollection(await handleGetCollection(context.username));
-    setPost(await handleGetUserLatestPost(context.username));
+    setFavorites(await handleGetFavorites(context.otherUsername));
+    setPost(await handleGetUserLatestPost(context.otherUsername));
   }
 
   const handleScroll = (event) => {
@@ -56,31 +53,7 @@ const ProfileScreen = (props: Props) => {
     setShowRightArrow(scrollX + visibleWidth < totalWidth - 10);
   };
 
-//    const pickImage = () => {
-//   const options: ImageLibraryOptions = {
-//     mediaType: 'photo',
-//     quality: 1,
-//     maxWidth: 800,
-//     maxHeight: 800,
-//   };
 
-//   launchImageLibrary(options, async (response) => {
-//     if (response.didCancel) return;
-
-//     const asset = response.assets?.[0];
-//     if (!asset || !asset.uri) {
-//       return;
-//     }
-
-//     const file = {
-//       uri: asset.uri,
-//       name: asset.fileName || 'upload.jpg',
-//       type: asset.type || 'image/jpeg',
-//     };
-//       const uploadResult = await uploadPfp(context.username, file);
-//       setImage(await getUserPfp(uploadResult.data.profilePicture));
-//   });
-// };
 
 
   const navigateToPost = async (post: any) => {
@@ -89,18 +62,12 @@ const ProfileScreen = (props: Props) => {
     }
 
     context.setCurrentPost(post);
-    props.navigation.navigate("PostScreenProfile", {from: "ProfileStack"});
+    props.navigation.navigate("PostScreen");
 
   }
 
-  const navigateCollection = async (collection: Result) => {
-    if (!collection) {
-      return;
-    }
-
-    context.setCurrentGame(collection);
-    props.navigation.navigate("CollectionScreenProfile", {from: "ProfileStack"});
-
+  const navigateCollection = () => {
+    props.navigation.navigate("OtherUserCollectionScreen");
   }
 
 
@@ -113,7 +80,7 @@ const ProfileScreen = (props: Props) => {
     context.setCurrentGameDetailed(details);
 
     if (details) {
-      props.navigation.navigate("GameScreenProfile");
+      props.navigation.navigate("GameScreenHome");
     }
   }
 
@@ -138,17 +105,7 @@ const ProfileScreen = (props: Props) => {
     >
 
       <View className="items-center mb-6">
-        <TouchableOpacity>
-        <Image
-          source={
-            image
-              ? { uri: image }
-              : require('../resources/xp-trade.png')
-          }
-          className="w-24 h-24 rounded-full mb-2"
-        />
-      </TouchableOpacity>
-     
+        <View className="w-24 h-24 rounded-full bg-[#1E222A] mb-2" />
         <Text className="text-[#F6F7F7] text-lg font-semibold">{context.username}</Text>
       </View>
       <View className="w-full mb-6">
@@ -255,11 +212,19 @@ const ProfileScreen = (props: Props) => {
           </Text>
         )}
       </View>
+
+
+
+
+      <TouchableOpacity className="bg-[#66B3B7] px-6 py-2 rounded-lg" onPress={navigateCollection}>
+        <Text className="text-[#F6F7F7] text-base font-semibold">COLECCIÓN</Text>
+      </TouchableOpacity>
+
     </ScrollView>
 
   )
 }
 
-export default ProfileScreen
+export default OtherUserProfileScreen
 
 const styles = StyleSheet.create({})
