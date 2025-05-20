@@ -80,6 +80,10 @@ public class MapperHelper extends TestUtilities {
     public List<Tag> tagDomains;
 
 
+    public GameCollectionEntity gameCollectionEntity;
+    public GameCollection gameCollectionDomain;
+    public List<GameCollectionEntity> gameCollectionEntities;
+    public List<GameCollection> gameCollectionDomains;
 
 
     @BeforeEach
@@ -321,5 +325,8 @@ public class MapperHelper extends TestUtilities {
 
         commentEntities = new ArrayList<>();
         commentEntities.add(commentEntity);
+
+        gameCollectionEntity = new GameCollectionEntity(ID, gameEntity, collectionEntity, regionEntity, platformEntity);
+        gameCollectionDomain = new GameCollection(ID, gameDomain, collectionDomain, regionDomain, platformDomain);
     }
 }
