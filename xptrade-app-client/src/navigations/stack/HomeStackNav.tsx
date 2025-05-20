@@ -11,6 +11,7 @@ import NotificationScreen from '../../screens/NotificationScreen';
 import GameScreen from '../../screens/GameScreen';
 import ProfileScreen from '../../screens/ProfileScreen';
 import OtherUserProfileScreen from '../../screens/OtherUserProfileScreen';
+import OtherUserCollectionScreen from '../../screens/OtherUserCollectionScreen';
 
 type Props = {}
 
@@ -20,6 +21,7 @@ export type HomeStackParamList = {
     PostScreen: undefined,
     CommentScreen: undefined,
     OtherUserProfileScreen: undefined,
+    OtherUserCollectionScreen: undefined,
     GameScreenHome: undefined,
     
 };
@@ -35,8 +37,8 @@ const HomeStackNav = (props: Props) => {
         >
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
             <Stack.Screen name="PostScreen" component={PostScreen} />
-            <Stack.Screen name="CommentScreen" component={CommentScreen} />
             <Stack.Screen name="OtherUserProfileScreen" component={OtherUserProfileScreen} />
+            <Stack.Screen name="OtherUserCollectionScreen" component={OtherUserCollectionScreen} />
             <Stack.Screen name="GameScreenHome" component={GameScreen} />
         </Stack.Navigator>
     )

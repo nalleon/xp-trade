@@ -18,7 +18,6 @@ type Props = NativeStackScreenProps<HomeStackParamList, 'OtherUserProfileScreen'
 
 const OtherUserProfileScreen = (props: Props) => {
   const [favorites, setFavorites] = useState<any[]>([]);
-  const [collection, setCollection] = useState<any[]>([]);
   const [post, setPost] = useState<any>();
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
@@ -40,7 +39,6 @@ const OtherUserProfileScreen = (props: Props) => {
 
   const fetchUserProfileDetails = async () => {
     setFavorites(await handleGetFavorites(context.otherUsername));
-    setCollection(await handleGetCollection(context.otherUsername));
     setPost(await handleGetUserLatestPost(context.otherUsername));
   }
 
@@ -68,13 +66,8 @@ const OtherUserProfileScreen = (props: Props) => {
 
   }
 
-  const navigateCollection = async (collection: Result) => {
-    if (!collection) {
-      return;
-    }
-
-    context.setCurrentGame(collection);
-
+  const navigateCollection = () => {
+    props.navigation.navigate("OtherUserCollectionScreen");
   }
 
 
@@ -223,8 +216,8 @@ const OtherUserProfileScreen = (props: Props) => {
 
 
 
-      <TouchableOpacity className="bg-[#66B3B7] px-6 py-2 rounded-lg" onPress={() => navigateCollection}>
-        <Text className="text-[#F6F7F7] text-base font-semibold">COLECCION</Text>
+      <TouchableOpacity className="bg-[#66B3B7] px-6 py-2 rounded-lg" onPress={navigateCollection}>
+        <Text className="text-[#F6F7F7] text-base font-semibold">COLECCIÓN</Text>
       </TouchableOpacity>
 
     </ScrollView>
