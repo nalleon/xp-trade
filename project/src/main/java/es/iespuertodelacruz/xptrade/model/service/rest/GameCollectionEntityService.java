@@ -74,12 +74,14 @@ public class GameCollectionEntityService implements IGameCollectionRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(Integer id) {
         int quantity = repository.deleteEntityById(id);
         return quantity > 0;
     }
 
     @Override
+    @Transactional
     public GameCollection update(GameCollection gameCollection) {
         if (gameCollection == null) {
             return null;

@@ -11,15 +11,19 @@ import es.iespuertodelacruz.xptrade.mapper.dto.input.IGameCollectionInputDTOMapp
 import es.iespuertodelacruz.xptrade.mapper.dto.output.ICollectionOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.output.IGameCollectionOutputDTOMapper;
 import es.iespuertodelacruz.xptrade.mapper.dto.user.IUserDTOMapper;
+import es.iespuertodelacruz.xptrade.shared.security.CustomUserDetails;
 import es.iespuertodelacruz.xptrade.shared.utils.CustomApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hibernate.annotations.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin
@@ -259,6 +263,16 @@ public class CollectionRESTControllerV2 {
                     .body(new CustomApiResponse<>(400, "Item cannot be null", null));
         }
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        String authUsername = userDetails.getUsername();
+
+        if (!Objects.equals(authUsername, username)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new CustomApiResponse<>(401, "Unauthorized", null));
+        }
+
         try {
             GameCollection aux = IGameCollectionInputDTOMapper.INSTANCE.toDomain(dto);
 
@@ -308,7 +322,21 @@ public class CollectionRESTControllerV2 {
 
     @DeleteMapping("/games/{id}")
     public ResponseEntity<?> deleteGameFromCollection(@PathVariable Integer id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        String username = userDetails.getUsername();
+        User userDb = userService.findByUsername(username);
+
+        GameCollection dbItem = gameCollectionService.findById(id);
+
+        if (userDb.getId() != dbItem.getCollection().getUser().getId()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new CustomApiResponse<>(401, "Unauthorized", null));
+        }
+
         boolean deleted = gameCollectionService.delete(id);
+
         if (deleted) {
             String message = "Item deleted correctly";
             return ResponseEntity.status(HttpStatus.NO_CONTENT)

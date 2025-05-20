@@ -19,7 +19,7 @@ import java.util.List;
 public interface IGameCollectionEntityRepository extends JpaRepository<GameCollectionEntity, Integer> {
     @Modifying
     @Query(
-            value="DELETE FROM collections AS r WHERE r.id=:id",
+            value="DELETE FROM games_collections AS r WHERE r.id=:id",
             nativeQuery=true
     )
     int deleteEntityById(@Param("id") Integer id);
