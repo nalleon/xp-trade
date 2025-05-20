@@ -130,22 +130,22 @@ public class MapperInputDTOHelper extends TestUtilities {
 
         genreInputDTO = new GenreInputDTO(NAME);
 
-
         genreDomain = new Genre();
         genreDomain.setName(NAME);
 
         genreInputDTOList = new ArrayList<>();
         genreInputDTOList.add(genreInputDTO);
 
-
         tagInputDTO = new TagInputDTO(NAME);
 
-
-        tagDomain = new Tag();
+        tagDomain = new Tag(ID, NAME);
         tagDomain.setName(NAME);
 
         tagInputDTOList = new ArrayList<>();
         tagInputDTOList.add(tagInputDTO);
+
+        tagDomains = new ArrayList<>();
+        tagDomains.add(tagDomain);
 
         genreDomains = new ArrayList<>();
         genreDomains.add(genreDomain);

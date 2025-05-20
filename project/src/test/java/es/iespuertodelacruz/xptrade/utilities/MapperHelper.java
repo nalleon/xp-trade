@@ -155,7 +155,7 @@ public class MapperHelper extends TestUtilities {
         developerEntities = new ArrayList<>();
         developerEntities.add(developerEntity);
 
-        regionEntity = new RegionEntity();
+        regionEntity = new RegionEntity(ID, NAME);
         regionEntity.setId(ID);
         regionEntity.setName(NAME);
 
