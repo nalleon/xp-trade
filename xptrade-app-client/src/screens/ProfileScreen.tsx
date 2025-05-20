@@ -1,5 +1,5 @@
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AppContext } from '../context/AppContext';
@@ -11,6 +11,7 @@ import CreatePostModal from '../components/post.modals/CreatePostModal';
 import PostButton from '../components/post.modals/PostButton';
 import UseApi from '../hooks/UseApi';
 import UseRAWGApi from '../hooks/UseRAWGApi';
+import { useFocusEffect } from '@react-navigation/native';
 
 type Props = NativeStackScreenProps<ProfileStackParamList, 'ProfileScreen'>;
 
@@ -30,9 +31,11 @@ const ProfileScreen = (props: Props) => {
 
   const maxCharactersForTwoLines = 100;
 
-  useEffect(() => {
+  useFocusEffect(
+  useCallback(() => {
     fetchUserProfileDetails();
   }, [])
+);
 
   const fetchUserProfileDetails = async () => {
     setFavorites(await handleGetFavorites(context.username));
