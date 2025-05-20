@@ -7,10 +7,10 @@ import DrawerNav from './drawer/DrawerNav'
 type Props = {}
 
 const RootNavigation = (props: Props) => {
-    const context = useContext(AppContext);
+  const context = useContext(AppContext);
   return (
     <>
-        {context.token ? <DrawerNav /> : <AuthStackNav />}
+      {context.token ? <DrawerNav key="drawer" /> : <AuthStackNav key="auth" />}
     </>
   )
 }

@@ -1,8 +1,8 @@
 
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import React, { useEffect, useState } from 'react';
-import type {PropsWithChildren} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import type { PropsWithChildren } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -23,7 +23,7 @@ import { dataSource } from './src/data/Database';
 import axios from 'axios';
 import AuthStackNav from './src/navigations/stack/AuthStackNav';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import AppContextProvider from './src/context/AppContext';
+import AppContextProvider, { AppContext } from './src/context/AppContext';
 import RootNavigation from './src/navigations/RootNavigation';
 
 
@@ -36,27 +36,32 @@ import RootNavigation from './src/navigations/RootNavigation';
 
 function App(): React.JSX.Element {
 
- 
+
 
   return (
     <>
-    <GestureHandlerRootView>
-      <NavigationContainer >
-        <AppContextProvider>
-          <RootNavigation />
-        </AppContextProvider>
-      </NavigationContainer>
-    </GestureHandlerRootView>
-  </>
+      <AppContextProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <AppInner />
+        </GestureHandlerRootView>
+      </AppContextProvider>
+    </>
 
   );
-  
+
 }
-  
 
 
 
+function AppInner() {
+  const context = useContext(AppContext)
 
+  return (
+    <NavigationContainer key={context.token ?? 'no-token'}>
+      <RootNavigation />
+    </NavigationContainer>
+  )
+}
 
 
 
