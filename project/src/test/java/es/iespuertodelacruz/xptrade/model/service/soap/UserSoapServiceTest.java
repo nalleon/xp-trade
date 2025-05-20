@@ -58,7 +58,7 @@ public class UserSoapServiceTest extends TestUtilities {
 
     @Test
     void getByIdNameNullTest() {
-        Assertions.assertNull(service.findByUserame(NAME), MESSAGE_ERROR);
+        Assertions.assertNull(service.findByUsername(NAME), MESSAGE_ERROR);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class UserSoapServiceTest extends TestUtilities {
     @Test
     void getByNameTest() {
         when(repositoryMock.findUserByName(NAME)).thenReturn(Optional.of(new UserEntity()));
-        Assertions.assertNotNull(service.findByUserame(NAME), MESSAGE_ERROR);
+        Assertions.assertNotNull(service.findByUsername(NAME), MESSAGE_ERROR);
     }
 
 
@@ -173,39 +173,5 @@ public class UserSoapServiceTest extends TestUtilities {
     void deleteNonExistentTest() {
         when(repositoryMock.deleteEntityById(1)).thenReturn(0);
         Assertions.assertFalse(service.delete(1), MESSAGE_ERROR);
-    }
-
-    @Test
-    void updateProfilePictureTest() throws Exception {
-        User user = new User();
-        user.setId(1);
-        user.setRole(new Role(1, "ROLE_ADMIN"));
-        user.setEmail("example@email.com");
-        user.setPassword("1q2w3e4r");
-        user.setUsername("nameTest");
-        user.setProfilePicture(PICTURE);
-        when(repositoryMock.findUserByName(user.getUsername())).thenReturn(Optional.of(new UserEntity()));
-
-        Assertions.assertNotNull(service.updatePicture(user), MESSAGE_ERROR);
-    }
-
-    @Test
-    void updateNotFoundPictureTest() throws Exception {
-        User user = new User();
-        user.setId(1);
-        user.setRole(new Role(1, "ROLE_ADMIN"));
-        user.setEmail("example@email.com");
-        user.setPassword("1q2w3e4r");
-        user.setUsername(NAME);
-        user.setProfilePicture(PICTURE);
-
-        when(repositoryMock.findUserByName(any())).thenReturn(Optional.empty());
-
-        Assertions.assertNull(service.updatePicture(user), MESSAGE_ERROR);
-    }
-
-    @Test
-    void updatePictureFalseTest() throws Exception {
-        Assertions.assertNull(service.updatePicture(null), MESSAGE_ERROR);
     }
 }

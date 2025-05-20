@@ -114,7 +114,7 @@ public class RoleSoapServiceTest extends TestUtilities {
         Role role = new Role();
         role.setId(1);
         role.setName(NAME);
-        when(repositoryMock.findRoleByName(role.getName())).thenReturn(Optional.of(new RoleEntity()));
+        when(repositoryMock.findById(role.getId())).thenReturn(Optional.of(new RoleEntity()));
         Assertions.assertNotNull(service.update(role), MESSAGE_ERROR);
     }
 
