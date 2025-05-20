@@ -97,7 +97,7 @@ const CollectionScreen = (props: Props) => {
   }
 
   return (
-    <View className="flex-1 bg-[#1E222A] p-2">
+    <View className="flex-1 bg-[#0F1218] p-2">
       <FlatList
         data={collection}
         renderItem={renderItem}
