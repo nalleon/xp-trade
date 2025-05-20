@@ -15,13 +15,9 @@ const PlatformModal = ({ showModal, platforms, selectedPlatform, setSelectedPlat
           <TouchableOpacity
             key={p.platform.id}
             onPress={() => {
-              setSelectedPlatform((prev) =>
-                prev.includes(p.platform.name)
-                  ? prev.filter((n) => n !== p.platform.name)
-                  : [...prev, p.platform.name]
-              );
+              setSelectedPlatform(p.platform.name);
             }}
-            className={`p-2 rounded mb-2 ${selectedPlatform.includes(p.platform.name)
+            className={`p-2 rounded mb-2 ${selectedPlatform == p.platform.name
               ? 'bg-[#556791]'
               : 'bg-[#2C3038]'
               }`}
@@ -31,10 +27,10 @@ const PlatformModal = ({ showModal, platforms, selectedPlatform, setSelectedPlat
         ))}
         <TouchableOpacity
           onPress={handlePlatformSelectionDone}
-          disabled={selectedPlatform.length === 0}
-          className={`mt-4 p-2 rounded ${selectedPlatform.length === 0 ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
+          disabled={selectedPlatform == ""}
+          className={`mt-4 p-2 rounded ${selectedPlatform == "" ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
         >
-          <Text className={`text-center font-bold ${selectedPlatform.length === 0 ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
+          <Text className={`text-center font-bold ${selectedPlatform == "" ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
             Confirmar
           </Text>
         </TouchableOpacity>

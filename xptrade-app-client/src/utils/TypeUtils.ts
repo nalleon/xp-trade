@@ -194,6 +194,12 @@ export interface XPTradeInputGame {
   game: {
     title: string;
     coverArt: string;
+    slug: string;
+    rating: number;
+    released: string;
+    tagInputDTOSet: {
+      name: string;
+    }[];
     developerInputDTOSet: {
       name: string;
     }[];
@@ -204,9 +210,6 @@ export interface XPTradeInputGame {
       name: string;
     }[];
     publisherInputDTOSet: {
-      name: string;
-    }[];
-    regionInputDTOSet: {
       name: string;
     }[];
   };
@@ -220,6 +223,12 @@ export interface XPTradeInputGameCollection {
   game: {
     title: string;
     coverArt: string;
+    slug: string;
+    rating: number;
+    released: string;
+    tagInputDTOSet: {
+      name: string;
+    }[];
     developerInputDTOSet: {
       name: string;
     }[];
@@ -230,9 +239,6 @@ export interface XPTradeInputGameCollection {
       name: string;
     }[];
     publisherInputDTOSet: {
-      name: string;
-    }[];
-    regionInputDTOSet: {
       name: string;
     }[];
   };

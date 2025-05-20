@@ -51,7 +51,7 @@ const GameScreen = (props: Props) => {
   useEffect(() => {
     const getScreenshots = async () =>{
       const result = await handleGameScreenshots(currentGameDetailed.id);      
-      
+
       if(result != null){
         setScreenshots(result);
       }
@@ -74,8 +74,6 @@ const GameScreen = (props: Props) => {
     const title = currentGameDetailed.name;
 
     const result = await handleCheckIfExistsFavorites(usernameXP, title);
-
-    console.log("====================== IS FAV", result);
 
     if (result != null) {
       setIsFavorite(true);
@@ -101,8 +99,6 @@ const GameScreen = (props: Props) => {
     if (!game) {
       return;
     }
-
-    const usernameXP = await AsyncStorage.getItem('username');
 
     const developers =
       game.developers?.length > 0
@@ -208,15 +204,13 @@ const GameScreen = (props: Props) => {
           }))
           : [],
         publisherInputDTOSet: publishers,
-        regionInputDTOSet: REGIONS.map((region) => ({
-          name: region,
-        })),
       },
       user: {
         username: usernameXP,
         profilePicture: '',
       },
     };
+
 
     const result = await handleAddToFavorite(inputXPTrade);
 
@@ -249,6 +243,7 @@ const GameScreen = (props: Props) => {
    */
   const handlePlatformSelectionDone = () => {
     setShowPlatformModal(false);
+    setSelectedPlatform('');
     toggleScroll(true);
     setTimeout(() => setShowRegionModal(true), 200);
   };
@@ -258,7 +253,7 @@ const GameScreen = (props: Props) => {
    */
   const handleRegionSelectionDone = () => {
     setShowRegionModal(false);
-
+    setSelectedRegion('');
     setTimeout(() => {
       addToCollection(currentGameDetailed);
     }, 200);
@@ -452,9 +447,6 @@ const GameScreen = (props: Props) => {
           </View>
         )}
 
-        {screenshots?.length > 0 && (
-          <ScreenshotGallery screenshots={screenshots} />
-        )}
 
       </View>
       <PlatformModal

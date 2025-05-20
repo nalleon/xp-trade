@@ -154,6 +154,8 @@ const UseApi = () => {
     const handleAddToCollection = async (username: string, game: XPTradeInputGameCollection) => {
         if (!username?.trim() || !game) return null;
 
+        console.log("PRUEBA", game);
+
         try {
             const response = await axios.post(`${URL_API}/v2/collections/${username}`, {
                 game,
@@ -166,7 +168,7 @@ const UseApi = () => {
                 });
 
             if (response?.data) {
-                return response?.data;
+                return response?.data.data;
             } else {
                 return null;
             }
