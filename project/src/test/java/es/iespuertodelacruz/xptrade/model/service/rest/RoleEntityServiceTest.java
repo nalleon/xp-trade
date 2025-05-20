@@ -110,7 +110,7 @@ public class RoleEntityServiceTest extends TestUtilities {
         Role role = new Role();
         role.setId(1);
         role.setName(NAME);
-        when(repositoryMock.findRoleByName(role.getName())).thenReturn(Optional.of(new RoleEntity()));
+        when(repositoryMock.findById(role.getId())).thenReturn(Optional.of(new RoleEntity()));
         Assertions.assertNotNull(service.update(role), MESSAGE_ERROR);
     }
 
@@ -134,7 +134,7 @@ public class RoleEntityServiceTest extends TestUtilities {
         item.setName(NAME);
 
         RoleEntity dbItemMock = mock(RoleEntity.class);
-        when(repositoryMock.findRoleByName(item.getName())).thenReturn(Optional.of(dbItemMock));
+        when(repositoryMock.findById(item.getId())).thenReturn(Optional.of(dbItemMock));
 
         doThrow(new RuntimeException("Simulated exception")).when(dbItemMock).setName(NAME);
 

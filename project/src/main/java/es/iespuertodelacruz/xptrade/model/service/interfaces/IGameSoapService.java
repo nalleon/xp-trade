@@ -9,7 +9,9 @@ import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import java.util.List;
 
-@WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces")
+@WebService(
+        name = "IGameSoapService",
+        targetNamespace = "http://interfaces.service.model.xptrade.iespuertodelacruz.es")
 public interface IGameSoapService {
     @WebMethod
     Game save(@WebParam(name = "game") Game game);

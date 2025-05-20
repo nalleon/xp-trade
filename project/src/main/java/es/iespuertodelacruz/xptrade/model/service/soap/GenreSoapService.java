@@ -14,7 +14,9 @@ import java.util.List;
  * @author Nabil Leon Alvarez @nalleon
  * @author Jose Maximiliano Boada Martin @mackstm
  */
-@WebService(targetNamespace = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSoapService")
+@WebService(
+        serviceName = "GenreSoapService",
+        endpointInterface = "es.iespuertodelacruz.xptrade.model.service.interfaces.IGenericSoapService")
 @Component
 public class GenreSoapService implements IGenericSoapService<Genre, Integer, String> {
     /**
