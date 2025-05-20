@@ -15,7 +15,6 @@ type Props = {
 
 const CreatePostModal = ({ visible, onClose }: Props) => {
     const [text, setText] = useState<string>('');
-    const [imageUri, setImageUri] = useState<string | null>(null);
     const [search, setSearch] = useState('');
     const [games, setGames] = useState<Result[]>([]);
     const [selectedGame, setSelectedGame] = useState<Result | null>(null);
@@ -105,7 +104,7 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
                 profilePicture: null
             },
             content: text,
-            picture: imageUri
+            picture: ""
         };
 
 
@@ -113,7 +112,6 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
 
         if (result == SUCCESS) {
             setText('');
-            setImageUri(null);
             setSelectedGame(null);
             setSearch('');
             setGames([]);
@@ -256,28 +254,6 @@ const CreatePostModal = ({ visible, onClose }: Props) => {
                             {CHARACTER_LIMIT - text.length}
                         </Text>
                     </View>
-
-                    {image?.uri && (
-                        <View className="relative mb-2 w-full items-end">
-                            <Image
-                                source={{ uri: image.uri }}
-                                className="w-full h-40 rounded"
-                                resizeMode="cover"
-                            />
-                            <TouchableOpacity
-                                onPress={() => setImage(undefined)}
-                                className="absolute top-1 right-1 bg-black/80 rounded-full p-1"
-                            >
-                                <Icon name="close" size={16} color="#fff" />
-                            </TouchableOpacity>
-                        </View>
-                    )}
-
-                    <TouchableOpacity onPress={pickImage} className="flex-row items-center space-x-2 mt-2">
-                        <Icon name="image-outline" size={24} color="#556791" />
-                        <Text className="text-[#556791] font-medium text-sm">Añadir imagen</Text>
-                    </TouchableOpacity>
-
 
                 </View>
             </View>

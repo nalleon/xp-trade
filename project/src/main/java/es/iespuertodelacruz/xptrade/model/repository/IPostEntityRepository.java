@@ -24,6 +24,13 @@ public interface IPostEntityRepository extends JpaRepository<PostEntity, Integer
     )
     int deleteEntityById(@Param("id") Integer id);
 
+    @Modifying
+    @Query(
+            value="DELETE FROM comments AS r WHERE r.post_id=:id",
+            nativeQuery=true
+    )
+    int deleteRelatedComments(@Param("id") Integer id);
+
 
     @Query(
             value=
