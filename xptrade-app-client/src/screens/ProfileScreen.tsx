@@ -255,14 +255,6 @@ const ProfileScreen = (props: Props) => {
           </Text>
         )}
       </View>
-
-
-
-
-      <TouchableOpacity className="bg-[#66B3B7] px-6 py-2 rounded-lg" onPress={() => navigateCollection}>
-        <Text className="text-[#F6F7F7] text-base font-semibold">COLECCION</Text>
-      </TouchableOpacity>
-
     </ScrollView>
 
   )
