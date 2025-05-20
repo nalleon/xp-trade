@@ -107,6 +107,7 @@ public class PostEntityService  implements IGenericSocialRepository<Post, Intege
     @Override
     @Transactional
     public boolean delete(Integer id) {
+        repository.deleteRelatedComments(id);
         int quantity = repository.deleteEntityById(id);
         return quantity > 0;
     }
