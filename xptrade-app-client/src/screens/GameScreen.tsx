@@ -243,7 +243,6 @@ const GameScreen = (props: Props) => {
    */
   const handlePlatformSelectionDone = () => {
     setShowPlatformModal(false);
-    setSelectedPlatform('');
     toggleScroll(true);
     setTimeout(() => setShowRegionModal(true), 200);
   };
@@ -253,9 +252,10 @@ const GameScreen = (props: Props) => {
    */
   const handleRegionSelectionDone = () => {
     setShowRegionModal(false);
-    setSelectedRegion('');
     setTimeout(() => {
       addToCollection(currentGameDetailed);
+      setSelectedPlatform('');
+      setSelectedRegion('');
     }, 200);
   };
 
