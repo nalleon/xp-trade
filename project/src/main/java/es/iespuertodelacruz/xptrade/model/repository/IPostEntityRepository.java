@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Nabil Leon Alvarez @nalleon
@@ -32,6 +33,15 @@ public interface IPostEntityRepository extends JpaRepository<PostEntity, Integer
     )
     List<PostEntity> findAllLatest();
 
+    @Query(
+            value = "SELECT * FROM posts AS p " +
+                    "INNER JOIN users AS u ON u.id = p.user_id " +
+                    "WHERE u.username = :username " +
+                    "ORDER BY p.creation_date DESC " +
+                    "LIMIT 1",
+            nativeQuery = true
+    )
+    Optional<PostEntity> findLatest(@Param("username") String username);
 
     @Query(
             value="SELECT * FROM posts WHERE user_id =:user_id",

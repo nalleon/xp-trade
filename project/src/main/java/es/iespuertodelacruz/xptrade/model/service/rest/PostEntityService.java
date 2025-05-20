@@ -77,6 +77,16 @@ public class PostEntityService  implements IGenericSocialRepository<Post, Intege
     }
 
     @Override
+    public Post findLatest(User user) {
+        PostEntity entityFound = repository.findLatest(user.getUsername()).orElse(null);
+
+        if (entityFound != null) {
+            return IPostEntityMapper.INSTANCE.toDomain(entityFound);
+        }
+        return null;
+    }
+
+    @Override
     public List<Post> findAllByUser(User user) {
         if(user == null){
             return null;

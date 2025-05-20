@@ -9,6 +9,7 @@ import java.util.List;
 public interface IPostService {
     Post add(Game game, User user, String content, String picture);
     Post findById(Integer id);
+    Post findLatest(User user);
     List<Post> findByUser (User user);
     List<Post> findByGame (Game game);
     List<Post> findAll();

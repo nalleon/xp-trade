@@ -155,7 +155,20 @@ public class PostRESTControllerV2 {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
     }
 
+    @GetMapping("/users/{username}/latest")
+    public ResponseEntity<?> getLatestPost(@PathVariable String username) {
+        Post aux = service.findLatest(new User(username));
 
+        if (aux != null){
+            PostOutputDTO dto = IPostOutputDTOMapper.INSTANCE.toDTO(aux);
+            CustomApiResponse<PostOutputDTO> response =
+                    new CustomApiResponse<>(200, "Post found", dto);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+
+        CustomApiResponse<PostOutputDTO> errorResponse = new CustomApiResponse<>(204, "Post NOT found", null);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(errorResponse);
+    }
 
 
     @PostMapping

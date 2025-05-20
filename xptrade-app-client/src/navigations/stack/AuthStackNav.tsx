@@ -6,20 +6,20 @@ import RegisterScreen from '../../screens/RegisterScreen';
 import TabNav from '../tab/TabNav';
 import DrawerNav from '../drawer/DrawerNav';
 import { AppContext } from '../../context/AppContext';
+import LogoutScreen from '../../screens/LogoutScreen';
 
 type Props = {}
 
 
 export type AuthStackParamList = {
     LoginScreen: undefined,
-    RegisterScreen: undefined
+    RegisterScreen: undefined,
+    LogoutScreen: undefined
 };
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 const AuthStackNav = (props: Props) => {
-    const context = useContext(AppContext);
-
     return (
         <Stack.Navigator id={undefined}
             screenOptions={{
@@ -28,7 +28,7 @@ const AuthStackNav = (props: Props) => {
         >
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-        
+            <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
         </Stack.Navigator>
     )
 }

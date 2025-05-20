@@ -17,6 +17,10 @@ public interface IGenericSocialRepository <T, E, U, G> {
     default List<T> findAllLatest() {
         return null;
     }
+    default T findLatest(User user) {
+        return null;
+    }
+
 
     List<T> findAllByUser(U u);
     List<T> findAllBySubject(G g);

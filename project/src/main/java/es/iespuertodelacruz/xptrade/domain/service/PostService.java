@@ -42,6 +42,11 @@ public class PostService implements IPostService {
     }
 
     @Override
+    public Post findLatest(User user) {
+        return repository.findLatest(user);
+    }
+
+    @Override
     public List<Post> findByUser(User user) {
         return repository.findAllByUser(user);
     }

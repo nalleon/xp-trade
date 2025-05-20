@@ -25,6 +25,8 @@ import AuthStackNav from './src/navigations/stack/AuthStackNav';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AppContextProvider, { AppContext } from './src/context/AppContext';
 import RootNavigation from './src/navigations/RootNavigation';
+import RootStackNav from './src/navigations/RootNavigation';
+import DrawerNav from './src/navigations/drawer/DrawerNav';
 
 
 
@@ -36,33 +38,20 @@ import RootNavigation from './src/navigations/RootNavigation';
 
 function App(): React.JSX.Element {
 
-
-
   return (
     <>
-      <AppContextProvider>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <AppInner />
-        </GestureHandlerRootView>
-      </AppContextProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <AppContextProvider>
+          <NavigationContainer>
+            <RootNavigation/>
+          </NavigationContainer>
+        </AppContextProvider>
+      </GestureHandlerRootView>
     </>
 
   );
 
 }
-
-
-
-function AppInner() {
-  const context = useContext(AppContext)
-
-  return (
-    <NavigationContainer key={context.token ?? 'no-token'}>
-      <RootNavigation />
-    </NavigationContainer>
-  )
-}
-
 
 
 

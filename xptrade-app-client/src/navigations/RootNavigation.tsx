@@ -1,20 +1,32 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useContext } from 'react'
-import { AppContext } from '../context/AppContext'
-import AuthStackNav from './stack/AuthStackNav'
-import DrawerNav from './drawer/DrawerNav'
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AuthStackNav from './stack/AuthStackNav';
+import DrawerNav from './drawer/DrawerNav';
 
-type Props = {}
+const RootNavigation = () => {
+  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState<string | null>(null);
 
-const RootNavigation = (props: Props) => {
-  const context = useContext(AppContext);
-  return (
-    <>
-      {context.token ? <DrawerNav key="drawer" /> : <AuthStackNav key="auth" />}
-    </>
-  )
-}
+  useEffect(() => {
+    const checkToken = async () => {
+      const storedToken = await AsyncStorage.getItem('token');
+      setToken(storedToken);
+      setLoading(false);
+    };
 
-export default RootNavigation
+    checkToken();
+  }, []);
 
-const styles = StyleSheet.create({})
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-[#0F1218]">
+        <ActivityIndicator size="large" color="#ffffff" />
+      </View>
+    );
+  }
+
+  return token ? <DrawerNav key="drawer" /> : <AuthStackNav key="auth" />;
+};
+
+export default RootNavigation;
