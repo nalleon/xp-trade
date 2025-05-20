@@ -155,7 +155,7 @@ const UseApi = () => {
         if (!username?.trim() || !game) return null;
 
         try {
-            const response = await axios.post(`${URL_API}/v2/collections`, {
+            const response = await axios.post(`${URL_API}/v2/collections/${username}`, {
                 game,
             },
                 {
