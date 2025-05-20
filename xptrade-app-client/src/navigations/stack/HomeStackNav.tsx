@@ -10,6 +10,7 @@ import CommentScreen from '../../screens/CommentScreen';
 import NotificationScreen from '../../screens/NotificationScreen';
 import GameScreen from '../../screens/GameScreen';
 import ProfileScreen from '../../screens/ProfileScreen';
+import OtherUserProfileScreen from '../../screens/OtherUserProfileScreen';
 
 type Props = {}
 
@@ -18,8 +19,9 @@ export type HomeStackParamList = {
     HomeScreen: undefined,
     PostScreen: undefined,
     CommentScreen: undefined,
-    ProfileScreen: { from?: string },
-    GameScreenHome: undefined
+    OtherUserProfileScreen: undefined,
+    GameScreenHome: undefined,
+    
 };
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
@@ -34,7 +36,7 @@ const HomeStackNav = (props: Props) => {
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
             <Stack.Screen name="PostScreen" component={PostScreen} />
             <Stack.Screen name="CommentScreen" component={CommentScreen} />
-            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Stack.Screen name="OtherUserProfileScreen" component={OtherUserProfileScreen} />
             <Stack.Screen name="GameScreenHome" component={GameScreen} />
         </Stack.Navigator>
     )
