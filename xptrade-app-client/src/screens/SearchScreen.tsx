@@ -46,7 +46,6 @@ const SearchScreen = (props: Props) => {
       return;
     }
 
-    context.setCurrentGame(game);
     context.setCurrentGameDetailed(await handleGameDetailsFetch(game.slug));
 
     props.navigation.navigate("GameScreen");

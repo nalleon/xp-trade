@@ -6,8 +6,7 @@ import SettingsStackNav from '../stack/SettingsStackNav';
 import ProfileStackNav from '../stack/ProfileStackNav';
 import HomeScreen from '../../screens/HomeScreen';
 import TabNav from '../tab/TabNav';
-import LogoutScreen from '../../screens/LogoutScreen';
-import Icon from 'react-native-vector-icons/Ionicons'; // Para los iconos
+import Icon from 'react-native-vector-icons/Ionicons';
 import { AppContext } from '../../context/AppContext';
 import CustomDrawerContent from './CustomDrawerContent';
 
