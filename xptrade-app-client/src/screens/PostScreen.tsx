@@ -151,7 +151,7 @@ const PostScreen = ({ navigation }: Props) => {
             </View>
           </View>
 
-          {isCommentOwner && (
+            {isOwner && from !== "ProfileStack" && (
             <TouchableOpacity onPress={() => handleOptionsComment(item)}>
               <Icon
                 name="ellipsis-vertical-outline"
@@ -251,7 +251,7 @@ const PostScreen = ({ navigation }: Props) => {
               }
             </View>
 
-            {isOwner && (
+            {isOwner && from !== "ProfileStack" && (
               <TouchableOpacity onPress={handleOptionsPost}>
                 <Icon
                   name="ellipsis-vertical-outline"
