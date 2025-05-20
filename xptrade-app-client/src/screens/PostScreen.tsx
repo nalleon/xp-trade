@@ -25,6 +25,7 @@ import UpdateCommentModal from '../components/comment.models/UpdateCommentModal'
 import PostOptionsModal from '../components/post.modals/PostOptionsModal';
 import { SUCCESS } from '../utils/Utils';
 import { RefreshControl } from 'react-native-gesture-handler';
+import UseRAWGApi from '../hooks/UseRAWGApi';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'PostScreen'>;
 
@@ -41,7 +42,10 @@ const PostScreen = ({ navigation }: Props) => {
   const [refreshing, setRefreshing] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
+  const context = useContext(AppContext);
+
   const { handleGetPostsComments, handleDeletePost, handleDeleteComment, handleGetPostById } = UseApi();
+  const { handleGameDetailsFetch } = UseRAWGApi();
 
   const isOwner = currentPost.user.username === username;
 
@@ -188,7 +192,16 @@ const PostScreen = ({ navigation }: Props) => {
     setShowCommentUpdateModal(false);
   }
 
+const navigateToGame = async (game) => {
+    if (!game) {
+      return;
+    }
 
+    context.setCurrentGameDetailed(await handleGameDetailsFetch(game.slug));
+
+    navigation.navigate("GameScreenHome");
+
+  }
 
   return (
     <KeyboardAvoidingView
@@ -235,7 +248,7 @@ const PostScreen = ({ navigation }: Props) => {
 
           <View className="h-px bg-[#2C3038] mb-6" />
 
-          <TouchableOpacity
+          <TouchableOpacity onPress={()=> navigateToGame(currentPost.game)}
             className="flex-row items-center bg-[#2C3038] rounded-tr-xl rounded-bl-xl p-2 mb-4"
           >
             <Image
