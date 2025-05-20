@@ -68,7 +68,7 @@ public class AuthRESTController {
 
     @PostMapping("/login")
     public String login(@RequestBody UserLoginDTO loginDTO ) {
-        String token = authService.authenticate(loginDTO.name(), loginDTO.password());
+        String token = authService.authenticate(loginDTO.name().trim(), loginDTO.password());
 
         if (token == null) {
             throw new RuntimeException("Invalid credentials");
@@ -85,7 +85,7 @@ public class AuthRESTController {
                     .body(new CustomApiResponse<>(400, "Password not valid", null));
         }
 
-        User user =  authService.register(registerDTO.name(), registerDTO.password(), registerDTO.email());
+        User user =  authService.register(registerDTO.name().trim(), registerDTO.password(), registerDTO.email());
 
         if(user == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)

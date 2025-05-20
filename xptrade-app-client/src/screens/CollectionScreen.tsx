@@ -3,7 +3,7 @@ import React from 'react'
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
 
-type Props = NativeStackScreenProps<ProfileStackParamList, 'CollectionScreen'>;
+type Props = NativeStackScreenProps<ProfileStackParamList, 'CollectionScreenProfile'>;
 
 const CollectionScreen = (props: Props) => {
   return (

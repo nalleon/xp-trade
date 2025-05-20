@@ -24,6 +24,7 @@ import UpdatePostModal from '../components/post.modals/UpdatePostModal';
 import UpdateCommentModal from '../components/comment.models/UpdateCommentModal';
 import PostOptionsModal from '../components/post.modals/PostOptionsModal';
 import { SUCCESS } from '../utils/Utils';
+import { RefreshControl } from 'react-native-gesture-handler';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'PostScreen'>;
 
@@ -37,17 +38,16 @@ const PostScreen = ({ navigation }: Props) => {
   const [showCommentOptionsModal, setShowCommentOptionsModal] = useState(false);
   const [showPostOptionsModal, setShowPostOptionsModal] = useState(false);
 
+  const [refreshing, setRefreshing] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+
   const { handleGetPostsComments, handleDeletePost, handleDeleteComment, handleGetPostById } = UseApi();
 
   const isOwner = currentPost.user.username === username;
 
   useEffect(() => {
-    const interval = setInterval(() => {
       getComments();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
+  }, [refresh]);
 
 
   const getComments = async () => {
@@ -167,6 +167,13 @@ const PostScreen = ({ navigation }: Props) => {
     );
   };
 
+  const handleRefresh = () => {
+    setRefreshing(true);
+    setRefresh(!refresh);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  };
 
   const updatePost = async () => {
     const id = currentPost.id;
@@ -191,6 +198,12 @@ const PostScreen = ({ navigation }: Props) => {
       <ScrollView
         className="flex-1 bg-[#0F1218]"
         contentContainerStyle={{ paddingBottom: 100 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+          />
+        }
       >
         <View className="bg-[#1E222A] rounded-tl-xl rounded-br-xl p-4 mb-4 mx-4 mt-4">
           <View className="flex-row items-center justify-between mb-2">
@@ -267,33 +280,33 @@ const PostScreen = ({ navigation }: Props) => {
 
       <CreateCommentModal
         visible={showCommentPostModal}
-        onClose={() => setShowCommentPostModal(false)}
+        onClose={() => {setShowCommentPostModal(false); setRefresh(!refresh);}}
       />
 
       <UpdatePostModal
         visible={showPostUpdateModal}
         post={currentPost}
-        onClose={() => updatePost()}
+        onClose={() => {updatePost(); setRefresh(!refresh);}}
       />
 
       <UpdateCommentModal
         visible={showCommentUpdateModal}
         comment={currentComment}
-        onClose={() => updateComment()}
+        onClose={() => {updateComment(); setRefresh(!refresh);}}
       />
 
       <PostOptionsModal
         visible={showPostOptionsModal}
         onClose={() => setShowPostOptionsModal(false)}
         onEdit={() => setShowPostUpdateModal(true)}
-        onDelete={() => deletePost(currentPost.id)}
+        onDelete={() => {deletePost(currentPost.id); setRefresh(!refresh);}}
       />
 
       <PostOptionsModal
         visible={showCommentOptionsModal}
         onClose={() => setShowCommentOptionsModal(false)}
         onEdit={() => setShowCommentUpdateModal(true)}
-        onDelete={async () => await deleteComment(currentComment.id)}
+        onDelete={async () => {await deleteComment(currentComment.id); setRefresh(!refresh);}}
       />
 
       <CommentButton onPress={() => setShowCommentPostModal(true)} />

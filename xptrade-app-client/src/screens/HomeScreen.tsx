@@ -8,24 +8,26 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { HomeStackParamList } from '../navigations/stack/HomeStackNav';
 import { AppContext } from '../context/AppContext';
 import { PostXPTrade } from '../utils/TypeUtils';
+import { RefreshControl } from 'react-native-gesture-handler';
+import { GameDetails } from '../utils/GameDetailsType';
+import UseRAWGApi from '../hooks/UseRAWGApi';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'HomeScreen'>;
 
 function HomeScreen({ navigation }: Props) {
   const [posts, setPosts] = useState([]);
   const [showPostModal, setShowPostModal] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const maxCharactersForFiveLines = 100;
 
   const { handleGetPosts } = UseApi();
+  const { handleGameDetailsFetch } = UseRAWGApi();
   const context = useContext(AppContext);
 
   useEffect(() => {
-    const interval = setInterval(() => {
       getPosts();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
+  }, [refresh]);
 
 
 
@@ -58,13 +60,27 @@ function HomeScreen({ navigation }: Props) {
     navigation.navigate('PostScreen')
   }
 
+  const navigateToGameDetails = async (game) => {
+    context.setCurrentGameDetailed(await handleGameDetailsFetch(game.slug));
+    navigation.navigate('GameScreenHome');
+  }
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    setRefresh(!refresh);
+
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }
+
   return (
     <View className="flex-1 bg-[#0F1218] pt-5">
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => {
-
+        
 
           return (
             <TouchableOpacity onPress={() => navigateToPostDetails(item)}>
@@ -84,7 +100,7 @@ function HomeScreen({ navigation }: Props) {
                     <TouchableOpacity>
                       <Text className="text-[#F6F7F7] font-semibold">@{item.user.username}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigateToGameDetails(item.game)}>
                       <Text className="text-xs text-[#8899A6]">{item.game.title}</Text>
                     </TouchableOpacity>
                   </View>
@@ -121,11 +137,17 @@ function HomeScreen({ navigation }: Props) {
           );
         }}
         contentContainerStyle={{ paddingBottom: 80 }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+          />
+        }
       />
 
       <CreatePostModal
         visible={showPostModal}
-        onClose={() => setShowPostModal(false)}
+        onClose={() => {setShowPostModal(false); setRefresh(!refresh);}}
       />
       <PostButton onPress={() => setShowPostModal(true)} />
     </View>

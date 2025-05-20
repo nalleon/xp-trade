@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext } from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import AuthStackNav from '../stack/AuthStackNav';
@@ -9,21 +9,13 @@ import TabNav from '../tab/TabNav';
 import LogoutScreen from '../../screens/LogoutScreen';
 import Icon from 'react-native-vector-icons/Ionicons'; // Para los iconos
 import { AppContext } from '../../context/AppContext';
+import CustomDrawerContent from './CustomDrawerContent';
 
 type Props = {}
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNav = (props: Props) => {
-
-  // const context = useContext(AppContext);
-
-  //  function handleLogout() {
-  //   context.removeToken();
-  //   navigation.reset({
-  //     routes: [{name: 'LoginScreen'}]
-  //   })
-  // }
 
   return (
     <Drawer.Navigator 
@@ -49,6 +41,7 @@ const DrawerNav = (props: Props) => {
           fontWeight: '600',
         },
       }}
+      drawerContent={(props) => <CustomDrawerContent {...props}/>}
     >
       <Drawer.Screen 
         name="TabNavDrawer" 
@@ -58,6 +51,7 @@ const DrawerNav = (props: Props) => {
           drawerIcon: ({ color }) => (
             <Icon name="home" size={20} color={color} />
           ),
+          
         }} 
       />
       <Drawer.Screen 
@@ -67,16 +61,6 @@ const DrawerNav = (props: Props) => {
           title: 'Perfil', 
           drawerIcon: ({ color }) => (
             <Icon name="person-circle" size={20} color={color} />
-          ),
-        }} 
-      />
-      <Drawer.Screen 
-        name="AuthStackNav" 
-        component={LogoutScreen} 
-        options={{
-          title: 'Cerrar sesión', 
-          drawerIcon: ({ color }) => (
-            <Icon name="log-out" size={20} color={color} />
           ),
         }} 
       />
