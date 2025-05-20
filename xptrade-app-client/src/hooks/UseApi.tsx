@@ -9,7 +9,7 @@ import { AppContext } from '../context/AppContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthStackParamList } from '../navigations/stack/AuthStackNav';
 import { userInfo } from 'os';
-import { XPTradeInputGame } from '../utils/TypeUtils';
+import { XPTradeInputGame, XPTradeInputGameCollection } from '../utils/TypeUtils';
 
 const UseApi = () => {
 
@@ -151,7 +151,7 @@ const UseApi = () => {
      * @param game game to add
      * @returns 
      */
-    const handleAddToCollection = async (username: string, game: XPTradeInputGame) => {
+    const handleAddToCollection = async (username: string, game: XPTradeInputGameCollection) => {
         if (!username?.trim() || !game) return null;
 
         try {

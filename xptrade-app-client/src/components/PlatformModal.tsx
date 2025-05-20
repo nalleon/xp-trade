@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 
-const PlatformModal = ({ showModal, platforms, selectedPlatforms, setSelectedPlatforms, handlePlatformSelectionDone }) => {
+const PlatformModal = ({ showModal, platforms, selectedPlatform, setSelectedPlatform, handlePlatformSelectionDone }) => {
   if (!showModal) return null;
 
   return (
@@ -15,13 +15,13 @@ const PlatformModal = ({ showModal, platforms, selectedPlatforms, setSelectedPla
           <TouchableOpacity
             key={p.platform.id}
             onPress={() => {
-              setSelectedPlatforms((prev) =>
+              setSelectedPlatform((prev) =>
                 prev.includes(p.platform.name)
                   ? prev.filter((n) => n !== p.platform.name)
                   : [...prev, p.platform.name]
               );
             }}
-            className={`p-2 rounded mb-2 ${selectedPlatforms.includes(p.platform.name)
+            className={`p-2 rounded mb-2 ${selectedPlatform.includes(p.platform.name)
               ? 'bg-[#556791]'
               : 'bg-[#2C3038]'
               }`}
@@ -31,10 +31,10 @@ const PlatformModal = ({ showModal, platforms, selectedPlatforms, setSelectedPla
         ))}
         <TouchableOpacity
           onPress={handlePlatformSelectionDone}
-          disabled={selectedPlatforms.length === 0}
-          className={`mt-4 p-2 rounded ${selectedPlatforms.length === 0 ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
+          disabled={selectedPlatform.length === 0}
+          className={`mt-4 p-2 rounded ${selectedPlatform.length === 0 ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
         >
-          <Text className={`text-center font-bold ${selectedPlatforms.length === 0 ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
+          <Text className={`text-center font-bold ${selectedPlatform.length === 0 ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
             Confirmar
           </Text>
         </TouchableOpacity>

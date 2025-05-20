@@ -216,6 +216,34 @@ export interface XPTradeInputGame {
   };
 }
 
+export interface XPTradeInputGameCollection {
+  game: {
+    title: string;
+    coverArt: string;
+    developerInputDTOSet: {
+      name: string;
+    }[];
+    genreInputDTOSet: {
+      name: string;
+    }[];
+    platformInputDTOSet: {
+      name: string;
+    }[];
+    publisherInputDTOSet: {
+      name: string;
+    }[];
+    regionInputDTOSet: {
+      name: string;
+    }[];
+  };
+  region: {
+    name: string;
+  };
+  platform: {
+    name: string;
+  }
+}
+
 export interface PostXPTrade {
   id: number;
   game: GameOutputXPTrade;

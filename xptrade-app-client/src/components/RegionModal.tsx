@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { REGIONS } from '../utils/Utils';
 
-const RegionModal = ({ showModal, selectedRegions, setSelectedRegions, handleRegionSelectionDone }) => {
+const RegionModal = ({ showModal, selectedRegion, setSelectedRegion, handleRegionSelectionDone }) => {
     if (!showModal) return null;
 
     return (
@@ -16,13 +16,13 @@ const RegionModal = ({ showModal, selectedRegions, setSelectedRegions, handleReg
                     <TouchableOpacity
                         key={region}
                         onPress={() => {
-                            setSelectedRegions((prev) =>
+                            setSelectedRegion((prev) =>
                                 prev.includes(region)
                                     ? prev.filter((r) => r !== region)
                                     : [...prev, region]
                             );
                         }}
-                        className={`p-2 rounded mb-2 ${selectedRegions.includes(region)
+                        className={`p-2 rounded mb-2 ${selectedRegion.includes(region)
                             ? 'bg-[#556791]'
                             : 'bg-[#2C3038]'
                             }`}
@@ -32,10 +32,10 @@ const RegionModal = ({ showModal, selectedRegions, setSelectedRegions, handleReg
                 ))}
                 <TouchableOpacity
                     onPress={handleRegionSelectionDone}
-                    disabled={selectedRegions.length === 0}
-                    className={`mt-4 p-2 rounded ${selectedRegions.length === 0 ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
+                    disabled={selectedRegion.length === 0}
+                    className={`mt-4 p-2 rounded ${selectedRegion.length === 0 ? 'bg-[#444]' : 'bg-[#9D8D6A]'}`}
                 >
-                    <Text className={`text-center font-bold ${selectedRegions.length === 0 ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
+                    <Text className={`text-center font-bold ${selectedRegion.length === 0 ? 'text-[#0F1218]' : 'text-[#F6F7F7]'}`}>
                         Confirmar
                     </Text>
                 </TouchableOpacity>

@@ -17,6 +17,7 @@ import { REGIONS, SUCCESS } from '../utils/Utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddToFavoritesModal from '../components/favorite.modals/AddToFavoritesModal';
 import DeleteFromFavoritesModal from '../components/favorite.modals/DeleteFromFavoritesModal';
+import { platform } from 'os';
 
 type Props = NativeStackScreenProps<GameStackParamList, 'GameScreen'>;
 
@@ -28,8 +29,8 @@ const GameScreen = (props: Props) => {
   const [showAddToFavoritesModal, setShowAddToFavoritesModal] = useState(false);
   const [showDeleteFromFavoritesModal, setShowDeleteFromFavoritesModal] = useState(false);
 
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-  const [selectedRegions, setSelectedRegions] = useState<string[]>([]);
+  const [selectedPlatform, setSelectedPlatform] = useState<string>();
+  const [selectedRegion, setSelectedRegion] = useState<string>();
   const [isScrollEnabled, setIsScrollEnabled] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const [screenshots, setScreenshots] = useState<Screenshot[]>([]);
@@ -101,34 +102,63 @@ const GameScreen = (props: Props) => {
       return;
     }
 
-    const gameXPTrade = {
+    const usernameXP = await AsyncStorage.getItem('username');
+
+    const developers =
+      game.developers?.length > 0
+        ? game.developers.map((d) => ({ name: d.name }))
+        : game.publishers?.length > 0
+          ? game.publishers.map((p) => ({ name: p.name }))
+          : [];
+
+    const publishers =
+      game.publishers?.length > 0
+        ? game.publishers.map((p) => ({ name: p.name }))
+        : game.developers?.length > 0
+          ? game.developers.map((d) => ({ name: d.name }))
+          : [];
+
+    const genres =
+      game.genres?.length > 0
+        ? game.genres.map((g) => ({ name: g.name }))
+          : [];
+
+    const tags = 
+      game.tags?.length > 0
+        ? game.tags.map((tag) => ({ name: tag.name }))
+        : [];
+
+
+    
+    const inputXPTrade = {
       game: {
         title: game.name,
         coverArt: game.background_image,
         slug: game.slug,
-        developerInputDTOSet: game.developers.map((d) => ({
-          name: d.name,
-        })),
-        genreInputDTOSet: game.genres.map((g) => ({
-          name: g.name,
-        })),
-        platformInputDTOSet: selectedPlatforms.map((p) => ({
-          name: p,
-        })),
-        publisherInputDTOSet: game.publishers.map((p) => ({
-          name: p.name
-        })),
-        regionInputDTOSet: selectedRegions.map((r) => ({
-          name: r
+        rating: game.rating,
+        released: game.released,
+        tagInputDTOSet: tags,
+        developerInputDTOSet: developers,
+        genreInputDTOSet: genres,
+        platformInputDTOSet: game.platforms?.length > 0
+          ? game.platforms.map((p) => ({
+            name: p.platform.name,
+          }))
+          : [],
+        publisherInputDTOSet: publishers,
+        regionInputDTOSet: REGIONS.map((region) => ({
+          name: region,
         })),
       },
-      user: {
-        username,
-        profilePicture: null
+      region: {
+        name: selectedRegion,
       },
+      platform: {
+        name: selectedPlatform,
+      }
     };
 
-    await handleAddToCollection(username, gameXPTrade);
+    await handleAddToCollection(username, inputXPTrade);
 
     setIsScrollEnabled(true);
   }
@@ -286,7 +316,7 @@ const GameScreen = (props: Props) => {
 
           <View className="flex-row space-x-4">
             <TouchableOpacity
-              onPress={() => addToCollection(currentGameDetailed)}
+              onPress={handlePressAddToCollection}
               className="p-2"
             >
               <Icon name="add-circle-outline" size={22} color="#F6F7F7" />
@@ -430,16 +460,16 @@ const GameScreen = (props: Props) => {
       <PlatformModal
         showModal={showPlatformModal}
         platforms={currentGameDetailed.platforms}
-        selectedPlatforms={selectedPlatforms}
-        setSelectedPlatforms={setSelectedPlatforms}
+        selectedPlatform={selectedPlatform}
+        setSelectedPlatform={setSelectedPlatform}
         handlePlatformSelectionDone={() =>
           handlePlatformSelectionDone()
         }
       />
       <RegionModal
         showModal={showRegionModal}
-        selectedRegions={selectedRegions}
-        setSelectedRegions={setSelectedRegions}
+        selectedRegion={selectedRegion}
+        setSelectedRegion={setSelectedRegion}
         handleRegionSelectionDone={() =>
           handleRegionSelectionDone()
         }
