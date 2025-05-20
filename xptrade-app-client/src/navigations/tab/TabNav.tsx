@@ -16,12 +16,7 @@ import ProfileStackNav, { ProfileStackParamList } from '../stack/ProfileStackNav
 
 type Props = {}
 const Tab = createBottomTabNavigator();
-export type TabParamList = {
-  Home: NavigatorScreenParams<HomeStackParamList>;
-  Search: NavigatorScreenParams<GameStackParamList>;
-  Collection: undefined;
-  Profile: NavigatorScreenParams<ProfileStackParamList>;
-};
+
 
 const TabNav = (props: Props) => {
   const { width, height } = useWindowDimensions();
@@ -30,6 +25,7 @@ const TabNav = (props: Props) => {
   return (
     <Tab.Navigator
     id={undefined}
+    detachInactiveScreens={true}
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -55,6 +51,7 @@ const TabNav = (props: Props) => {
         name="Home"
         component={HomeStackNav}
         options={{
+        
           tabBarIcon: ({ focused, color }) => (
             <Icon
               name={focused ? 'home' : 'home-outline'}

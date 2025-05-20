@@ -19,6 +19,7 @@ const DrawerNav = (props: Props) => {
   return (
     <Drawer.Navigator 
     id={undefined}
+    detachInactiveScreens={true}
       screenOptions={{
         drawerStyle: {
           backgroundColor: '#0F1218', 
@@ -40,7 +41,9 @@ const DrawerNav = (props: Props) => {
           fontWeight: '600',
         },
       }}
-      drawerContent={(props) => <CustomDrawerContent {...props}/>}
+      drawerContent={(props) => <CustomDrawerContent {...props}/>
+      
+    }
     >
       <Drawer.Screen 
         name="TabNav" 

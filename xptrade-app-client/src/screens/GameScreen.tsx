@@ -75,8 +75,6 @@ const GameScreen = (props: Props) => {
 
     const result = await handleCheckIfExistsFavorites(usernameXP, title);
 
-    console.log("====================== IS FAV", result);
-
     if (result != null) {
       setIsFavorite(true);
     }
