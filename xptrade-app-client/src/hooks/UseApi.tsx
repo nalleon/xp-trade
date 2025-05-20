@@ -149,22 +149,23 @@ const UseApi = () => {
      * @param game game to add
      * @returns 
      */
-    const handleAddToCollection = async (username: string, game: XPTradeInputGameCollection) => {
-        if (!username?.trim() || !game) return null;
+    const handleAddToCollection = async (username: string, gameCollection: XPTradeInputGameCollection) => {
+        if (!username?.trim() || !gameCollection) return null;
+
+        console.log("PRUEBA", JSON.stringify(gameCollection, null, 2));
 
         try {
-            const response = await axios.post(`${URL_API}/v2/collections/${username}`, {
-                game,
-            },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + context.token
-                    },
-                });
+            const response = await axios.post(`${URL_API}/v2/collections/${username}`,
+                 gameCollection, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + context.token,
+                },
+            });
+
 
             if (response?.data) {
-                return response?.data;
+                return response?.data.data;
             } else {
                 return null;
             }
@@ -257,7 +258,7 @@ const UseApi = () => {
                     },
                 });
 
-                console.log(response);
+            console.log(response);
             if (response?.status === 204) {
                 return SUCCESS;
             } else {
@@ -288,7 +289,7 @@ const UseApi = () => {
                 });
 
             if (response?.data) {
-                return response?.data;
+                return response?.data.data;
             } else {
                 return null;
             }
@@ -632,42 +633,12 @@ const UseApi = () => {
         }
     };
 
-    /**
-     * Function to get the latest post of an user
-     * @param name of the user
-     * @returns the post
-     */
-    const handleGetUserLatestPost = async (username: any) => {
-
-        console.log(`${URL_API}/v2/posts/users/${username}/latest`);
-        console.log(`${context.token}`);
-        
-        try {
-            const response = await axios.get(`${URL_API}/v2/posts/users/${username}/latest`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + context.token
-                    },
-                });
-
-            if (response?.data) {
-                return response?.data?.data;
-            } else {
-                return null;
-            }
-
-        } catch (error) {
-            console.error("Error while fetching posts", error);
-        }
-    };
-
 
     return {
         handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite,
         handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost, handleGetPosts, handleGetUserPosts,
-        handleCreateComment, handleGetPostsComments, handleDeletePost, handleDeleteComment, handleUpdateComment, 
-        handleUpdatePost, handleGetPostById, handleGetUserLatestPost
+        handleCreateComment, handleGetPostsComments, handleDeletePost, handleDeleteComment, handleUpdateComment,
+        handleUpdatePost, handleGetPostById
     }
 
 }

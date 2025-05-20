@@ -1,35 +1,112 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
-import UseApi from '../hooks/UseApi';
+import React, { useState, useContext, useCallback } from 'react';
+import { View, Text, Image, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { AppContext } from '../context/AppContext';
+import UseApi from '../hooks/UseApi';
+import UseRAWGApi from '../hooks/UseRAWGApi';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { GameStackParamList } from '../navigations/stack/CollectionStackNav';
 
-type Props = NativeStackScreenProps<ProfileStackParamList, 'CollectionScreenProfile'>;
+type Props = NativeStackScreenProps<GameStackParamList, 'CollectionScreen'>;
 
 const CollectionScreen = (props: Props) => {
-  const [games, setGames] = useState([]);
-
-  const context = useContext(AppContext);
+  const { username, setCurrentGame, setCurrentGameDetailed } = useContext(AppContext);
+  const [collection, setCollection] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const { handleGetCollection } = UseApi();
+  const { handleGameDetailsFetch } = UseRAWGApi();
 
-  useEffect(() => {
-    const getCollection = async () => {
-      const collection = await handleGetCollection(context.username);
-      setGames(collection);
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
+
+      const fetchCollection = async () => {
+        setLoading(true);
+        try {
+          const data = await handleGetCollection(username);
+          if (isActive) {
+            setCollection(data.gameCollectionList);
+          }
+        } catch (error) {
+          console.error('Failed to fetch collection:', error);
+        } finally {
+          if (isActive) setLoading(false);
+        }
+      };
+
+      fetchCollection();
+
+      return () => {
+        isActive = false;
+        setCollection([]);
+        setLoading(true);
+      };
+    }, [username])
+  );
+
+  const navigateToGame = async (item) => {
+    if (!item) return;
+
+    setCurrentGame(item.game);
+
+    const details = await handleGameDetailsFetch(item.game.slug);
+    setCurrentGameDetailed(details);
+
+    if (details) {
+      props.navigation.navigate('GameScreen');
     }
-    getCollection();
-  }, [])
-  
+  };
+
+  const renderItem = ({ item }: { item: any }) => (
+    <TouchableOpacity
+      className="w-[31%] m-[1.16%] bg-[#1E222A] rounded-tr-xl rounded-bl-xl overflow-hidden border border-[#9D8D64]"
+      onPress={() => navigateToGame(item)}
+    >
+      <Image
+        source={{ uri: item.game.coverArt }}
+        className="w-full h-28"
+        resizeMode="cover"
+      />
+      <View className="items-center justify-center p-2">
+        <Text className="text-[#F6F7F7] font-semibold text-center text-sm" numberOfLines={2}>
+          {item.game.title}
+        </Text>
+        <Text className="text-[#F6F7F7] text-sm">{item.region.name}</Text>
+        <Text className="text-[#F6F7F7] text-sm">{item.platform.name}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="#000" />
+      </View>
+    );
+  }
+
+  if (!collection || collection.length === 0) {
+    return (
+      <View className="flex-1 justify-center items-center bg-[#1E222A] px-4">
+        <Text className="text-[#F6F7F7] text-lg font-semibold text-center">
+          No hay juegos en tu colección
+        </Text>
+      </View>
+    );
+  }
+
   return (
-    <View className="flex-1 bg-[#0F1218] px-3 pt-6">
-      <Text className="text-2xl font-bold text-[#F6F7F7] mb-4">CollectionScreen</Text>
-
+    <View className="flex-1 bg-[#1E222A] p-2">
+      <FlatList
+        data={collection}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `${item.game.id}-${index}`}
+        numColumns={3}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
-  )
-}
+  );
+};
 
-export default CollectionScreen
-
-const styles = StyleSheet.create({})
+export default CollectionScreen;
