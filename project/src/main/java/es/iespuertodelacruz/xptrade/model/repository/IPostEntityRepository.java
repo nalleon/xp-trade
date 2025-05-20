@@ -34,7 +34,8 @@ public interface IPostEntityRepository extends JpaRepository<PostEntity, Integer
     List<PostEntity> findAllLatest();
 
     @Query(
-            value = "SELECT * FROM posts AS p " +
+            value = "SELECT p.id, p.picture, p.content, p.creation_date, p.user_id, p.game_id " +
+                    "FROM posts AS p " +
                     "INNER JOIN users AS u ON u.id = p.user_id " +
                     "WHERE u.username = :username " +
                     "ORDER BY p.creation_date DESC " +
@@ -42,6 +43,7 @@ public interface IPostEntityRepository extends JpaRepository<PostEntity, Integer
             nativeQuery = true
     )
     Optional<PostEntity> findLatest(@Param("username") String username);
+
 
     @Query(
             value="SELECT * FROM posts WHERE user_id =:user_id",

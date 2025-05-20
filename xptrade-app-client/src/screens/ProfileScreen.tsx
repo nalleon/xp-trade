@@ -17,7 +17,7 @@ type Props = NativeStackScreenProps<ProfileStackParamList, 'ProfileScreen'>;
 const ProfileScreen = (props: Props) => {
   const [favorites, setFavorites] = useState<any[]>([]);
   const [collection, setCollection] = useState<any[]>([]);
-  const [posts, setPosts] = useState<any[]>([]);
+  const [post, setPosts] = useState<any>();
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
 
@@ -25,7 +25,7 @@ const ProfileScreen = (props: Props) => {
 
   const context = useContext(AppContext);
 
-  const { handleGetFavorites, handleGetUserPosts, handleGetCollection } = UseApi();
+  const { handleGetFavorites, handleGetUserLatestPost, handleGetCollection } = UseApi();
   const { handleGameDetailsFetch } = UseRAWGApi();
 
   const maxCharactersForTwoLines = 100;
@@ -37,7 +37,7 @@ const ProfileScreen = (props: Props) => {
   const fetchUserProfileDetails = async () => {
     setFavorites(await handleGetFavorites(context.username));
     setCollection(await handleGetCollection(context.username));
-    setPosts(await handleGetUserPosts(context.username));
+    setPosts(await handleGetUserLatestPost(context.username));
   }
 
   const handleScroll = (event) => {
@@ -181,55 +181,42 @@ const ProfileScreen = (props: Props) => {
       <View className="w-full mb-6 items-center relative">
         <Text className="text-[#F6F7F7] text-base font-bold mb-2">Última publicación</Text>
 
-        {/* {posts && posts.length > 0 ? (
-          <ScrollView
-            ref={scrollRef}
-            horizontal
-            decelerationRate="fast"
-            snapToInterval={300}
-            snapToAlignment="center"
-            showsHorizontalScrollIndicator={false}
-            onScroll={handleScrollPosts}
-            scrollEventThrottle={16}
-            contentContainerStyle={{ paddingHorizontal: (Dimensions.get('window').width - 240) / 2 }}
-          >
-            {posts.map((post, index) => (
-              <TouchableOpacity key={index} onPress={() => navigateToPost(post)}>
-                <View
-                  className="bg-[#1E222A] rounded-xl p-4 w-64 h-40 border border-[#9D8D64]"
-                >
-                  <View className="flex-row items-center mb-2">
-                    <Text className="text-xs text-[#8899A6]">{post.game.title}</Text>
-                  </View>
+        {post ? (
+          <TouchableOpacity key={post.id} onPress={() => navigateToPost(post)}>
+            <View className="bg-[#1E222A] rounded-xl p-4 w-64 h-40 border border-[#9D8D64]">
+              <View className="flex-row items-center mb-2">
+                <Text className="text-xs text-[#8899A6]">{post.game.title}</Text>
+              </View>
 
-                  <View className="h-px bg-[#2C3038] mb-6" />
+              <View className="h-px bg-[#2C3038] mb-6" />
 
-                  <Text
-                    className="text-[#F6F7F7] mb-2"
-                    numberOfLines={post.content && post.content.length > maxCharactersForTwoLines ? 2 : 0}
-                  >
-                    {post.content}
-                  </Text>
+              <Text
+                className="text-[#F6F7F7] mb-2"
+                numberOfLines={
+                  post.content && post.content.length > maxCharactersForTwoLines ? 2 : undefined
+                }
+              >
+                {post.content}
+              </Text>
 
-                  {post.content && post.content.length >= maxCharactersForTwoLines && (
-                    <Text className="text-xs text-[#66B3B7]">Ver más</Text>
-                  )}
+              {post.content && post.content.length >= maxCharactersForTwoLines && (
+                <Text className="text-xs text-[#66B3B7]">Ver más</Text>
+              )}
 
-                  <View className="flex-row items-end mt-2">
-                    <Text className="text-xs text-[#8899A6] ml-auto ">
-                      {formatDate(post.creationDate)}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+              <View className="flex-row items-end mt-2">
+                <Text className="text-xs text-[#8899A6] ml-auto">
+                  {formatDate(post.creationDate)}
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
         ) : (
           <Text className="text-[#8899A6] text-sm text-center mt-2">
             No hay posts
           </Text>
-        )} */}
+        )}
       </View>
+
 
 
 

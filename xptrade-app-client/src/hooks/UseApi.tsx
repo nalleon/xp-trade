@@ -632,12 +632,42 @@ const UseApi = () => {
         }
     };
 
+    /**
+     * Function to get the latest post of an user
+     * @param name of the user
+     * @returns the post
+     */
+    const handleGetUserLatestPost = async (username: any) => {
+
+        console.log(`${URL_API}/v2/posts/users/${username}/latest`);
+        console.log(`${context.token}`);
+        
+        try {
+            const response = await axios.get(`${URL_API}/v2/posts/users/${username}/latest`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
+            if (response?.data) {
+                return response?.data?.data;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while fetching posts", error);
+        }
+    };
+
 
     return {
         handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite,
         handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost, handleGetPosts, handleGetUserPosts,
         handleCreateComment, handleGetPostsComments, handleDeletePost, handleDeleteComment, handleUpdateComment, 
-        handleUpdatePost, handleGetPostById
+        handleUpdatePost, handleGetPostById, handleGetUserLatestPost
     }
 
 }
