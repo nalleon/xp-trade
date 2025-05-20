@@ -26,8 +26,11 @@ import PostOptionsModal from '../components/post.modals/PostOptionsModal';
 import { SUCCESS } from '../utils/Utils';
 import { RefreshControl } from 'react-native-gesture-handler';
 import UseRAWGApi from '../hooks/UseRAWGApi';
+import { RouteProp, useRoute } from '@react-navigation/native';
+import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
 
 type Props = NativeStackScreenProps<HomeStackParamList, 'PostScreen'>;
+type RouteParams = RouteProp<ProfileStackParamList, 'PostScreenProfile'>;
 
 const PostScreen = ({ navigation }: Props) => {
   const { setCurrentPost, currentPost, currentComment, setCurrentComment, username } = useContext(AppContext);
@@ -43,6 +46,8 @@ const PostScreen = ({ navigation }: Props) => {
   const [refresh, setRefresh] = useState(false);
 
   const context = useContext(AppContext);
+  const route = useRoute<RouteParams>();
+  const from = route.params?.from;
 
   const { handleGetPostsComments, handleDeletePost, handleDeleteComment, handleGetPostById } = UseApi();
   const { handleGameDetailsFetch } = UseRAWGApi();
@@ -50,7 +55,7 @@ const PostScreen = ({ navigation }: Props) => {
   const isOwner = currentPost.user.username === username;
 
   useEffect(() => {
-      getComments();
+    getComments();
   }, [refresh]);
 
 
@@ -85,10 +90,10 @@ const PostScreen = ({ navigation }: Props) => {
 
     if (result === SUCCESS) {
       const updated = await handleGetPostsComments(currentPost.id);
-      
+
       if (updated != null) {
         setComments(updated);
-      } else if (updated == null){
+      } else if (updated == null) {
         setComments([]);
       }
 
@@ -192,14 +197,15 @@ const PostScreen = ({ navigation }: Props) => {
     setShowCommentUpdateModal(false);
   }
 
-const navigateToGame = async (game) => {
+  const navigateToGame = async (game) => {
     if (!game) {
       return;
     }
 
     context.setCurrentGameDetailed(await handleGameDetailsFetch(game.slug));
-
-    navigation.navigate("GameScreenHome");
+    if (from !== "ProfileStack") {
+      navigation.navigate("GameScreenHome");
+    }
 
   }
 
@@ -248,7 +254,7 @@ const navigateToGame = async (game) => {
 
           <View className="h-px bg-[#2C3038] mb-6" />
 
-          <TouchableOpacity onPress={()=> navigateToGame(currentPost.game)}
+          <TouchableOpacity onPress={() => navigateToGame(currentPost.game)}
             className="flex-row items-center bg-[#2C3038] rounded-tr-xl rounded-bl-xl p-2 mb-4"
           >
             <Image
@@ -257,10 +263,13 @@ const navigateToGame = async (game) => {
             />
             <View className="flex-1">
               <Text className="text-[#F6F7F7] font-semibold text-sm">{currentPost.game.title}</Text>
-              <Text className="text-[#9D8D6A] text-xs">Ver detalles del juego</Text>
+              {from !== "ProfileStack" &&
+                <Text className="text-[#9D8D6A] text-xs">Ver detalles del juego</Text>
+              }
             </View>
-            <Icon name='chevron-forward' size={15} color={'#8899A6'} />
-
+            {from !== "ProfileStack" &&
+              <Icon name='chevron-forward' size={15} color={'#8899A6'} />
+            }
           </TouchableOpacity>
 
           <Text
@@ -293,33 +302,33 @@ const navigateToGame = async (game) => {
 
       <CreateCommentModal
         visible={showCommentPostModal}
-        onClose={() => {setShowCommentPostModal(false); setRefresh(!refresh);}}
+        onClose={() => { setShowCommentPostModal(false); setRefresh(!refresh); }}
       />
 
       <UpdatePostModal
         visible={showPostUpdateModal}
         post={currentPost}
-        onClose={() => {updatePost(); setRefresh(!refresh);}}
+        onClose={() => { updatePost(); setRefresh(!refresh); }}
       />
 
       <UpdateCommentModal
         visible={showCommentUpdateModal}
         comment={currentComment}
-        onClose={() => {updateComment(); setRefresh(!refresh);}}
+        onClose={() => { updateComment(); setRefresh(!refresh); }}
       />
 
       <PostOptionsModal
         visible={showPostOptionsModal}
         onClose={() => setShowPostOptionsModal(false)}
         onEdit={() => setShowPostUpdateModal(true)}
-        onDelete={() => {deletePost(currentPost.id); setRefresh(!refresh);}}
+        onDelete={() => { deletePost(currentPost.id); setRefresh(!refresh); }}
       />
 
       <PostOptionsModal
         visible={showCommentOptionsModal}
         onClose={() => setShowCommentOptionsModal(false)}
         onEdit={() => setShowCommentUpdateModal(true)}
-        onDelete={async () => {await deleteComment(currentComment.id); setRefresh(!refresh);}}
+        onDelete={async () => { await deleteComment(currentComment.id); setRefresh(!refresh); }}
       />
 
       <CommentButton onPress={() => setShowCommentPostModal(true)} />

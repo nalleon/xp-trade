@@ -18,7 +18,7 @@ export type HomeStackParamList = {
     HomeScreen: undefined,
     PostScreen: undefined,
     CommentScreen: undefined,
-    ProfileScreen: undefined,
+    ProfileScreen: { from?: string },
     GameScreenHome: undefined
 };
 

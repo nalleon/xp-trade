@@ -18,7 +18,7 @@ type Props = NativeStackScreenProps<ProfileStackParamList, 'ProfileScreen'>;
 const ProfileScreen = (props: Props) => {
   const [favorites, setFavorites] = useState<any[]>([]);
   const [collection, setCollection] = useState<any[]>([]);
-  const [post, setPosts] = useState<any>();
+  const [post, setPost] = useState<any>();
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
 
@@ -40,7 +40,7 @@ const ProfileScreen = (props: Props) => {
   const fetchUserProfileDetails = async () => {
     setFavorites(await handleGetFavorites(context.username));
     setCollection(await handleGetCollection(context.username));
-    setPosts(await handleGetUserLatestPost(context.username));
+    setPost(await handleGetUserLatestPost(context.username));
   }
 
   const handleScroll = (event) => {
@@ -63,7 +63,7 @@ const ProfileScreen = (props: Props) => {
     }
 
     context.setCurrentPost(post);
-    props.navigation.navigate("PostScreenProfile");
+    props.navigation.navigate("PostScreenProfile", {from: "ProfileStack"});
 
   }
 
@@ -73,7 +73,7 @@ const ProfileScreen = (props: Props) => {
     }
 
     context.setCurrentGame(collection);
-    props.navigation.navigate("CollectionScreenProfile");
+    props.navigation.navigate("CollectionScreenProfile", {from: "ProfileStack"});
 
   }
 

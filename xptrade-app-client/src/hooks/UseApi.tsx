@@ -152,8 +152,6 @@ const UseApi = () => {
     const handleAddToCollection = async (username: string, gameCollection: XPTradeInputGameCollection) => {
         if (!username?.trim() || !gameCollection) return null;
 
-        console.log("PRUEBA", JSON.stringify(gameCollection, null, 2));
-
         try {
             const response = await axios.post(`${URL_API}/v2/collections/${username}`,
                  gameCollection, {
@@ -634,11 +632,39 @@ const UseApi = () => {
     };
 
 
+
+    /**
+     * Function to get a post
+     * @param id of the post
+     * @returns the post
+     */
+    const handleGetUserLatestPost = async (id: any) => {
+        try {
+            const response = await axios.get(`${URL_API}/v2/posts/users/${id}/latest`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + context.token
+                    },
+                });
+
+            if (response?.data) {
+                return response?.data?.data;
+            } else {
+                return null;
+            }
+
+        } catch (error) {
+            console.error("Error while fetching posts", error);
+        }
+    };
+
+
     return {
         handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite,
         handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost, handleGetPosts, handleGetUserPosts,
         handleCreateComment, handleGetPostsComments, handleDeletePost, handleDeleteComment, handleUpdateComment,
-        handleUpdatePost, handleGetPostById
+        handleUpdatePost, handleGetPostById, handleGetUserLatestPost
     }
 
 }

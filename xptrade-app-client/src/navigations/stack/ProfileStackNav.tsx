@@ -11,9 +11,9 @@ type Props = {}
 
 export type ProfileStackParamList = {
     ProfileScreen: undefined,
-    CollectionScreenProfile: undefined,
-    PostScreenProfile: undefined,
-    GameScreenProfile: undefined
+    CollectionScreenProfile: { from?: string };
+    PostScreenProfile: { from?: string };
+    GameScreenProfile: { from?: string };
 };
 
 const Stack = createNativeStackNavigator<ProfileStackParamList>();
