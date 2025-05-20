@@ -37,33 +37,16 @@ const GameScreen = (props: Props) => {
   const { currentGame, currentGameDetailed, username } = useContext(AppContext);
 
   const { handleAddToCollection, handleAddToFavorite, handleCheckIfExistsFavorites, handleDeleteFromFavorites } = UseApi();
-  const { handleGameScreenshots } = UseRAWGApi();
 
   /**
    * UseEffect 
    */
-  
+
 
   useEffect(() => {
     checkIfIsFavorites();
   }, [isFavorite]);
 
-  useEffect(() => {
-    const getScreenshots = async () =>{
-      const result = await handleGameScreenshots(currentGameDetailed.id);      
-
-      if(result != null){
-        setScreenshots(result);
-      }
-    }  
-
-    getScreenshots();
-
-  }, [])
-  
-  
-
-  
 
 
   /**
@@ -117,15 +100,15 @@ const GameScreen = (props: Props) => {
     const genres =
       game.genres?.length > 0
         ? game.genres.map((g) => ({ name: g.name }))
-          : [];
+        : [];
 
-    const tags = 
+    const tags =
       game.tags?.length > 0
         ? game.tags.map((tag) => ({ name: tag.name }))
         : [];
 
 
-    
+
     const inputXPTrade = {
       game: {
         title: game.name,
@@ -181,9 +164,9 @@ const GameScreen = (props: Props) => {
     const genres =
       game.genres?.length > 0
         ? game.genres.map((g) => ({ name: g.name }))
-          : [];
+        : [];
 
-    const tags = 
+    const tags =
       game.tags?.length > 0
         ? game.tags.map((tag) => ({ name: tag.name }))
         : [];
@@ -446,6 +429,9 @@ const GameScreen = (props: Props) => {
             </View>
           </View>
         )}
+
+
+        <ScreenshotGallery id={currentGameDetailed.id} />
 
 
       </View>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -12,14 +12,18 @@ import {
 } from 'react-native';
 import { ImageZoom } from '@likashefqet/react-native-image-zoom';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Screenshot } from '../utils/TypeUtils';
+import UseRAWGApi from '../hooks/UseRAWGApi';
 
 const { width, height } = Dimensions.get('window');
 
-const ScreenshotGallery = ({ screenshots }) => {
+const ScreenshotGallery = ({ id }) => {
   const [visible, setVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef(null);
   const [loading, setLoading] = useState(true);
+  const [screenshots, setScreenshots] = useState<Screenshot[]>([])
+  const { handleGameScreenshots } = UseRAWGApi();
 
   const openModal = (index) => {
     setActiveIndex(index);
@@ -27,9 +31,31 @@ const ScreenshotGallery = ({ screenshots }) => {
     setLoading(true);
   };
 
+
   const closeModal = () => {
     setVisible(false);
   };
+
+  useEffect(() => {
+
+
+    getScreenshots();
+
+
+  }, [])
+
+
+  const getScreenshots = async () => {
+    const result = await handleGameScreenshots(id);
+    if (result != null) {
+      setScreenshots(result.results);
+    } else {
+      setScreenshots([]);
+    }
+  }
+
+
+
 
   const handleFlatListLayout = () => {
     setTimeout(() => {
