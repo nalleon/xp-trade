@@ -151,21 +151,20 @@ const UseApi = () => {
      * @param game game to add
      * @returns 
      */
-    const handleAddToCollection = async (username: string, game: XPTradeInputGameCollection) => {
-        if (!username?.trim() || !game) return null;
+    const handleAddToCollection = async (username: string, gameCollection: XPTradeInputGameCollection) => {
+        if (!username?.trim() || !gameCollection) return null;
 
-        console.log("PRUEBA", game);
+        console.log("PRUEBA", JSON.stringify(gameCollection, null, 2));
 
         try {
-            const response = await axios.post(`${URL_API}/v2/collections/${username}`, {
-                game,
-            },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + context.token
-                    },
-                });
+            const response = await axios.post(`${URL_API}/v2/collections/${username}`,
+                 gameCollection, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + context.token,
+                },
+            });
+
 
             if (response?.data) {
                 return response?.data.data;
@@ -261,7 +260,7 @@ const UseApi = () => {
                     },
                 });
 
-                console.log(response);
+            console.log(response);
             if (response?.status === 204) {
                 return SUCCESS;
             } else {
@@ -640,7 +639,7 @@ const UseApi = () => {
     return {
         handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite,
         handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost, handleGetPosts, handleGetUserPosts,
-        handleCreateComment, handleGetPostsComments, handleDeletePost, handleDeleteComment, handleUpdateComment, 
+        handleCreateComment, handleGetPostsComments, handleDeletePost, handleDeleteComment, handleUpdateComment,
         handleUpdatePost, handleGetPostById
     }
 

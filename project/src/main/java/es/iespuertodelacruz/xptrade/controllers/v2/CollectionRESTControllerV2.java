@@ -274,8 +274,11 @@ public class CollectionRESTControllerV2 {
         }
 
         try {
+            System.out.println("SLUG DE DTO  ==== " + dto);
+
             GameCollection aux = IGameCollectionInputDTOMapper.INSTANCE.toDomain(dto);
 
+            System.out.println("SLUG DE AUX  ==== " + aux);
 
             Game gameDb = gameService.add(aux.getGame().getTitle(), aux.getGame().getCoverArt(), aux.getGame().getSlug(),
                     aux.getGame().getRating(), aux.getGame().getReleased(), aux.getGame().getTagSet(),
