@@ -83,33 +83,32 @@ const UseApi = () => {
     };
 
 
-    //TODO
-    const getUserPfp = async (pfpName: string): Promise<string | null> => {
-        if (!pfpName?.trim()) return null;
+     const getUserPfp = async (filename: string) => {
+        return `${URL_API}/images/${filename}`;
+    };
 
+    const uploadPfp = async (username: string, file: any) => {
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('file', {
+        uri: file.uri,
+        type: file.type || 'image/jpeg',
+        name: file.name || 'profile.jpg',
+      });
 
-        try {
-            const response = await axios.get(`${URL_API}/v2/users/images/${pfpName}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + context.token
-                }
-            });
+      const response = await fetch(`${URL_API}/uploads/${username}`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-            if (response?.data) {
-                await AsyncStorage.multiSet([
-                    ["username", response.data.username],
-                    ["pfp", response.data.profilePicture]
-                ]);
+      if (!response.ok) {
+        throw new Error('Failed to upload image');
+      }
 
-
-                return "success";
-            }
-        } catch (error) {
-            console.error("Error al iniciar sesión");
-        }
-
-        return null;
+      return await response.json();
     };
 
     /**
@@ -664,7 +663,7 @@ const UseApi = () => {
         handleLogin, handleRegister, handleAddToCollection, handleGetCollection, handleGetFavorites, handleAddToFavorite,
         handleCheckIfExistsFavorites, handleDeleteFromFavorites, handleCreatePost, handleGetPosts, handleGetUserPosts,
         handleCreateComment, handleGetPostsComments, handleDeletePost, handleDeleteComment, handleUpdateComment,
-        handleUpdatePost, handleGetPostById, handleGetUserLatestPost
+        handleUpdatePost, handleGetPostById, handleGetUserLatestPost, uploadPfp, getUserPfp
     }
 
 }

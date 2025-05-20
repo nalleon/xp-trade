@@ -1,9 +1,10 @@
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AppContext } from '../context/AppContext';
 
+import * as ImagePicker from 'expo-image-picker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
 import { Result } from '../utils/TypeUtils';
@@ -21,12 +22,13 @@ const ProfileScreen = (props: Props) => {
   const [post, setPost] = useState<any>();
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
+  const [image, setImage] = useState<string>();
 
   const scrollRef = useRef<ScrollView>(null);
 
   const context = useContext(AppContext);
 
-  const { handleGetFavorites, handleGetUserLatestPost, handleGetCollection } = UseApi();
+  const { handleGetFavorites, handleGetUserLatestPost, handleGetCollection, uploadPfp, getUserPfp } = UseApi();
   const { handleGameDetailsFetch } = UseRAWGApi();
 
   const maxCharactersForTwoLines = 100;
@@ -54,7 +56,28 @@ const ProfileScreen = (props: Props) => {
     setShowRightArrow(scrollX + visibleWidth < totalWidth - 10);
   };
 
+   const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
 
+    if (!result.canceled) {
+      const file = {
+        uri: result.assets[0].uri,
+        name: result.assets[0].fileName || 'upload.jpg',
+        type: result.assets[0].type || 'image/jpeg',
+      };
+
+      try {
+        const uploadResult = await uploadPfp(context.username, file);
+        setImage(await getUserPfp(uploadResult.data.profilePicture));
+      } catch (error) {
+        Alert.alert('Upload failed', error.message);
+      }
+    }
+  };
 
 
   const navigateToPost = async (post: any) => {
@@ -112,7 +135,17 @@ const ProfileScreen = (props: Props) => {
     >
 
       <View className="items-center mb-6">
-        <View className="w-24 h-24 rounded-full bg-[#1E222A] mb-2" />
+        <TouchableOpacity onPress={pickImage}>
+        <Image
+          source={
+            image
+              ? { uri: image }
+              : require('./assets/default-profile.png')
+          }
+          className="w-24 h-24 rounded-full mb-2"
+        />
+      </TouchableOpacity>
+     
         <Text className="text-[#F6F7F7] text-lg font-semibold">{context.username}</Text>
       </View>
       <View className="w-full mb-6">
