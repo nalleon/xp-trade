@@ -4,7 +4,7 @@ import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AppContext } from '../context/AppContext';
 
-import * as ImagePicker from 'expo-image-picker';
+import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-picker';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ProfileStackParamList } from '../navigations/stack/ProfileStackNav';
 import { Result } from '../utils/TypeUtils';
@@ -56,28 +56,31 @@ const ProfileScreen = (props: Props) => {
     setShowRightArrow(scrollX + visibleWidth < totalWidth - 10);
   };
 
-   const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1,
-    });
+//    const pickImage = () => {
+//   const options: ImageLibraryOptions = {
+//     mediaType: 'photo',
+//     quality: 1,
+//     maxWidth: 800,
+//     maxHeight: 800,
+//   };
 
-    if (!result.canceled) {
-      const file = {
-        uri: result.assets[0].uri,
-        name: result.assets[0].fileName || 'upload.jpg',
-        type: result.assets[0].type || 'image/jpeg',
-      };
+//   launchImageLibrary(options, async (response) => {
+//     if (response.didCancel) return;
 
-      try {
-        const uploadResult = await uploadPfp(context.username, file);
-        setImage(await getUserPfp(uploadResult.data.profilePicture));
-      } catch (error) {
-        Alert.alert('Upload failed', error.message);
-      }
-    }
-  };
+//     const asset = response.assets?.[0];
+//     if (!asset || !asset.uri) {
+//       return;
+//     }
+
+//     const file = {
+//       uri: asset.uri,
+//       name: asset.fileName || 'upload.jpg',
+//       type: asset.type || 'image/jpeg',
+//     };
+//       const uploadResult = await uploadPfp(context.username, file);
+//       setImage(await getUserPfp(uploadResult.data.profilePicture));
+//   });
+// };
 
 
   const navigateToPost = async (post: any) => {
@@ -135,12 +138,12 @@ const ProfileScreen = (props: Props) => {
     >
 
       <View className="items-center mb-6">
-        <TouchableOpacity onPress={pickImage}>
+        <TouchableOpacity>
         <Image
           source={
             image
               ? { uri: image }
-              : require('./assets/default-profile.png')
+              : require('../resources/xp-trade.png')
           }
           className="w-24 h-24 rounded-full mb-2"
         />
