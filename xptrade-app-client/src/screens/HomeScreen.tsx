@@ -30,8 +30,6 @@ function HomeScreen({ navigation }: Props) {
     getPosts();
   }, [refresh]);
 
-
-
   const getPosts = async () => {
     const result = await handleGetPosts();
 
@@ -111,21 +109,21 @@ function HomeScreen({ navigation }: Props) {
 
                   <View className="h-px bg-[#2C3038] mb-6" />
 
-             {item.content.length >= maxCharactersForFiveLines
-                ? (
-                  <Text
-                    className="text-[#F6F7F7] mb-2"
-                    numberOfLines={5}
-                  >
-                    {item.content}
-                  </Text>
-                ) : (
-                  <Text className="text-[#F6F7F7] mb-2">
-                    {item.content}
-                  </Text>
-                )
-              }
-{/* 
+                  {item.content.length >= maxCharactersForFiveLines
+                    ? (
+                      <Text
+                        className="text-[#F6F7F7] mb-2"
+                        numberOfLines={5}
+                      >
+                        {item.content}
+                      </Text>
+                    ) : (
+                      <Text className="text-[#F6F7F7] mb-2">
+                        {item.content}
+                      </Text>
+                    )
+                  }
+                  {/* 
                   {item.content.length / 2 >= maxCharactersForFiveLines && (
                     <TouchableOpacity onPress={() => navigateToPostDetails(item)}>
                       <Text className="text-xs text-[#66B3B7]">Ver más</Text>

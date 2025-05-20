@@ -28,7 +28,6 @@ const AuthStackNav = (props: Props) => {
         >
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-            <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
         </Stack.Navigator>
     )
 }

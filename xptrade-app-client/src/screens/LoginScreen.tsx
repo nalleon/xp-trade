@@ -19,6 +19,7 @@ const LoginScreen = ({ navigation }: Props) => {
 
   const login = async () => {
     const result = await handleLogin(username, password);
+    console.log(result);
     if (result != SUCCESS) {
       setShowErrorModal(true);
     }

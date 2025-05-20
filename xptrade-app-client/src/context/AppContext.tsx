@@ -26,22 +26,22 @@ type AppContextType = {
 export const AppContext = createContext<AppContextType>({} as AppContextType);
 const AppContextProvider = (props: Props) => {
     const [username, setUsername] = useState<string>("");
-    const [token, setToken] = useState<string>("");
+    const [token, setToken] = useState<string | null>(null);
     const [currentGame, setCurrentGame] = useState<Result>({} as Result);
     const [currentGameDetailed, setCurrentGameDetailed] = useState<GameDetails | null>(null);
 
     const [currentComment, setCurrentComment] = useState<any>({} as any);
     const [currentPost, setCurrentPost] = useState<any>({} as any);
 
-    useEffect(() => {
-        const loadToken = async () => {
-            const storedToken = await AsyncStorage.getItem('token');
-            if (storedToken) {
-                setToken(storedToken);
-            }
-        };
-        loadToken();
-    }, []);
+    // useEffect(() => {
+    //     const loadToken = async () => {
+    //         const storedToken = await AsyncStorage.getItem('token');
+    //         if (storedToken) {
+    //             setToken(storedToken);
+    //         }
+    //     };
+    //     loadToken();
+    // }, []);
     
     const contextValues: AppContextType = {
         username,
