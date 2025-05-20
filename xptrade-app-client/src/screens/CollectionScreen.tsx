@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, FlatList, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { styled } from 'nativewind';
+import React, { useState, useContext, useCallback } from 'react';
+import { View, Text, Image, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { AppContext } from '../context/AppContext';
 import UseApi from '../hooks/UseApi';
-import { ScrollView } from 'react-native-gesture-handler';
 import UseRAWGApi from '../hooks/UseRAWGApi';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { GameStackParamList } from '../navigations/stack/CollectionStackNav';
@@ -11,30 +10,73 @@ import { GameStackParamList } from '../navigations/stack/CollectionStackNav';
 type Props = NativeStackScreenProps<GameStackParamList, 'CollectionScreen'>;
 
 const CollectionScreen = (props: Props) => {
-  const { username } = useContext(AppContext);
+  const { username, setCurrentGame, setCurrentGameDetailed } = useContext(AppContext);
   const [collection, setCollection] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const { handleGetCollection } = UseApi();
-
   const { handleGameDetailsFetch } = UseRAWGApi();
 
-  const context = useContext(AppContext);
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
 
-  useEffect(() => {
-    const fetchCollection = async () => {
-      try {
-        const data = await handleGetCollection(username);
-        setCollection(data.gameCollectionList);
-      } catch (error) {
-        console.error('Failed to fetch collection:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      const fetchCollection = async () => {
+        setLoading(true);
+        try {
+          const data = await handleGetCollection(username);
+          if (isActive) {
+            setCollection(data.gameCollectionList);
+          }
+        } catch (error) {
+          console.error('Failed to fetch collection:', error);
+        } finally {
+          if (isActive) setLoading(false);
+        }
+      };
 
-    fetchCollection();
-  }, [username]);
+      fetchCollection();
+
+      return () => {
+        isActive = false;
+        setCollection([]);
+        setLoading(true);
+      };
+    }, [username])
+  );
+
+  const navigateToGame = async (item) => {
+    if (!item) return;
+
+    setCurrentGame(item.game);
+
+    const details = await handleGameDetailsFetch(item.game.slug);
+    setCurrentGameDetailed(details);
+
+    if (details) {
+      props.navigation.navigate('GameScreen');
+    }
+  };
+
+  const renderItem = ({ item }: { item: any }) => (
+    <TouchableOpacity
+      className="w-[31%] m-[1.16%] bg-[#1E222A] rounded-tr-xl rounded-bl-xl overflow-hidden border border-[#9D8D64]"
+      onPress={() => navigateToGame(item)}
+    >
+      <Image
+        source={{ uri: item.game.coverArt }}
+        className="w-full h-28"
+        resizeMode="cover"
+      />
+      <View className="items-center justify-center p-2">
+        <Text className="text-[#F6F7F7] font-semibold text-center text-sm" numberOfLines={2}>
+          {item.game.title}
+        </Text>
+        <Text className="text-[#F6F7F7] text-sm">{item.region.name}</Text>
+        <Text className="text-[#F6F7F7] text-sm">{item.platform.name}</Text>
+      </View>
+    </TouchableOpacity>
+  );
 
   if (loading) {
     return (
@@ -44,66 +86,25 @@ const CollectionScreen = (props: Props) => {
     );
   }
 
-  const navigateToGame = async (item) => {
-    if (!item) return;
-
-    context.setCurrentGame(item.game);
-
-    const details = await handleGameDetailsFetch(item.game.slug);
-    context.setCurrentGameDetailed(details);
-
-    if (details) {
-      props.navigation.navigate("GameScreen");
-    }
+  if (!collection || collection.length === 0) {
+    return (
+      <View className="flex-1 justify-center items-center bg-[#1E222A] px-4">
+        <Text className="text-[#F6F7F7] text-lg font-semibold text-center">
+          No hay juegos en tu colección
+        </Text>
+      </View>
+    );
   }
 
   return (
-    <View className='flex-1 p-2 bg-[#1E222A]'>
-      <ScrollView
-        horizontal
-        pagingEnabled
-        decelerationRate="fast"
-        snapToInterval={144}
-        snapToAlignment="start"
-        showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={16}
-        contentContainerStyle={{ paddingHorizontal: 0 }}
-        className="space-x-4"
-      >
-        {
-          collection && collection.length > 0 ?
-          collection.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              className="w-32 h-48 bg-[#1E222A] rounded-tr-xl rounded-bl-xl overflow-hidden border border-[#9D8D64]"
-              onPress={() => navigateToGame(item)}
-            >
-              <Image
-                source={{ uri: item.game.coverArt }}
-                className="w-32 h-28"
-                resizeMode="cover"
-              />
-              <View className="flex-1 items-center justify-center p-2">
-                <Text className="text-[#F6F7F7] font-semibold text-center text-sm" numberOfLines={2}>
-                  {item.game.title}
-                </Text>
-                <Text className="text-[#F6F7F7] text-sm">
-                  {item.region.name}
-                </Text>
-                <Text className="text-[#F6F7F7] text-sm">
-                  {item.platform.name}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))
-          :
-          <View className="flex-1 justify-center items-center">
-            <Text className="text-[#F6F7F7] text-lg font-semibold mb-4 text-center">
-              No hay juegos en tu colección
-            </Text>
-          </View>
-        }
-      </ScrollView>
+    <View className="flex-1 bg-[#1E222A] p-2">
+      <FlatList
+        data={collection}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `${item.game.id}-${index}`}
+        numColumns={3}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 };
