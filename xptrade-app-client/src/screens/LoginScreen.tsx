@@ -19,9 +19,7 @@ const LoginScreen = ({ navigation }: Props) => {
 
   const login = async () => {
     const result = await handleLogin(username, password);
-    if (result === SUCCESS) {
-      navigation.replace('TabNav');
-    } else {
+    if (result != SUCCESS) {
       setShowErrorModal(true);
     }
   };

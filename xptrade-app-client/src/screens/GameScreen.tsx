@@ -319,7 +319,7 @@ const GameScreen = (props: Props) => {
               onPress={() => setShowPublishers(prev => !prev)}
               className="flex-row items-center mb-1"
             >
-              <Text className="text-[#F6F7F7] font-semibold mr-2">Publisher(s)</Text>
+              <Text className="text-[#F6F7F7] font-semibold mr-2">Distribuidora(s)</Text>
               <Icon
                 name={showPublishers ? 'caret-up-outline' : 'caret-down-outline'}
                 size={16}

@@ -24,6 +24,7 @@ import axios from 'axios';
 import AuthStackNav from './src/navigations/stack/AuthStackNav';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import AppContextProvider from './src/context/AppContext';
+import RootNavigation from './src/navigations/RootNavigation';
 
 
 
@@ -35,37 +36,16 @@ import AppContextProvider from './src/context/AppContext';
 
 function App(): React.JSX.Element {
 
-  const [dbInitilized, setDbInitilized] = useState(false);
-  
-useEffect(() => {
-    async function initDDBB(){
-      try{
-        await dataSource.initialize();
-        console.log("DB correctly initialized");
-        setDbInitilized(true);
-
-      }catch(e){console.error("Error while initing db: " + e)}
-    }
-    initDDBB();
-
-  }, [])
+ 
 
   return (
     <>
     <GestureHandlerRootView>
-      {
-        dbInitilized? (
-          <NavigationContainer >
-            <AppContextProvider>
-              <AuthStackNav />
-            </AppContextProvider>
-          </NavigationContainer>
-        ) : (
-          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Cargando...</Text>
-          </View>
-        )
-      }
+      <NavigationContainer >
+        <AppContextProvider>
+          <RootNavigation />
+        </AppContextProvider>
+      </NavigationContainer>
     </GestureHandlerRootView>
   </>
 

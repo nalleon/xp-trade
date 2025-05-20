@@ -1,16 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../../screens/LoginScreen';
 import RegisterScreen from '../../screens/RegisterScreen';
 import TabNav from '../tab/TabNav';
 import DrawerNav from '../drawer/DrawerNav';
+import { AppContext } from '../../context/AppContext';
 
 type Props = {}
 
 
 export type AuthStackParamList = {
-    TabNav: undefined,
     LoginScreen: undefined,
     RegisterScreen: undefined
 };
@@ -18,6 +18,8 @@ export type AuthStackParamList = {
 const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 const AuthStackNav = (props: Props) => {
+    const context = useContext(AppContext);
+
     return (
         <Stack.Navigator id={undefined}
             screenOptions={{
@@ -26,8 +28,7 @@ const AuthStackNav = (props: Props) => {
         >
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-            <Stack.Screen name="TabNav" component={DrawerNav} />
-
+        
         </Stack.Navigator>
     )
 }
